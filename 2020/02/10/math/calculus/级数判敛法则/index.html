@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="级数收敛最基础判定充分必要条件一个级数$a_n$收敛的充分必要条件是级数的前n项和数列$S_n&#x3D;\sum_{i&#x3D;1}^{n}ai$收敛，而一般这个判定方法只对于那些能够求出前n项和数列通项公式的级数有很好的判定，然而大多数的级数都无法求出前n项和数列。所以对于一些常见的特殊数列有特别的判定方式 必要条件级数收敛的必要条件是:  \lim_{n \to \infty} a_n &#x3D; 0性质1、如果一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="级数判敛法则">
+<meta property="og:url" content="http://swordandtea.github.io/2020/02/10/math/calculus/%E7%BA%A7%E6%95%B0%E5%88%A4%E6%95%9B%E6%B3%95%E5%88%99/index.html">
+<meta property="og:site_name" content="SwordAndTea&#39;s Blog">
+<meta property="og:description" content="级数收敛最基础判定充分必要条件一个级数$a_n$收敛的充分必要条件是级数的前n项和数列$S_n&#x3D;\sum_{i&#x3D;1}^{n}ai$收敛，而一般这个判定方法只对于那些能够求出前n项和数列通项公式的级数有很好的判定，然而大多数的级数都无法求出前n项和数列。所以对于一些常见的特殊数列有特别的判定方式 必要条件级数收敛的必要条件是:  \lim_{n \to \infty} a_n &#x3D; 0性质1、如果一个">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-02-10T13:42:20.000Z">
+<meta property="article:modified_time" content="2020-07-11T12:48:25.489Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="math">
+<meta property="article:tag" content="calculus">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2020/02/10/math/calculus/%E7%BA%A7%E6%95%B0%E5%88%A4%E6%95%9B%E6%B3%95%E5%88%99/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>级数判敛法则 | SwordAndTea's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SwordAndTea's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/10/math/calculus/%E7%BA%A7%E6%95%B0%E5%88%A4%E6%95%9B%E6%B3%95%E5%88%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          级数判敛法则
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-10 21:42:20" itemprop="dateCreated datePublished" datetime="2020-02-10T21:42:20+08:00">2020-02-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/math/" itemprop="url" rel="index">
+                    <span itemprop="name">math</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="级数收敛最基础判定"><a href="#级数收敛最基础判定" class="headerlink" title="级数收敛最基础判定"></a>级数收敛最基础判定</h1><h3 id="充分必要条件"><a href="#充分必要条件" class="headerlink" title="充分必要条件"></a>充分必要条件</h3><p>一个级数$a_n$收敛的充分必要条件是级数的前n项和数列$S_n=\sum_{i=1}^{n}ai$收敛，而一般这个判定方法只对于那些能够求出前n项和数列通项公式的级数有很好的判定，然而大多数的级数都无法求出前n项和数列。所以对于一些常见的特殊数列有特别的判定方式</p>
+<h3 id="必要条件"><a href="#必要条件" class="headerlink" title="必要条件"></a>必要条件</h3><p>级数收敛的必要条件是:</p>
+<script type="math/tex; mode=display">
+\lim_{n \to \infty} a_n = 0</script><h3 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h3><p>1、如果一个级数收敛，则去掉<code>有限项</code>后的级数仍然收敛。</p>
+<h1 id="正项级数的判敛法"><a href="#正项级数的判敛法" class="headerlink" title="正项级数的判敛法"></a>正项级数的判敛法</h1><h3 id="充分必要条件-1"><a href="#充分必要条件-1" class="headerlink" title="充分必要条件"></a>充分必要条件</h3><p>正项级数收敛的充分必要条件是级数的前n项和数列$S_n$有界。</p>
+<p>证明：</p>
+<p>因为为正项级数，则前n项和$S_n$单调递增，</p>
+<p>又因为$S_n$有界，则根据单调有界性原则，数列$S_n$收敛，证毕。</p>
+<h3 id="充分条件"><a href="#充分条件" class="headerlink" title="充分条件"></a>充分条件</h3><h5 id="比较判敛法"><a href="#比较判敛法" class="headerlink" title="比较判敛法"></a>比较判敛法</h5><p>如果有正项级数$\sum u_n$和正项级数$\sum v_n$，如果存在N，当$n&gt;N$时，有$u_n &lt; v_n$，则有：</p>
+<p>1、若$v_n$收敛，则$u_n$收敛</p>
+<p>2、若$u_n$收敛、则$v_n$收敛</p>
+<h5 id="比较判敛法的极限形式"><a href="#比较判敛法的极限形式" class="headerlink" title="比较判敛法的极限形式"></a>比较判敛法的极限形式</h5><p>如果有正项级数$\sum u_n$和正项级数$\sum v_n$，且$\lim_{n \to \infty} \frac{u_n}{v_n} = \rho$，则有：</p>
+<p>1、若$\rho=0$，则说明存在N，当$n &gt; N$时，有$u_n &lt; v_n$，所以当$v_n$收敛，$u_n$收敛，$u_n$发散，$v_n$发散。</p>
+<p>2、若$\rho = \infty$，则说明存在N，当$n &gt; N$时，有$u_n &gt; v_n$，所以当$v_n$发散，$u_n$发散，$u_n$收敛，$v_n$收敛。</p>
+<p>3、若$0 &lt; \rho &lt; \infty$，则$u_n$与$v_n$有相同的敛散性。</p>
+<h5 id="比值判别法"><a href="#比值判别法" class="headerlink" title="比值判别法"></a>比值判别法</h5><p>对于正项级数$\sum a_n$，有$\lim_{n \to \infty} \frac{a_{n+1}}{a_n} = \rho$，则有：</p>
+<p>1、若$\rho &lt; 1$，级数收敛</p>
+<p>2、若$\rho = 1$，无法判定敛散性</p>
+<p>3、若$p &gt; 1$，级数发散</p>
+<h5 id="根值判敛法"><a href="#根值判敛法" class="headerlink" title="根值判敛法"></a>根值判敛法</h5><p>对于正项级数$\sum a_n$，有$\sqrt[n]{a_n} = \rho$，则有：</p>
+<p>1、若$\rho &lt; 1$，级数收敛</p>
+<p>2、若$\rho = 1$，无法判定敛散性</p>
+<p>3、若$p &gt; 1$，级数发散</p>
+<h1 id="交错级数"><a href="#交错级数" class="headerlink" title="交错级数"></a>交错级数</h1><p>形如$1+(-\frac{1}{2})+\frac{1}{3}+(-\frac{1}{4})、\cdots = \sum(-1)^{n-1}\frac{1}{n}$的，正负号一直交替出现的级数称为交错级数。</p>
+<h3 id="充分条件-1"><a href="#充分条件-1" class="headerlink" title="充分条件"></a>充分条件</h3><p>对于交错级数$\sum (-1)^n a_n$，如果$a_n$单调不增(<code>注意这里是</code>$a_n$，不是$(-1)^n a_n$，$a_n$符号是一致的，即要么$a_n$都为正，要没都为负)，且$\lim_{n \to \infty} a_n = 0$，则该交错级数收敛。</p>
+<h1 id="绝对收敛与条件收敛"><a href="#绝对收敛与条件收敛" class="headerlink" title="绝对收敛与条件收敛"></a>绝对收敛与条件收敛</h1><h3 id="绝对值级数"><a href="#绝对值级数" class="headerlink" title="绝对值级数"></a>绝对值级数</h3><p>对于级数$\sum a_n$，每一项加上绝对值后的级数$\sum | a_n |$，称为绝对值级数。</p>
+<h3 id="绝对收敛"><a href="#绝对收敛" class="headerlink" title="绝对收敛"></a>绝对收敛</h3><p>对于级数$\sum a_n$，如果其绝对值级数$\sum |a_n|$收敛，则称级数$a_n$绝对收敛。</p>
+<p><code>如果一个级数绝对收敛，则原级数必定收敛</code></p>
+<h3 id="条件收敛"><a href="#条件收敛" class="headerlink" title="条件收敛"></a>条件收敛</h3><p>对于级数$\sum a_n$，如果$a_n$收敛，但是其绝对值级数$\sum |a_n|$不收敛，则称$a_n$条件收敛。</p>
+<p><code>绝对收敛的级数满足级数的交换律，收敛的级数满足级数结合律</code></p>
+<h1 id="幂级数"><a href="#幂级数" class="headerlink" title="幂级数"></a>幂级数</h1><p>形如$\sum a_n(x-x_0)^n$，其中$a_n、x_0$为常数的级数称为幂级数。</p>
+<p>最常用的幂级数为: $\sum a_n x^n$。</p>
+<h3 id="阿贝尔定理"><a href="#阿贝尔定理" class="headerlink" title="阿贝尔定理"></a>阿贝尔定理</h3><p>对于幂级数$\sum a_n x^n$，如果该级数在$x_0$处收敛，则对于任意$|x| &lt; |x_0|$，级数<code>绝对收敛</code>；如果该级数在$x_0$处发散，则对于任意$|x| &gt; |x_0|$，级数发散。</p>
+<h3 id="收敛半径"><a href="#收敛半径" class="headerlink" title="收敛半径"></a>收敛半径</h3><p>对于幂级数$\sum a_n x^n$，如果$\lim_{n \to \infty} |\frac{a_{n+1}}{a_n}| = \rho$，则收敛半径</p>
+<script type="math/tex; mode=display">
+R=\begin{cases} 
+0, & \rho=+\infty \\
++\infty, & \rho=0 \\
+\frac{1}{\rho}, & 0< \rho < +\infty
+\end{cases}</script><p>则，对于任意$|x| &lt; |R|$，都有级数绝对收敛；对于任意$|x| &gt; |R|$，都有级数发散。对于 $x=R$和$x=-R$，级数的敛散性需要带入后进一步判断。</p>
+<p>如果要求幂级数$\sum a_n(x-x_0)^n$，的收敛半径也是一样的方法，他和级数$\sum a_n x^n$的收敛半径相同，只是相当于x的收敛区间的取值左右平移了而已。</p>
+<h3 id="幂级数的性质"><a href="#幂级数的性质" class="headerlink" title="幂级数的性质"></a>幂级数的性质</h3><p>1、对幂级数$\sum a_n(x-x_0)^n$逐项积分后或者逐项求导后，级数的收敛半径不变，收敛区间的端点值的敛散性可能发生变化</p>
+<p>2、如果级数$\sum a_n(x-x_0)^n$在$x_1$处<code>条件收敛</code>，则该级数的收敛半径为$｜x_1-x_o｜$</p>
+<h1 id="一些特殊级数的敛散性"><a href="#一些特殊级数的敛散性" class="headerlink" title="一些特殊级数的敛散性"></a>一些特殊级数的敛散性</h1><h3 id="调和级数"><a href="#调和级数" class="headerlink" title="调和级数"></a>调和级数</h3><p>//TODO: finish this part</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/math/" rel="tag"># math</a>
+              <a href="/tags/calculus/" rel="tag"># calculus</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/10/machine_learning/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" rel="prev" title="梯度下降">
+      <i class="fa fa-chevron-left"></i> 梯度下降
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/11/math/llinear%20algebra/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/" rel="next" title="线性代数笔记">
+      线性代数笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%A7%E6%95%B0%E6%94%B6%E6%95%9B%E6%9C%80%E5%9F%BA%E7%A1%80%E5%88%A4%E5%AE%9A"><span class="nav-number">1.</span> <span class="nav-text">级数收敛最基础判定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%85%E5%88%86%E5%BF%85%E8%A6%81%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.0.1.</span> <span class="nav-text">充分必要条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%85%E8%A6%81%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.0.2.</span> <span class="nav-text">必要条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%A7%E8%B4%A8"><span class="nav-number">1.0.3.</span> <span class="nav-text">性质</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AD%A3%E9%A1%B9%E7%BA%A7%E6%95%B0%E7%9A%84%E5%88%A4%E6%95%9B%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">正项级数的判敛法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%85%E5%88%86%E5%BF%85%E8%A6%81%E6%9D%A1%E4%BB%B6-1"><span class="nav-number">2.0.1.</span> <span class="nav-text">充分必要条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%85%E5%88%86%E6%9D%A1%E4%BB%B6"><span class="nav-number">2.0.2.</span> <span class="nav-text">充分条件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E5%88%A4%E6%95%9B%E6%B3%95"><span class="nav-number">2.0.2.0.1.</span> <span class="nav-text">比较判敛法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E5%88%A4%E6%95%9B%E6%B3%95%E7%9A%84%E6%9E%81%E9%99%90%E5%BD%A2%E5%BC%8F"><span class="nav-number">2.0.2.0.2.</span> <span class="nav-text">比较判敛法的极限形式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%AF%94%E5%80%BC%E5%88%A4%E5%88%AB%E6%B3%95"><span class="nav-number">2.0.2.0.3.</span> <span class="nav-text">比值判别法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A0%B9%E5%80%BC%E5%88%A4%E6%95%9B%E6%B3%95"><span class="nav-number">2.0.2.0.4.</span> <span class="nav-text">根值判敛法</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%A4%E9%94%99%E7%BA%A7%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">交错级数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%85%E5%88%86%E6%9D%A1%E4%BB%B6-1"><span class="nav-number">3.0.1.</span> <span class="nav-text">充分条件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%9D%E5%AF%B9%E6%94%B6%E6%95%9B%E4%B8%8E%E6%9D%A1%E4%BB%B6%E6%94%B6%E6%95%9B"><span class="nav-number">4.</span> <span class="nav-text">绝对收敛与条件收敛</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%9D%E5%AF%B9%E5%80%BC%E7%BA%A7%E6%95%B0"><span class="nav-number">4.0.1.</span> <span class="nav-text">绝对值级数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%9D%E5%AF%B9%E6%94%B6%E6%95%9B"><span class="nav-number">4.0.2.</span> <span class="nav-text">绝对收敛</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E6%94%B6%E6%95%9B"><span class="nav-number">4.0.3.</span> <span class="nav-text">条件收敛</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B9%82%E7%BA%A7%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">幂级数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%BF%E8%B4%9D%E5%B0%94%E5%AE%9A%E7%90%86"><span class="nav-number">5.0.1.</span> <span class="nav-text">阿贝尔定理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B6%E6%95%9B%E5%8D%8A%E5%BE%84"><span class="nav-number">5.0.2.</span> <span class="nav-text">收敛半径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%82%E7%BA%A7%E6%95%B0%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-number">5.0.3.</span> <span class="nav-text">幂级数的性质</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E7%89%B9%E6%AE%8A%E7%BA%A7%E6%95%B0%E7%9A%84%E6%95%9B%E6%95%A3%E6%80%A7"><span class="nav-number">6.</span> <span class="nav-text">一些特殊级数的敛散性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E5%92%8C%E7%BA%A7%E6%95%B0"><span class="nav-number">6.0.1.</span> <span class="nav-text">调和级数</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.3.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>
