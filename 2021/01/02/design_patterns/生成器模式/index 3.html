@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="生成器模式背景生成器模式使你能够分步创建复杂对象。假设有这样一个复杂对象， 在对其进行构造时需要对诸多成员变量和嵌套对象进行繁复的初始化工作。 这些初始化代码通常深藏于一个包含众多参数且让人基本看不懂的构造函数中。 例如你想要示例化一个有车库、带游泳池和花园的房子对象。 一种实现方式是：设计一个”House”的基类，并让每种类型的房子继承自这个”House”基类，例如”HouseWithGarag">
+<meta property="og:type" content="article">
+<meta property="og:title" content="生成器模式">
+<meta property="og:url" content="http://swordandtea.github.io/2021/01/02/design_patterns/%E7%94%9F%E6%88%90%E5%99%A8%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="SwordAndTea&#39;s Blog">
+<meta property="og:description" content="生成器模式背景生成器模式使你能够分步创建复杂对象。假设有这样一个复杂对象， 在对其进行构造时需要对诸多成员变量和嵌套对象进行繁复的初始化工作。 这些初始化代码通常深藏于一个包含众多参数且让人基本看不懂的构造函数中。 例如你想要示例化一个有车库、带游泳池和花园的房子对象。 一种实现方式是：设计一个”House”的基类，并让每种类型的房子继承自这个”House”基类，例如”HouseWithGarag">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-01-02T08:27:31.000Z">
+<meta property="article:modified_time" content="2021-01-02T13:59:11.750Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="design pattern">
+<meta property="article:tag" content="builder pattern">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2021/01/02/design_patterns/%E7%94%9F%E6%88%90%E5%99%A8%E6%A8%A1%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>生成器模式 | SwordAndTea's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SwordAndTea's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/01/02/design_patterns/%E7%94%9F%E6%88%90%E5%99%A8%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          生成器模式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-01-02 16:27:31 / Modified: 21:59:11" itemprop="dateCreated datePublished" datetime="2021-01-02T16:27:31+08:00">2021-01-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/design-pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">design pattern</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="生成器模式"><a href="#生成器模式" class="headerlink" title="生成器模式"></a>生成器模式</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>生成器模式使你能够<font color="red">分步</font>创建复杂对象。假设有这样一个复杂对象， 在对其进行构造时需要对诸多成员变量和嵌套对象进行繁复的初始化工作。 这些初始化代码通常深藏于一个包含众多参数且让人基本看不懂的构造函数中。</p>
+<p>例如你想要示例化一个有车库、带游泳池和花园的房子对象。</p>
+<p>一种实现方式是：设计一个”House”的基类，并让每种类型的房子继承自这个”House”基类，例如”HouseWithGarage”、”HouseWithGarden”、”HouseWithGarageAndGraden”等等。但是这种方式的结果就是你将面对相当数量的子类。</p>
+<p>另外一种实现方式：无需生成子类，只设计一个”House”的类，同时这个”House”类拥有一个包括所有可能参数的超级构造函数，例如<code>House(bool hasGarage, bool hasGraden, bool hasSwimmingPool, ...)</code>。这种方式可以避免生成子类，但是如果需要增加一种房子类型，那么就不得不修改构造函数，这可能会导致使用之前构造函数的代码失效。另外这个超级构造函数中可能大多数参数最后都没有实际被使用到，导致构造函数的调用形式不简洁。</p>
+<p>这种情况就可以考虑使用生成器模式了。</p>
+<h2 id="生成器模式简介"><a href="#生成器模式简介" class="headerlink" title="生成器模式简介"></a>生成器模式简介</h2><p>生成器模式将构造对象的代码从产品类中抽取出来，并将其放在一个名为生成器的独立类中。当创建对象的时候，是需要按需调用生成器提供的构造步骤即可。在一下情况下，你需要设计多种类型的生成器来构建出有相同接口但是表现形式不同的对象。</p>
+<p>另外，你可以将用于创建对象的一系列的生成器调用步骤抽取出来形成一个单独的主管类。主管类非常适合放入各种例行构造流程，以便在程序中反复使用。</p>
+<h2 id="生成器代码样例"><a href="#生成器代码样例" class="headerlink" title="生成器代码样例"></a>生成器代码样例</h2><p>一个创建汽车和汽车使用手册的设计：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//other class a car builder that need</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarEngine</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GPS</span>;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//a pure abstract class to use as an interface</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarBuilder</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">reset</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">setSeats</span><span class="params">(<span class="keyword">int</span> number)</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">setEngine</span><span class="params">(<span class="keyword">const</span> CarEngine &amp;engine)</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">setGPS</span><span class="params">(<span class="keyword">const</span> GPS &amp;gps)</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span>;</span></span><br><span class="line"><span class="comment">//a car builder that build car itself</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarCarBuilder</span>:</span> <span class="keyword">public</span> CarBuilder &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Car *_car;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">reset</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (_car) &#123;</span><br><span class="line">            <span class="keyword">delete</span> _car;</span><br><span class="line">        &#125;</span><br><span class="line">        _car = <span class="keyword">new</span> Car();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">setSeats</span><span class="params">(<span class="keyword">int</span> number)</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="comment">//set seat for car itself</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">setEngine</span><span class="params">(<span class="keyword">const</span> CarEngine &amp;engine)</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="comment">//set engine for car itself</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">setGPS</span><span class="params">(<span class="keyword">const</span> GPS &amp;gps)</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="comment">//set gps for car itself</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> Car* <span class="title">getResult</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> _car;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarManual</span>;</span></span><br><span class="line"><span class="comment">//a car builder that build car&#x27;s manual</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarManualBuilder</span>:</span> <span class="keyword">public</span> CarBuilder &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    CarManual *_manual;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">reset</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (_manual) &#123;</span><br><span class="line">            <span class="keyword">delete</span> _manual;</span><br><span class="line">        &#125;</span><br><span class="line">        _manual = <span class="keyword">new</span> CarManual()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">virtual</span> <span class="keyword">void</span> setSeats() <span class="keyword">override</span> &#123;</span><br><span class="line">        <span class="comment">//add description for how to use seats in manual</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">virtual</span> <span class="keyword">void</span> setEngine(<span class="keyword">const</span> CarEngine &amp;engine) <span class="keyword">override</span> &#123;</span><br><span class="line">        <span class="comment">//add car engine description in manual</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">virtual</span> <span class="keyword">void</span> setGPS(<span class="keyword">const</span> GPS &amp;pgs) <span class="keyword">override</span> &#123;</span><br><span class="line">        <span class="comment">//add gps use guide in manual</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">virtual</span> CarManual* getResult() <span class="keyword">override</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> _manual;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//a manager class that use builder to build car</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarCarBuilderDirector</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Car* <span class="title">buildSUV</span><span class="params">(CarBuilder &amp;builder)</span> </span>&#123;</span><br><span class="line">        builder.setSeats(<span class="number">4</span>);</span><br><span class="line">        NormalEngine normalEngine;</span><br><span class="line">        builder.setEngine(normalEngine);</span><br><span class="line">        NormalGPS normalGps;</span><br><span class="line">        builder.setGPS(normalGps);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Car* <span class="title">buildSportsCar</span><span class="params">(CarBuilder &amp;builder)</span> </span>&#123;</span><br><span class="line">        builder.setSeats(<span class="number">2</span>);</span><br><span class="line">        SportEngine sportEngine;</span><br><span class="line">        builder.setEngine(sportEngine);</span><br><span class="line">        SportCarGPS sportCarGps;</span><br><span class="line">        builder.setGPS(sportCarGps);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>在上面的例子中，在CarCarBuilderDirector这个生成器主管类可以创建SUV类型的车辆对象，也可以创建SportsCar类型的对象。但在上例中我们没有定义基于CarBuilder接口的SUVCarBuilder类和SportsCarBuilder类。不是说不可以，而是说要结合具体的实际情况判断是否需要再定义SUVCarBuilder和SportsCarBuilder类，如果创建SUV和创建SportsCar的实现方式有差别的话，那么就可以再去定义SUVCarBuilder类和SportsCarBuilder类。</p>
+<p>另外，我们在生成器接口中并没有提供获取构造结果对象的方法，因为不同生成器构造的产品可能没有公共接口， 因此你就不知道该方法返回的对象类型。 但是， 如果所有产品都位于单一类层次中， 你就可以安全地在基本接口中添加获取生成对象的方法。</p>
+<p>总之还是那句话，<font color="red">不基于实际应用场景的设计模式都是耍流氓</font>。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>生成器模式让你可以分步骤生成对象， 而且允许你仅使用必须的步骤。 应用该模式后， 你再也不需要将几十个参数塞进构造函数里了。</p>
+<p>基本生成器接口中定义了所有可能的制造步骤， 具体生成器将实现这些步骤来制造特定形式的产品。 同时， 主管类将负责管理制造步骤的顺序。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/design-pattern/" rel="tag"># design pattern</a>
+              <a href="/tags/builder-pattern/" rel="tag"># builder pattern</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/28/design_patterns/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" rel="prev" title="工厂模式">
+      <i class="fa fa-chevron-left"></i> 工厂模式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/01/06/design_patterns/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" rel="next" title="原型模式与单例模式">
+      原型模式与单例模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">生成器模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%99%A8%E6%A8%A1%E5%BC%8F%E7%AE%80%E4%BB%8B"><span class="nav-number">1.2.</span> <span class="nav-text">生成器模式简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%99%A8%E4%BB%A3%E7%A0%81%E6%A0%B7%E4%BE%8B"><span class="nav-number">1.3.</span> <span class="nav-text">生成器代码样例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.3.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="背景通常，在深度学习任务中，我们可以通过在损失函数中添加正则化项来避免过拟合，L2正则化项是通常使用的正则化项，L2正则化项使得模型最终的权重值分布比较均匀，使用L2正则化项时，我们就假设了我们的模型的对于样本的每个特征都相似的看重，而不只是看重某几个可能是关键特征的特征。 对于线形模型，在样本特征多样本数量少的情况下，线形模型很有可能会过拟合，但是只要增加样本数量，线形模型大概率就能摆脱过拟合的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dropout">
+<meta property="og:url" content="http://swordandtea.github.io/2021/02/13/machine_learning/neural_network&deep_learning/dropout/index.html">
+<meta property="og:site_name" content="SwordAndTea&#39;s Blog">
+<meta property="og:description" content="背景通常，在深度学习任务中，我们可以通过在损失函数中添加正则化项来避免过拟合，L2正则化项是通常使用的正则化项，L2正则化项使得模型最终的权重值分布比较均匀，使用L2正则化项时，我们就假设了我们的模型的对于样本的每个特征都相似的看重，而不只是看重某几个可能是关键特征的特征。 对于线形模型，在样本特征多样本数量少的情况下，线形模型很有可能会过拟合，但是只要增加样本数量，线形模型大概率就能摆脱过拟合的">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-02-13T02:49:18.000Z">
+<meta property="article:modified_time" content="2021-04-03T12:43:35.000Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="machine learning">
+<meta property="article:tag" content="deep learning">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2021/02/13/machine_learning/neural_network&deep_learning/dropout/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>dropout | SwordAndTea's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SwordAndTea's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/02/13/machine_learning/neural_network&deep_learning/dropout/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          dropout
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-02-13 10:49:18" itemprop="dateCreated datePublished" datetime="2021-02-13T10:49:18+08:00">2021-02-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-03 20:43:35" itemprop="dateModified" datetime="2021-04-03T20:43:35+08:00">2021-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>通常，在深度学习任务中，我们可以通过在损失函数中添加正则化项来避免过拟合，L2正则化项是通常使用的正则化项，L2正则化项使得模型最终的权重值分布比较均匀，<font color="orange">使用L2正则化项时，我们就假设了我们的模型的对于样本的每个特征都相似的看重，而不只是看重某几个可能是关键特征的特征。</font></p>
+<font color="orange">对于线形模型，在样本特征多样本数量少的情况下，线形模型很有可能会过拟合，但是只要增加样本数量，线形模型大概率就能摆脱过拟合的风险。</font>但是线形这种可靠的特性也是有代价的，线形模型不关系样本特征之间的关系。对于每个样本特征，线形模型就只是要么给一个正的权重或者负的权重，而不会考虑任何背景信息。
+
+不同于线形模型，神经网络通常不会独立对待每个样本特征，神经网络能够学习样本之间的关系，<font color="red">但是，对于深度神经网络来说，即使样本数量远远多于样本特征，深度神经网络仍然会有过拟合的风险。</font>
+
+<p>同时来说，使用简单的模型可以避免过拟合。使用更少纬度的特征、使用正则化项让权重值分布比较均匀都可以让模型变得简单。另外还有一种让模型变得简单的方法叫做<code>光滑(smoothness)</code>，即模型不会对输入的细微改变而敏感。</p>
+<font color="orange">在神经网络中，训练时，对于每层网络向后传播的过程中，引入噪声就能让神经网络变得`光滑`，这种方法被叫做dropout。</font>这种方法已经成为了一种训练神经网络的标准方法。叫做dropout的原因是因为在训练时对于每层网络我们都会随机丢弃一些神经元。<font color="red">在丢弃神经元的时候，我们要保证丢弃后的该层网络神经元的期望值和丢弃前的值是一致的。</font>
+
+
+
+<h1 id="dropout函数"><a href="#dropout函数" class="headerlink" title="dropout函数"></a>dropout函数</h1><p>在标准的dropout中，其定义为：对于<font color="orange">每层</font>的每个<font color="orange">神经</font>元，都有$p$的概率丢弃掉（置零），如果没有丢弃，则值变为$\frac{x}{1-p}$，$x$为该神经元的原始输出值。即：</p>
+<script type="math/tex; mode=display">
+x' = 
+\begin{cases} 
+    0, \space with \space probability \space p \\
+    \frac{x}{1-p}, \space otherwise
+\end{cases}</script><p>可以证明$E(x) = x$</p>
+<h1 id="drop-out-代码实现"><a href="#drop-out-代码实现" class="headerlink" title="drop out 代码实现"></a>drop out 代码实现</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dropout_layer</span>(<span class="params">one_layer: tf.tensor, dropout_probability: <span class="built_in">float</span></span>):</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="number">0</span> &lt;= dropout_probability &lt;= <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> dropout_probability == <span class="number">1</span>:</span><br><span class="line">        <span class="comment"># in this case, all elements are dropped out</span></span><br><span class="line">        <span class="keyword">return</span> tf.zeros_like(one_layer)  <span class="comment"># tf.zeros_like: create a tensor with all elements set to zero</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> dropout_probability == <span class="number">0</span>:</span><br><span class="line">        <span class="comment"># in this case, all elements are kept</span></span><br><span class="line">        <span class="keyword">return</span> one_layer</span><br><span class="line"></span><br><span class="line">    <span class="comment"># tf.random.uniform: outputs random values from a uniform distribution.</span></span><br><span class="line">    <span class="comment"># with (1-p)&#x27;s probability that value will become x / (1-p)</span></span><br><span class="line">    mask = tf.random.uniform(shape=tf.shape(one_layer), minval=<span class="number">0</span>, maxval=<span class="number">1</span>) &lt; (<span class="number">1</span> - dropout_probability)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> tf.cast(mask, dtype=tf.float32) * one_layer / (<span class="number">1.0</span> - dropout_probability)</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># 在框架中使用快速调用drop out</span></span><br><span class="line">net = tf.keras.models.Sequential([tf.keras.layers.Dense(<span class="number">256</span>, activation=tf.nn.relu,</span><br><span class="line">                                                        kernel_regularizer=tf.keras.regularizers.l2(<span class="number">0.3</span>)),</span><br><span class="line">                                  tf.keras.layers.Dropout(<span class="number">0.5</span>),</span><br><span class="line">                                  tf.keras.layers.Dense(<span class="number">256</span>, activation=tf.nn.relu,</span><br><span class="line">                                                        kernel_regularizer=tf.keras.regularizers.l2(<span class="number">0.3</span>)),</span><br><span class="line">                                  tf.keras.layers.Dropout(<span class="number">0.2</span>),</span><br><span class="line">                                  tf.keras.layers.Dense(<span class="number">10</span>)])</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+              <a href="/tags/deep-learning/" rel="tag"># deep learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/02/04/machine_learning/neural_network&deep_learning/multilayer-perceptrons/" rel="prev" title="multilayer_perceptrons">
+      <i class="fa fa-chevron-left"></i> multilayer_perceptrons
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/02/20/machine_learning/neural_network&deep_learning/parameter-initialization/" rel="next" title="parameter_initialization">
+      parameter_initialization <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#dropout%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">dropout函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#drop-out-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">drop out 代码实现</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.3.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

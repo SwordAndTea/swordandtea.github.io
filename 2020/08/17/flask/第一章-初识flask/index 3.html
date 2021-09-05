@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="创建应用程序实例对于简单的flask web程序来说，程序的主模块一般命名为app.py，但是也可以命名为其他名称，比如hello.py，但是要避免使用flask.py，因为这和flask本身这个模块有冲突。 创建一个程序实例的代码如下 12from flask import Flaskapp &#x3D; Flask(__name__) 传入flask类构造方法的第一个参数是模块或包的名称，我们应该使用特">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第一章 初识flask">
+<meta property="og:url" content="http://swordandtea.github.io/2020/08/17/flask/%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%88%9D%E8%AF%86flask/index.html">
+<meta property="og:site_name" content="SwordAndTea&#39;s Blog">
+<meta property="og:description" content="创建应用程序实例对于简单的flask web程序来说，程序的主模块一般命名为app.py，但是也可以命名为其他名称，比如hello.py，但是要避免使用flask.py，因为这和flask本身这个模块有冲突。 创建一个程序实例的代码如下 12from flask import Flaskapp &#x3D; Flask(__name__) 传入flask类构造方法的第一个参数是模块或包的名称，我们应该使用特">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-17T07:36:59.000Z">
+<meta property="article:modified_time" content="2020-08-17T10:16:07.987Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="flask">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2020/08/17/flask/%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%88%9D%E8%AF%86flask/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>第一章 初识flask | SwordAndTea's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SwordAndTea's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/08/17/flask/%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%88%9D%E8%AF%86flask/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第一章 初识flask
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-08-17 15:36:59 / Modified: 18:16:07" itemprop="dateCreated datePublished" datetime="2020-08-17T15:36:59+08:00">2020-08-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/flask/" itemprop="url" rel="index">
+                    <span itemprop="name">flask</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="创建应用程序实例"><a href="#创建应用程序实例" class="headerlink" title="创建应用程序实例"></a>创建应用程序实例</h1><p>对于简单的flask web程序来说，程序的主模块一般命名为app.py，但是也可以命名为其他名称，比如hello.py，但是要避免使用flask.py，因为这和flask本身这个模块有冲突。</p>
+<p>创建一个程序实例的代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br></pre></td></tr></table></figure>
+<p>传入flask类构造方法的第一个参数是模块或包的名称，我们应该使用特殊变量__name__，对于程序app.py来说，这个值为app</p>
+<h1 id="注册路由"><a href="#注册路由" class="headerlink" title="注册路由"></a>注册路由</h1><p>在flask中，http请求的基础处理都由flask做了，我们要做的只是建立处理请求和函数，并为其定义对应的URL规则，只需为函数附加app.route()装饰器，并传入URL规则作为参数，我们就可以让URL与函数建立关联，这个过程我们称为注册路由(route)，路由负责管理URL和函数之间的映射，而这个函数则被称为视图函数。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span>():</span></span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<p>当用户访问根地址的时候就会触发index函数。</p>
+<p>route()装饰器的第一个参数是URL规则，用字符串表示，必须以斜杠(/)开始。这里的URL是相对URL(又称为内部URL)，即不包含域名的URL，以域名www.google.com为例，”/“对应的是根地址，即(www.google.com)，如果把URL规则改为”/hello”，则实际的绝对的地址(外部地址)为www.google.com/hello</p>
+<h2 id="为视图绑定多个URL"><a href="#为视图绑定多个URL" class="headerlink" title="为视图绑定多个URL"></a>为视图绑定多个URL</h2><p><strong>一个视图函数可以绑定多个URL</strong>，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/hello&quot;</span></span>)</span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/hi&quot;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">say_hello</span>():</span></span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<h2 id="动态URL"><a href="#动态URL" class="headerlink" title="动态URL"></a>动态URL</h2><p>我们不仅可以为视图函数绑定多个URL，还可以在URL规则中添加变量部分，使用”&lt;变量名&gt;”的形式表示，flask可以处理请求时把变量传入视图函数，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/greet/&lt;name&gt;&quot;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_greet</span>(<span class="params">name</span>):</span></span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;hello, %s&#x27;</span> % name</span><br></pre></td></tr></table></figure>
+<p><code>因为URL中可以包含变量，所以将传入app.route()的字符串称为URL规则，而不是URL。</code></p>
+<p>当URL规则中包含变量时，如果用户访问的URL没有添加变量，比如”/greet”，那么flask在匹配识别后会返回一个404错误响应。一个很常见的行为是在app.route()装饰器里使用defaults参数设置URL变量的默认值，这个参数接收字典作为输入，存储URL变量和默认值的映射，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/greet&#x27;</span>, defaults=&#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;bro&#x27;</span>&#125;</span>)</span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/greet/&lt;name&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_greet</span>(<span class="params">name</span>):</span></span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;hello, %s&#x27;</span> % name</span><br><span class="line"></span><br><span class="line">注意这么写是没有效果的：</span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/greet/&lt;name&gt;&#x27;</span>, defaults=&#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;bro&#x27;</span>&#125;</span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_greet</span>(<span class="params">name</span>):</span></span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;hello, %s&#x27;</span> % name</span><br><span class="line"></span><br><span class="line">这么写如果访问<span class="string">&quot;/greet&quot;</span>会报错，访问<span class="string">&quot;/greet/a_name&quot;</span>只会将name设置为默认值</span><br></pre></td></tr></table></figure>
+<h1 id="启动开发服务器"><a href="#启动开发服务器" class="headerlink" title="启动开发服务器"></a>启动开发服务器</h1><p>启动开发服务器有两种方式，一种方式为在程序中使用run()函数来启动，例如:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.run(host=<span class="string">&#x27;0.0.0.0&#x27;</span>, port=<span class="number">5000</span>, debug=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<p>另外一种方式是通过flask run命令来启动服务器。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flask run</span><br></pre></td></tr></table></figure>
+<p>flask run命令一般会从当前目录去寻找app.py和wsgi.py模块，并从中寻找名为app或application的程序实例，另外如果指定了环境变量FLASK_APP对应的值寻找程序实例。如果你的程序的主模块不为app或者application，那么需要设置环境变量FLASK_APP，例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export FLASK_APP=hello</span><br><span class="line">flask run</span><br></pre></td></tr></table></figure>
+<h1 id="设置运行环境"><a href="#设置运行环境" class="headerlink" title="设置运行环境"></a>设置运行环境</h1><p>开发环境和生产环境是经常接触到的概念，开发环境是指我们本地编写和测试程序时的计算机环境，而生产环境与开发环境相对，它指的是网站部署上线供用户访问时的服务器环境。</p>
+<p>根据运行环境的不同，flask环境、扩展以及其他程序会改变相应的行为和设置，为了区分程序运行环境，flask提供了一个FLASK_ENV环境变量来设置环境，默认为production。</p>
+<h1 id="调试器与重载器"><a href="#调试器与重载器" class="headerlink" title="调试器与重载器"></a>调试器与重载器</h1><p>Werkzeug提供的调试器可以在程序出错时，在网页上看到详细的错误追踪信息，调试器允许你在错误页面上执行Python代码。点击错误信息右侧的命令行图标，会弹出窗口要求输入PIN码，也就是在启动服务器时命令行窗口打印出的调试器PIN码。<code>注意一定不要在生产环境下打开调试模式。</code></p>
+<p>当我们对代码做了修改后，期望的行为是这些改动立刻做用到程序上。重载器的作用就是检测文件变动，然后重新启动开发服务器，flask默认会使用Werkzeug内置的stat重载器，它的缺点是耗电严重，而且准确性一般。为了获取更优秀的体验，我们可以安装另一个用于检测文件变动的Python库Watchdog，安装后Werkzeug会自动使用它来检测文件变动。</p>
+<h1 id="项目配置"><a href="#项目配置" class="headerlink" title="项目配置"></a>项目配置</h1><p>在一些情况下，需要设置程序的某些行为，这时可能需要使用配置变量，在flask中，配置变量就是一些大写形式的Python变量，你也可以称之为配置参数或者配置键。使用统一的配置变量可以避免在程序中使用硬编码的形式设置程序。这些配置变量都通过Flask对象的app.config属性作为统一的接口来设置和获取，它指向的Config类实际上是字典的子类，你可以像操作其他字典一样操作它。</p>
+<p>flask提供了很多种方式来加载配置。比如你可以像在字典中添加一个键值对一样来设置一个配置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.config[<span class="string">&#x27;ADMIN_NAME&#x27;</span>] = <span class="string">&#x27;peter&#x27;</span></span><br></pre></td></tr></table></figure>
+<p><code>配置的名称必须是全大写形式，小写的变量将不会被读取</code></p>
+<p>使用update()方法则可以一次加载多个值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.config.update(TESTING=<span class="literal">True</span>, SECRET_KEY=<span class="string">&#x27;NZ1X4U8B&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="URL与端点"><a href="#URL与端点" class="headerlink" title="URL与端点"></a>URL与端点</h1><p>在web程序中，URL无处不在，如果程序中的URL都是以硬编码的方式写出，那么将会大大降低代码的易用性。比如说当你修改了某个路由的URL规则，那么程序里对应的URL都要一个个进行修改。更好的解决办法是使用Flask提供的url_for()函数获取URL，当路由中定义的URL规则被修改时，这个函数总会返回正确的URL。</p>
+<p>调用url_for()函数时，第一个参数为端点(endpoint)值，在Flask中，端点用来标记一个视图函数以及对应的URL规则。<code>端点的默认值为视图函数的名称</code>，至于为什么不直接使用视图函数本身，我们会在后面了解。</p>
+<p>一个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span>():</span></span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;hello, flask&#x27;</span></span><br><span class="line"></span><br><span class="line">path = url_for(<span class="string">&#x27;index&#x27;</span>) <span class="comment"># path的值为&#x27;/&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>在app.route()装饰器中可以使用endpoint参数来自定义端点值，不过<code>通常不需要这样做</code></p>
+<p>如果URL含有动态部分，那么我们需要在url_for()函数里传入相应的参数，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;hello/&lt;name&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span>(<span class="params">name</span>):</span></span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;hello %s&#x27;</span> % name</span><br><span class="line"></span><br><span class="line">path = url_for(<span class="string">&#x27;greet&#x27;</span>, name=<span class="string">&#x27;Jack&#x27;</span>) <span class="comment"># path的值为&#x27;/hello/Jack&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>使用url_for()函数默认生成的URL是相对URL，如果想要生成供外部使用的绝对URL，可以在使用url_for函数时，将_external参数设为True。</p>
+<h1 id="自定义flask命令"><a href="#自定义flask命令" class="headerlink" title="自定义flask命令"></a>自定义flask命令</h1><p>除了Flask内置的flask run等命令，我们可以自定义命令。通过创建任意一个函数，并为其添加app.cli.command()装饰器，我们就可以注册一个flask命令。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.cli.command()</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span>():</span></span><br><span class="line">  click.echo(<span class="string">&#x27;hello, human&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>函数的名称即为命令名称。这里注册的命令即hello，你可以使用flask hello命令来触发函数。作为替代，你也可以在app.cli.command()装饰器中传入参数来设置命令名称，比如app.cli.command(‘say-hello’)会把命令名称设置为say-hello，完整的命令即flask say-hello。</p>
+<h1 id="Flask与MVC架构"><a href="#Flask与MVC架构" class="headerlink" title="Flask与MVC架构"></a>Flask与MVC架构</h1><p>MVC架构最初是用来设计桌面程序的，后来也被用于Web程序，应用了这种架构的Web框架有Django，Ruby on Rails等。MVC架构中，程序被分为三个组件：数据处理(Model)、用户界面(View)、交互逻辑(Controller)。严格来说Flask并不是MVC架构的框架，因为它没有内置数据模型支持。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/flask/" rel="tag"># flask</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/07/Docker/Docker%20%E5%88%9D%E5%AD%A6%E7%AC%94%E8%AE%B0/" rel="prev" title="docker 初学笔记">
+      <i class="fa fa-chevron-left"></i> docker 初学笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/17/flask/%E7%AC%AC%E4%BA%8C%E7%AB%A0-Flask%E4%B8%8EHTTP/" rel="next" title="第二章 Flask与HTTP">
+      第二章 Flask与HTTP <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%AE%9E%E4%BE%8B"><span class="nav-number">1.</span> <span class="nav-text">创建应用程序实例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E8%B7%AF%E7%94%B1"><span class="nav-number">2.</span> <span class="nav-text">注册路由</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E8%A7%86%E5%9B%BE%E7%BB%91%E5%AE%9A%E5%A4%9A%E4%B8%AAURL"><span class="nav-number">2.1.</span> <span class="nav-text">为视图绑定多个URL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81URL"><span class="nav-number">2.2.</span> <span class="nav-text">动态URL</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%BC%80%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">启动开发服务器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83"><span class="nav-number">4.</span> <span class="nav-text">设置运行环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E5%99%A8%E4%B8%8E%E9%87%8D%E8%BD%BD%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text">调试器与重载器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE"><span class="nav-number">6.</span> <span class="nav-text">项目配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#URL%E4%B8%8E%E7%AB%AF%E7%82%B9"><span class="nav-number">7.</span> <span class="nav-text">URL与端点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89flask%E5%91%BD%E4%BB%A4"><span class="nav-number">8.</span> <span class="nav-text">自定义flask命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flask%E4%B8%8EMVC%E6%9E%B6%E6%9E%84"><span class="nav-number">9.</span> <span class="nav-text">Flask与MVC架构</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.3.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

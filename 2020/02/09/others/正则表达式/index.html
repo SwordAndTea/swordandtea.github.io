@@ -54,7 +54,7 @@
 <meta property="og:description" content="正则表达式是由普通字符以及特殊字符(称为&quot;元字符&quot;)组成的文本模式 正则表达式是一个匹配连续串的规则，即匹配会在每个连续的字符串中进行 普通字符普通字符包括没有显示指定为元字符的所有可打印和不可打印字符。这包括所有的大写和小写字母、所有数字、所有标点符号和一些其他符号 非打印字符    字符 描述     \cx 匹配由x指明的控制字符。例如，\cM匹配一个control-M或">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-02-09T07:20:41.000Z">
-<meta property="article:modified_time" content="2021-02-09T05:02:32.215Z">
+<meta property="article:modified_time" content="2021-02-09T05:04:54.000Z">
 <meta property="article:author" content="SwordAndTea">
 <meta property="article:tag" content="regular expression">
 <meta name="twitter:card" content="summary">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-09 13:02:32" itemprop="dateModified" datetime="2021-02-09T13:02:32+08:00">2021-02-09</time>
+                <time title="Modified: 2021-02-09 13:04:54" itemprop="dateModified" datetime="2021-02-09T13:04:54+08:00">2021-02-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -350,8 +350,7 @@
 <td>标记限定符表达式的开始</td>
 </tr>
 <tr>
-<td>\</td>
-<td></td>
+<td>｜</td>
 <td>指明两项之间的一个选择</td>
 </tr>
 </tbody>
@@ -449,7 +448,7 @@
 <p>反向引用的一个例子：要用正则表达式匹配日期，日期的格式为yyyy-mm-dd、yyyy/mm/dd和yyyy.mm.dd都是合理的，注意后面的分隔符和前面的分隔符要相等。则正则表达式可以写作：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\d&#123;4&#125;(-|/|.)\d&#123;2&#125;\1\d&#123;2&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="引用分组中对于括号嵌套的解释"><a href="#引用分组中对于括号嵌套的解释" class="headerlink" title="引用分组中对于括号嵌套的解释"></a>引用分组中对于括号嵌套的解释</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((\d)(\d(\d)))\1\2\3\4</span><br></pre></td></tr></table></figure>
-<p>假如利用上述表达式去匹配如下字符串：”123“<br>则\1指代的是123<br>\2指代的是1<br>\3指代的是23<br>\4指代的是3</p>
+<p>假如利用上述表达式去匹配如下字符串：“123”<br>则\1指代的是123<br>\2指代的是1<br>\3指代的是23<br>\4指代的是3</p>
 <p>即<code>以左括号出现的顺序为作为编号的顺序</code>。</p>
 <p>注意对于\10的解释是编号为10的分组，而不是编号为1的分组然后再跟一个0</p>
 <h4 id="引用不存在的分组"><a href="#引用不存在的分组" class="headerlink" title="引用不存在的分组"></a>引用不存在的分组</h4><p>因为反向引用是引用前面的分组，但我们在正则表达式里引用了不存在的分组时，此时正则不会报错，只是匹配反向引用的字符本身。例如\2，就匹配”\2”，注意”\2”表示对2进行了转意。</p>
@@ -553,14 +552,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">99</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">

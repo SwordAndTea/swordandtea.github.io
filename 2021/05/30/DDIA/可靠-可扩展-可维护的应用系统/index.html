@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="可靠性什么叫作系统的可靠性原文：  可靠性大致意味着：即使发生了某种错误，系统仍可以继续正常工作  一般，用于测试目的，可以故意提高故障发生概率，例如通过随机杀死某个进程，来确保系统仍保持健壮。    硬件故障例如：磁盘崩溃、内存故障、网络故障、机房停电等等。通常对于硬件故障，都会为硬件添加冗余来减少系统故障率。例如，对磁盘配置RAID，服务器配备双电源，热拔插CPU，数据中心添加备用电源、发电机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="可靠&amp;可扩展&amp;可维护的应用系统">
+<meta property="og:url" content="http://swordandtea.github.io/2021/05/30/DDIA/%E5%8F%AF%E9%9D%A0-%E5%8F%AF%E6%89%A9%E5%B1%95-%E5%8F%AF%E7%BB%B4%E6%8A%A4%E7%9A%84%E5%BA%94%E7%94%A8%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="SwordAndTea&#39;s Blog">
+<meta property="og:description" content="可靠性什么叫作系统的可靠性原文：  可靠性大致意味着：即使发生了某种错误，系统仍可以继续正常工作  一般，用于测试目的，可以故意提高故障发生概率，例如通过随机杀死某个进程，来确保系统仍保持健壮。    硬件故障例如：磁盘崩溃、内存故障、网络故障、机房停电等等。通常对于硬件故障，都会为硬件添加冗余来减少系统故障率。例如，对磁盘配置RAID，服务器配备双电源，热拔插CPU，数据中心添加备用电源、发电机">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-05-30T02:57:12.000Z">
+<meta property="article:modified_time" content="2021-09-04T07:33:17.168Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="Designing Data-Intensive Applications">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2021/05/30/DDIA/%E5%8F%AF%E9%9D%A0-%E5%8F%AF%E6%89%A9%E5%B1%95-%E5%8F%AF%E7%BB%B4%E6%8A%A4%E7%9A%84%E5%BA%94%E7%94%A8%E7%B3%BB%E7%BB%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>可靠&可扩展&可维护的应用系统 | SwordAndTea's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SwordAndTea's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/05/30/DDIA/%E5%8F%AF%E9%9D%A0-%E5%8F%AF%E6%89%A9%E5%B1%95-%E5%8F%AF%E7%BB%B4%E6%8A%A4%E7%9A%84%E5%BA%94%E7%94%A8%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          可靠&可扩展&可维护的应用系统
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-05-30 10:57:12" itemprop="dateCreated datePublished" datetime="2021-05-30T10:57:12+08:00">2021-05-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-09-04 15:33:17" itemprop="dateModified" datetime="2021-09-04T15:33:17+08:00">2021-09-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Designing-Data-Intensive-Applications/" itemprop="url" rel="index">
+                    <span itemprop="name">Designing Data-Intensive Applications</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="可靠性"><a href="#可靠性" class="headerlink" title="可靠性"></a>可靠性</h1><h2 id="什么叫作系统的可靠性"><a href="#什么叫作系统的可靠性" class="headerlink" title="什么叫作系统的可靠性"></a>什么叫作系统的可靠性</h2><p>原文：</p>
+<blockquote>
+<p>可靠性大致意味着：即使发生了某种错误，系统仍可以继续正常工作</p>
+</blockquote>
+<font color="orange">一般，用于测试目的，可以故意提高故障发生概率，例如通过随机杀死某个进程，来确保系统仍保持健壮。</font>
+
+
+
+<h2 id="硬件故障"><a href="#硬件故障" class="headerlink" title="硬件故障"></a>硬件故障</h2><p>例如：磁盘崩溃、内存故障、网络故障、机房停电等等。<font color="orange">通常对于硬件故障，都会为硬件添加冗余来减少系统故障率。</font>例如，对磁盘配置RAID，服务器配备双电源，热拔插CPU，数据中心添加备用电源、发电机等。当一个组件发生故障，冗余组件可以快速接管，之后再更换失效的组件。</p>
+<h2 id="软件错误"><a href="#软件错误" class="headerlink" title="软件错误"></a>软件错误</h2><p>软件故障一般很难事先预料，因为导致软件故障的bug通常会长时间处于引而不发的状态，直到碰到特定的触发条件。软件问题有时没有快速解决办法，而只能仔细考虑很多细节，<font color="orange">包括认真检查依赖的假设条件与系统之间交互，进行全面的测试，进行隔离，运行进程崩溃并自动重启。</font></p>
+<h2 id="人为错误"><a href="#人为错误" class="headerlink" title="人为错误"></a>人为错误</h2><p>有一项针对大型互联网服务的调查发现，运维者的配置错误居然是系统下线的首要原因，而硬件问题（服务器或网络）仅在10%～25%的故障中有影响。对于人为故障，一般来说可以通过结合以下多种方法：</p>
+<ul>
+<li>想办法分离最容易出错的地方、容易引发故障的接口，对重要接口进行多重条件检查</li>
+<li>充分的测试：从单元测试到全系统的集成测试到手动测试</li>
+<li>提供快速的恢复机制，例如快速回滚配置改动</li>
+<li>设置详细而清晰的监控子系统，包括性能指标和错误率。</li>
+<li>推行管理流程并加以培训</li>
+</ul>
+<h2 id="我对可靠性的理解"><a href="#我对可靠性的理解" class="headerlink" title="我对可靠性的理解"></a>我对可靠性的理解</h2><p>系统的可靠性不是指让系统的任何一个部分在任何时刻都不发生故障，这是不可能的，随机事件的发生不可控的，系统的可靠性是指在系统的某个部分发生了故障时，能够尽快的从故障中恢复过来，同时<code>尽量</code>把由于故障导致的损失降到最小。并且在故障期间不会由于一个故障，像多米诺骨牌一样，引发一连串的其他故障。</p>
+<h1 id="可扩展性"><a href="#可扩展性" class="headerlink" title="可扩展性"></a>可扩展性</h1><font color="orange">对于可扩展性，一个重要讨论的内容是：如果系统以某种方式增长，我们应对增长的措施有哪些，我们该如何添加计算资源来处理额外的负载。</font>
+
+
+
+<h2 id="描述负载"><a href="#描述负载" class="headerlink" title="描述负载"></a>描述负载</h2><p>首先，我们需要简洁地描述系统当前的负载，这样才能更好地讨论后续增长的问题。负载可以用称为负载参数的若干数字来描述，<font color="orange">参数的最佳选择取决于系统的体系架构，</font>它可能是web服务器的每秒请求处理次数，数据库中写入的比例，缓存命中率等。</p>
+<h2 id="描述性能"><a href="#描述性能" class="headerlink" title="描述性能"></a>描述性能</h2><p>描述系统负载之后，接下来设想如果负载增加将会发生什么。一般有有两种考虑方式：</p>
+<ul>
+<li>负载增加，但系统资源（如CPU、内存、网络带宽等）保存不变，系统性能会发生什么变化？</li>
+<li>负载增加，如果要保持性能不变，需要增加多少资源？</li>
+</ul>
+<font color="orange">下面对一个描述性能的重要指标进行额外讨论——响应时间</font>
+
+<h3 id="响应时间"><a href="#响应时间" class="headerlink" title="响应时间"></a>响应时间</h3><p>一般来说，对服务进行请求，每次的响应时间都是不同的，而且响应时间可能变化很大。因此。最好不要将响应时间视为一个固定的数字，而应该视为一种数值分布。</p>
+<h4 id="平均响应时间与相关百分位数"><a href="#平均响应时间与相关百分位数" class="headerlink" title="平均响应时间与相关百分位数"></a>平均响应时间与相关百分位数</h4><p>我们经常考察的是服务请求的平均响应时间（算数平均值）。<font color="orange">但是，如果想知道更典型的响应时间，平均值并不是合适的指标。因为它掩盖了一些信息，<font color="red">无法告诉有多少用户实际经历了多少延迟，因此最好使用百分位数</font>&lt;/font&gt;。中位数指标非常适合描述多少用户需要等待多长的时间，一半的用户请求的服务时间少于中位数响应时间，另一半则多用于中位数的时间。因此中位数也称为50百分位数，简写为p50。有些时候还有需要关注更大的百分位数，例如常见的p95、p99甚至p999（99.9百分位数）。<font color="orange">采用较高的响应时间百分位数很重要，因为它们直接影响用户的总体服务体验（长尾效应）。</font></font></p>
+<blockquote>
+<p>排队延迟往往在高百分数响应时间中影响很大，由于服务器并行处理的请求优先（例如，CPU内核数的限制），正在处理的少数请求可能会阻挡后续请求，这种情况有时被称为队头阻塞。即使后续请求可能处理很简单，但它阻塞在等待先前请求的完成，客户端将会观察到极慢的响应时间。因此，很重要的一点是要在客户端来测量响应时间。</p>
+<p>因此，当测试系统的能支持的负载时，负载生成端要独立于响应时间来持续发送请求。如果客户端在发送请求之前总是等待先前请求的完成，就会在测试中人为地缩短了服务器端的累计排队深度，这就带来了测试偏差。</p>
+</blockquote>
+<h2 id="应对负载增加的方法"><a href="#应对负载增加的方法" class="headerlink" title="应对负载增加的方法"></a>应对负载增加的方法</h2><p>一般来说，<font color="orange">针对特定级别负载而设计的架构不太可能应付超出目标10倍的实际负载。如果目标服务处于快速增长阶段，那么需要认真考虑每增加一个数量级的负载，架构应该如何设计。</font></p>
+<p>对于未发生数量级变化的负载，更多的是在垂直拓展（升级到更强大的机器）和水平拓展（增加更多的机器实例）进行选择。通常，在单台机器上运行的系统通常更简单，然而高端机器可能非常昂贵，且扩展水平有限，最终往往还是无法避免需要水平扩展。另外，把无状态服务分布然后扩展至多台机器相对比较容易，而有状态服务从单个节点扩展到分布式多机环境的复杂性会大大增加。</p>
+<p>对于特定应用来说，扩展能力好的架构通常会做出某些假设，然后有针对性地优化设计，如哪些操作是最频繁的，那些负载是少数情况。如果这些假设最终发现是错误的，那么在可扩展性上做的努力就白费了，甚至会出现与设计预期完全相反的情况。<font color="orange">对于早期的初创公司或者尚未定型的产品，快速迭代产品功能往往比投入精力来应对不可知的扩展性更为重要。</font></p>
+<h1 id="可维护性"><a href="#可维护性" class="headerlink" title="可维护性"></a>可维护性</h1><p>软件的大部分成本并不在最初的开发阶段，而在于整个生命周期内持续的投入，包括缺陷修复、增加新功能、适配新需求等等。但是，许多开发人员根本不喜欢维护这些遗留系统，例如修复他人埋下的错误，或者使用过时的开发平台。所以，换个角度，我们应该从软件设计时开始考虑，尽可能减少维护期间的麻烦，一般我们可以考虑以下几点：</p>
+<ul>
+<li>简单性：简化系统复杂性，使新工程师能够轻松理解系统</li>
+<li>可演化性：后续工程师能够轻松地对系统进行改进，并根据需求变化将其适配其他场景</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Designing-Data-Intensive-Applications/" rel="tag"># Designing Data-Intensive Applications</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/24/others/mongo-db%E5%88%9D%E5%AD%A6/" rel="prev" title="mongo_db初学">
+      <i class="fa fa-chevron-left"></i> mongo_db初学
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/30/DDIA/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2%E8%AF%AD%E8%A8%80/" rel="next" title="数据模型与查询语言">
+      数据模型与查询语言 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">可靠性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E5%8F%AB%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="nav-number">1.1.</span> <span class="nav-text">什么叫作系统的可靠性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E6%95%85%E9%9A%9C"><span class="nav-number">1.2.</span> <span class="nav-text">硬件故障</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E9%94%99%E8%AF%AF"><span class="nav-number">1.3.</span> <span class="nav-text">软件错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%BA%E4%B8%BA%E9%94%99%E8%AF%AF"><span class="nav-number">1.4.</span> <span class="nav-text">人为错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E5%AF%B9%E5%8F%AF%E9%9D%A0%E6%80%A7%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-number">1.5.</span> <span class="nav-text">我对可靠性的理解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text">可扩展性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0%E8%B4%9F%E8%BD%BD"><span class="nav-number">2.1.</span> <span class="nav-text">描述负载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0%E6%80%A7%E8%83%BD"><span class="nav-number">2.2.</span> <span class="nav-text">描述性能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%8D%E5%BA%94%E6%97%B6%E9%97%B4"><span class="nav-number">2.2.1.</span> <span class="nav-text">响应时间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B3%E5%9D%87%E5%93%8D%E5%BA%94%E6%97%B6%E9%97%B4%E4%B8%8E%E7%9B%B8%E5%85%B3%E7%99%BE%E5%88%86%E4%BD%8D%E6%95%B0"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">平均响应时间与相关百分位数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E5%AF%B9%E8%B4%9F%E8%BD%BD%E5%A2%9E%E5%8A%A0%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">2.3.</span> <span class="nav-text">应对负载增加的方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%AF%E7%BB%B4%E6%8A%A4%E6%80%A7"><span class="nav-number">3.</span> <span class="nav-text">可维护性</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.3.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

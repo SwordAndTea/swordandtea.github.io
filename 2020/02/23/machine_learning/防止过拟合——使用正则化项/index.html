@@ -46,15 +46,15 @@
   };
 </script>
 
-  <meta name="description" content="解决过拟合的一些方法为了减少过拟合，一般有两种方法： 1、减少一些特征。其手段也分为手动选择要丢掉的特征和使用一些算法来丢掉部分特征。但是减少特征就意味着丢失信息，所以要谨慎丢弃特征。 2、在模型中加入正则化项。使用正则化项的不用删除特征。 正则化项的作用正则化项的使用其思想是让某些特征的参数尽可能小(这也叫做对某些参数的惩罚)，从而让这个特征所占的重要性变低。 例如某个模型为$f(x) &#x3D; w_">
+  <meta name="description" content="解决过拟合的一些方法为了减少过拟合，一般有两种方法： 1、减少一些特征。其手段也分为手动选择要丢掉的特征和使用一些算法来丢掉部分特征。但是减少特征就意味着丢失信息，所以要谨慎丢弃特征。 2、在模型中加入正则化项。使用正则化项时不用删除特征。 正则化项的作用正则化项的使用其思想是让某些特征的参数尽可能小(这也叫做对某些参数的惩罚)，从而让这个特征所占的重要性变低。 例如某个模型为$f(x) &#x3D; w_">
 <meta property="og:type" content="article">
 <meta property="og:title" content="防止过拟合——使用正则化项">
 <meta property="og:url" content="http://swordandtea.github.io/2020/02/23/machine_learning/%E9%98%B2%E6%AD%A2%E8%BF%87%E6%8B%9F%E5%90%88%E2%80%94%E2%80%94%E4%BD%BF%E7%94%A8%E6%AD%A3%E5%88%99%E5%8C%96%E9%A1%B9/index.html">
 <meta property="og:site_name" content="SwordAndTea&#39;s Blog">
-<meta property="og:description" content="解决过拟合的一些方法为了减少过拟合，一般有两种方法： 1、减少一些特征。其手段也分为手动选择要丢掉的特征和使用一些算法来丢掉部分特征。但是减少特征就意味着丢失信息，所以要谨慎丢弃特征。 2、在模型中加入正则化项。使用正则化项的不用删除特征。 正则化项的作用正则化项的使用其思想是让某些特征的参数尽可能小(这也叫做对某些参数的惩罚)，从而让这个特征所占的重要性变低。 例如某个模型为$f(x) &#x3D; w_">
+<meta property="og:description" content="解决过拟合的一些方法为了减少过拟合，一般有两种方法： 1、减少一些特征。其手段也分为手动选择要丢掉的特征和使用一些算法来丢掉部分特征。但是减少特征就意味着丢失信息，所以要谨慎丢弃特征。 2、在模型中加入正则化项。使用正则化项时不用删除特征。 正则化项的作用正则化项的使用其思想是让某些特征的参数尽可能小(这也叫做对某些参数的惩罚)，从而让这个特征所占的重要性变低。 例如某个模型为$f(x) &#x3D; w_">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-02-23T10:48:08.000Z">
-<meta property="article:modified_time" content="2021-02-03T06:32:39.097Z">
+<meta property="article:modified_time" content="2021-02-10T04:32:24.000Z">
 <meta property="article:author" content="SwordAndTea">
 <meta property="article:tag" content="machine learning">
 <meta name="twitter:card" content="summary">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-03 14:32:39" itemprop="dateModified" datetime="2021-02-03T14:32:39+08:00">2021-02-03</time>
+                <time title="Modified: 2021-02-10 12:32:24" itemprop="dateModified" datetime="2021-02-10T12:32:24+08:00">2021-02-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -242,13 +242,17 @@
       
         <h1 id="解决过拟合的一些方法"><a href="#解决过拟合的一些方法" class="headerlink" title="解决过拟合的一些方法"></a>解决过拟合的一些方法</h1><p>为了减少过拟合，一般有两种方法：</p>
 <p>1、减少一些特征。其手段也分为手动选择要丢掉的特征和使用一些算法来丢掉部分特征。但是减少特征就意味着丢失信息，所以要谨慎丢弃特征。</p>
-<p>2、在模型中加入正则化项。使用正则化项的不用删除特征。</p>
+<p>2、在模型中加入正则化项。使用正则化项时不用删除特征。</p>
 <h1 id="正则化项的作用"><a href="#正则化项的作用" class="headerlink" title="正则化项的作用"></a>正则化项的作用</h1><p>正则化项的使用<code>其思想是</code>让某些特征的参数尽可能小(这也叫做对某些参数的惩罚)，从而让这个特征所占的重要性变低。</p>
 <p>例如某个模型为$f(x) = w_1 x + w_2 x^2 + w_3 x^3 + w_4 x^4$ + b，其对应的目标函数是$argmin_{(w, b)} \sum_{i=1}^{m} [f(x_i) - y_i]^2$，那么可以<code>对目标函数</code>加入正则化项得：$argmin_{(w,b)}\sum_{i=1}^{m}[f(x_i) - y_i]^2 + 1000w_3^3 + 1000w_4^4$，来使训练后的模型中$w_3$和$w_4$尽可能小，从而使得特征$x^3$和$x^4$在模型中的作用减小。</p>
 <p>但在实际操作中，<font color="red">通常不知道需要让哪些参数尽可能小，所以我们让所有的参数都尽可能小。</font></p>
 <p>通常我们使用两种正则化项：L1正则化和L2正则化</p>
-<h3 id="L1正则化"><a href="#L1正则化" class="headerlink" title="L1正则化"></a>L1正则化</h3><p>以线性模型为例，加入L1正则化的损失函数形式为: $\sum_{i=1}^{m} [wx_i+b-y_i] + \lambda\sum_{i=1}^{d}|w_i|$。</p>
-<h3 id="L2正则化"><a href="#L2正则化" class="headerlink" title="L2正则化"></a>L2正则化</h3><p>同样以线性模型为例，加入L2正则化的损失函数形式为：$\sum_{i=1}^{m}[wx_i + b - y_i] + \lambda \sum_{i=1}^{d}w_i^2$。</p>
+<h3 id="L1正则化"><a href="#L1正则化" class="headerlink" title="L1正则化"></a>L1正则化</h3><p>以线性模型为例，加入L1正则化的损失函数形式为: $\sum_{i=1}^{m} [wx_i+b-y_i]^2 + \lambda\sum_{i=1}^{d}|w_i|$。</p>
+<font color="orange">使用L1正则化通常会导致模型会将一部分特征的权重值清零，而只保留少部分特征的权重值，这种特性也被叫做特征选择。</font>
+
+
+
+<h3 id="L2正则化"><a href="#L2正则化" class="headerlink" title="L2正则化"></a>L2正则化</h3><p>同样以线性模型为例，加入L2正则化的损失函数形式为：$\sum_{i=1}^{m}[wx_i + b - y_i]^2 + \lambda \sum_{i=1}^{d}w_i^2$。</p>
 <p>如果是使用标准方程法求解的话，其解的形式为：</p>
 <script type="math/tex; mode=display">
 w = (X^TX + \lambda \begin{bmatrix} 
@@ -257,8 +261,11 @@ w = (X^TX + \lambda \begin{bmatrix}
     & & \ddots & \\
     & & & 1
 \end{bmatrix})^{-1}X^TY</script><p>而且在加入正则化项后，标准方程法中的括号部分的矩阵一定可逆。</p>
-<p><code>注意：</code></p>
-<p>1、$\lambda$不能设置得过大。</p>
+<font color="orange">使用L2正则化通常会使特征的权重值分配得比较均匀，即使在特征很多的情况下。</font>
+
+
+
+<h1 id="使用正则化项的一些注意"><a href="#使用正则化项的一些注意" class="headerlink" title="使用正则化项的一些注意"></a>使用正则化项的一些注意</h1><p>1、$\lambda$不能设置得过大。$\lambda$越大，$w$的自由度就越小，$\lambda$越小，$w$的自由度就越高</p>
 <p>2、一般不惩罚常数参数$b$</p>
 
     </div>
@@ -344,7 +351,7 @@ w = (X^TX + \lambda \begin{bmatrix}
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E8%BF%87%E6%8B%9F%E5%90%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">解决过拟合的一些方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E5%8C%96%E9%A1%B9%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">正则化项的作用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#L1%E6%AD%A3%E5%88%99%E5%8C%96"><span class="nav-number">2.0.1.</span> <span class="nav-text">L1正则化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L2%E6%AD%A3%E5%88%99%E5%8C%96"><span class="nav-number">2.0.2.</span> <span class="nav-text">L2正则化</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E8%BF%87%E6%8B%9F%E5%90%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">解决过拟合的一些方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E5%8C%96%E9%A1%B9%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">正则化项的作用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#L1%E6%AD%A3%E5%88%99%E5%8C%96"><span class="nav-number">2.0.1.</span> <span class="nav-text">L1正则化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L2%E6%AD%A3%E5%88%99%E5%8C%96"><span class="nav-number">2.0.2.</span> <span class="nav-text">L2正则化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%AD%A3%E5%88%99%E5%8C%96%E9%A1%B9%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F"><span class="nav-number">3.</span> <span class="nav-text">使用正则化项的一些注意</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -358,14 +365,14 @@ w = (X^TX + \lambda \begin{bmatrix}
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">99</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">

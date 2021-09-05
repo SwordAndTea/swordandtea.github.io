@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="背景在深度学习训练好模型后，模型可能在测试集表现的非常好，但是实际部署到生产环境中后，由于数据分布的突然变化，导致模型实际效果很差。而且，有些时候恰恰就是因为模型的部署才导致了数据分布的变化。例如一个判断是否要给贷款人贷款的场景中，一般来说穿皮鞋的贷款人要比穿运动鞋来贷款的人有更低的违约风险，于是训练了一个根据人的鞋来判断是否要给人贷款的模型。当这个模型部署后，人们就可能发现这个模型的判断模式，以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="environment_and_distribution_shift_problem">
+<meta property="og:url" content="http://swordandtea.github.io/2021/02/23/machine_learning/neural_network&deep_learning/environment-and-distribution-shift-problem/index.html">
+<meta property="og:site_name" content="SwordAndTea&#39;s Blog">
+<meta property="og:description" content="背景在深度学习训练好模型后，模型可能在测试集表现的非常好，但是实际部署到生产环境中后，由于数据分布的突然变化，导致模型实际效果很差。而且，有些时候恰恰就是因为模型的部署才导致了数据分布的变化。例如一个判断是否要给贷款人贷款的场景中，一般来说穿皮鞋的贷款人要比穿运动鞋来贷款的人有更低的违约风险，于是训练了一个根据人的鞋来判断是否要给人贷款的模型。当这个模型部署后，人们就可能发现这个模型的判断模式，以">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-02-23T12:23:50.000Z">
+<meta property="article:modified_time" content="2021-04-03T00:50:47.000Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="machine learning">
+<meta property="article:tag" content="deep learning">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2021/02/23/machine_learning/neural_network&deep_learning/environment-and-distribution-shift-problem/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>environment_and_distribution_shift_problem | SwordAndTea's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SwordAndTea's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/02/23/machine_learning/neural_network&deep_learning/environment-and-distribution-shift-problem/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          environment_and_distribution_shift_problem
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-02-23 20:23:50" itemprop="dateCreated datePublished" datetime="2021-02-23T20:23:50+08:00">2021-02-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-03 08:50:47" itemprop="dateModified" datetime="2021-04-03T08:50:47+08:00">2021-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在深度学习训练好模型后，模型可能在测试集表现的非常好，但是实际部署到生产环境中后，由于数据分布的突然变化，导致模型实际效果很差。而且，有些时候恰恰就是因为模型的部署才导致了数据分布的变化。例如一个判断是否要给贷款人贷款的场景中，一般来说穿皮鞋的贷款人要比穿运动鞋来贷款的人有更低的违约风险，于是训练了一个根据人的鞋来判断是否要给人贷款的模型。当这个模型部署后，人们就可能发现这个模型的判断模式，以此在来贷款的时候故意都穿上皮鞋。</p>
+<h1 id="Distribute-Shift类型"><a href="#Distribute-Shift类型" class="headerlink" title="Distribute Shift类型"></a>Distribute Shift类型</h1><h2 id="Covariate-Shift"><a href="#Covariate-Shift" class="headerlink" title="Covariate Shift"></a>Covariate Shift</h2><p>Covariate Shift是由于样本输入特征概率分布变化导致的，但是$P(y | x)$条件概率不变。例如在一个判断图片是猫还是狗的二分类学习任务中，在训练时，输入的样本都是真实世界的图片，但是训练集中的图片却是卡通图片。</p>
+<h2 id="Label-Shift"><a href="#Label-Shift" class="headerlink" title="Label Shift"></a>Label Shift</h2><p>Label Shift和Covariate Shift相反，Label Shift是由于输入样本的标签概率分布导致的，同时$P(x|y)$条件概率不变。Label Shift在输出标签会影响输入特征的情况下是很常见的。例如在根据病人症状来判断病人患病的场景下，患的病是会影响病人症状的。</p>
+<h2 id="Concept-Shift"><a href="#Concept-Shift" class="headerlink" title="Concept Shift"></a>Concept Shift</h2><p>Concept Shift是由于样本标签的定义变化导致的。例如有些标签的定义会随着国家或者地域的变化而不同。</p>
+<h1 id="Distribution-Shift的解决方法"><a href="#Distribution-Shift的解决方法" class="headerlink" title="Distribution Shift的解决方法"></a>Distribution Shift的解决方法</h1><h2 id="经验误差与真实误差"><a href="#经验误差与真实误差" class="headerlink" title="经验误差与真实误差"></a>经验误差与真实误差</h2><p>回顾一下我们训练模型时的步骤，我们在训练集$\{(x_1, \space  y_1)\, \dots, (x_n, \space  y_n)}$上不断迭代，调整模型$f$的参数，为了简化，我们不考虑正则化项，我们的目标是最小化在训练集上的误差：</p>
+<script type="math/tex; mode=display">
+minimize \space \frac{1}{n} \sum_{i=1}^{n}l(f(x_i), \space y_i), \space l是loss \space function \tag{1}</script><p>上面的式子可以看作是模型的经验误差。而真实的误差是模型在真实分布为$p(x, \space y)$的<code>所有样本</code>中的损失函数的期望值。</p>
+<script type="math/tex; mode=display">
+E(l(f(x), \space y)) = \int \int l(f(x), \space y)p(x, \space y) dxdy \tag{2}</script><p>但在实际情况下我们无法获取<code>所有样本</code>，所以通常我们用经验误差去拟合实际误差。</p>
+<h2 id="Covariate-Shift-解决方法"><a href="#Covariate-Shift-解决方法" class="headerlink" title="Covariate Shift 解决方法"></a>Covariate Shift 解决方法</h2><p>假设我们的训练样本的特征的概率分布是$q(x)$，但是我们实际部署模型，预测目标的特征的概率分布是$p(x)$。由于Covariate Shift的特点是$p(y \space | \space  x) = q(y \space | \space  x)$，因此，由$(2)$式可得：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+    \int \int l(f(x), \space y)p(x, \space y) dxdy &= \int \int l(f(x), \space y)p(y \space | \space x)p(x) \\
+    &= \int \int l(f(x), \space y) q(y \space | \space x) p(x) \\
+    &= \int \int l(f(x), \space y) q(x, \space y) \frac{p(x)}{q(x)}
+\end{align*}</script><p>其中，$\frac{p(x)}{q(x)}$可以看作一个样本来自于<code>真实分布</code>的概率和样本来自于<code>错误分布</code>的概率的比值，通过这个比值我们可以重新对每个样本数据进行权重划分，在$(1)$式中，所有样本的权重值都是1，即所有原本都看作同等重要的，经过重新划分之后样本的权重设为$\frac{p(x)}{q(x)}$，即如果样本来自于真实分布的概率越大，那么样本的权重值越高。那么可以使用经过修正后的loss function：</p>
+<script type="math/tex; mode=display">
+minimize \space \frac{p(x)}{q(x)} \space \frac{1}{n} \sum_{i=1}^{n}l(f(x_i), \space y_i)</script><p><font color="orange">但是，我们如何知道</font>$\frac{p(x)}{q(x)}$<font color="orange">的比值是多少呢？</font>为了获取这个比值，我们需要从<code>错误分布</code>的样本和从<code>正确分布</code>中获取的样本。另外，我们可以先利用这些数据先学习一个二分类器，用于区分样本是来自于<code>错误分布</code>还是来自于<code>正确分布</code>。假设我们用$z=1$表示样本来自正确分布$p(x)$，用$z=0$表示样本来自错误分布$q(x)$，那么有：</p>
+<script type="math/tex; mode=display">
+P(z = 1 \space | \space x) = \frac{p(x)}{p(x) + q(x)} \\
+then \\
+\frac{P(z=1 \space | \space x)}{P(z=0 \space | \space x)}  = \frac{p(x)}{q(x)}</script><p>其中$P(z = 1 \space | \space x)$表示训练的分类器在输入样本为$x$的情况下，判断样本来自正确分布的概率。如果二分类器使用logistic regression，那么$P(z = 1 \space | \space x) = \frac{1}{1+e^(-h(x))}$($h$为线性回归函数)，那么也有$\frac{p(x)}{q(x)} = e^(h(x))$。</p>
+<p>因此，由上面的推导，我们可以得出解决Covariate Shift的方法：</p>
+<p>假设我们有用于原来机器学习任务的训练集：$\{(x_1, \space y_1), \space \dots , \space (x_n, \space y_n)\}$以及用于测试用的测试$\{(u_1, \space v_1), \space \dots , \space (u_m, \space v_m)\}$</p>
+<p>1、生成用于二分类学习用的训练集：$\{(x_1, \space 0), \space \dots , \space (x_n, \space 0), \space (u_1, \space 1), \space \dots , \space (u_m, \space 1)\}$</p>
+<p>2、用第一步生成的训练集学习一个logistic regression的二分类器来得到其中的线形回归函数$h$</p>
+<p>3、将$e^(h(x_i))$或者更好的$min(e^(h(x_1)), \space c)$($c$是一个常量)作为权重，用于原始训练集$\{(x_1, \space y_1), \space \dots , \space (x_n, \space y_n)\}$上</p>
+<p>注意，这个算法依赖于一个前提，那就是$q(x_i)$不能为0。</p>
+<h2 id="Label-Shift-纠正方法"><a href="#Label-Shift-纠正方法" class="headerlink" title="Label Shift 纠正方法"></a>Label Shift 纠正方法</h2><p>//TODO: lable shift 纠正的思路和Covariate Shift一样，只是解决方法有点不好理解。后续再补上</p>
+<h2 id="Consept-Shift纠正方法"><a href="#Consept-Shift纠正方法" class="headerlink" title="Consept Shift纠正方法"></a>Consept Shift纠正方法</h2><p>对于concept shift的纠正方法，我们一般直接在之前训练出来的神经网络的参数上，使用新的训练集进行重新训练即可。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+              <a href="/tags/deep-learning/" rel="tag"># deep learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/02/23/design_patterns/%E7%BB%93%E6%9E%84%E6%80%A7%E6%A8%A1%E5%BC%8F/%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/" rel="prev" title="组合模式">
+      <i class="fa fa-chevron-left"></i> 组合模式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/02/28/c++/std%E9%BB%91%E9%AD%94%E6%B3%95/" rel="next" title="std黑魔法">
+      std黑魔法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Distribute-Shift%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">Distribute Shift类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Covariate-Shift"><span class="nav-number">2.1.</span> <span class="nav-text">Covariate Shift</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Label-Shift"><span class="nav-number">2.2.</span> <span class="nav-text">Label Shift</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Concept-Shift"><span class="nav-number">2.3.</span> <span class="nav-text">Concept Shift</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Distribution-Shift%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">Distribution Shift的解决方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%8F%E9%AA%8C%E8%AF%AF%E5%B7%AE%E4%B8%8E%E7%9C%9F%E5%AE%9E%E8%AF%AF%E5%B7%AE"><span class="nav-number">3.1.</span> <span class="nav-text">经验误差与真实误差</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Covariate-Shift-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">Covariate Shift 解决方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Label-Shift-%E7%BA%A0%E6%AD%A3%E6%96%B9%E6%B3%95"><span class="nav-number">3.3.</span> <span class="nav-text">Label Shift 纠正方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Consept-Shift%E7%BA%A0%E6%AD%A3%E6%96%B9%E6%B3%95"><span class="nav-number">3.4.</span> <span class="nav-text">Consept Shift纠正方法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.3.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

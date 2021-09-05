@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="关系模型与文档模型文档数据库在处理一对多的关系有很大优势，可以直接把记录记在一个文档中，但是在处理多对一，多对多的关系时相比于关系数据库则稍逊一些，因为在多对一、多对多的查询下，通常需要联结（join）多张数据库来查询，而一般文档数据库对联结操作的支持很差。有些文档数据库甚至本身都不支持联结，必须在应用程序代码中，通过对数据的多次查询来模拟联结。 如果应用数据具有类似文档的结构（即一对多关系，通常">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据模型与查询语言">
+<meta property="og:url" content="http://swordandtea.github.io/2021/05/30/DDIA/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2%E8%AF%AD%E8%A8%80/index.html">
+<meta property="og:site_name" content="SwordAndTea&#39;s Blog">
+<meta property="og:description" content="关系模型与文档模型文档数据库在处理一对多的关系有很大优势，可以直接把记录记在一个文档中，但是在处理多对一，多对多的关系时相比于关系数据库则稍逊一些，因为在多对一、多对多的查询下，通常需要联结（join）多张数据库来查询，而一般文档数据库对联结操作的支持很差。有些文档数据库甚至本身都不支持联结，必须在应用程序代码中，通过对数据的多次查询来模拟联结。 如果应用数据具有类似文档的结构（即一对多关系，通常">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-05-30T07:35:43.000Z">
+<meta property="article:modified_time" content="2021-09-05T02:52:05.436Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="Designing Data-Intensive Applications">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2021/05/30/DDIA/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2%E8%AF%AD%E8%A8%80/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>数据模型与查询语言 | SwordAndTea's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SwordAndTea's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/05/30/DDIA/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2%E8%AF%AD%E8%A8%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据模型与查询语言
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-05-30 15:35:43" itemprop="dateCreated datePublished" datetime="2021-05-30T15:35:43+08:00">2021-05-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-09-05 10:52:05" itemprop="dateModified" datetime="2021-09-05T10:52:05+08:00">2021-09-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Designing-Data-Intensive-Applications/" itemprop="url" rel="index">
+                    <span itemprop="name">Designing Data-Intensive Applications</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="关系模型与文档模型"><a href="#关系模型与文档模型" class="headerlink" title="关系模型与文档模型"></a>关系模型与文档模型</h1><p>文档数据库在处理一对多的关系有很大优势，可以直接把记录记在一个文档中，但是在处理多对一，多对多的关系时相比于关系数据库则稍逊一些，因为在多对一、多对多的查询下，通常需要联结（join）多张数据库来查询，而一般文档数据库对联结操作的支持很差。有些文档数据库甚至本身都不支持联结，必须在应用程序代码中，通过对数据的多次查询来模拟联结。</p>
+<p>如果应用数据具有类似文档的结构（即一对多关系，通常一次加载整个树），那么使用文档数据库更为合适。但是如果应用程序中经常使用多对多关系，那么关系系数据库是一个很好的选择。<font color="orange">通常，我们无法一概而论那种数据模型的应用代码更简单。这主要取决于数据项之间的关系模型。有时候使用文档模型是最合适的，有时候用关系模型会更好，有些时候还可以使用图模型。</font></p>
+<h2 id="对象关系不匹配"><a href="#对象关系不匹配" class="headerlink" title="对象关系不匹配"></a>对象关系不匹配</h2><p>目前大多数应用开发都采用面向对象的编程语言，如果数据存储在关系表中，那么应用层代码中的对象与表、行和列的数据库模型之间需要一个笨拙的转换层。一般在开发中会使用对象-关系映射（ORM）框架来减少此层转换之间的代码量，但是ORM框架并不能完全隐藏两个模型之间的差异。</p>
+<h2 id="文档数据库的数据局部性"><a href="#文档数据库的数据局部性" class="headerlink" title="文档数据库的数据局部性"></a>文档数据库的数据局部性</h2><p>文档通常存储编码为JSON、XML或其二进制变体（如MongoDB的BSON）的连续字符串。如果应用程序需要频繁访问真个文档，则存储句不行具有性能优势。但是，如果应用只是访问其中的一小部分，那对于大型文档数据来讲就有些浪费。对文档进行更新时，通常会重写整个文档，而只有修改量不改变原文档大小时，原地覆盖更新才更有效。因此，通常建议文档应该尽量小切避免写入是增加文档大小。这些性能方面的不利因此大大限制了文档数据库的适用场景。</p>
+<h1 id="数据查询语言"><a href="#数据查询语言" class="headerlink" title="数据查询语言"></a>数据查询语言</h1><p>在关系模型被提出的最初时期，就出现两总查询数据的方法：声明式查询和命令式查询。命令式查询需要告诉计算机如何以特定的顺序来执行查询操作，一次查询基本上对应一段查询代码。而对于声明式查询语言（如SQL或关系代数），则只需要指定所需的数据模式，结果需满足什么条件，以及如何转换数据（例如，排序、分组和聚合），而不需要指明如何实现这一目标。数据库系统的查询优化器会决定采用那种索引和联结，以及用何种顺序来执行查询的各个语句。另外声明式查询语言对外隐藏了数据引擎的很多实现细节，这样数据库能够在不改变查询语句的情况下提高性能。</p>
+<h2 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h2><p>MapReduce是一种编程模型，用于在许多机器上批量处理海量数据。<font color="orange">MapReduce既不是声明式查询语言，也不是一个完全命令式的查询API，而是介于两者之间：</font>查询的逻辑用代码片段表示，这些代码片段可以被处理框架重复地调用。它主要基于许多函数式编程中的map和reduce函数，map函数用于对每一条数据进行过滤筛选，reduce用于对过滤出来的记录进行相关操作。不同数据库对MapReduce的执行实现都不同。</p>
+<p>//TODO: 看完第10章对MapReduce的详细描述后再补全这部分</p>
+<h1 id="图数据模型"><a href="#图数据模型" class="headerlink" title="图数据模型"></a>图数据模型</h1><blockquote>
+<p>在处理多对多关系时，关系模型能够处理简单的多对多关系，但是随着数据之间的关联越来越复杂，将数据建模转换为图模型会更加自然</p>
+</blockquote>
+<p>图由两种对象组成：顶点（也称为实体）和边（也称为关系），很多著名的算法都可以在图数据上运行，例如PageRank算法。</p>
+<p>图的不同顶点存储的数据可以是相同类型对象，也可以是不同类型对象，同理对于边来说，不同边可以表示相同的关系，也可以表示不同的关系。这就是图数据模型强大的地方。</p>
+<blockquote>
+<p>例如，Facebook维护了一个包含许多不同类型的顶点与边的大图：顶点包括人、地点、事件、签到和用户的评论；边表示哪些人是彼此的朋友，签到发生在哪些位置，谁评论了哪个帖子，谁参与了哪个事件等</p>
+</blockquote>
+<h2 id="属性图"><a href="#属性图" class="headerlink" title="属性图"></a>属性图</h2><p>在属性图模型中，每个顶点包括：</p>
+<ul>
+<li>唯一的标识符</li>
+<li>出边的集合</li>
+<li>入边的集合</li>
+<li>属性的集合（键-值对）</li>
+</ul>
+<p>每个边包括</p>
+<ul>
+<li>唯一的标识符</li>
+<li>边开始的节点</li>
+<li>边结束的节点</li>
+<li>描述两个顶点间关系的标签</li>
+<li>属性的集合（键-值对）</li>
+</ul>
+<p>// TODO: 在实际使用了图数据之后在补充一下，目前只做基础了解，知道哪些场景适用图模型即可。</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>文档模型、关系模型和图模型如今都有广泛的应用，而且在各自的目标领域都足够优秀。我们观察到，一个模型可以用另外一个模型来模拟，但是处理起来很笨拙。这就是为什么不同的系统用于不同的目的，而不是一个万能的解决方法。对于每个数据模型，都有自己的查询语言或框架。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Designing-Data-Intensive-Applications/" rel="tag"># Designing Data-Intensive Applications</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/30/DDIA/%E5%8F%AF%E9%9D%A0-%E5%8F%AF%E6%89%A9%E5%B1%95-%E5%8F%AF%E7%BB%B4%E6%8A%A4%E7%9A%84%E5%BA%94%E7%94%A8%E7%B3%BB%E7%BB%9F/" rel="prev" title="可靠&可扩展&可维护的应用系统">
+      <i class="fa fa-chevron-left"></i> 可靠&可扩展&可维护的应用系统
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/06/15/photography/%E7%9B%B8%E6%9C%BA%E5%9F%BA%E7%A1%80/" rel="next" title="相机基础">
+      相机基础 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%96%87%E6%A1%A3%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">关系模型与文档模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E4%B8%8D%E5%8C%B9%E9%85%8D"><span class="nav-number">1.1.</span> <span class="nav-text">对象关系不匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%A1%A3%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%95%B0%E6%8D%AE%E5%B1%80%E9%83%A8%E6%80%A7"><span class="nav-number">1.2.</span> <span class="nav-text">文档数据库的数据局部性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E8%AF%AD%E8%A8%80"><span class="nav-number">2.</span> <span class="nav-text">数据查询语言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce"><span class="nav-number">2.1.</span> <span class="nav-text">MapReduce</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">图数据模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E5%9B%BE"><span class="nav-number">3.1.</span> <span class="nav-text">属性图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.3.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -180,7 +180,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/14/machine_learning/linear_model/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/04/17/machine_learning/%E6%A8%A1%E6%8B%9F%E9%80%80%E7%81%AB%E7%AE%97%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -194,7 +194,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/02/14/machine_learning/linear_model/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/" class="post-title-link" itemprop="url">线性回归</a>
+            <a href="/2020/04/17/machine_learning/%E6%A8%A1%E6%8B%9F%E9%80%80%E7%81%AB%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">模拟退火算法</a>
         </h1>
 
         <div class="post-meta">
@@ -204,26 +204,15 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-02-14 21:05:16" itemprop="dateCreated datePublished" datetime="2020-02-14T21:05:16+08:00">2020-02-14</time>
+              <time title="Created: 2020-04-17 20:34:18" itemprop="dateCreated datePublished" datetime="2020-04-17T20:34:18+08:00">2020-04-17</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-19 00:44:48" itemprop="dateModified" datetime="2020-11-19T00:44:48+08:00">2020-11-19</time>
+                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
               </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">machine learning</span>
-                  </a>
-                </span>
-            </span>
 
           
 
@@ -236,129 +225,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="基本形式"><a href="#基本形式" class="headerlink" title="基本形式"></a>基本形式</h1><p>给定d个特征描述的示例$x=(x_1, x_2, \cdots, x_d)$，其中$x_i$是$x$在第$i$个特征上的取值，<code>线性模型是试图学得一个通过属性的线性组合来进行预测的函数</code>，即</p>
-<script type="math/tex; mode=display">
-\begin{align*}
-    f(x) &= w_1x_1 + w_2x_2 + \cdots + w_dx_d + b \\
-    &= (w_1, w_2, \cdots , w_d)
-    \begin{pmatrix}
-        x_1 \\
-        x_2 \\
-        \vdots \\
-        x_d
-    \end{pmatrix} + b \\
-    &= w x + b
-\end{align*}</script><p>在线性模型中$w$直观表达了个属性在预测中的重要性，<code>因此线性模型有很好的可解释性</code>。</p>
-<h1 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h1><p>给定数据集$D = \{(x_1,y_1),(x_2,y_2), \cdots, (x_m,y_m)\}$，其中$x_1$为d个特征描述的d维向量。线性回归试图学得</p>
-<script type="math/tex; mode=display">
-f(x_i) = w x_i + b, 使得f(x_i)尽可能接近y_i</script><p>那么如何衡量尽可能接近呢？<code>均方误差是回归任务重最常用的性能度量</code>，因此我们可试图让均方误差最小化，即</p>
-<script type="math/tex; mode=display">
-\begin{align*}
-    (w^*, b^*) &= argmin_{(w,b)} \sum_{i = 1}^{m} (f(x_i) - y_i)^2 \\
-    &= argmin_{(w,b)} \sum_{i = 1}^{m} (wx_i + b - y_i)^2
-\end{align*}</script><p>$(w^*,b^*)$表示$w$和$b$的解。<code>基于均方误差最小化来进行模型求解的方法称为“最小二乘法”</code>，在线性回归中，最小二乘法就是试图找到一条直线，使所有样本到直线上的欧式距离之和最小。</p>
-<h3 id="单特征求解"><a href="#单特征求解" class="headerlink" title="单特征求解"></a>单特征求解</h3><p><code>对于只有一个特征</code>的线性回归模型的最小二乘法的解方法为：</p>
-<p>令</p>
-<script type="math/tex; mode=display">
-E_{(w,b)} = \sum_{i=1}^{m}(wx_i + b - y_i)^2</script><p>分别对w和b求偏导</p>
-<script type="math/tex; mode=display">
-\begin{align*}
-    \frac{\partial E_(w,b)}{\partial w} &= 2\sum_{i=1}^{m}x_i(wx_i + b - y_i) \\
-    &= 2[w\sum_{i=1}^{m}x_i^2 - \sum_{i=1}^{m}(y_i - b)x_i] \tag{1}
-\end{align*}</script><script type="math/tex; mode=display">
-\begin{align*}
-    \frac{\partial E_{(w,b)}}{\partial b} &= 2\sum_{i=1}^{m}(wx_i + b - y_i) \\
-    &= 2[mb - \sum_{i=1}^{m}(y-wx_i)] \tag{2}
-\end{align*}</script><p>令偏导数为0 可解得$w$和$b$为</p>
-<script type="math/tex; mode=display">
-w = \frac{\sum_{i=1}^{m}y_i(x_i - \overline x)}{\sum_{i=1}^{m}x_i^2 - \frac{1}{m}(\sum_{i=1}^{m}x_i)^2} \tag{3}</script><script type="math/tex; mode=display">
-b = \frac{1}{m} \sum_{i=1}^{m}(y_i - wx_i) \tag{4}</script><p>式(4)可由式(2)等于0直接得出，式(3)可有式(2)和式(4)联立推出。其中$\overline x = \frac{1}{m} \sum_{i=1}^{m}x_i$为$x$的均值。</p>
-<h3 id="多元线性回归"><a href="#多元线性回归" class="headerlink" title="多元线性回归"></a>多元线性回归</h3><p>上面对只有一个特征描述的数据集如何使用最小二乘法求解线性回归问题进行了说明，然而实际的问题更一般的情况是有多个特征标记的数据。这种称为<code>多元线性回归</code>。</p>
-<p>为了便于讨论多元线性回归中$w$和$x$都为向量的情况，我们将$b$吸收进入$w$，即令$\hat w = (w;b)$，$\hat w$是一个$(d+1) \times 1$的矩阵。把数据集$D=\{(x_i, y_i)\}_{i=1}^{m}$(<code>注意</code>$x_i$为向量，$y_i$为标量)表示为一个$m \times (d + 1)$大小的矩阵$X$，其中每行对应一个示例，每行的前d个元素对应一个示例的d个特征取值，最后一个元素恒置为1。并且把所有示例的最后结果表示为一个$m \times 1$的矩阵$Y$</p>
-<p>即：</p>
-<script type="math/tex; mode=display">
-\hat w = (w_1, w_2, \cdots, w_d, b)^T</script><script type="math/tex; mode=display">
-X = 
-\begin{pmatrix}
-    x_{11} & x_{12} & \cdots & x_{1d} & 1 \\
-    x_{21} & x_{22} & \cdots & x_{2d} & 1 \\
-    \vdots & \vdots &  & \vdots & \vdots \\
-    x_{m1} & m_{m2} & \cdots & x_{md} & 1
-\end{pmatrix}</script><script type="math/tex; mode=display">
-Y = (y_1, y_2, \cdots, y_m)^T</script><p>则</p>
-<script type="math/tex; mode=display">
-X\hat w =
-\begin{pmatrix}
-    x_{11} & x_{12} & \cdots & x_{1d} & 1 \\
-    x_{21} & x_{22} & \cdots & x_{2d} & 1 \\
-    \vdots & \vdots &  & \vdots & \vdots \\
-    x_{m1} & m_{m2} & \cdots & x_{md} & 1
-\end{pmatrix}
-
-\begin{pmatrix}
-    w_1 \\
-    w_2 \\
-    \vdots \\
-    w_d \\
-    b
-\end{pmatrix}
-= Y</script><p>则我们的目标是</p>
-<script type="math/tex; mode=display">
-argmin_{\hat w}(Y - X\hat w)^T(Y-X\hat w)</script><p>$Y-X \hat w$为一个$m \times 1$的矩阵。</p>
-<p>同理为了求出$\hat w$，可以对$\hat w$求导并令其等于0，<code>注意这里是标量对向量求导</code>，具体标量如何对向量求导的可以看我的<a href="https://swordandtea.github.io/2020/02/08/math/标量对矩阵求导/">另一篇博客</a>。</p>
-<p>令$E_{\hat w} = (Y - X\hat w)^T(Y - X\hat w)$，对$\hat w$求导得到：</p>
-<script type="math/tex; mode=display">
-\begin{align*}
-    dE &= d(Y - X\hat w)^T·(Y - X\hat w) + (Y - X \hat w)^T d(Y - X\hat w) \\
-    &= [d(Y - X\hat w)]^T(Y - X\hat w) + (Y - X \hat w)^TdY - (Y - X\hat w)^Td(X\hat w) \\
-    &= [(dY)^T - d(X\hat w)]^T(Y - X\hat w) - (Y - X\hat w)^T(dX · \hat w + Xd\hat w) \\
-    &= -(dX · \hat w + Xd\hat w)^T(Y - X\hat w) - (Y - X\hat w)^T(Xd\hat w) \\
-    &= -(Xd\hat w)^T(Y - X\hat w) - (Y - X\hat w)^T Xd\hat w \\
-    \\
-    dE = tr(E) &= tr[-(Xd\hat w)^T(Y - X\hat w)] - tr[(Y - X\hat w)^T Xd\hat w] \\
-    &= tr[-(Y - X\hat w)^T Xd\hat w] - tr[(Y - X\hat w)^T Xd\hat w] \\
-    &= tr[-2(Y - X\hat w)^T Xd\hat w] \\
-    &= tr[2(X\hat w - Y)X d\hat w] \\
-    \\
-    则\frac{\partial E}{\partial \hat w} &= 2(X\hat w - Y)X \tag{5}
-\end{align*}</script><p>(其中$dX$、$dY = 0$)</p>
-<p>令式(5)等于0可得：</p>
-<script type="math/tex; mode=display">
-\hat w^* = (X^TX)^{-1} X^T Y</script><p>最后得到的线性回归模型为：</p>
-<script type="math/tex; mode=display">
-f(x) = x (X^T X)^{-1} X^T Y</script><p><code>这里求解模型的方法其实就是标准方程法</code>。</p>
-<p>对于线性规划问题，另外的一种解法就是<a href="https://swordandtea.github.io/2020/02/10/machine%20learning/梯度下降">梯度下降</a>。</p>
-<h1 id="一个小问题：若-X-TX-不可逆"><a href="#一个小问题：若-X-TX-不可逆" class="headerlink" title="一个小问题：若$X^TX$不可逆"></a>一个小问题：若$X^TX$不可逆</h1><p>如果出现了$X^TX$不可逆的情况，可能是一下问题导致的：</p>
-<p>1、选用的特征有冗余的特征，即一个特征可以同其他几个特征<code>线性表示</code></p>
-<p>2、用于训练的数据的数量小于选用的特征数量</p>
-<p>如果仍然还是不可逆，那么可以对矩阵求<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/47688307">伪逆</a>，事实上在编程时大多数矩阵操作运算的库都提供了求矩阵伪逆的函数。</p>
-<p>或者直接使用求解线性方程的方法，求出多个$\hat w$，他们都能使均方误差最小化，选择哪一个作为最后的输出将由学习算法的归纳偏好决定，常见的做法是引入正则化。</p>
-<h1 id="对比一下梯度下降法和标准方程法"><a href="#对比一下梯度下降法和标准方程法" class="headerlink" title="对比一下梯度下降法和标准方程法"></a>对比一下梯度下降法和标准方程法</h1><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>梯度下降法</th>
-<th>标准方程法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>需要选定学习率$\alpha$，可能需要多次运行训练程序才能确定最后的$\alpha$</td>
-<td>不需要确定学习率</td>
-</tr>
-<tr>
-<td>需要多次迭代才能找到最优解</td>
-<td>不需要迭代</td>
-</tr>
-<tr>
-<td>梯度下降法在有很多特征时也能很好的运行，即使对于百万级的特征数也可以使用梯度下降法</td>
-<td>在特征数量过多时，存储矩阵需要的内存需要很大，并且计算矩阵的逆矩阵会很慢。<code>求解矩阵的逆的时间复杂度大致为</code>$O(n^3)$，其中n为方阵的阶数。</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><code>综上所述，当n比较小时，可以考虑使用标准方程法，当n很大时，使用梯度下降法会比较好</code></p>
-
+          
       
     </div>
 
@@ -377,7 +244,7 @@ f(x) = x (X^T X)^{-1} X^T Y</script><p><code>这里求解模型的方法其实�
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/13/math/calculus/%E5%82%85%E7%AB%8B%E5%8F%B6%E7%BA%A7%E6%95%B0%E5%85%AC%E5%BC%8F/">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/04/17/machine_learning/neural_network&deep_learning/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -391,7 +258,7 @@ f(x) = x (X^T X)^{-1} X^T Y</script><p><code>这里求解模型的方法其实�
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/02/13/math/calculus/%E5%82%85%E7%AB%8B%E5%8F%B6%E7%BA%A7%E6%95%B0%E5%85%AC%E5%BC%8F/" class="post-title-link" itemprop="url">傅立叶级数公式</a>
+            <a href="/2020/04/17/machine_learning/neural_network&deep_learning/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" class="post-title-link" itemprop="url">卷积神经网络</a>
         </h1>
 
         <div class="post-meta">
@@ -401,26 +268,15 @@ f(x) = x (X^T X)^{-1} X^T Y</script><p><code>这里求解模型的方法其实�
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-02-13 22:01:55" itemprop="dateCreated datePublished" datetime="2020-02-13T22:01:55+08:00">2020-02-13</time>
+              <time title="Created: 2020-04-17 20:30:59" itemprop="dateCreated datePublished" datetime="2020-04-17T20:30:59+08:00">2020-04-17</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-11 20:26:41" itemprop="dateModified" datetime="2020-07-11T20:26:41+08:00">2020-07-11</time>
+                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
               </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/math/" itemprop="url" rel="index">
-                    <span itemprop="name">math</span>
-                  </a>
-                </span>
-            </span>
 
           
 
@@ -433,34 +289,7 @@ f(x) = x (X^T X)^{-1} X^T Y</script><p><code>这里求解模型的方法其实�
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="三角函数族"><a href="#三角函数族" class="headerlink" title="三角函数族"></a>三角函数族</h1><h1 id="傅立叶级数"><a href="#傅立叶级数" class="headerlink" title="傅立叶级数"></a>傅立叶级数</h1><p>对于一个周期函数，它都能展开为三角函数的级数</p>
-<h3 id="以-2-pi-为周期的函数"><a href="#以-2-pi-为周期的函数" class="headerlink" title="以$2\pi$为周期的函数"></a>以$2\pi$为周期的函数</h3><p>如果一个函数以$2\pi$为周期，则它可以展开为形如$\frac{a_0}{2} + \sum_{n=1}^{\infty} (a_n cosnx + b_n sinnx)$，其中</p>
-<script type="math/tex; mode=display">
-\begin{align*}
-    a_n &= \frac{1}{\pi}\int_{-\pi}^{\pi} f(x)cosnx dx \\
-    b_n &= \frac{1}{\pi}\int_{-\pi}^{\pi} f(x)sinnx dx
-\end{align*}</script><p>若记$s(x) = \frac{a_0}{2} + \sum_{n=1}^{\infty} (a_n cosnx + b_n sinnx)$，则</p>
-<script type="math/tex; mode=display">
-s(x) = 
-\begin{cases}
-    f(x), \space f(x)的连续点 \\
-    \frac{f(x_0^+) + f(x_0^-)}{2}，\space f(x)的间断点 \\
-  \frac{f(-\pi^+) + f(\pi^-)}{2}，\space x=\pm \pi
-\end{cases}</script><h3 id="以-2l-为周期的函数"><a href="#以-2l-为周期的函数" class="headerlink" title="以$2l$为周期的函数"></a>以$2l$为周期的函数</h3><p>如果一个函数以$2\pi$为周期，则它可以展开为形如$\frac{a_0}{2} + \sum_{n=1}^{\infty} (a_n cos \frac{n\pi}{l}x + b_n sin \frac{n\pi}{l})$，其中</p>
-<script type="math/tex; mode=display">
-\begin{align*}
-    a_n &= \frac{1}{l}\int_{-l}^{l} f(x)cos \frac{n\pi}{l}x dx \\
-    b_n &= \frac{1}{l}\int_{-l}^{l} f(x)sin \frac{n\pi}{l}x dx
-\end{align*}</script><p>若记若记$s(x) = \frac{a_0}{2} + \sum_{n=1}^{\infty} (a_n cos \frac{n\pi}{l}x + b_n sin \frac{n\pi}{l})$，则</p>
-<script type="math/tex; mode=display">
-s(x) = 
-\begin{cases}
-    f(x), \space f(x)的连续点 \\
-    \frac{f(x_0^+) + f(x_0^-)}{2}，\space f(x)的间断点 \\
-  \frac{f(-l^+) + f(l^-)}{2}，\space x=\pm l
-\end{cases}</script><h3 id="偶函数"><a href="#偶函数" class="headerlink" title="偶函数"></a>偶函数</h3><p>对于偶函数其傅立叶级数展开形式<code>没有</code>正弦项</p>
-<h3 id="奇函数"><a href="#奇函数" class="headerlink" title="奇函数"></a>奇函数</h3><p>对于奇函数其傅立叶级数展开形式<code>只有</code>正弦项</p>
-
+          
       
     </div>
 
@@ -479,7 +308,7 @@ s(x) =
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/13/math/%E5%A4%9A%E5%85%83%E5%87%BD%E6%95%B0%E7%9A%84%E4%BA%8C%E9%98%B6%E6%B3%B0%E5%8B%92%E5%B1%95%E5%BC%80/">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/04/17/machine_learning/neural_network&deep_learning/%E5%B8%B8%E8%A7%81%E5%85%B6%E4%BB%96%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -493,7 +322,7 @@ s(x) =
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/02/13/math/%E5%A4%9A%E5%85%83%E5%87%BD%E6%95%B0%E7%9A%84%E4%BA%8C%E9%98%B6%E6%B3%B0%E5%8B%92%E5%B1%95%E5%BC%80/" class="post-title-link" itemprop="url">多元函数的二阶泰勒展开</a>
+            <a href="/2020/04/17/machine_learning/neural_network&deep_learning/%E5%B8%B8%E8%A7%81%E5%85%B6%E4%BB%96%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" class="post-title-link" itemprop="url">常见其他神经网络</a>
         </h1>
 
         <div class="post-meta">
@@ -503,523 +332,7 @@ s(x) =
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-02-13 19:33:27" itemprop="dateCreated datePublished" datetime="2020-02-13T19:33:27+08:00">2020-02-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-11 20:26:41" itemprop="dateModified" datetime="2020-07-11T20:26:41+08:00">2020-07-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/math/" itemprop="url" rel="index">
-                    <span itemprop="name">math</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="复习一元函数泰勒展开"><a href="#复习一元函数泰勒展开" class="headerlink" title="复习一元函数泰勒展开"></a>复习一元函数泰勒展开</h1><p>一元函数$f(x)$在点$x_0$展开：</p>
-<script type="math/tex; mode=display">
-f(x) = \sum_{n=1} \frac{1}{n!} f^{(n)} (x-x_0)^n</script><h1 id="从二元到多元"><a href="#从二元到多元" class="headerlink" title="从二元到多元"></a>从二元到多元</h1><h4 id="二元函数"><a href="#二元函数" class="headerlink" title="二元函数"></a>二元函数</h4><p>首先看二元函数的<code>二阶</code>展开，对于二元函数$f(x, y)$在点$(x_0, y_0)$处展开式为：</p>
-<script type="math/tex; mode=display">
-\begin{align*}
-    f(x, y) =& f(x_0, y_0) + f'_x(x_0,y_0)(x-x_0) + f'_y(x_0,y_0)(y-y_0) \\
-    & + \frac{1}{2!}[f''_{xx}(x_0, y_0)(x-x_0)^2 + f''_{xy}(x_0,y_0)(x-x_0)(y-y_0) \\
-    & + f''_{yx}(x_0,y_0)(x-x_0)(y-y_0) + f''_{yy}(x_0,y_0)(y-y_0)^2] + O(x^2)
-\end{align*}</script><p>转换为矩阵形式为：</p>
-<script type="math/tex; mode=display">
-\begin{align*}
-    f(x, y) =& f(x_0, y_0) + f'_x(x_0,y_0)(x-x_0) + f'_y(x_0,y_0)(y-y_0) \\
-    & + \frac{1}{2!}
-  [
-        \begin{pmatrix}
-            x-x_0,y-y_0
-        \end{pmatrix}
-
-        \begin{pmatrix}
-            f''_{xx} & f''_{xy} \\
-            f''_{yx} & f''_{yy}
-        \end{pmatrix}
-
-        \begin{pmatrix}
-            x-x_0 \\
-            y-y_0
-        \end{pmatrix}
-    ]
-\end{align*}</script><h4 id="推广到m元函数"><a href="#推广到m元函数" class="headerlink" title="推广到m元函数"></a>推广到m元函数</h4><p>由上的公式可以推出函数$f(x_1,x_2,\ldots \space,x_m)$在点$(x_{k1}, x_{k2}, \ldots \space ,x_{k2})$处展开的公式为：</p>
-<script type="math/tex; mode=display">
-\begin{align*}
-    f(x_1,x_2,\ldots \space,x_m) =& f(x_{k1}, x_{k2}, \ldots \space ,x_{km}) \\
-    & + \sum_{i=1}^{m} f'_{x_{ki}}(x_{k1}, x_{k2}, \ldots \space ,x_{k2})(x_i - x_{ki}) \\
-    & + \frac{1}{2!}
-    [
-        \begin{pmatrix}
-            x-x_{k1}, x-x_{k2}, \ldots, x-x_{km}
-        \end{pmatrix}
-
-        \begin{pmatrix}
-            f''_{x_1 x_1} & f''_{x_1 x_2} & \cdots & f''_{x_1 x_m} \\
-            f''_{x_2 x_1} & f''_{x_2 x_2} & \cdots & f''_{x_2 x_m} \\
-            \vdots & \vdots & & \vdots \\
-            f''_{x_m x_1} & f''_{x_m x_2} & & f''_{x_m x_m}
-        \end{pmatrix}
-
-        \begin{pmatrix}
-            x-x_{k1} \\ 
-            x-x_{k2} \\
-      \vdots \\
-      x-x_{km}
-        \end{pmatrix}
-    ]
-\end{align*}</script><p>若记</p>
-<script type="math/tex; mode=display">
-\begin{align*}
-    X &= (x_1, x_2, \cdots, x_m)\\
-    X_k &= (x_{k1}, x_{k2}, \cdots, x_{km}) \\
-    X-X_k &= (x_1-x_{k0}, x_2-x_{k2}, \cdots, x_m-x_{km}) \\
-    f'_X &= (f'_{x{k1}}, f'_{x_{k2}}, \cdots, f'_{x_{km}} )
-\end{align*}</script><script type="math/tex; mode=display">
-H(X) = 
-\begin{pmatrix}
-            f''_{x_1 x_1} & f''_{x_1 x_2} & \cdots & f''_{x_1 x_m} \\
-            f''_{x_2 x_1} & f''_{x_2 x_2} & \cdots & f''_{x_2 x_m} \\
-            \vdots & \vdots & & \vdots \\
-            f''_{x_m x_1} & f''_{x_m x_2} & & f''_{x_m x_m}
-        \end{pmatrix}</script><p>则上式可以写为: </p>
-<script type="math/tex; mode=display">
-f(X) = f(X_k) + f'_X · (X-X_k)^T + \frac{1}{2!}(X-X_k)H(X)(X-X_k)^T</script>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/13/math/calculus/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0%E7%9A%84%E9%BA%A6%E5%85%8B%E5%8A%B3%E6%9E%97%E5%B1%95%E5%BC%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/13/math/calculus/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0%E7%9A%84%E9%BA%A6%E5%85%8B%E5%8A%B3%E6%9E%97%E5%B1%95%E5%BC%80/" class="post-title-link" itemprop="url">常用函数的麦克劳林展开</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-13 12:10:23" itemprop="dateCreated datePublished" datetime="2020-02-13T12:10:23+08:00">2020-02-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-11 20:26:41" itemprop="dateModified" datetime="2020-07-11T20:26:41+08:00">2020-07-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/math/" itemprop="url" rel="index">
-                    <span itemprop="name">math</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>麦克劳林公式是在$x=0$点处展开的泰勒公式</p>
-<h1 id="常用函数的麦克劳林公式的展开式："><a href="#常用函数的麦克劳林公式的展开式：" class="headerlink" title="常用函数的麦克劳林公式的展开式："></a>常用函数的麦克劳林公式的展开式：</h1><p>1、指数函数</p>
-<script type="math/tex; mode=display">
-e^x = \sum_{n=0}^{\infty}\frac{x^n}{n!}</script><p>2、正弦函数</p>
-<script type="math/tex; mode=display">
-sin x = \sum_{n = 0}^{\infty} (-1)^n \frac{x^{2n+1}}{(2n+1)!}</script><p>3、余弦函数</p>
-<script type="math/tex; mode=display">
-cos x = \sum_{n=0}^{\infty}(-1)^n \frac{x^{2n}}{(2n)!}</script><p>4、对数函数</p>
-<script type="math/tex; mode=display">
-ln(1+x) = \sum_{n=1}^{\infty} (-1)^{n-1} \frac{x^n}{n}</script><p>5、幂函数</p>
-<script type="math/tex; mode=display">
-(1+x)^{\alpha} = 1 + \sum_{n=1}^{\infty} \frac{\alpha (\alpha - 1) \cdots (\alpha-n+1)}{n!} x^n</script><p><code>一个简单的记忆口诀</code>: 幂指无负1，对数无阶乘，幂对起于1，首项都为正</p>
-<h1 id="几个重要的低阶展开的麦克劳林公式"><a href="#几个重要的低阶展开的麦克劳林公式" class="headerlink" title="几个重要的低阶展开的麦克劳林公式"></a>几个重要的低阶展开的麦克劳林公式</h1><p>1、$sinx = x - \frac{x^3}{3!} + O(x^3)$，$arcsinx = x + \frac{x^3}{3!} + O(x^3)$</p>
-<p>2、$tanx = x + \frac{x^3}{3} + O(x^3)$，$arctanx = x - \frac{x^3}{3} + O(x^3)$</p>
-<p>3、$cosx = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} + O(x^4)$，$arccosx = \frac{\pi}{2} - x - \frac{x^3}{3!}-O(x^3)$</p>
-<p>4、$ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} + O(x^3)$</p>
-<p>5、$e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + O(x^3)$</p>
-<p>6、$(1+x)^{\alpha} = 1 + \alpha x + \frac{\alpha(\alpha - 1)}{2!} x^2 + O(x^2)$</p>
-<p><code>利用上述公式可以得到一组“差函数的无穷小等价替换</code>，例如：$x-sinx ～ \frac{x^3}{6}$​</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/11/math/llinear%20algebra/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/11/math/llinear%20algebra/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">线性代数笔记</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-11 22:35:42" itemprop="dateCreated datePublished" datetime="2020-02-11T22:35:42+08:00">2020-02-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-18 00:49:00" itemprop="dateModified" datetime="2020-11-18T00:49:00+08:00">2020-11-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/math/" itemprop="url" rel="index">
-                    <span itemprop="name">math</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这篇笔记用于记录经常在线性代数中用到的相关知识</p>
-<h1 id="线性代数基本术语"><a href="#线性代数基本术语" class="headerlink" title="线性代数基本术语"></a>线性代数基本术语</h1><p>1、n阶矩阵即n阶方阵</p>
-<p>2、如果矩阵A与矩阵B都是$m \times n$矩阵，就称A和B为同型矩阵</p>
-<h1 id="矩阵的乘法性质"><a href="#矩阵的乘法性质" class="headerlink" title="矩阵的乘法性质"></a>矩阵的乘法性质</h1><p>1、结合律：$(AB)C=A(BC)$</p>
-<p>2、数乘结合律：$k(AB) = (kA)B = A(kB)$，k为常数</p>
-<p>3、分配律：$A(B+C) = AB+AC$</p>
-<p>4、<code>矩阵的乘法没有交换律</code>，即一般有$AB \neq BA$，如果有$AB \neq BA$，称A与B是不可交换的；当$AB=BA$时，称A与B是可交换的。</p>
-<p>5、即使有$A \neq 0(0矩阵)$，由$AB=BA$也不能退出$B=C$</p>
-<p>6、$f(A) = a_k A^k + a_{k-1} A^{k-1} + \cdots + a_1 A + a_0 I,(a_0、a_1、\ldots 、a_n为常数)$，称为方阵A的k次多项式，如果有多项式$f(x)$与$g(x)$，则有$f(A)g(A) = g(A)f(A)$，<code>注意都是A</code>。但是一般情况下$f(A)g(B) \neq f(B)f(A)$。</p>
-<p>7、$(A+\lambda I)^n = \sum_{k=0}^{n} \lambda^k A^{n-k}$</p>
-<h1 id="矩阵的转置的性质"><a href="#矩阵的转置的性质" class="headerlink" title="矩阵的转置的性质"></a>矩阵的转置的性质</h1><p>1、$(A^T)^T = A$</p>
-<p>2、$(A+B)^T = A^T + B^T$</p>
-<p>3、$(kA)^T = k(A^T)$</p>
-<p>4、$(AB)^T = B^T A^T$，$(A_1 A_2 \cdots A_n)^T = {A_n}^T {A_{n-1}}^T \cdots {A_1}^T$，$(A^n)^T = (A^T)^n$</p>
-<p>5、若$A^T A = 0$，则$A = A^T = 0$</p>
-<p>6、若$A^T = A$，则称A为对称矩阵；若$A^T = -A$，则称A为反称矩阵</p>
-<p>8、<code>实对称矩阵的n次方仍是实对称矩阵</code>，证明：$A^n = (A^T)^n = (A^n)^T $</p>
-<h1 id="逆矩阵的性质"><a href="#逆矩阵的性质" class="headerlink" title="逆矩阵的性质"></a>逆矩阵的性质</h1><p>A为n阶矩阵，若存在n阶矩阵，使得$AB=BA=I$，则称A为可逆矩阵。A的<code>可逆矩阵唯一</code>，记为$A^{-1}$。</p>
-<p><code>在使用处等变换求解矩阵的逆矩阵的过程中，如果使用行变换则只能全程使用行变换，如果使用列变换则只能全程使用列变换</code></p>
-<p>1、$(A^{-1})^{-1} = A$</p>
-<p>2、$(\lambda A)^{-1} = \frac{1}{\lambda} A^{-1}$</p>
-<p>3、$(AB)^{-1} = B^{-1} A^{-1}$，$(A_1 A_2 \cdots A_n) = {A_n}^{-1} {A_{n-1}}^{-1} \cdots {A_1}^{-1}$，$(A^n)^{-1} = (A^{-1})^n$</p>
-<p>4、</p>
-<script type="math/tex; mode=display">
-\begin{pmatrix}
-    a_{1,1} & & & \\
-     & a_{2,2} & & \\
-     & & \ddots & \\
-     & & & a_{n,n}
-\end{pmatrix}^{-1} 
-
-=
-
-\begin{pmatrix}
-    \frac{1}{a_{1,1}} & & & \\
-     & \frac{1}{a_{2,2}} & & \\
-     & & \ddots & \\
-     & & & \frac{1}{a_{n,n}}
-\end{pmatrix}</script><p>5、</p>
-<script type="math/tex; mode=display">
-\begin{pmatrix}
- & & & a_{1,n} \\
- & & a_{2,n-1} & \\
- & \cdots & & \\
-a_{n,1} & & & 
-\end{pmatrix}^{-1}
-
-=
-
-\begin{pmatrix}
- & & & \frac{1}{a_{n, 1}} \\
- & & \frac{1}{a_{n-1, 2}} & \\
- & \cdots & & \\
- \frac{1}{a_{1, n}} & & & \\
-\end{pmatrix}</script><p>6、$(E_{ij})^{-1} = E_{ij}$，$(E_{i(c)})^{-1} = E_{i(\frac{1}{c})}$，$(E_{ij(c)})^{-1} = E_{ij(-c)}$</p>
-<h1 id="行列式的性质"><a href="#行列式的性质" class="headerlink" title="行列式的性质"></a>行列式的性质</h1><p>1、</p>
-<script type="math/tex; mode=display">
-\left|
-    \begin{array}
-        {cccc}
-        a_{1} & & & \\
-        & a_{2} & & \\
-        & & \ddots & \\
-        \star & & & a_{n}
-    \end{array}
-\right|
-
-=
-
-\left|
-    \begin{array}
-        {cccc}
-        a_{1} & & & \star \\
-        & a_{2} & & \\
-        & & \ddots & \\
-        & & & a_{n}
-    \end{array}
-\right|
-
-= a_1 a_2 \cdots a_n</script><p>2、</p>
-<script type="math/tex; mode=display">
-\left|
-    \begin{array}
-        {cccc}
-        & & & a_n \\
-        & & \cdots & \\
-        & a_2 & & \\
-        a_1 & & & \star \\
-    \end{array}
-\right|
-
-=
-
-\left|
-    \begin{array}
-        {cccc}
-        \star & & & a_n \\
-        & & \cdots & \\
-        & a_2 & &\\
-        a_1 & & & \\
-    \end{array}
-\right|
-
-=
-
-(-1)^{\frac{n(n-1)}{2}} a_1 a_2 \cdots a_n</script><p>3、交换矩阵$A$的两行的到$A’$，则$|A’| = -|A|$，即有$|E_{ij}| = -1$</p>
-<p>4、将矩阵$A$的<code>某一行数乘k</code>得到$A’$，则$|A’| = k|A|$，即有$|E_{i(c)} = C|$</p>
-<p>5、将矩阵$A$的某一行的k倍加到另一行的到$A’$，则$|A’| = |A|$，即有$|E_{ij{c}}| = 1$</p>
-<p>6、$|A^T| = |A|$</p>
-<p>7、$|A^{-1}| = |A|^{-1}$</p>
-<p>8、$|AB| = |A||B|$，继而有$|A^n| = |A|^n$</p>
-<p>9、$|kA| = k^n |A|$，n为方阵的阶数</p>
-<p>10、范德蒙行列式：</p>
-<script type="math/tex; mode=display">
-\left|
-    \begin{array}
-        {cccc}
-        1 & 1 & 1 & \cdots & 1 \\
-        x_1 & x_2 & x_3 & \cdots & x_n \\
-        x_1^2 & x_2^2 & x_3^2 & \cdots & x_n^2 \\
-        \vdots & \vdots & \vdots & & \vdots \\
-        x_1^{n-1} & x_2^{n-1} & x_3^{n-1} & \cdots & x_n^{n-1}
-    \end{array}
-\right|
-
-=
-
-\prod_{1 \leq j < i \leq n} (x_i - x_j)</script><p>11、分块矩阵行列式</p>
-<script type="math/tex; mode=display">
-\left|
-    \begin{array}
-        {cccc}
-        B_{m \times m} & 0 \\
-        \\
-        \star & C_{n \times n}
-    \end{array}
-\right|
-
-=
-
-\left|
-    \begin{array}
-        {cccc}
-        B_{m \times m} & \star \\
-        \\
-        0 & C_{n \times n}
-    \end{array}
-\right|
-
-= |B||C|</script><script type="math/tex; mode=display">
-\left|
-    \begin{array}
-        {cccc}
-        0 & C_{r \times r} \\
-        \\
-        B_{s \times s} & \star
-    \end{array}
-\right|
-
-=
-
-\left|
-    \begin{array}
-        {cccc}
-        \star & C_{r \times r} \\
-        \\
-        B_{s \times s} & 0
-    \end{array}
-\right|
-
-= (-1)^{rs} |B||C|</script><h1 id="伴随矩阵性质"><a href="#伴随矩阵性质" class="headerlink" title="伴随矩阵性质"></a>伴随矩阵性质</h1><p>若方阵</p>
-<script type="math/tex; mode=display">
-A = 
-\begin{pmatrix}
-    a_{11} & a_{12} & \cdots  & a_{1n} \\
-    a_{21} & a_{22} & \cdots & a_{2n} \\
-    \vdots & \vdots & & \vdots \\
-    a_{n1} & a_{n2} & \cdots & a_{nn}
-\end{pmatrix}</script><p>则其伴随矩阵为：</p>
-<script type="math/tex; mode=display">
-A^{*} =
-\begin{pmatrix}
-     A_{11} & A_{21} & \cdots & A_{n1} \\
-     A_{12} & A_{22} & \cdots & A_{n2} \\
-     \vdots & \vdots & & \vdots \\
-     A_{1n} & A_{2n} & & A_{nn}
-\end{pmatrix}</script><p>其中$A_{ij}$为$a_{ij}$的代数余子式，<code>注意</code>$A^*$的下标排列方式</p>
-<p>1、$\sum_{k=1}^{n} a_{ik} A_{jk} = 0$，($i \neq j; i, j = 1、2、\ldots \space、n$)，即矩阵的任一行（列）的元素乘以另一行(列)对应元的代数余子式之和为0</p>
-<p>2、$AA^<em> = A^</em> A = |A|I$，$\implies A^{-1} = \frac{1}{|A|} A^*$</p>
-<p>3、$(kA)^<em> = k^{n-1}A^</em>$，n为方阵阶数</p>
-<p>4、$(A^<em>)^{-1} = (A^{-1})^</em>$，$(A^T)^<em> = (A^</em>)^T$</p>
-<p>5、$|A^*| = |A|^{n-1}$，n为方阵阶数</p>
-<p>6、$(AB)^<em> = B^</em> A^<em>$，$(A^</em>)^n = (A^n)^*$</p>
-<h1 id="克拉默法则"><a href="#克拉默法则" class="headerlink" title="克拉默法则"></a>克拉默法则</h1><p>设n阶矩阵$A$可逆则线性方程组$Ax=b$有唯一解$(x_1,x_2, \space \ldots \space,x_n)^T$，其中$x_i = \frac{|A_i|}{A}$，$|A_i|$<code>表示用b代替｜A｜中第j列得到的行列式</code></p>
-<h1 id="矩阵的秩"><a href="#矩阵的秩" class="headerlink" title="矩阵的秩"></a>矩阵的秩</h1><p>1、初等变换不改变矩阵的秩</p>
-<p>2、设A为$m \times n$矩阵，则R(A) = r的充分必要条件是通过行初等变换(行变换和列变换能同时使用)能将A化为具有r个非零行的行阶梯行矩阵。这也是求解矩阵的秩的基本方法。</p>
-<p>3、设$A$为n阶矩阵，则A可逆的充分必要条件是$R(A) = n$，即$A可逆 \iff R(A) = n$</p>
-<p>4、$R(A) = R(A^T)$，$R(A^TA) = R(AA^T) = R(A)$</p>
-<p>5、$R(A^*) = \begin{cases} n, \space 若R(A) = n \\ 1, \space 若R(A)=n-1 \\ 0, \space 若R(A) &lt; n-1 \end{cases}$ ，这个性质的一个应用是证明A*为0矩阵，则只需要证明$R(A)&lt; n-1$ 即可</p>
-<p>6、设$A$为$m \times n$矩阵，$B$为$n \times s$矩阵，若$AB = 0$，则$R(A) + R(B) \leq n$</p>
-<p>7、$R(AB) \leq min\{R(A), \space R(B)\}$，$R(A+B) \leq R(A) + R(B)$</p>
-<p>8、若B为<code>可逆矩阵</code>，则$R(AB) = R(BA) = R(A)$</p>
-<h1 id="正交矩阵"><a href="#正交矩阵" class="headerlink" title="正交矩阵"></a>正交矩阵</h1><h1 id="矩阵相似"><a href="#矩阵相似" class="headerlink" title="矩阵相似"></a>矩阵相似</h1><p>对于同型方阵A、B，若存在<code>可逆矩阵</code>Q，使得$Q^{-1}AQ = B$，记为$A～B$。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/10/math/calculus/%E7%BA%A7%E6%95%B0%E5%88%A4%E6%95%9B%E6%B3%95%E5%88%99/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/10/math/calculus/%E7%BA%A7%E6%95%B0%E5%88%A4%E6%95%9B%E6%B3%95%E5%88%99/" class="post-title-link" itemprop="url">级数判敛法则</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-10 21:42:20" itemprop="dateCreated datePublished" datetime="2020-02-10T21:42:20+08:00">2020-02-10</time>
+              <time title="Created: 2020-04-17 12:02:38" itemprop="dateCreated datePublished" datetime="2020-04-17T12:02:38+08:00">2020-04-17</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -1034,8 +347,8 @@ A^{*} =
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/math/" itemprop="url" rel="index">
-                    <span itemprop="name">math</span>
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
                   </a>
                 </span>
             </span>
@@ -1051,51 +364,7 @@ A^{*} =
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="级数收敛最基础判定"><a href="#级数收敛最基础判定" class="headerlink" title="级数收敛最基础判定"></a>级数收敛最基础判定</h1><h3 id="充分必要条件"><a href="#充分必要条件" class="headerlink" title="充分必要条件"></a>充分必要条件</h3><p>一个级数$a_n$收敛的充分必要条件是级数的前n项和数列$S_n=\sum_{i=1}^{n}ai$收敛，而一般这个判定方法只对于那些能够求出前n项和数列通项公式的级数有很好的判定，然而大多数的级数都无法求出前n项和数列。所以对于一些常见的特殊数列有特别的判定方式</p>
-<h3 id="必要条件"><a href="#必要条件" class="headerlink" title="必要条件"></a>必要条件</h3><p>级数收敛的必要条件是:</p>
-<script type="math/tex; mode=display">
-\lim_{n \to \infty} a_n = 0</script><h3 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h3><p>1、如果一个级数收敛，则去掉<code>有限项</code>后的级数仍然收敛。</p>
-<h1 id="正项级数的判敛法"><a href="#正项级数的判敛法" class="headerlink" title="正项级数的判敛法"></a>正项级数的判敛法</h1><h3 id="充分必要条件-1"><a href="#充分必要条件-1" class="headerlink" title="充分必要条件"></a>充分必要条件</h3><p>正项级数收敛的充分必要条件是级数的前n项和数列$S_n$有界。</p>
-<p>证明：</p>
-<p>因为为正项级数，则前n项和$S_n$单调递增，</p>
-<p>又因为$S_n$有界，则根据单调有界性原则，数列$S_n$收敛，证毕。</p>
-<h3 id="充分条件"><a href="#充分条件" class="headerlink" title="充分条件"></a>充分条件</h3><h5 id="比较判敛法"><a href="#比较判敛法" class="headerlink" title="比较判敛法"></a>比较判敛法</h5><p>如果有正项级数$\sum u_n$和正项级数$\sum v_n$，如果存在N，当$n&gt;N$时，有$u_n &lt; v_n$，则有：</p>
-<p>1、若$v_n$收敛，则$u_n$收敛</p>
-<p>2、若$u_n$收敛、则$v_n$收敛</p>
-<h5 id="比较判敛法的极限形式"><a href="#比较判敛法的极限形式" class="headerlink" title="比较判敛法的极限形式"></a>比较判敛法的极限形式</h5><p>如果有正项级数$\sum u_n$和正项级数$\sum v_n$，且$\lim_{n \to \infty} \frac{u_n}{v_n} = \rho$，则有：</p>
-<p>1、若$\rho=0$，则说明存在N，当$n &gt; N$时，有$u_n &lt; v_n$，所以当$v_n$收敛，$u_n$收敛，$u_n$发散，$v_n$发散。</p>
-<p>2、若$\rho = \infty$，则说明存在N，当$n &gt; N$时，有$u_n &gt; v_n$，所以当$v_n$发散，$u_n$发散，$u_n$收敛，$v_n$收敛。</p>
-<p>3、若$0 &lt; \rho &lt; \infty$，则$u_n$与$v_n$有相同的敛散性。</p>
-<h5 id="比值判别法"><a href="#比值判别法" class="headerlink" title="比值判别法"></a>比值判别法</h5><p>对于正项级数$\sum a_n$，有$\lim_{n \to \infty} \frac{a_{n+1}}{a_n} = \rho$，则有：</p>
-<p>1、若$\rho &lt; 1$，级数收敛</p>
-<p>2、若$\rho = 1$，无法判定敛散性</p>
-<p>3、若$p &gt; 1$，级数发散</p>
-<h5 id="根值判敛法"><a href="#根值判敛法" class="headerlink" title="根值判敛法"></a>根值判敛法</h5><p>对于正项级数$\sum a_n$，有$\sqrt[n]{a_n} = \rho$，则有：</p>
-<p>1、若$\rho &lt; 1$，级数收敛</p>
-<p>2、若$\rho = 1$，无法判定敛散性</p>
-<p>3、若$p &gt; 1$，级数发散</p>
-<h1 id="交错级数"><a href="#交错级数" class="headerlink" title="交错级数"></a>交错级数</h1><p>形如$1+(-\frac{1}{2})+\frac{1}{3}+(-\frac{1}{4})、\cdots = \sum(-1)^{n-1}\frac{1}{n}$的，正负号一直交替出现的级数称为交错级数。</p>
-<h3 id="充分条件-1"><a href="#充分条件-1" class="headerlink" title="充分条件"></a>充分条件</h3><p>对于交错级数$\sum (-1)^n a_n$，如果$a_n$单调不增(<code>注意这里是</code>$a_n$，不是$(-1)^n a_n$，$a_n$符号是一致的，即要么$a_n$都为正，要没都为负)，且$\lim_{n \to \infty} a_n = 0$，则该交错级数收敛。</p>
-<h1 id="绝对收敛与条件收敛"><a href="#绝对收敛与条件收敛" class="headerlink" title="绝对收敛与条件收敛"></a>绝对收敛与条件收敛</h1><h3 id="绝对值级数"><a href="#绝对值级数" class="headerlink" title="绝对值级数"></a>绝对值级数</h3><p>对于级数$\sum a_n$，每一项加上绝对值后的级数$\sum | a_n |$，称为绝对值级数。</p>
-<h3 id="绝对收敛"><a href="#绝对收敛" class="headerlink" title="绝对收敛"></a>绝对收敛</h3><p>对于级数$\sum a_n$，如果其绝对值级数$\sum |a_n|$收敛，则称级数$a_n$绝对收敛。</p>
-<p><code>如果一个级数绝对收敛，则原级数必定收敛</code></p>
-<h3 id="条件收敛"><a href="#条件收敛" class="headerlink" title="条件收敛"></a>条件收敛</h3><p>对于级数$\sum a_n$，如果$a_n$收敛，但是其绝对值级数$\sum |a_n|$不收敛，则称$a_n$条件收敛。</p>
-<p><code>绝对收敛的级数满足级数的交换律，收敛的级数满足级数结合律</code></p>
-<h1 id="幂级数"><a href="#幂级数" class="headerlink" title="幂级数"></a>幂级数</h1><p>形如$\sum a_n(x-x_0)^n$，其中$a_n、x_0$为常数的级数称为幂级数。</p>
-<p>最常用的幂级数为: $\sum a_n x^n$。</p>
-<h3 id="阿贝尔定理"><a href="#阿贝尔定理" class="headerlink" title="阿贝尔定理"></a>阿贝尔定理</h3><p>对于幂级数$\sum a_n x^n$，如果该级数在$x_0$处收敛，则对于任意$|x| &lt; |x_0|$，级数<code>绝对收敛</code>；如果该级数在$x_0$处发散，则对于任意$|x| &gt; |x_0|$，级数发散。</p>
-<h3 id="收敛半径"><a href="#收敛半径" class="headerlink" title="收敛半径"></a>收敛半径</h3><p>对于幂级数$\sum a_n x^n$，如果$\lim_{n \to \infty} |\frac{a_{n+1}}{a_n}| = \rho$，则收敛半径</p>
-<script type="math/tex; mode=display">
-R=\begin{cases} 
-0, & \rho=+\infty \\
-+\infty, & \rho=0 \\
-\frac{1}{\rho}, & 0< \rho < +\infty
-\end{cases}</script><p>则，对于任意$|x| &lt; |R|$，都有级数绝对收敛；对于任意$|x| &gt; |R|$，都有级数发散。对于 $x=R$和$x=-R$，级数的敛散性需要带入后进一步判断。</p>
-<p>如果要求幂级数$\sum a_n(x-x_0)^n$，的收敛半径也是一样的方法，他和级数$\sum a_n x^n$的收敛半径相同，只是相当于x的收敛区间的取值左右平移了而已。</p>
-<h3 id="幂级数的性质"><a href="#幂级数的性质" class="headerlink" title="幂级数的性质"></a>幂级数的性质</h3><p>1、对幂级数$\sum a_n(x-x_0)^n$逐项积分后或者逐项求导后，级数的收敛半径不变，收敛区间的端点值的敛散性可能发生变化</p>
-<p>2、如果级数$\sum a_n(x-x_0)^n$在$x_1$处<code>条件收敛</code>，则该级数的收敛半径为$｜x_1-x_o｜$</p>
-<h1 id="一些特殊级数的敛散性"><a href="#一些特殊级数的敛散性" class="headerlink" title="一些特殊级数的敛散性"></a>一些特殊级数的敛散性</h1><h3 id="调和级数"><a href="#调和级数" class="headerlink" title="调和级数"></a>调和级数</h3><p>//TODO: finish this part</p>
-
+          <h1 id="RBF-Radial-Basis-Function，径向基函数-网络"><a href="#RBF-Radial-Basis-Function，径向基函数-网络" class="headerlink" title="RBF(Radial Basis Function，径向基函数)网络"></a>RBF(Radial Basis Function，径向基函数)网络</h1><h1 id="ART-Adaptive-Resonance-Theory，自适应谐振网络"><a href="#ART-Adaptive-Resonance-Theory，自适应谐振网络" class="headerlink" title="ART(Adaptive Resonance Theory，自适应谐振网络)"></a>ART(Adaptive Resonance Theory，自适应谐振网络)</h1><h1 id="SOM-Self-Organizing-Map，自组织映射-网络"><a href="#SOM-Self-Organizing-Map，自组织映射-网络" class="headerlink" title="SOM(Self-Organizing Map，自组织映射)网络"></a>SOM(Self-Organizing Map，自组织映射)网络</h1><h1 id="级联相关网络"><a href="#级联相关网络" class="headerlink" title="级联相关网络"></a>级联相关网络</h1><h1 id="Elman网络"><a href="#Elman网络" class="headerlink" title="Elman网络"></a>Elman网络</h1><h1 id="Boltzmann机"><a href="#Boltzmann机" class="headerlink" title="Boltzmann机"></a>Boltzmann机</h1>
       
     </div>
 
@@ -1114,7 +383,7 @@ R=\begin{cases}
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/10/machine_learning/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/04/08/machine_learning/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1128,7 +397,7 @@ R=\begin{cases}
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/02/10/machine_learning/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" class="post-title-link" itemprop="url">梯度下降</a>
+            <a href="/2020/04/08/machine_learning/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/" class="post-title-link" itemprop="url">模型评估与选择</a>
         </h1>
 
         <div class="post-meta">
@@ -1138,14 +407,14 @@ R=\begin{cases}
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-02-10 21:27:18" itemprop="dateCreated datePublished" datetime="2020-02-10T21:27:18+08:00">2020-02-10</time>
+              <time title="Created: 2020-04-08 22:18:51" itemprop="dateCreated datePublished" datetime="2020-04-08T22:18:51+08:00">2020-04-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-17 10:14:59" itemprop="dateModified" datetime="2020-11-17T10:14:59+08:00">2020-11-17</time>
+                <time title="Modified: 2021-02-09 10:42:24" itemprop="dateModified" datetime="2021-02-09T10:42:24+08:00">2021-02-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1170,23 +439,17 @@ R=\begin{cases}
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="什么是梯度"><a href="#什么是梯度" class="headerlink" title="什么是梯度"></a>什么是梯度</h1><p>梯度本质上来说就是一个向量，这个向量的各个分量是多元函数在某点的各个一阶偏导数。既然是一个向量，那么就可以表示方向。进而由方向导数的定义可以知道，沿梯度方向，函数值<code>增大</code>的速度就越快，相反沿梯度的反方向，函数值<code>减小</code>的速度就越大</p>
-<h1 id="为什么要使用梯度下降法"><a href="#为什么要使用梯度下降法" class="headerlink" title="为什么要使用梯度下降法"></a>为什么要使用梯度下降法</h1><p>对于一些优化问题时，我们一般需要求解问题的局部最优解，而表现在函数上，局部最优解就是函数的极值点。根据费马定理，如果一个函数一阶可偏导，那么极值点处的一阶偏导数都为0。而一般绝大多数的函数都是一阶可偏导的。</p>
-<p>但是直接求出函数的偏导数，然后令偏导数等于0求解方程的这种方法一般很难求出方程的解。所以只有通过数值计算的方法来求解近似解。</p>
-<h1 id="梯度下降法的一般形式"><a href="#梯度下降法的一般形式" class="headerlink" title="梯度下降法的一般形式"></a>梯度下降法的一般形式</h1><p>首先确定一个初始点$W_0$，然后使用迭代公式: $w_{n+1}^i = w_n^i - \alpha f’_{w^i}(W_n)$，$w^i$表示点$W$的第$i$个分量，$\alpha$为学习率，一般为一个接近0的常数，例如0.001。</p>
-<p>迭代，直到达到一定的迭代步数或者是目标函数的变化或参数的变化小于某一阈值时停止迭代。</p>
-<h1 id="实现细节问题"><a href="#实现细节问题" class="headerlink" title="实现细节问题"></a>实现细节问题</h1><h4 id="初始值的设定"><a href="#初始值的设定" class="headerlink" title="初始值的设定"></a>初始值的设定</h4><p>一般的，对于不带约束条件的优化问题，可以将初始值设置为0，或者设置为随机数。初始值的设定对算法的收敛很重要，不同的初始值最后可能收敛到不同的极值点。</p>
-<h4 id="学习率的设定"><a href="#学习率的设定" class="headerlink" title="学习率的设定"></a>学习率的设定</h4><p>一般可以令学习率为一个很小的正数例如0.001，并且在接下来的迭代过程中不再改变学习率。或者可以在迭代的过程中动态的调整学习率的值，例如前10000步迭代时学习率为0.001，然后10000步学习率减半。如果梯地下降算法运行异常的话，可能也是学习率设置得不太合理。</p>
-<h4 id="特征缩放"><a href="#特征缩放" class="headerlink" title="特征缩放"></a>特征缩放</h4><p>有时候，一个特征的可能取值范围可能很大，这对于梯度下降法来说就可能需要很多次迭代才能最后收敛。所以为了减少迭代次数，可以使用特征缩放的方法。</p>
-<p>例如有特征$x_1$，其取值范围为$(0, 2000)$，特征$x_2$，其取值$(0, 100)$，那么就可以对这两个特征进行缩放为$\frac{x_1}{2000}$和$\frac{x_2}{100}$。</p>
-<p>一般的，特征缩放后的读取范围一般为$[-1,1]$之间。为此，可以使用均值归一化方法，如果一个特征$x$的均值为$\mu$，其取值区间长度为$n$，则归一化方法缩放方式为$\frac{x-\mu}{n}$。</p>
-<h4 id="判断梯度下降法是否收敛"><a href="#判断梯度下降法是否收敛" class="headerlink" title="判断梯度下降法是否收敛"></a>判断梯度下降法是否收敛</h4><p>一种方法是设置收敛阈值，即当目标函数的变化值小于某个阈值时表明梯度下降收敛。</p>
-<p>令一种方法是画出目标函数值随着迭代步数变化的图形，例如每迭代100次就画出当时的目标函数的函数值。最后根据图像来判断是否收敛。</p>
-<p>第一种方法有可能不好设置阈值，两种方法可以配合着使用。</p>
-<h1 id="梯度下降法的问题"><a href="#梯度下降法的问题" class="headerlink" title="梯度下降法的问题"></a>梯度下降法的问题</h1><p>在大多数非凸优化问题中，极值点不一定就是局部最优解的点，而且，即使某个极值点是局部最优解的点但是局部最优解不一定就是全局最优解。</p>
-<h1 id="随机梯度下降"><a href="#随机梯度下降" class="headerlink" title="随机梯度下降"></a>随机梯度下降</h1><p>对于某些机器学习问题，我们的目标函数是关于样本的损失函数，例如对于线性规划问题，假设训练集中有N个样本，并且N很大，在进行训练时我们使用均方误差来作为损失函数。即$L(W) = \frac{1}{N} \sum_{k=1}^{N} (Y-WX)^2$，$Y,X$都是N维向量，$W$是我们的自变量。则一次迭代下来，要计算全部样本的话计算量就太大了。</p>
-<p>作为改进，可以在一次迭代时，<code>随机选择部分样本</code>来进行近似损失函数，即$L(W) = \frac{1}{M} \sum_{k=1}^{M} (Y-WX)^2, M \ll N$。这就是随机梯度下降法。已经证明，随机梯度下降法产生的梯度的期望值等于全部样本最为产生的梯度。</p>
-
+          <h1 id="经验误差与过拟合"><a href="#经验误差与过拟合" class="headerlink" title="经验误差与过拟合"></a>经验误差与过拟合</h1><p>学习器的实际预测输出与样本的真实输出之间的差异称为“误差”，学习器在训练集上的错误称为<code>训练误差</code>(training error)或<code>经验误差</code>(empirical error)，在新样本上的误差称为<code>泛化误差</code>(generalization error)</p>
+<p>我们实际希望的，是在新样本上能表现得很好的学习器。当学习器把训练集样本学得“太好”了的时候，很可能<code>把训练集样本自身的一些特点当作了所有潜在样本都具有的一般性质</code>，这样就会导致泛化性能下降，这种现象称为<code>过拟合</code>。</p>
+<h1 id="评估方法"><a href="#评估方法" class="headerlink" title="评估方法"></a>评估方法</h1><p>使用一个“测试集(testing set)”来测试学习器对新样本的判别能力，然后测试集上的“测试误差”(testing error)作为泛化误差的近似，测试集应该尽可能与训练集互斥，<code>即测试样本尽量不在训练集中出现、未在训练过程中使用过</code>。</p>
+<h3 id="留出法"><a href="#留出法" class="headerlink" title="留出法"></a>留出法</h3><p>“留出法” (hold-out)直接将数据集 D 划分为两个互斥的集合，其中一个集合作为训练集S，另一个作为测试集T， 即$D = S \bigcup T$，$S \bigcap T = \emptyset$ .在S上训练出模型后，用 T 来评估其测试误差，作为对泛化误差的估计。<br>训练/测试集的划分要尽可能保持数据分布的一致性，如果从采样 (sampling)的角度来看待数据集的划分过程，则保留类别比例的采样方式通常称为”分层采样” (stratified sampling)。例如通过对D进行分层而获得含70%样本的训练集S和含30%样本的测试集T，若D包含500个正例，500个反例，则分层采样S应包含350个正例，350个反例，T则包含150个正例，150个反例。</p>
+<p>单次使用留出法得到的估计结果往往不够稳定可靠，在使用留出法时，一般要采用若干次随机划分、重复进行实验评估后取平均值作 为留出法的评估结果。<br>常见做法是将大约 $\frac{2}{3}$ ～ $\frac{4}{5}$ 的 样本用于训练，剩余样本用于测试。</p>
+<h3 id="交叉验证法"><a href="#交叉验证法" class="headerlink" title="交叉验证法"></a>交叉验证法</h3><p>“交叉验证法” (crossvalidation)先将数据集D划分为k个大小相似的互斥子集，即${D = D1 \bigcup D2 \bigcup \dots \bigcup Dk},{Di\bigcap Dj = \emptyset}$ ($i\neq j$). 每个子集Di都尽可能保持数据分布的一致性，即从 D 中通过分层采样得到. 然后，每次用 k-1 个子集的并集作为训练集?余下的那个子集作为测试集;这样就可获得 k 组训练/测试集，从而可进行 k 次训练和测试，最终返回的是这 k 个测试结果的均值。<code>交叉验证法评估结果的稳定性和保真性在很大程度上取决于 k 的取值。</code></p>
+<p>与留出法相似，将数据集 D 划分为 k 个子集同样存在多种划分方式。为减小因样本划分不同而引入的差别，k折交叉验证通常要随机使用不同的划分重复p次，最终的评估结果是这 p次 k折交叉验证结果的均值。<br>院假定数据集 D 中包含 m 个样本，若令 k=m，则得到了<code>交叉验证法的一个特例</code>:留一法(Leave-One-Out比，简称 LOO)。</p>
+<h3 id="自助法"><a href="#自助法" class="headerlink" title="自助法"></a>自助法</h3><p>它直接以自助采样法 (bootstrap sampling)为基础。 给定包含 m 个样本的数据集 D ，我们对它进行采样产生数据集 D’: 每次随机从 D 中挑选一个样本，将其拷贝放入 D’ 然后再将该样本放回初始数据集 D 中，使得该样本在下次采样时仍有可能被采到;这个过程重复执行 m 次后，我们就得到了包含 m 个样本的数据集 D’，这就是自助采样的结果。</p>
+<h3 id="调参与最终模型"><a href="#调参与最终模型" class="headerlink" title="调参与最终模型"></a>调参与最终模型</h3><p>大多数学习算法都有些参数 (parameter)需要设定，参数配置不同，学得模 型的性能往往有显著差别.<br>对每种参数配置都 训练出模型，然后把对应最好模型的参数作为结果。<br>学习算法的很多参数是在实数范围内取值，因此，对每种参数配置都训练出模型来是不可行的。现实中常用的做法，是对每个参数选定一个范围和变化步长，例如在 [0，0.2] 范围内以 0.05 为步长，则实际要评估的候选参数值有 5 个，最终是从这 5 个候选值中产生选定值。</p>
+<p><strong>给定包含 m 个样本的数据集 D ，在模型评估与选择过程中由于需要留出 一部分数据进行评估测试，事实上我们只使用了一部分数据训练、模型。因此，在模型选择完成后，学习算法和参数配置己选定，此时应该用数据集 D 重新训练模型.这个模型在训练过程中使用了所有 m 个样本，这才是我们最终提交给用户的模型.</strong></p>
+<h1 id="性能度量"><a href="#性能度量" class="headerlink" title="性能度量"></a>性能度量</h1><h3 id="错误率与精度"><a href="#错误率与精度" class="headerlink" title="错误率与精度"></a>错误率与精度</h3><h3 id="查准率、查全率与Fl"><a href="#查准率、查全率与Fl" class="headerlink" title="查准率、查全率与Fl"></a>查准率、查全率与Fl</h3><h3 id="ROC-与-AUC"><a href="#ROC-与-AUC" class="headerlink" title="ROC 与 AUC"></a>ROC 与 AUC</h3><h3 id="代价敏感错误率与代价曲线"><a href="#代价敏感错误率与代价曲线" class="headerlink" title="代价敏感错误率与代价曲线"></a>代价敏感错误率与代价曲线</h3>
       
     </div>
 
@@ -1205,7 +468,7 @@ R=\begin{cases}
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/09/machine_learning/%E5%87%B8%E4%BC%98%E5%8C%96/">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/03/13/machine_learning/neural_network&deep_learning/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1219,7 +482,7 @@ R=\begin{cases}
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/02/09/machine_learning/%E5%87%B8%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">凸优化</a>
+            <a href="/2020/03/13/machine_learning/neural_network&deep_learning/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">神经网络与深度学习</a>
         </h1>
 
         <div class="post-meta">
@@ -1229,14 +492,14 @@ R=\begin{cases}
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-02-09 18:46:57" itemprop="dateCreated datePublished" datetime="2020-02-09T18:46:57+08:00">2020-02-09</time>
+              <time title="Created: 2020-03-13 20:16:24" itemprop="dateCreated datePublished" datetime="2020-03-13T20:16:24+08:00">2020-03-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-18 00:37:29" itemprop="dateModified" datetime="2020-11-18T00:37:29+08:00">2020-11-18</time>
+                <time title="Modified: 2020-10-19 18:50:29" itemprop="dateModified" datetime="2020-10-19T18:50:29+08:00">2020-10-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1261,348 +524,116 @@ R=\begin{cases}
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="仿射集"><a href="#仿射集" class="headerlink" title="仿射集"></a>仿射集</h1><p>在n维空间中，对于点的集合C，如果集合中的任意两点x，y，对于任意$\theta$，都有$\theta x + (1-\theta)y \in C$，则集合C是一个仿射集合。即在集合中任意两点连线的<strong>直线</strong>上的点都在集合中。</p>
-<h1 id="凸集"><a href="#凸集" class="headerlink" title="凸集"></a>凸集</h1><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>在n维空间中，对于点的集合C，如果集合中的任意两点x，y，对于任意$0\leq\theta\leq1$，都有$\theta x + (1-\theta)y \in C$，则集合C为一个凸集。即在集合中任意两点，其连线<strong>线段</strong>上的点也都在集合中。</p>
-<p>凸集和防射集的定义就是$\theta$的取值范围不同。</p>
-<h3 id="常见的凸集"><a href="#常见的凸集" class="headerlink" title="常见的凸集"></a>常见的凸集</h3><h5 id="n维实向量空间-R-n"><a href="#n维实向量空间-R-n" class="headerlink" title="n维实向量空间$R^n$"></a>n维实向量空间$R^n$</h5><p>如果有$x,y \in R^n$，则显然有对于任意$0\leq\theta\leq1$，都有$\theta x + (1-\theta)y \in R^n$。</p>
-<p>由此可见，<code>如果一个优化问题是不带约束的优化，则其变量可行域是一个凸集</code>。</p>
-<h5 id="仿射子空间-x-in-R-n-Ax-b"><a href="#仿射子空间-x-in-R-n-Ax-b" class="headerlink" title="仿射子空间$\{x \in R^n:Ax=b\} $"></a>仿射子空间$\{x \in R^n:Ax=b\} $</h5><p>其中A为$m \times n$的矩阵，b为m维列向量。即非齐次线性方程组的解空间。</p>
-<p>证明：</p>
-<p>如果有$x,y \in R^n$且$Ax=b,Ay=b$，</p>
-<p>则对于任意的$0\leq\theta\leq1$，</p>
-<p>都有$A(\theta x+(1-\theta)y) = \theta Ax+(1-\theta)Ay=\theta b + (1-\theta)b=b$。</p>
-<p>由此可见，<code>如果变量的约束是线性等式约束，则该线性等式确定的可行域是一个凸集</code>。</p>
-<h5 id="子空间-x-in-R-n-Ax-leq-b"><a href="#子空间-x-in-R-n-Ax-leq-b" class="headerlink" title="子空间$\{x \in R^n:Ax\leq b\}$"></a>子空间$\{x \in R^n:Ax\leq b\}$</h5><p>其中A为$m \times n$的矩阵，b为m维列向量。</p>
-<p>证明：</p>
-<p>如果有$x,y \in R^n$且$Ax\leq b,Ay\leq b$，</p>
-<p>则对于任意的$0\leq\theta\leq1$，</p>
-<p>都有$A(\theta x+(1-\theta)y) = \theta Ax+(1-\theta)Ay\leq\theta b + (1-\theta)b=b$</p>
-<p>由此可见，<code>如果变量的约束是线性不等式约束，则该线性不等式确定的可行域是一个凸集</code>。</p>
-<h3 id="凸集的性质"><a href="#凸集的性质" class="headerlink" title="凸集的性质"></a>凸集的性质</h3><p>1、多个凸集的交集仍然是凸集</p>
-<p>证明：</p>
-<p>假设$C_1,C_2,…,C_k$为凸集，他们的交集为$C=\bigcap_{i=1}^{k}Ci$，并有$0 \leq \theta \leq 1$,</p>
-<p>因为$C_1,C_2,…,C_k$为凸集，所以对于$x,y \in C$，有$\theta x + (1-\theta)y \in C_i, \forall i=1,…,k$</p>
-<p>即$\theta x + (1-\theta)y \in C$</p>
-<p>2、多个凸集的并集不一定是凸集</p>
-<h1 id="凸函数"><a href="#凸函数" class="headerlink" title="凸函数"></a>凸函数</h1><h3 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h3><p>在函数定义域内，如果对于任意的x和y，以及实数$0 \leq \theta \leq 1$，都满足$f(\theta x + (1-\theta)y) \leq \theta f(x) + (1-\theta)f(y)$，则函数为凸函数。<code>可见，凸函数的定义和函数曲线的凹凸性的定义是相反的。</code></p>
-<p>从几何意义上讲，在凸函数上的任意两点的连线线段上的点都在函数的上方。</p>
-<p>如果把定义中的$\leq$改为$&lt;$，则称函数是<code>严格凸函数</code>。</p>
-<p><code>对于一元函数</code>，凸函数的二阶判定式为$f’’(x) \geq 0$，严格凸函数的二阶判定式为$f’’(x) &gt; 0$。由此也可见凸函数的定义和函数曲线的凹凸性的定义是相反的。</p>
-<p><code>对于多元函数</code>，如果它是凸函数，则其Hessian矩阵为半正定矩阵。如果是严格凸函数，则其Hessian矩阵为正定矩阵。</p>
-<h3 id="凸函数的性质"><a href="#凸函数的性质" class="headerlink" title="凸函数的性质"></a>凸函数的性质</h3><p>1、凸函数的<code>非负线性组合</code>仍然是凸函数。</p>
-<h1 id="Hessian矩阵"><a href="#Hessian矩阵" class="headerlink" title="Hessian矩阵"></a>Hessian矩阵</h1><p>Hessian矩阵是有多元函数的二阶偏导数组成的矩阵。如果一个函数二阶可导，其Hessian矩阵定义为：</p>
+          <h1 id="神经元模型"><a href="#神经元模型" class="headerlink" title="神经元模型"></a>神经元模型</h1><p>神经网络中最基本的成分是神经元模型。</p>
+<p><img src="/2020/03/13/machine_learning/neural_network&deep_learning/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/M-P神经元模型.jpeg" alt="M-P神经元模型" style="zoom:25%;"></p>
+<p>在这个模型中，神经元接收来自n个其他神经元传递过来的输入信号，这些输入信号通过权重的连接进行传递，神经元接收到的总输入值将与神经元的阈值进行比较，然后通过“激活函数”处理以产生神经元的输出。</p>
+<p><code>理想中的激活函数是阶跃函数</code>，它将输入值映射为输出值为0，1，其中0对应神经元抑制，1对应神经元兴奋。然而，阶跃函数具有不连续、不光滑等不好的性质，因此实际常用Sigmoid函数作为激活函数，典型的Sigmoid函数就是对数几率函数。</p>
+<p><img src="/2020/03/13/machine_learning/neural_network&deep_learning/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/神经元激活函数.jpeg" alt="神经元激活函数" style="zoom:25%;"></p>
+<p>把许多个这样的神经元按一定的层次结构连接起来，就得到了神经网络。</p>
+<h1 id="感知机与多层网络"><a href="#感知机与多层网络" class="headerlink" title="感知机与多层网络"></a>感知机与多层网络</h1><p>感知机由两层神经元组成，输入层接收外界输入信号后传递给输出层(输入层只负责接收信号，不负责处理)，输出层是M-P神经元，亦称“阈值逻辑单元”。感知机能实现逻辑与、或、非运算。例如对于只有两个输入、一个输出的感知机，令$w_1 = w_2 = 1$，$\theta = 1$，则$y = 1·x_1 + 1·x_2 - 1$则当$x_1 = x_2 = 1$时，$y=1$。</p>
+<p>给定训练集数据，权重$w_i(i=1,2,\cdots,n)$以及阈值$\theta$可通过学习算法得到，阈值$\theta$可看作一个固定输入为$-1$的结点，所对应的连接权重为$w_{n+1}$(即$x_{n+1} = -1, w_{n+1} = \theta$)，这样权重和阈值的学习就可以统一为权重的学习。感知机学习规则非常简单，对训练样例$(x,y)$，若当前感知机的输出为$\hat{y}$，则感知机权重将这样调整:</p>
 <script type="math/tex; mode=display">
-\begin{bmatrix}
-\frac{\partial^2f}{\partial {x_1}^2} &
-\frac{\partial^2f}{\partial x_1x_2} &
-\cdots &
-\frac{\partial^2f}{\partial x_1x_n} \\
-\frac{\partial^2f}{\partial x_2x_1} &
-\frac{\partial^2f}{\partial {x_2}^2} &
-\cdots &
-\frac{\partial^2f}{\partial x_2x_n} \\
-
-\vdots & \vdots & & \vdots \\
-
-\frac{\partial^2f}{\partial x_nx_1} &
-\frac{\partial^2f}{\partial x_nx_2} &
-\cdots &
-\frac{\partial^2f}{\partial {x_n}^2}
-\end{bmatrix}</script><p>如果多元函数的混合二阶偏导数连续，则其混合二阶偏导数结果与求导次序无关。大多数多元函数的混合二阶偏导数是连续的，所以Hessian矩阵大多是对称矩阵。</p>
-<p>根据多元函数的极值判别法，假设多元函数在点M的<code>梯度为0</code>，则M是函数的驻点，如果：</p>
-<p>1、Hessian矩阵正定，函数在该点有极小值</p>
-<p>2、Hessian矩阵负定，函数在该点有极大值</p>
-<p>3、Hessian矩阵既不正定也不负定，则不能确定是否取得极值</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/09/others/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/09/others/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="post-title-link" itemprop="url">正则表达式</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-09 15:20:41" itemprop="dateCreated datePublished" datetime="2020-02-09T15:20:41+08:00">2020-02-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-09 13:02:32" itemprop="dateModified" datetime="2021-02-09T13:02:32+08:00">2021-02-09</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/regular-expression/" itemprop="url" rel="index">
-                    <span itemprop="name">regular expression</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><code>正则表达式是由普通字符以及特殊字符(称为&quot;元字符&quot;)组成的文本模式</code></p>
-<p>正则表达式是一个匹配连续串的规则，即匹配会在每个连续的字符串中进行</p>
-<h2 id="普通字符"><a href="#普通字符" class="headerlink" title="普通字符"></a>普通字符</h2><p>普通字符包括没有显示指定为元字符的所有可打印和不可打印字符。这<code>包括所有的大写和小写字母、所有数字、所有标点符号和一些其他符号</code></p>
-<h4 id="非打印字符"><a href="#非打印字符" class="headerlink" title="非打印字符"></a>非打印字符</h4><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>字符</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>\cx</td>
-<td>匹配由x指明的控制字符。例如，\cM匹配一个control-M或回车符。<code>x的值必须为A-Z或a-z之一。否则，将c视为一个原意的&#39;c&#39;字符</code></td>
-</tr>
-<tr>
-<td>\t</td>
-<td>匹配一个制表符。等价于\x09和\cl</td>
-</tr>
-<tr>
-<td>\n</td>
-<td>匹配一个换行符。等价于\x0a和\cJ</td>
-</tr>
-<tr>
-<td>\v</td>
-<td>匹配一个垂直制表符。等价于\x0b和\cK</td>
-</tr>
-<tr>
-<td>\f</td>
-<td>匹配一个换页符。等价于\x0c和\cL</td>
-</tr>
-<tr>
-<td>\r</td>
-<td>匹配一个回车符。等价于\x0d和\cM</td>
-</tr>
-<tr>
-<td>\s</td>
-<td>匹配任何空白字符，包括空格、制表符、换页符等等。等价于[\f\n\r\t\v]。注意unicode正则表达式会匹配全角空格符</td>
-</tr>
-<tr>
-<td>\S</td>
-<td>匹配任何非空白字符。等价于<sup><a href="#fn_\f\n\r\t\v" id="reffn_\f\n\r\t\v">\f\n\r\t\v</a></sup></td>
-</tr>
-<tr>
-<td>\d</td>
-<td>匹配数字</td>
-</tr>
-<tr>
-<td>\w</td>
-<td>匹配word(数字、字母)</td>
-</tr>
-<tr>
-<td>\W</td>
-<td>匹配非word(数字、字母)</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="特殊字符-元字符"><a href="#特殊字符-元字符" class="headerlink" title="特殊字符(元字符)"></a>特殊字符(元字符)</h2><p>所谓特殊字符，就是有一些特殊含义的字符，例如”?”，<code>如果要匹配特殊字符，就需要对特殊字符进行转义，例如&quot;\?&quot;</code></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>字符</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$</td>
-<td>匹配输入字符串的结尾位置。如果设置了RegExp对象的Multiline属性，则$也匹配’\n’或’\r’</td>
-</tr>
-<tr>
-<td>()</td>
-<td>标记一个子表达式的开始和结束位置，子表达式可以提供以后使用</td>
-</tr>
-<tr>
-<td>*</td>
-<td>匹配前面的子表达式<code>零次</code>或多次</td>
-</tr>
-<tr>
-<td>+</td>
-<td>匹配前面的子表达式<code>一次</code>或多次</td>
-</tr>
-<tr>
-<td>.</td>
-<td>匹配除换行符\n之外的任何单字符</td>
-</tr>
-<tr>
-<td>[</td>
-<td>标记一个中括号表达式的开始</td>
-</tr>
-<tr>
-<td>?</td>
-<td>匹配前面的子表达式零次或一次，或指明一个<a href>非贪婪限定符</a>)</td>
-</tr>
-<tr>
-<td>\</td>
-<td>将下一个字符标记为特殊字符或原意字符，或想活引用，或八进制转义符</td>
-</tr>
-<tr>
-<td>^</td>
-<td>匹配输入字符串的开始位置，除非在方括号表达式中使用。当该符号在方括号表达式中使用时，表示不接受方括号表达式中的字符集合</td>
-</tr>
-<tr>
-<td>{</td>
-<td>标记限定符表达式的开始</td>
-</tr>
-<tr>
-<td>\</td>
-<td></td>
-<td>指明两项之间的一个选择</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>举几个🌰：</p>
+w_i \leftarrow w_i + \Delta w_i \\
+\Delta w_i = \eta(y - \hat{y})x_i</script><p>其中$\eta \in (0,1)$为学习率。</p>
+<p>解释：假设$w_i &gt; 0$，$x_i &gt; 0$，预测结果$\hat{y} &gt; y$时，说明需要使得$x_i$分类占的比例变小，此时$\Delta w_i &lt; 0$，$w_i$减小。其他情况同理。</p>
+<p>感知机只有输出层神经元进行激活函数处理，即只拥有一层功能神经元，其学习能力非常有限。可以证明，<code>若学习样例是线性可分的，即存在一个超平面能将它们分开，则感知机的学习过程一定会收敛而求得适当的权重向量；否则感知机学习过程将会发生振荡，权重向量难以稳定下来，不能求得合适解</code>，例如感知机甚至不能解决异或这样简单的非线性可分问题</p>
+<p><img src="/2020/03/13/machine_learning/neural_network&deep_learning/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/异或问题.jpeg" alt="异或问题" style="zoom:25%;"></p>
+<p>要解决非线性可分问题，需考虑使用多层功能神经元。输出层与输入层之间的一层神经元，被称为隐层或隐含层，隐含层和输出层神经元都是拥有激活函数的功能神经元。</p>
+<p>更一般的，常见的神经网络是如下图的层级结构，每层神经元与下一层神经元<code>全</code>互连，神经元之间不存在同层连接，也不存在跨层连接。这样的神经网络结构通常称为<code>多层前馈神经网络</code></p>
+<p><img src="/2020/03/13/machine_learning/neural_network&deep_learning/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/前馈网络.jpeg" alt="前馈网络" style="zoom:25%;"></p>
+<p><code>注意</code>，前馈并不意味着网络中信号不能向后传，而指网络拓扑结构上不存在环或回路。输入层神经元仅是接收输入，不进行函数处理，隐含层与输出层包含功能神经元。</p>
+<p>神经网络的学习过程，就是根据训练集数据来调整神经元之间的连接权以及每个功能神经元的阈值。</p>
+<h1 id="误差逆传播-BP-算法"><a href="#误差逆传播-BP-算法" class="headerlink" title="误差逆传播(BP)算法"></a>误差逆传播(BP)算法</h1><p>欲训练多层网络，简单的感知机学习规则显然不够了，需要更强大的学习算法。误差逆传播(Error BackPropagation, 简称<code>BP</code>)算法就是其中的最杰出的代表。<code>BP算法不仅可用于多层前馈神经网络，还可用于其他类型的神经网络，例如训练递归神经网络，但通常说BP网络时，一般是指用BP算法训练的多层前馈神经网络</code></p>
+<h4 id="标准BP算法推导"><a href="#标准BP算法推导" class="headerlink" title="标准BP算法推导"></a>标准BP算法推导</h4><p>对于给定的训练集$D = \{(x_i, y_i)\}_{i=1}^{m}$，其中$x_i \in R^d, y_i \in R^l$，即输入示例由$d$个属性描述，输出$l$维实值向量。首先定义一下变量：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+&d: 输入神经元个数 \\
+&q: 隐层神经个数 \\
+&l: 输出神经元的个数 \\
+&\theta_j: 输出层第j个神经元的阈值 \\
+&\gamma_h: 隐层第h个神经元的阈值 \\
+&v_{ih}: 输入层第i个神经元与隐层第h个神经元之间的连接权 \\
+&w_{hj}: 隐层第h个神经元与输出层第j个神经元之间的连接权 \\
+&\alpha_h : 隐层第h个神经元接收到的输入，\alpha_h = \sum_{i=1}^{d}v_{ih}x_i \\
+&b_h : 隐层第h个神经元的输出 \\
+&\beta_j : 输出层第j个神经元接收到的输入，\beta_j = \sum_{h=1}^{q}w_{hj}b_h
+\end{align*}</script><p>下图是相关变量在神经网络中的表示：</p>
+<p><img src="/2020/03/13/machine_learning/neural_network&deep_learning/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/BP网络及算法中的变量符号.jpeg" alt="BP网络及算法中的变量符号" style="zoom:33%;"></p>
+<p><code>假设隐层和输出层神经元都使用对数几率函数(以下公式的推导都是在这个前提下进行的，当实际运用中不是使用这个函数时需要自己另行推导公式)</code>，即$f(x) = \frac{1}{1 + e^{-x}}$，对训练例$(x_k, y_k)$，假定神经网络的输出为$\hat{y}_k = (\hat{y}_1^k,\hat{y}_2^k, \cdots,\hat{y}_l^k)$，即</p>
+<script type="math/tex; mode=display">
+\hat{y}_j^k = f(\beta_j - \theta_j) = \frac{1}{1 + e^{-(\beta_j - \theta_j)}}</script><p>则网络在$(x_k, y_k)$上的均方误差为</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+E_k &= \frac{1}{2} \sum_{j=1}^{l}(\hat{y}_j^k - y_j^k)^2 \\
+&= \frac{1}{2}\sum_{j=1}^{l}(\frac{1}{1 + e^{-(\beta_j - \theta_j)}} - y_j^k)^2 \\
+&= \frac{1}{2}\sum_{j=1}^{l}(\frac{1}{1 + e^{-(\sum_{h=1}^{q}w_{hj}b_h - \theta_j)}} - y_j^k)^2
+\end{align*}</script><p>对于上面的公式，总过用$dq + lq + q + l$个参数需要确定。BP是一个迭代算法，在迭代的每一轮中采用广义的感知机学习规则对参数进行更新估计，对于任意参数$v$的更新估计式为</p>
+<script type="math/tex; mode=display">
+v \leftarrow v + \Delta v</script><p><code>BP算法基于梯度下降策略</code>，以隐层到输出层的连接权$w_{hj}$为例子，以目标的负梯度方向对参数进行调整。对均方误差$E_k$，给定学习率$\eta$，有</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\Delta w_{hj} &= -\eta \frac{\partial E_k}{\partial w_{hj}} \\
+&= \frac{\partial E_k}{\partial \hat{y}_j^k} \frac{\partial \hat{y}_j^k}{\partial \beta_j} \frac{\partial \beta_j}{\partial w_{hj}}
+\end{align*}</script><p>由于$\beta_j = \sum_{h=1}^{q} w_{hj}b_h$，则有</p>
+<script type="math/tex; mode=display">
+\frac{\partial \beta_j}{\partial w_{hj}} = b_h \tag{1}</script><p>对于对数几率函数，有一个很好的性质：</p>
+<script type="math/tex; mode=display">
+f'(x) = f(x)(1-f(x)) = \frac{e^x}{(e^x + 1)^2}</script><p>则：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+& \frac{\partial E_k}{\partial \hat{y}_j^k} \frac{\partial \hat{y}_j^k}{\partial \beta_j} \\
+=& \frac{\partial E_k}{\partial \hat{y}_j^k} \frac{\partial \hat{y}_j^k}{\partial (\beta_j - \theta_j)} \\
+=& (\hat{y}_j^k - y_j^k)f'(\beta_j - \theta_j) \\
+=& (\hat{y}_j^k - y_j^k)\hat{y}_j^k(1-\hat{y}_j^k)
+\end{align*}</script><p>令$g_j = - \frac{\partial E_k}{\partial \hat{y}_j^k} \frac{\partial \hat{y}_j^k}{\partial \beta_j} = \hat{y}_j^k(1-\hat{y}_j^k)(y_j^k - \hat{y}_j^k)$，则可得到关于$w_{hj}$的更新公式</p>
+<script type="math/tex; mode=display">
+\Delta w_{hj} = \eta g_j b_h</script><p>同理可得到</p>
+<script type="math/tex; mode=display">
+\Delta \theta_j = \eta g_j \\
+\Delta v_{ih} = \eta e_h x_i \\
+\Delta \gamma_h = -\eta e_h \\
+其中 \\
+e_h = - \frac{\partial E_k}{\partial b_h} \frac{\partial b_h}{\partial \alpha_h} = b_h(1-b_h)\sum_{j=1}^{l}w_{hj}g_j</script><p>有时为了做精细调节，计算$\Delta w_{hj}、\Delta \theta_j$使用的$\eta$可以和计算$\Delta v_{ih}、\Delta \gamma_h$使用的$\eta$可以不同。</p>
+<h4 id="标准BP算法流程"><a href="#标准BP算法流程" class="headerlink" title="标准BP算法流程"></a>标准BP算法流程</h4><script type="math/tex; mode=display">
+\begin{align*}
+&输入： 训练集D = \{(x_i, y_i)\}_{i=1}^m \\
+&过程：\\
+    &1：\space \space 在(0,1)范围内随机初始化网络中的所有连接权和阈值 \\
+    &2：\space \space repeat \\
+    &3：\space \space \space \space    for \space \space all (x_k, y_k) \in D \space do \\
+        &4: \space \space \space \space \space \space \space 根据当前参数计算得到样本输出\hat{y}_k;\\
+        &5: \space \space \space \space \space \space \space 计算输出层神经元的梯度项g_j; \\
+        &6: \space \space \space \space \space \space \space 计算隐层神经元的梯度项 e_h; \\
+        &7: \space \space \space \space \space \space \space 更新连接权w_{hj}，v_{ih}与阈值\theta_j，\gamma_h \\
+        &8: \space \space \space \space end \space \space for \\
+        &9: until 达到停止条件
+\end{align*}</script><p>对每个训练样例，BP算法执行以下操作：先将输入示例提供给输入层神经元，然后逐层将信号前传，直到产生输出层的结果；然后计算输出层的误差，再将误差逆向传播至隐层神经元，最后根据隐层神经云的误差来对连接权和阈值进行调整。该迭代过程一直进行，直到达到某个停止条件为止，例如训练误差已达到一个很小的值。</p>
+<h4 id="累计BP算法"><a href="#累计BP算法" class="headerlink" title="累计BP算法"></a>累计BP算法</h4><p><code>BP算法的目标是要最小化训练集D上的累积误差</code>，即：</p>
+<script type="math/tex; mode=display">
+E = \frac{1}{m} \sum_{k=1}^{m}E_k</script><p>但<code>标准BP算法每次仅对一个训练样例更新连接权和阈值，更新的规则也是基于单个</code> $E_k$ <code>推导的</code>，如果类似地推导出基于累积误差最小化的更新规则，就得到了累积误差逆传播算法。累积BP算法与标准BP算法都很常用。</p>
+<p>一般来说，标准BP算法每次更新都值针对单个样例，参数更新得非常频繁，<code>而且对不同样例进行更新得效果可能出现抵消现象</code>，因此，为了达到同样的累积误差极小点，标准BP算法往往需进行更多次数的迭代。</p>
+<p>累积BP算法直接针对累积误差最小化，它在读取<code>整个</code>训练集D一遍后才对参数进行更新。其参数更新的频率低得多，但在很多任务中，累积误差下降到一定程度之后，进一步下降会非常缓慢，这时标准BP往往会更快获得较好的解，尤其是在训练集D非常大时会更明显。</p>
+<h4 id="防止过拟合"><a href="#防止过拟合" class="headerlink" title="防止过拟合"></a>防止过拟合</h4><p>已证明，只需一个包含足够多神经元的隐层，多层前馈神经网络就能以任意精度逼近任意复杂度的连续函数。然而如何设置隐层神经元的个数仍是个未决问题，实际应用中通常靠“试错法”调整。</p>
+<p>正是由于神经网络强大的表示能力，BP神经网络经常遭遇过拟合。有两种策略常用来缓解BP网络的过拟合。</p>
+<p>第一种策略是早停：将数据分为训练集和验证集，训练集用于计算梯度、更新连接权和阈值，验证集用来估计误差，若训练集误差降低但验证集误差升高，则停止训练。</p>
+<p>第二种策略是“正则化”，其基本思想是在误差目标函数中增加一个用于描述网络复杂度的部分，例如连接权和阈值的平方和(增加连接权和阈值平方和这一项后，训练过程将会偏好比较小的连接权和阈值，使网络输出更加“光滑”，从而对过拟合有所缓解)，令$E_k$表示第k个训练集上的误差，$w_i$表示连接权和阈值，则误差目标函数改变为</p>
+<script type="math/tex; mode=display">
+E = \lambda \frac{1}{m} \sum_{k=1}^{m}E_k + (1-\lambda)\sum_{i}w_i^2</script><p>其中$\lambda$用于对经验误差与网络复杂度这两项进行折中，通常通过交叉验证法(见模型评估方法那一节)来估计。</p>
+<h1 id="全局最小与局部最小"><a href="#全局最小与局部最小" class="headerlink" title="全局最小与局部最小"></a>全局最小与局部最小</h1><p>由于上面的神经网络算法是基于梯度下降方法的，所以在寻找最优参数的时候很有可能最后得到的结果是局部最小值而不是全局最小值，我们在参数寻优的过程中是希望找到全局最小。</p>
+<p>为了避免陷入局部最小，在现实任务中，人们常采用以下策略来试图“跳出”局部最小，从而进一步接近全局最小。</p>
 <ul>
-<li><p>“?” : 例如colou?r可以匹配color和colour</p>
-</li>
-<li><p>“*“ : 例如runoo*b可以匹配runob、runoob、runooooob等</p>
-</li>
-<li><p>“+” : 例如runoo+b可以匹配runoob、runooooob等</p>
-</li>
-<li><p>(abc|bcd|cde)：abc、bcd、cde三者之一均可</p>
-</li>
+<li>以多种不同参数初始化<code>多个</code>神经网络，按标准方法训练后，取其中误差最小的解作为最终方案。这相当于从多个不同的初始开始搜索，这样就可能陷入<code>不同的局部最小</code>，从中进行选择有可能更接近全局最小的结果。</li>
+<li>使用“模拟退火”技术，模拟退火在每一步都以一定的概率接受比当前接更差的结果，从而有助于“跳出”局部最小，<code>在每步迭代过程中，接受“次优解”的概率要随着时间的推移而逐渐降低</code>，从而保证算法的稳定性。</li>
+<li>使用随机梯度下降。使用随机梯度下降，由于每次迭代都是随机选择的部分数据，所以当陷入了局部最小，它计算出来的梯度仍可能不为零，这样就有机会跳出局部最小继续搜索。</li>
 </ul>
-<h4 id="限定符"><a href="#限定符" class="headerlink" title="限定符"></a>限定符</h4><p><code>限定符是用来制定正则表达式的一个给定组件必须出现多少次才能满足匹配</code></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>字符</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>*</td>
-<td>匹配前面的子表达式<code>零次</code>或多次</td>
-</tr>
-<tr>
-<td>+</td>
-<td>匹配前面的子表达式<code>一次</code>或多次</td>
-</tr>
-<tr>
-<td>?</td>
-<td>匹配前面的子表达式零次或一次</td>
-</tr>
-<tr>
-<td>{n}</td>
-<td>n是一个<code>非负整数</code>，匹配确定的n次</td>
-</tr>
-<tr>
-<td>{n,}</td>
-<td>n是一个<code>非负整数</code>，至少匹配n次</td>
-</tr>
-<tr>
-<td>{n,m}</td>
-<td>m和n均为非负整数，其中n&lt;=m，最少匹配n次且最多匹配m次，<code>注意在逗号和两个数之间不能有空格</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-<h4 id="贪婪限定符和非贪婪限定符"><a href="#贪婪限定符和非贪婪限定符" class="headerlink" title="贪婪限定符和非贪婪限定符"></a>贪婪限定符和非贪婪限定符</h4><p>贪婪模式：*、+ 和 ? 限定符都被称为“贪心的”，因为它们匹配尽可能多的文本。<br>非贪婪模式：通过在 *、+ 或 ? 限定符之后放置 ?，该表达式从“贪心”表达式转换为“非贪心”表达式或者<code>最小匹配</code>（<font color="red">即找到第一个满足匹配的就停止</font>）</p>
-<h4 id="定位符"><a href="#定位符" class="headerlink" title="定位符"></a>定位符</h4><p>定位符能够将正则表达式固定到行首或行尾</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>符号</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>^</td>
-<td>匹配输入<code>字符串</code>开始的位置。如果设置了RegExp对象的Multiline属性，^还会和\n或\r之后的位置匹配</td>
-</tr>
-<tr>
-<td>$</td>
-<td>匹配输入<code>字符串</code>的结尾位置，如果设置了RegExp对象的Multiline属性，$会与\n或\r之前的位置匹配</td>
-</tr>
-<tr>
-<td>\b</td>
-<td>匹配一个<code>单词</code>边界，即字与空格间的位置</td>
-</tr>
-<tr>
-<td>\B</td>
-<td>非<code>单词</code>边界匹配</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><code>不能讲限定符与定位符一起使用，由于在紧靠换行或者单词边界的前面或者后面不能有一个以上位置</code>，因此不允许诸如<code>^*</code>之类的表达式</p>
-<p>如果要匹配一行文本开始处的文本，要在正则表达式的开始使用^字符。如果要匹配一行文本结束处的文本，要在正则表达式的结束处使用$字符。<br><code>^和$可以在一个正则表达式中同时使用</code>，例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^Chapter$</span><br></pre></td></tr></table></figure>
-<p>表示从文本开始匹配时和从末尾匹配时都是Chapter，说明该行只有Chapter这几个字符</p>
-<p>单词边界是单词和空格之间的位置，非单词边界是任何其他位置。</p>
-<p>\b字符位于要匹配的字符串的开始，它在单词的开始处查找匹配项，如果它位于字符串的结尾，他在单词的结尾处查找匹配项。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\bCha</span><br><span class="line">ter\b</span><br></pre></td></tr></table></figure>
-<h2 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h2><p>AAA | BBB<br>匹配 AAA 或者 BBB</p>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><h4 id="引用分组和反向引用"><a href="#引用分组和反向引用" class="headerlink" title="引用分组和反向引用"></a>引用分组和反向引用</h4><p>对一个正则表达式或部分模式两边添加圆括号将导致相关匹配到一个临时缓冲区中，所捕获的每个子匹配都按照正则表达式模式中从左到右出现的顺序存储。<font color="red">缓冲区的编号从1开始</font>，最多可以存储99个捕获的子表达式。每个缓冲区都可以使用\n访问，其中n为一个标识特定缓冲区的一位或两位十进制数。<br>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\b([a-z]+)\1\b</span><br></pre></td></tr></table></figure>
-<p>反向引用只能用于之前出现的分组。</p>
-<p>反向引用的一个例子：要用正则表达式匹配日期，日期的格式为yyyy-mm-dd、yyyy/mm/dd和yyyy.mm.dd都是合理的，注意后面的分隔符和前面的分隔符要相等。则正则表达式可以写作：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\d&#123;4&#125;(-|/|.)\d&#123;2&#125;\1\d&#123;2&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="引用分组中对于括号嵌套的解释"><a href="#引用分组中对于括号嵌套的解释" class="headerlink" title="引用分组中对于括号嵌套的解释"></a>引用分组中对于括号嵌套的解释</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((\d)(\d(\d)))\1\2\3\4</span><br></pre></td></tr></table></figure>
-<p>假如利用上述表达式去匹配如下字符串：”123“<br>则\1指代的是123<br>\2指代的是1<br>\3指代的是23<br>\4指代的是3</p>
-<p>即<code>以左括号出现的顺序为作为编号的顺序</code>。</p>
-<p>注意对于\10的解释是编号为10的分组，而不是编号为1的分组然后再跟一个0</p>
-<h4 id="引用不存在的分组"><a href="#引用不存在的分组" class="headerlink" title="引用不存在的分组"></a>引用不存在的分组</h4><p>因为反向引用是引用前面的分组，但我们在正则表达式里引用了不存在的分组时，此时正则不会报错，只是匹配反向引用的字符本身。例如\2，就匹配”\2”，注意”\2”表示对2进行了转意。</p>
-<h4 id="非捕获分组"><a href="#非捕获分组" class="headerlink" title="非捕获分组"></a>非捕获分组</h4><p>如果只是想要括号最原始的功能，而不想保存捕获的分组，后续不会进行引用，可以使用非捕获分组(?:)<br>例如：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(?:ab)+     //用于匹配ababab...</span><br></pre></td></tr></table></figure>
+<p>此外，遗传算法也常用来训练神经网络以更好逼近全局最小。需注意的是，<code>上述用于跳出局部最小的技术大多是启发式，理论上尚缺乏保障</code></p>
+<h1 id="深度学习"><a href="#深度学习" class="headerlink" title="深度学习"></a>深度学习</h1><p>理论上来说，参数越多的模型复杂度越高，这意味着它能完成更复杂的学习任务，但<code>一般情形下，复杂模型的训练效率低，易陷入过拟合</code>。而随着云计算、大数据时代的到来，<code>计算能力的大幅提高可缓解训练低效性，训练数据的大幅增加则可降低过拟合风险</code>。因此，以深度学习为代表的复杂模型开始受到人们的关注。（大型深度学习模型中甚至有上百亿个参数）</p>
+<p>典型的深度学习就是很深层的神经网络。<code>典型的深度学习模型就是很深层的神经网络</code>。单隐层的多层前馈网络已具有很强大的学习能力；模型复杂度的增加可通过单纯增加隐层神经元的数目来实现，但从增加模型复杂度的角度来看，<code>增加隐层的数目比增加隐层神经元的数目更有效</code>。然而，多隐层神经网络难以直接用经典算法(例如标准BP算法)进行训练，因为误差在多隐层内逆传播时，往往会“发散”而不能收敛到稳定状态。</p>
+<h3 id="深度学习训练方法"><a href="#深度学习训练方法" class="headerlink" title="深度学习训练方法"></a>深度学习训练方法</h3><p><code>无监督逐层训练</code>是多隐层网络训练的有效手段，其基本思想是<code>每次训练一层隐结点</code>，训练时将上一层隐节点的输出作为输入，而本层隐节点的输出作为下一层隐结点的输入，这成为“预训练”；在预训练全部完成后，再对整个网络进行“微调”训练。</p>
+<p>“预训练+微调”的做法可视为将大量参数分组，对每组先找到局部看来比较好的设置，然后再基于这些局部较优的结果联合起来进行全局寻优。这样就在利用了模型大量参数所提供的自由度的同时，有效地节省了训练开销。</p>
+<p>另一种节省训练开销的策略是“权共享”，即让一组神经元使用相同的连接权，这个策略在卷积神经网络中发挥了重要作用。</p>
+<h3 id="深度学习总结"><a href="#深度学习总结" class="headerlink" title="深度学习总结"></a>深度学习总结</h3><p>对于深度学习，可看作是对输入信号进行逐层加工，从而把初始的、与输出目标之间联系不大密切的输入表示、转化成与输出目标联系更密切的表示，使得原来仅基于最后一层输出映射难以完成的任务成为可能。换言之，通过多层处理，逐渐将初始“低层”特征表示转化为“高层”特征表示后，用“简单模型”即可完成复杂的分类等学习任务，由此可将深度学习理解为进行“特征学习”或“表示学习”。</p>
+<p>以往在机器学习用于现实任务时，描述样本的特征通常需要由人类专家来设计，这成为”特征工程“。<code>特征的好坏对泛化性能有至关重要的影响</code>，人类专家设计出好特征也并非易事；特征学习则通过机器学习技术自身来产生好特征，这使机器学习向“全自动数据分析”又前进了一步。</p>
 
       
     </div>
@@ -1622,7 +653,7 @@ R=\begin{cases}
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/08/machine_learning/%E7%BB%AA%E8%AE%BA/">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/23/machine_learning/%E9%98%B2%E6%AD%A2%E8%BF%87%E6%8B%9F%E5%90%88%E2%80%94%E2%80%94%E4%BD%BF%E7%94%A8%E6%AD%A3%E5%88%99%E5%8C%96%E9%A1%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1636,7 +667,7 @@ R=\begin{cases}
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/02/08/machine_learning/%E7%BB%AA%E8%AE%BA/" class="post-title-link" itemprop="url">绪论</a>
+            <a href="/2020/02/23/machine_learning/%E9%98%B2%E6%AD%A2%E8%BF%87%E6%8B%9F%E5%90%88%E2%80%94%E2%80%94%E4%BD%BF%E7%94%A8%E6%AD%A3%E5%88%99%E5%8C%96%E9%A1%B9/" class="post-title-link" itemprop="url">防止过拟合——使用正则化项</a>
         </h1>
 
         <div class="post-meta">
@@ -1646,7 +677,109 @@ R=\begin{cases}
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-02-08 23:03:15" itemprop="dateCreated datePublished" datetime="2020-02-08T23:03:15+08:00">2020-02-08</time>
+              <time title="Created: 2020-02-23 18:48:08" itemprop="dateCreated datePublished" datetime="2020-02-23T18:48:08+08:00">2020-02-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 12:32:24" itemprop="dateModified" datetime="2021-02-10T12:32:24+08:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="解决过拟合的一些方法"><a href="#解决过拟合的一些方法" class="headerlink" title="解决过拟合的一些方法"></a>解决过拟合的一些方法</h1><p>为了减少过拟合，一般有两种方法：</p>
+<p>1、减少一些特征。其手段也分为手动选择要丢掉的特征和使用一些算法来丢掉部分特征。但是减少特征就意味着丢失信息，所以要谨慎丢弃特征。</p>
+<p>2、在模型中加入正则化项。使用正则化项时不用删除特征。</p>
+<h1 id="正则化项的作用"><a href="#正则化项的作用" class="headerlink" title="正则化项的作用"></a>正则化项的作用</h1><p>正则化项的使用<code>其思想是</code>让某些特征的参数尽可能小(这也叫做对某些参数的惩罚)，从而让这个特征所占的重要性变低。</p>
+<p>例如某个模型为$f(x) = w_1 x + w_2 x^2 + w_3 x^3 + w_4 x^4$ + b，其对应的目标函数是$argmin_{(w, b)} \sum_{i=1}^{m} [f(x_i) - y_i]^2$，那么可以<code>对目标函数</code>加入正则化项得：$argmin_{(w,b)}\sum_{i=1}^{m}[f(x_i) - y_i]^2 + 1000w_3^3 + 1000w_4^4$，来使训练后的模型中$w_3$和$w_4$尽可能小，从而使得特征$x^3$和$x^4$在模型中的作用减小。</p>
+<p>但在实际操作中，<font color="red">通常不知道需要让哪些参数尽可能小，所以我们让所有的参数都尽可能小。</font></p>
+<p>通常我们使用两种正则化项：L1正则化和L2正则化</p>
+<h3 id="L1正则化"><a href="#L1正则化" class="headerlink" title="L1正则化"></a>L1正则化</h3><p>以线性模型为例，加入L1正则化的损失函数形式为: $\sum_{i=1}^{m} [wx_i+b-y_i]^2 + \lambda\sum_{i=1}^{d}|w_i|$。</p>
+<font color="orange">使用L1正则化通常会导致模型会将一部分特征的权重值清零，而只保留少部分特征的权重值，这种特性也被叫做特征选择。</font>
+
+
+
+<h3 id="L2正则化"><a href="#L2正则化" class="headerlink" title="L2正则化"></a>L2正则化</h3><p>同样以线性模型为例，加入L2正则化的损失函数形式为：$\sum_{i=1}^{m}[wx_i + b - y_i]^2 + \lambda \sum_{i=1}^{d}w_i^2$。</p>
+<p>如果是使用标准方程法求解的话，其解的形式为：</p>
+<script type="math/tex; mode=display">
+w = (X^TX + \lambda \begin{bmatrix} 
+    0 & & & \\
+    & 1 & & \\
+    & & \ddots & \\
+    & & & 1
+\end{bmatrix})^{-1}X^TY</script><p>而且在加入正则化项后，标准方程法中的括号部分的矩阵一定可逆。</p>
+<font color="orange">使用L2正则化通常会使特征的权重值分配得比较均匀，即使在特征很多的情况下。</font>
+
+
+
+<h1 id="使用正则化项的一些注意"><a href="#使用正则化项的一些注意" class="headerlink" title="使用正则化项的一些注意"></a>使用正则化项的一些注意</h1><p>1、$\lambda$不能设置得过大。$\lambda$越大，$w$的自由度就越小，$\lambda$越小，$w$的自由度就越高</p>
+<p>2、一般不惩罚常数参数$b$</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/22/machine_learning/decision_tree/%E5%86%B3%E7%AD%96%E6%A0%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/22/machine_learning/decision_tree/%E5%86%B3%E7%AD%96%E6%A0%91/" class="post-title-link" itemprop="url">决策树</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-22 19:11:03" itemprop="dateCreated datePublished" datetime="2020-02-22T19:11:03+08:00">2020-02-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -1678,29 +811,101 @@ R=\begin{cases}
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h1><ul>
-<li>学习(训练) —— 从数据中学得模型的过程</li>
-<li>分类 —— 使用学习的模型<code>预测的结果为离散值</code>，此类学习任务称为“分类(classification)”</li>
-<li>回归 —— 使用学习的模型<code>预测的结果为连续值</code>，此类学习任务称为“回归(regression)”</li>
-<li>根据训练数据是否拥有标记信息，学习任务可大致划分为两大类：“监督学习(supervised learning)”和“无监督学习(unsupervised learning)”，分类和回归是前者的代表，而聚类是后者的代表</li>
-<li>学得模型适用于新样本的能力，称为“泛化(generalization)”能力</li>
-</ul>
-<h1 id="将离散值转换为连续值"><a href="#将离散值转换为连续值" class="headerlink" title="将离散值转换为连续值"></a>将离散值转换为连续值</h1><p>对于离散属性，如果某个属性的取值之间存在“序”的关系，可通过连续化将其转化为连续值，例如对于身高这个属性，它的取值可以为“高”和“矮”，那么可以转化为$\{1.0, 0.0\}$；若取值是“高”，“中”，“低”，则可转化为${1.0,0.5,0.0}$。</p>
-<p>若某个属性的取值之间不存在序关系，假定有这个属性有k个取值，则通常转化为k维向量，例如属性“瓜类”的取值“西瓜”，“南瓜”，“黄瓜”可转换为(1，0，0)，(0，1，0)，(1，0，0)</p>
-<h1 id="假设空间"><a href="#假设空间" class="headerlink" title="假设空间"></a>假设空间</h1><ul>
-<li><p>归纳(induction)和演绎(deducation)是科学推理的两大基本手段，前者是从特殊到一般的“泛化”过程，即从具体的事实归结出一般性规律；后者则是从一般到“特殊”的特化过程，即从基本原理推演出具体状况。</p>
-</li>
-<li><p>模型属于由输入空间到输出空间的映射的集合，这个集合就是假设空间(hypothesis space)</p>
-</li>
-<li><p>与训练集一致的“假设集合”称之为“版本空间(version space)”</p>
-</li>
-</ul>
-<h1 id="归纳偏好"><a href="#归纳偏好" class="headerlink" title="归纳偏好"></a>归纳偏好</h1><ul>
-<li><p>归纳偏好可看作学习算法自身在一个可能很庞大的假设空间中对假设进行选择的启发式或“价值观”</p>
-</li>
-<li><p>NFL(没有免费的午餐)定理 —— 脱离具体问题，空泛的谈论“什么学习算法更好”毫无意义。</p>
-</li>
-</ul>
+          <h1 id="构建决策树"><a href="#构建决策树" class="headerlink" title="构建决策树"></a>构建决策树</h1><p>决策树是一种常见的<code>分类</code>机器学习方法，顾名思义，决策树就是基于树形结构来进行决策，这恰是人类在面临决策问题时一种很自然的处理机制。</p>
+<p><img src="/2020/02/22/machine_learning/decision_tree/%E5%86%B3%E7%AD%96%E6%A0%91/decision_tree_example.jpeg" alt="决策树例子" style="zoom:25%;"></p>
+<div align="center"><font size="2" color="grey">一棵判断西瓜是否是好瓜的决策树例子</font></div>
+
+
+
+<p>在构建一棵决策树时，其决策的过程就是对某个属性的“测试”，每个测试的结果或是导出最终的分类结果，或是导出下一步的判定问题，每一次需要决策的样本是上次的决策结果之后划分出来的样本。</p>
+<p>一般，一棵决策树包含一个根结点、若干个内部结点和若干个叶结点。<code>叶结点对应于决策结果，其他每个结点则对应一个属性测试</code>，每个结点包含的样本集合根据属性测试的结果被划分到子结点中，根结点包含样本全集。</p>
+<p><code>决策树学习的目的是为了产生一棵泛化能力强，即处理未见示例能力强的决策树。</code></p>
+<p><code>构建一棵决策树的伪代码为：</code></p>
+<p>输入：训练集$D=\{(x_i, y_i)\}_{i=1}^{m}$</p>
+<p>​            属性集$A = \{a_i\}_{i=1}^{d}$</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenerateDTree</span><span class="params">(D, A)</span> </span>&#123;</span><br><span class="line">  	生成根结点 root;</span><br><span class="line">	<span class="keyword">if</span> (D中样本全属于同一类别C) &#123;<span class="comment">//当前结点包含的样本全属于同一类别，即yi都相同</span></span><br><span class="line"> 		将root标记为C类叶结点;</span><br><span class="line">   		<span class="keyword">return</span>;</span><br><span class="line">  	&#125;</span><br><span class="line">	<span class="keyword">if</span> (A == <span class="literal">NULL</span> || D中样本在属性A上取值相同) &#123;<span class="comment">//没有属性可以选择或者当前所有样本在剩下的属性上取值相同</span></span><br><span class="line">    		将root标记为叶结点，其类别标记为D中样本最多的类;</span><br><span class="line">    		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">  	从属性集A中选择最优划分属性a*;</span><br><span class="line">  	<span class="keyword">for</span> (对于属性a*每一个可能的属性取值v) &#123;</span><br><span class="line">      		为root生成一个分支；令D_v表示D中在属性a*上取值为v的样本子集;</span><br><span class="line">        	<span class="keyword">if</span> (D_v 为空集) &#123;</span><br><span class="line">           		将分支结点标记为叶结点，其类别标记为D中(注意是D)中样本最多的类;</span><br><span class="line">           		<span class="keyword">return</span>;</span><br><span class="line">        	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           		GenerateDTree(D_v, A - a*);</span><br><span class="line">        	&#125;</span><br><span class="line">    	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><code>决策树生成的算法是一个递归算法，注意该递归算法的三个返回条件</code></p>
+<font color="red">疑问:</font><br>
+
+<font color="red">1、 如果在选择当前样本数量最多的类作为类别标记时，有多个样本数量最多的类别时怎么办？随便选一个？</font><br>
+
+<font color="red">2、for循环中，对于属性a*每一个可能的属性取值v，这里的可能取值是相对于最开始的数据集来说还是相对于当前结点中的数据集来说？因为当前结点中的数据集在属性a*上的取值可能比最开始的数据集要少一些</font>
+
+
+
+<h1 id="划分选择"><a href="#划分选择" class="headerlink" title="划分选择"></a>划分选择</h1><p>在上面的生成决策树的伪代码中，我们要选择最优的划分属性，那么应该怎么选择最后的划分属性呢？一般而言，随着划分过程不断进行，我们希望决策树的分支结点所包含的样本尽可能属于同一类别，即结点的“纯度”越来越高。<code>所以可以选择使得划分后结点纯度更高的属性作为划分属性</code>，一般有以下几种度量某种属性这种能力的指标：信息增益、增益率、基尼指数。</p>
+<h3 id="信息增益"><a href="#信息增益" class="headerlink" title="信息增益"></a>信息增益</h3><p>在查看定义信息增益之前，需要先查看<code>信息熵</code>的定义。<code>信息熵是度量样本集合纯度最常用的一种指标</code>。假定当前样本集合$D$中第$k$类样本所占的比例为$p_k \space (k = 1,2, \cdots, |Y|, |Y|表示当前样本中类别的总数)$，则信息熵的定义为：</p>
+<script type="math/tex; mode=display">
+Ent(D) = -\sum_{k=1}^{|Y|}p_k \log_{2}{p_k} \\
+规定若p_k=0, 则p\log_2 p_k = 0，Ent(D)的最小值为0，最大值为\log_2 |Y|</script><p>$Ent(D)$<code>越小</code>，则数据集合$D$的纯度越高</p>
+<p>有了信息熵的定义之后，再来看信息增益的定义。假设某个离散属性$a$有$V$个可能的取值$\{a_1, a_2, \cdots, a_V\}$，若使用属性a来对样本集D来划分，则会产生$V$个分支结点。其中第$i$个分支结点包含了D中所有在属性$a$上取值为$a_i$的样本，记为$D_i$。这样可以计算出$D_i$的信息熵，<code>在考虑在不同的分支结点包含的样本数不同，给分支结点赋予权重</code>$|\frac{D_i}{D}|$，<code>即样本数多的分支结点的影响越大</code>。最后可以得到使用属性$a$对样本集D进行划分所获得的“信息增益”:</p>
+<script type="math/tex; mode=display">
+Gain(D, a) = Ent(D) - \sum_{i=1}^{V}|\frac{D_i}{D}|Ent(D_i)</script><p><code>一般而言，信息增益越大，则意味着使用属性a来进行划分所获得的“纯度提示”越大</code>。若在一次划分中，有多个属性均取得了最大的信息增益，则任选其中之一作为划分属性。</p>
+<h3 id="增益率"><a href="#增益率" class="headerlink" title="增益率"></a>增益率</h3><p><code>信息增益准则的特点是对可取值数目较多的属性性有所偏好</code>，例如某种属性有1000个取值，那么这个属性的信息增益率一般就会很大，但是选择这个属性作为划分属性后，每个划分出来的结点可能会因为已经没有多少剩余的样本而很快地被标记为叶结点。那么使用这个有1000个取值的属性划分得到的决策树泛化能力一般不会太好。而增益率则将每个属性的可能取值个数考虑了进去，其定义为：</p>
+<script type="math/tex; mode=display">
+Gain\_ratio(D, a) = \frac{Gain(D,a)}{IV(a)}\\
+\\
+其中 \\
+IV(A) = -\sum_{i=1}^{V} |\frac{D_i}{D}| \log_2 |\frac{D_i}{D}|，(注意|\frac{D_i}{D}| \leq 1)</script><p>$IV(a)$称为属性a的“固有值”，属性a的可能取值数目越多(即$V$越大)，则$IV(a)$的取值通常会越大。</p>
+<p><code>需要注意的是，增益率准则对可取值数目较少的属性有所偏好，因此，有些算法并不是直接选择增益率最大的候选划分属性，而是先从候选划分属性中找出信息增益率高于平均水平的属性，再从中选择增益率最高的。</code></p>
+<h3 id="基尼指数"><a href="#基尼指数" class="headerlink" title="基尼指数"></a>基尼指数</h3><p>查看基尼指数的定义前，先看一下<code>基尼值</code>的定义。<code>基尼值也是用来描述数据集D的纯度的指标</code>。其具体定义为：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+Gini(D) &= \sum_{k=1}^{|Y|}\sum_{k' \neq k}p_k' p_k  \tag{1} \\
+&=  \sum_{k=1}^{|Y|} p_k \sum_{k' \neq k} p_k' \\
+&= \sum_{k=1}^{|Y|} p_k (1-p_k) \\
+&= \sum_{k=1}^{|Y|} p_k - p_k^2 \\
+&= \sum_{k=1}^{|Y|} p_k - \sum_{k=1}^{|Y|} p_k^2 \\
+&= 1 - \sum_{k=1}^{|Y|} p_k^2 \tag{2} \\
+&(|Y|表示数据集D中类别的数量，p_k表示类别k所占的比例)
+\end{align*}</script><p>直观来说，$Gini(D)$<code>反映了从数据集D中随机抽取两个样本，其类别标记不一致的概率</code>，因此，$Gini(D)$<code>越小</code>，则数据集$D$的纯度<code>越高</code>。</p>
+<p>有了基尼值的定义，再来看<code>属性a的基尼指数的定义</code>：</p>
+<script type="math/tex; mode=display">
+Gini\_index(D, a) = \sum_{i=1}^{V}|\frac{D_i}{D}|Gini(D_i)</script><p>我们在候选属性集合$A$中，选择那个使得划分后基尼指数<code>最小</code>(注意是最小，信息增益和增益率中是选最大的那个)的属性作为划分属性。</p>
+<h1 id="剪枝处理"><a href="#剪枝处理" class="headerlink" title="剪枝处理"></a>剪枝处理</h1><p><code>剪枝处理是决策树学习算法处理过拟合的主要手段。</code>在决策树学习中，为了尽可能正确分类训练样本，结点划分过程不断重复，<code>有时会造成决策树分支过多</code>，这时就可能因训练样本学习得“太好”了，以至于把训练集自身的一些特点也当做所有数据都具有的一般性质而导致过拟合。因此，可通过主动去掉一些分支来降低过拟合的风险。</p>
+<p>决策树剪枝的基本策略有<code>预剪枝</code>和<code>后剪枝</code>。</p>
+<h3 id="预剪枝"><a href="#预剪枝" class="headerlink" title="预剪枝"></a>预剪枝</h3><p>预剪枝是指在决策树生成过程中，对每个结点在划分前先进进行估计，若当前结点的划分不能带来决策树泛化性能提升，则停止划分并将当前结点标记为叶结点。<code>那么如何判断泛化性能是否提升呢？</code>可以使用验证集来判断，看剪枝后的决策树在验证集上的表现是否比未剪枝的决策树好。</p>
+<p>预剪枝使得决策树的很多分支结点都没有展开，这不仅降低了过拟合的风险，还显著减少了决策树的训练时间开销和测试时间开销。<code>但另一方面</code>，有些分支的当前划分虽不能提升，甚至可能导致泛化性能暂时下降，但在其基础上进行的后续划分却有可能导致性能显著提高，<code>这给预剪枝决策树带来了欠拟合的风险。</code></p>
+<h3 id="后剪枝"><a href="#后剪枝" class="headerlink" title="后剪枝"></a>后剪枝</h3><p>后剪枝则是<code>先从训练集中生成一棵完整的决策树</code>，然后自底向上地对每个非叶结点进行判断，若将该非叶结点对应的子树替换为叶结点能带来决策树泛化能力的提升(同样也可使用验证集来判定泛化性能是否提升)，则该非叶结点标记叶结点。</p>
+<p>后剪枝决策树通常比预剪枝决策树保留了更多的分支，一般情况下后剪枝决策树的欠拟合风险很小，泛化性能往往优于预剪枝决策树。但后剪枝过程是在生成完全决策树之后进行的，并且要自底向上地对树中的所有非叶结点进行逐一考察，因此其训练时间开销比未剪枝决策树和预剪枝决策树都要大得多。</p>
+<h1 id="连续值处理"><a href="#连续值处理" class="headerlink" title="连续值处理"></a>连续值处理</h1><p>在决策树中，对于某些取值为连续值的属性，不能直接根据连续属性的可取值来对结点进行划分，此时要将连续值转换为离散值，最简单的策略是采用<code>二分法</code>对连续属性进行处理。</p>
+<p>给定样本集$D$和连续属性$a$，假设$a$在$D$上出现了n各不同的取值，将这些值从小到大进行排列，记为$\{a_1, a_2, \cdots, a_n\}$。选定划分点$t$为某两个相邻取值的中点，则数据集可以被划分为两个子集。因此，对于n个不同</p>
+<p>取值，共有$n-1$个候选划分点，这些划分点构成集合：</p>
+<script type="math/tex; mode=display">
+T_a = \{\frac{a_i + a_{i+1}}{2} | 1 \leq i \leq n-1 \}</script><p>然后，可以像离散属性值一样来考察这些划分点，<code>选取最优的划分点进行样本集的划分</code>。例如可用<code>改造后的信息增益</code>来判断划分点的优劣：</p>
+<script type="math/tex; mode=display">
+Gain(D, a, t) = Ent(D) - \sum_{\lambda \in \{-, + \}} \frac{|D_t^{\lambda}|}{|D|}Ent(D_t^{\lambda})</script><p>$Gain(D, a, t)$是样本集在连续属性$a$上基于划分点$t$<code>二分后</code>的信息增益。于是，我们就可选择使$G(D, a, t)$</p>
+<p>最大化的划分点。</p>
+<p><code>需要注意的是，与离散值属性不同，若当前结点划分属性为连续属性，该属性还可作为其后代结点的划分属性。</code>例如当前结点选择的划分属性为连续属性$a$，并且划分标准为$a \leq 0.5$和$a&gt; 0.5$，则对于使用$a \leq 0.5$划分出来的结点，仍然可以使用属性a最后划分属性，这时可能选择划分标准为$a \leq 0.25$和$0.25 &lt; a \leq 0.5$。</p>
+<h1 id="缺失值处理"><a href="#缺失值处理" class="headerlink" title="缺失值处理"></a>缺失值处理</h1><p>现实任务中常会遇到不完整的样本，尤其是在属性数目较多的情况下，往往会有大量样本出现缺失值，如果简单地放弃不完整样本，仅使用无缺失值的样本来进行学习，显然是对数据信息的极大浪费。所以要想办法处理缺失值的情况。</p>
+<h3 id="如何在属性缺失的情况下进行划分属性选择"><a href="#如何在属性缺失的情况下进行划分属性选择" class="headerlink" title="如何在属性缺失的情况下进行划分属性选择"></a>如何在属性缺失的情况下进行划分属性选择</h3><p>给定数据集$D$和属性$a$，令$\overline{D}$表示D中在属性a上没有缺失值的样本子集，显然我们可根据$\overline{D}$来判断属性a的优劣。假设属性a由$V$个可取值$\{a_1, a_2, \cdots, a_V\}$，令$\overline{D_i}$表示$\overline{D}$中在属性a上取值为$a_i$的样本子集。$\overline{D_k}$表示$\overline{D}$中属于第$k$类$(k = \{1, 2, \cdots, |Y|\}, \space|Y|为\overline{D}中类别总数)$的样本子集。则有：</p>
+<script type="math/tex; mode=display">
+\overline{D} = \bigcup_{i=1}^{V}\overline{D_i} \\
+\space \\
+\overline{D} = \bigcup_{k=1}^{|Y|}\overline{D_k}</script><p>假定为$D$中的每个样本$x$赋予一个权值$w_x$，并定义：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\rho &= \frac{\sum_{x \in \overline{D}} \space  w_x}{\sum_{x \in D} \space w_x} \\
+\space \\
+\overline{p_k} &= \frac{\sum_{x \in \overline{D_k}} \space w_x}{\sum_{x \in \overline{D}} w_x} \space (1 \leq k \leq |Y|) \\
+\space \\
+\overline{r_i} &= \frac{\sum_{x \in \overline{D_i}} \space w_x}{\sum_{x \in \overline{D}} \space w_x} \space (1 \leq i \leq V)
+\end{align*}</script><p>直观上来看，对属性$a$，$\rho$表示无缺失值样本所占的比例，$\overline{p_k}$表示无缺失值样本中第$k$类样本所占的比例，$\overline{r_i}$则表示无缺失值样本中在属性a上取值为$a_i$的样本占的比例。显然有：$\sum_{k=1}^{|Y|} \overline{p_k} = 1$，$\sum_{i=1}^{V} \overline{r_i} = 1$。</p>
+<p>基于上述定义，可以将信息增益的计算推广为：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+Gain(D, a) &= \rho \times Gain(\overline{D}, a) \\
+&= \rho \times (Ent(\overline{D}) - \sum_{i=1}^{V}\overline{r_i} Ent(\overline{D_i})) \\
+其中 \\
+Ent(\overline{D}) &= -\sum_{\overline{p_k}}^{|Y|}\overline{p_k} \log_2 \space \overline{p_k}
+\end{align*}</script><p>同理也可得到增益率和基尼指数的推广。</p>
+<h3 id="给定划分属性，若样本在该属性上的值缺失，如果对样本进行划分"><a href="#给定划分属性，若样本在该属性上的值缺失，如果对样本进行划分" class="headerlink" title="给定划分属性，若样本在该属性上的值缺失，如果对样本进行划分"></a>给定划分属性，若样本在该属性上的值缺失，如果对样本进行划分</h3><p>若确定了划分属性为$a$，若样本$x$在划分属性$a$上的取值未知，则将$x$<code>同时划入所有子结点</code>，且样本权值在与属性值$a_i$对应的子结点调整为$\overline{r_i} · w_x$。直观上来看，这就是让同一个样本以不同的概率划入到不同的子结点中去。</p>
+<h1 id="多变量决策树"><a href="#多变量决策树" class="headerlink" title="多变量决策树"></a>多变量决策树</h1><p>若把每个属性视为坐标空间中的一个坐标轴，则$d$个属性描述的样本就对应了$d$维空间中的一个数据点，对样本分类则意味着在这个坐标空间中寻找不同类样本之间的分类边界。<code>决策树所形成的分类边界有一个明显的特点: 轴平行​</code>，即它的分界边界由若干个和坐标轴平行的分段组成。</p>
+<p>显然，分类边界与坐标轴平行时，这样的分类边界使得学习结果具有较好的可解释性。但在学习任务的真实边界比较复杂时，必须使用很多段划分才能获得较好的近似，此时的决策树会相当复杂，由于要进行大量的属性测试，预测时间开销会很大。</p>
+<p>若能使用斜的划分边界，则决策树的模型将能得到很大的简化，<code>多变量决策时</code>就是能实现<code>斜划分</code>甚至更复杂划分的决策树。在此类决策树中，非叶结点不再仅对莫个属性，而是对属性的线性组合进行测试；换言之，每个非叶结点是一个形如$\sum_{i=1}^d w_i a_i = t$的线性分类器，其中$w_i$是属性$a_i$的权重。在多变量决策树的学习过程中，不是为每个非叶结点寻找一个最有划分属性，而是试图建立一个合适的线性分类器。</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>在决策时中，常使用信息增益、增益率、基尼指数作为划分属性选择的标准，除这些意外，人们还设计了许多其他的准则用于决策树划分选择。<code>这些准则虽然对决策树的尺寸有较大影响，但对泛化性能的影响很有限</code>。而使用剪枝的方法和程度对决策树泛化性能的影响相当显著，有实验研究表明，在数据带有噪声时通过剪枝甚至可将决策树的泛化性能提高25%。</p>
+<p>有算法试图在决策树中的<code>叶结点</code>嵌入神经网络，例如感知机树在决策树的每个<code>叶结点</code>上训练一个感知机，有的直接在<code>叶结点</code>嵌入多层神经网络。</p>
+<p>有一些决策树算法可进行<code>增量学习</code>，即在接收到新样本后对已学得的模型进行调整，而不完全重新学习。主要机制是通过调整分支路径上的划分次序来对树进行部分重构。增量学习可有效降低每次接受到新样本后的训练时间开销，但多步增量学习后的模型与基于全部数据训练而得的模型有较大差别。</p>
 
       
     </div>
@@ -1720,7 +925,7 @@ R=\begin{cases}
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/08/math/%E6%A0%87%E9%87%8F%E5%AF%B9%E7%9F%A9%E9%98%B5%E6%B1%82%E5%AF%BC/">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/19/math/probability_theory/%E5%A4%A7%E6%95%B0%E5%AE%9A%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1734,7 +939,7 @@ R=\begin{cases}
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/02/08/math/%E6%A0%87%E9%87%8F%E5%AF%B9%E7%9F%A9%E9%98%B5%E6%B1%82%E5%AF%BC/" class="post-title-link" itemprop="url">标量对矩阵求导</a>
+            <a href="/2020/02/19/math/probability_theory/%E5%A4%A7%E6%95%B0%E5%AE%9A%E7%90%86/" class="post-title-link" itemprop="url">大数定理</a>
         </h1>
 
         <div class="post-meta">
@@ -1744,14 +949,14 @@ R=\begin{cases}
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-02-08 20:51:36" itemprop="dateCreated datePublished" datetime="2020-02-08T20:51:36+08:00">2020-02-08</time>
+              <time title="Created: 2020-02-19 11:22:29" itemprop="dateCreated datePublished" datetime="2020-02-19T11:22:29+08:00">2020-02-19</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-11 20:26:41" itemprop="dateModified" datetime="2020-07-11T20:26:41+08:00">2020-07-11</time>
+                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1776,105 +981,383 @@ R=\begin{cases}
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h1><p>若有函数y=f(X)，其中X为一个矩阵，y为标量，则标量y对矩阵X的导数定义为<code>y对X逐元素求导排列成与X同型的矩阵</code></p>
+          <h1 id="切比雪夫大数定律"><a href="#切比雪夫大数定律" class="headerlink" title="切比雪夫大数定律"></a>切比雪夫大数定律</h1><p>假设$\{X_n\}$是相互<code>独立</code>的随机变量，如果方差$DX_i$存在，且有一致有上界，则</p>
 <script type="math/tex; mode=display">
-[\frac{\varphi{y}}{\varphi{X_{ij}}}]</script><p>但是在实际计算标量对矩阵求导时，并不是直接使用标量对矩阵中的逐元素求导，而是将矩阵当作一个整体来求导</p>
-<h1 id="标量对矩阵求导公式推导"><a href="#标量对矩阵求导公式推导" class="headerlink" title="标量对矩阵求导公式推导"></a>标量对矩阵求导公式推导</h1><p>若有y=f(X)，其中X为$m{\times}n$的矩阵，则由全微分公式可以得到</p>
+\frac{1}{n} \sum_{i=1}^{n} X_i \space \space \space \space \underrightarrow{P(概率收敛)} \space \space \space \space \space \frac{1}{n} \sum_{i=1}^{n} EX_i</script><h1 id="伯努利大数定律"><a href="#伯努利大数定律" class="headerlink" title="伯努利大数定律"></a>伯努利大数定律</h1><p>假设$u_n$是n重伯努利实验中事件A发生的次数，在每次实验中事件A发生的概率为$p$，则</p>
 <script type="math/tex; mode=display">
-df=\sum_{i=1}^{m}\sum_{j=1}^{n}
-{\frac{\varphi{f}}{\varphi{X_{ij}}}}dX_{ij}</script><p>令：</p>
+\frac{u_n}{n} \space \space \space \space \underrightarrow{P(概率收敛)} \space \space \space \space \space p</script><h1 id="辛钦大数定律"><a href="#辛钦大数定律" class="headerlink" title="辛钦大数定律"></a>辛钦大数定律</h1><p>假设$\{X_n\}$是<code>独立同分布的</code>的随机变量序列，如果$EX_i=u$存在，则</p>
 <script type="math/tex; mode=display">
-\frac{\partial{f}}{\partial{X}}=
-\begin{pmatrix}
+\frac{1}{n} \sum_{i=1}^{n} \space \space \space \space \underrightarrow{P(概率收敛)} \space \space \space \space \space \space u</script><h1 id="中心极限定理"><a href="#中心极限定理" class="headerlink" title="中心极限定理"></a>中心极限定理</h1><p>假设$\{X_n\}$是<code>独立同分布</code>的随机变量序列，如果$EX_i=u$，$DX_i = \sigma^2$存在，则$\{X_n\}$服从中心极限定理，有</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^{n}X_i 近似服从N(nu,n\sigma^2)</script>
+      
+    </div>
 
-{\frac{\partial{f}}{\partial{X_{11}}}} &
-{\frac{\partial{f}}{\partial{X_{12}}}} &
-\cdots &
-{\frac{\partial{f}}{\partial{X_{1n}}}}
-\\
-{\frac{\partial{f}}{\partial{X_{21}}}} &
-{\frac{\partial{f}}{\partial{X_{22}}}} &
-\cdots &
-{\frac{\partial{f}}{\partial{X_{2n}}}}
-\\
-\vdots & \vdots & & \vdots
-\\
-{\frac{\partial{f}}{\partial{X_{m1}}}} &
-{\frac{\partial{f}}{\partial{X_{m2}}}} &
-\cdots &
-{\frac{\partial{f}}{\partial{X_{mn}}}}
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
 
-\end{pmatrix}_{m{\times}n}</script><script type="math/tex; mode=display">
-dX=\begin{pmatrix}
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/19/machine_learning/linear_model/%E7%B1%BB%E5%88%AB%E4%B8%8D%E5%B9%B3%E8%A1%A1%E9%97%AE%E9%A2%98/">
 
-dX_{11} & dX_{12} & \cdots & dX_{1n}
-\\
-dX_{21} & dX_{22} & \cdots & dX_{2n}
-\\
-\vdots & \vdots & & \vdots
-\\
-dX_{m1} & dX_{m2} & \cdots & dX_{mn}
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
 
-\end{pmatrix}_{m{\times}n}</script><p>则</p>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/19/machine_learning/linear_model/%E7%B1%BB%E5%88%AB%E4%B8%8D%E5%B9%B3%E8%A1%A1%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">类别不平衡问题</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-19 11:18:39" itemprop="dateCreated datePublished" datetime="2020-02-19T11:18:39+08:00">2020-02-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="什么是类别不同平衡问题"><a href="#什么是类别不同平衡问题" class="headerlink" title="什么是类别不同平衡问题"></a>什么是类别不同平衡问题</h1><p>类别不平衡就是指<code>分类任务中</code>不同类别的训练样例数目差别很大的情况。例如在二分类任务中有998个正例，2个反例，那么学习方法只需要返回一个永远将新样本预测为反例的学习器，就能达到99.8%的精度，然而这个学习器往往没有价值，因为它不能预测出任何正例。还有，在通过拆分法解决多分类问题时，<code>即使原始问题中不同类别的训练样例数目相当</code>，在使用OvR、MvM策略后产生的二分类任务仍可能出现类别不平衡现象。</p>
+<h1 id="处理类别不平衡问题"><a href="#处理类别不平衡问题" class="headerlink" title="处理类别不平衡问题"></a>处理类别不平衡问题</h1><p>以logistic回归处理二分类任务为例，分类任务的输出一般都是判断某个样例为正例的概率。假如输出$y$表示样例为正例的概率，则$1-y$就表示样例为反例的概率。</p>
+<p>在训练集中，正、反例的数目不同时，令$m^+$表示正例数目，$m^-$表示反例数目。于是，只要分类器的预测概率比例高于$\frac{m^+}{m^-}$就应该判为正例。即：</p>
 <script type="math/tex; mode=display">
-[(\frac{\partial{f}}{\partial{X}})^T·dX]_{ii}=
-\sum_{k=1}^{m}{\frac{\partial{f}}{\partial{X_{ki}}}}dX_{ki}</script><p>则</p>
+\frac{y}{1-y} > \frac{m^+}{m^-}</script><p>还有一种形式为将$\frac{m^+}{m^-}$替换为$\frac{cost^+}{cost^-}$，其中$cost^+$表示将正例误分为反例的代价，$cost^-$是将反例误分为正例的代价，这其实就是<code>代价敏感学习</code>的思想。</p>
+<p>但是使用这种方法一般要求“训练集时真是样本总体的无偏采样”，而这个要求一般很难实现。除了上面的这个方法还有其他两种方法：“欠采样”和“过采样”。</p>
+<p>欠采样即去除一些多的样例，使得正、反样例数目接近，然后再进行学习。欠采样若丢弃样例后，可能丢失一些重要的信息。欠采样的代表算法EasyEnsemble则是利用集成学习机制，将样例多的类别中的样例划分为若干个集合供不同的学习器使用，<code>这样对每个学习器来看都进行了欠采样，但在全局来看却不会丢失重要信息</code>。</p>
+<p>过采样即赠加一些样例数较少的类别的样例，使得正、反例数目接近，然后再学习。但是过采样<code>不能简单对初始的样本进行重复采样，否则将会导致严重的过拟合</code>。过采样的代表算法SMOTE是通过对训练集中的样例进行插值来表示额外的样例。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/19/machine_learning/linear_model/%E5%A4%9A%E5%88%86%E7%B1%BB%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/19/machine_learning/linear_model/%E5%A4%9A%E5%88%86%E7%B1%BB%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">多分类学习</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-19 10:00:36" itemprop="dateCreated datePublished" datetime="2020-02-19T10:00:36+08:00">2020-02-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="从二分类到多分类"><a href="#从二分类到多分类" class="headerlink" title="从二分类到多分类"></a>从二分类到多分类</h1><p>在遇到多分类任务时，有些二分类学习方法可直接推广到多分类，例如线性判别分析LDA，但在更多情形下，我们是基于一些基本策略，利用二分类学习器来解决多分类问题。</p>
+<p>一般的，对于N个类别$C_1, c_2, \cdots,C_N$，多分类学习器的基本思想是<code>拆解法</code>，即将多分类任务拆为若干个二分类任务求解。在测试时，对这些二分类器的预测结果进行集成以获得最终的多分类结果，比如说可以选择概率最大的那个结果。</p>
+<h1 id="拆分策略"><a href="#拆分策略" class="headerlink" title="拆分策略"></a>拆分策略</h1><h3 id="OvO策略"><a href="#OvO策略" class="headerlink" title="OvO策略"></a>OvO策略</h3><p>给定数据集$D=\{(x_i y_i)\}_{i=1}^{m}$，$y_i \in \{C_1, C_2, \cdots, C_N \}$，OvO将这N个类别两两配对，从而产生$\frac{N(n-1)}{2}$</p>
+<p>个二分类任务。在一个二分类任务中，把一种类别当做正例(随便选定两者中的一个)，另一种类别当做负例。</p>
+<p>在测试阶段 ，新样本将同时提交给所有分类器，将会得到$\frac{N(N-1)}{2}$个分类结果，最终结果结果可通过投票产生：即<code>把被预测得最多的类别作为最终结果</code>。</p>
+<h3 id="OvR策略"><a href="#OvR策略" class="headerlink" title="OvR策略"></a>OvR策略</h3><p>对于OvR，则是每次将一个类别的样例作为正例，<code>所有其他类</code>的样例作为反例来训练N个分类器。在测试时，<code>若仅有一个分类器预测为正类</code>，则对应的类别标记作为最终分类结果；<code>若有多个分类器预测为正类</code>，则通常考虑各分类器的预测置信度，选择置信度最大的类别作为分类结果。</p>
+<h3 id="OvO于OvR策略比较"><a href="#OvO于OvR策略比较" class="headerlink" title="OvO于OvR策略比较"></a>OvO于OvR策略比较</h3><p>OvR相比于OvO只需要训练N个分类器，而OvO需训练$\frac{N(N-1)}{2}$个分类器，因此，OvO的存储开销和测试时间开销通常比OvR更大。但在训练时，OvR的每个分类器均使用全部训练样例，而OvO的每个分类器仅用两个类的样例，因此，<code>在类别很多时</code>，OvO的训练时间开销通常比OvR更小。<code>至于预测性能</code>，则取决于具体的数据分布，在多数情况下两种策略差不多</p>
+<h3 id="MvM"><a href="#MvM" class="headerlink" title="MvM"></a>MvM</h3><p>MvM是每次将<code>若干个</code>类作为正类，<code>若干个</code>其他类作为反类。<code>MvM的正、反类构造必须有特殊的设计，不能随意选取</code>。有一种常用的MvM技术：<code>纠错输出码(Error Correcting Output Codes, ECOC)</code>。</p>
+<h5 id="纠错输出码ECOC"><a href="#纠错输出码ECOC" class="headerlink" title="纠错输出码ECOC"></a>纠错输出码ECOC</h5><p>ECOC工作过程主要分为两步：</p>
+<ul>
+<li>编码：对N个类别分别做M次划分，每次划分将一部分类别划分为正类，一部分划分为反类，从而形成一个二分类训练集；这样一共产生M个训练集，可以训练出M个分类器。</li>
+<li>解码：M个分类器分别对测试样本进行预测，这些预测标记组成一个编码。将这个编码与每个类别各自的编码进行比较，返回其中距离(海明距离或者欧式距离)最小的类别作为最终预测结果</li>
+</ul>
+<p>类别划分通过<code>编码矩阵</code>指定，编码矩阵有多种形式，常见的主要有<code>二元码</code>和<code>三元码</code>。二元码将每个类别分别指定正类和反类；三元码在正、反类之外，还可指定停用类。</p>
+<p><img src="/2020/02/19/machine_learning/linear_model/%E5%A4%9A%E5%88%86%E7%B1%BB%E5%AD%A6%E4%B9%A0/ECOC.jpeg" alt="ECOC" style="zoom:50%;"></p>
+<p>在编码矩阵中，使用“+1”、“-1”分别表示正、反例，0表示不使用该类样本即停用类。在上图的例子中，(a)图中的测试用例最后分类结果应归为$C_3$类，(b)图中的测试用例最后分类结果应归为$C_2$类。</p>
+<p>为什么叫做“纠错输出码”呢？原因是<code>在测试阶段</code>，<code>ECOC编码对分类器的错误有一定的容错和纠正能力</code>。例如，图(a)中对测试用例的正确预测编码是$(-1,+1,+1,-1,+1)$，假设在预测时某个分类器出错了，假设$f_2$分类器出错了，从而导致了错误的编码$(-1,-1,+1,-1,+1)$，但基于这个编码仍能产生正确的最终分类结果$C_3$。<code>一般来说，对同一个学习任务，ECOC编码越长，纠错能力越强</code>。然而，<code>编码越长意味着所需训练的分类器越多</code>，计算、存储开销都会增大；另一方面，对有限类别数，可能的<code>组合</code>数目是有限的，码长超过一定范围后就失去了意义。</p>
+<p>对于等长度的编码，理论上来说，任意<code>两个类别之间的</code>编码距离越远，则纠错能力越强。因此，在码长较小时可根据这个原则计算出理论最优编码。然而一般很难求的最优的编码，选择一个较优的编码就足够了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/16/machine_learning/linear_model/%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/16/machine_learning/linear_model/%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">线性判别分析</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-16 20:07:44" itemprop="dateCreated datePublished" datetime="2020-02-16T20:07:44+08:00">2020-02-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>线性判别分析(Linear Discriminant Analysis, LDA)是一种经典的<code>线性分类学习方法</code>。LDA的思想非常朴素：<code>给定训练集样例，设法将样例投影到一条直线上，使得同类样例的投影点尽可能接近，异类样例的投影点尽可能远离</code>；在对新样本进行分类时，将其投影到同样的这条直线上，再根据投影点的位置来确定新样本的类别。</p>
+<p><img src="/2020/02/16/machine_learning/linear_model/%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90/LDA.jpeg" alt="线性判别分析" style="zoom:30%;"></p>
+<h1 id="模型求解"><a href="#模型求解" class="headerlink" title="模型求解"></a>模型求解</h1><h1 id="模型推广到多分类任务"><a href="#模型推广到多分类任务" class="headerlink" title="模型推广到多分类任务"></a>模型推广到多分类任务</h1><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/16/machine_learning/linear_model/logistic%E5%9B%9E%E5%BD%92/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/16/machine_learning/linear_model/logistic%E5%9B%9E%E5%BD%92/" class="post-title-link" itemprop="url">logistic回归</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-16 20:07:11" itemprop="dateCreated datePublished" datetime="2020-02-16T20:07:11+08:00">2020-02-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-11-20 18:26:48" itemprop="dateModified" datetime="2020-11-20T18:26:48+08:00">2020-11-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="什么是logistic回归"><a href="#什么是logistic回归" class="headerlink" title="什么是logistic回归"></a>什么是logistic回归</h1><p>logistic回归又叫做对数几率回归，它是基于线性模型的一种<code>分类</code>模型。那么如何用线性回归得到的输出进行分类任务呢？只需找一个<code>单调可微</code>的函数将分类任务的真实标记y与线性回归模型的预测值联系起来。单调可微的目的是为了方便模型的求解。</p>
+<p>例如对于二分类任务，其输出标记$y \in \{0, 1\}$，而线性回归模型产生的预测值$z = wx + b$是实值，于是，我们需要将实值转换为0/1值。最理想的是单位阶跃函数：</p>
 <script type="math/tex; mode=display">
-tr[(\frac{\partial{f}}{\partial{X}})^T·dX] = 
-\sum_{i=1}^{m}\sum_{j=1}^{n}{\frac{\partial{f}}{\partial{X_{ij}}}}dX_{ij}</script><script type="math/tex; mode=display">
-df = 
-tr[(\frac{\partial{f}}{\partial{X}})^T·dX] \tag{1}</script><p>其中tr表示矩阵的迹(trace)，是方阵对角元素之和。所以<code>只要求全微分的公式(1)左边的形式，就可以的得到</code>$\frac{\partial{f}}{\partial{X}}$$</p>
-<h1 id="矩阵微分的运算法则"><a href="#矩阵微分的运算法则" class="headerlink" title="矩阵微分的运算法则"></a>矩阵微分的运算法则</h1><p>1、加减法、乘法、转置、迹</p>
+y = 
+\begin{cases}
+    0, & z < 0 \\
+    0.5, & z = 0 \\
+    1, & z > 0
+\end{cases}</script><p>即若预测值$z$大于0就判为正例，小于0则判为反例，<code>预测值为临界值0则可任意判别</code>。</p>
+<p>但是，单位阶跃函数不连续，所以直接使用单位阶跃函数的话，该分类模型则将很难求解。</p>
+<p>由于不能使用阶跃函数，所有我们希望找到能在一定程度上近似单位阶跃函数的“替代函数”，并希望它单调可微。<code>对数几率函数(logistic function)</code>正是这样一个常用的替代函数：</p>
 <script type="math/tex; mode=display">
-d(X{\pm}Y) = dX {\pm} dY \\
-d(XY) = X(dY)+d(X)Y \\
-d(X^T) = (dX)^T \\
-dtr(X) = tr(dX)</script><p>2、逆</p>
+y = \frac{1}{1+e^{-z}}</script><p>阶跃函数和对数几率函数的图像为：</p>
+<p><img src="/2020/02/16/machine_learning/linear_model/logistic%E5%9B%9E%E5%BD%92/logistic.jpeg" alt="logistic" style="zoom:30%;"></p>
+<p>从上图可以看出，对数几率函数是一种”Sigmoid函数”(即形似S的函数)，对率函数是Sigmoid函数中最重要的代表。</p>
+<p>将线性模型和对数几率函数结合得到最后的logistic回归的模型：</p>
 <script type="math/tex; mode=display">
-dX^{-1} = -X^{-1}dXX^{-1}</script><p>该公式可以使用公式$XX^{-1} = I$，两边同时对X求微分。</p>
-<p>3、行列式</p>
+y = \frac{1}{1 + e^{-(wx+b)}}</script><h1 id="logistic模型求解"><a href="#logistic模型求解" class="headerlink" title="logistic模型求解"></a>logistic模型求解</h1><p>logistic模型求解就是求出最优的$w$和$b$。<code>然而这里不能直接使用求解线性回归的方法进行求解</code>，即不能定义目标函数为$argmin_{(w,b)}\sum_{i=1}^{m}(wx_i+b - y_i)^2$。因为在这里，数据集中的y只能取0和1(对于二分类来说)，如果仍然使用均方误差来作为损失函数的话，那么在这里均方误差函数将不再是一个凸函数，所以我们要寻求另外的目标函数。</p>
+<p>logistic回归中的对率函数的实际输出其意义为：样本为正例(即$y=1$)的概率。例如对于某个样例$x$，在参数为$w,b$的条件下的输出为0.7，则表示该样例有0.7的概率为正例。相反如果输出为0.3，则表示该样例为正例的概率为0.3，即为反例的概率有0.7。</p>
+<p>则由此即有：</p>
 <script type="math/tex; mode=display">
-d\left| X \right| = tr(X^*dX)</script><p>其中$X^*$为X的伴随矩阵</p>
-<p>4、逐函数乘法</p>
+p(y=1 | x,w,b) = \frac{1}{1 + e^{-(wx+b)}}</script><script type="math/tex; mode=display">
+p(y=0 | x,w,b) =\frac{e^{-(wx+b)}}{1 + e^{-(wx+b)}}</script><p>于是，可<code>通过极大似然法</code>来估计$w$和$b$。给定数据集$\{(x_i, y_i)\}_{i=1}^{m}$，其中$y_i \in \{0,1\}$，则可得极大似然函数为：</p>
 <script type="math/tex; mode=display">
-d(X \bigodot Y) = dX \bigodot Y + X \bigodot dY</script><p>其中$\bigodot$表示同型矩阵逐元素相乘</p>
-<p>5、逐元素函数</p>
+l(w,b) = \sum_{i=1}^{m}ln \space p(y_i |x_i,w,b)</script><p>其中$p(y_i|x_i,w,b)$可改写为$y_ip(y=1|x_i,w,b) + (1-y_i)p(y=0 | x_i,w,b)$，则似然函数可写为：</p>
 <script type="math/tex; mode=display">
-d\sigma(X) =\sigma^{'} \bigodot dX</script><p>其中$\sigma(X)=[\sigma(X_{ij})]$是逐元素标量函数的计算</p>
-<h1 id="关于矩阵的迹的公式"><a href="#关于矩阵的迹的公式" class="headerlink" title="关于矩阵的迹的公式"></a>关于矩阵的迹的公式</h1><script type="math/tex; mode=display">
-a=tr(a)，a为标量 \\
-tr(A^T) = tr(A) \\
-tr(A \pm B) = tr(A) \pm tr(B) \\
-tr(BA) = tr(AB)</script><h1 id="一个例子"><a href="#一个例子" class="headerlink" title="一个例子"></a>一个例子</h1><p>y=ATXB，求$\frac{\partial y}{\partial X}$</p>
-<p>解：</p>
+l(w,b) = \sum_{i=1}^{m}ln [y_ip(y=1|x_i,w,b) + (1-y_i)p(y=0 | x_i,w,b)]</script><p>由于<code>似然函数法的思想就是求出使得得出当前结果的概率最大的参数</code>，$l(w,b)$的意义其实就是在参数为$w$和$b$的条件下，取值为当前数据集的y的概率再取对数。由于对数函数和原函数具有相同的单调性，当对数函数取最大值时，原函数也去最大值。所以最后我们的目标函数即为：</p>
 <script type="math/tex; mode=display">
 \begin{align*}
-df &= A^Td(XB) + d(A^T)·XB \\
-&= A^TdX·B + A^TXdB \\
-&= A^TdX·B \\
-&其中d(A^T)=d(B)=0
-\end{align*}</script><p>应为df为标量，所以</p>
+&argmax_{(w,b)}\sum_{i=1}^{m}ln [y_ip(y=1|x_i,w,b) + (1-y_i)p(y=0 | x_i,w,b)] \\
+=& argmax_{(a,b)}\sum_{i=1}^{m}ln [y_i\frac{1}{1 + e^{-(wx_i+b)}} + (1-y_i)\frac{e^{-(wx_i+b)}}{1 + e^{-(wx_i+b)}}] \tag{1}
+\end{align*}</script><p><code>注意是argmax</code>。</p>
+<p>最大化(1)式，等价于：</p>
 <script type="math/tex; mode=display">
 \begin{align*}
-df &= tr(df) \\
-&= tr(A^TdX·B) \\
-&= tr(BA^TdX) \\
-&= tr[(AB^T)^Tdx]
-\end{align*}</script><p>所以$\frac{\partial y}{\partial X}=(AB^T)$</p>
-<h1 id="链式法则"><a href="#链式法则" class="headerlink" title="链式法则"></a>链式法则</h1><p>在标量对矩阵求导中，没有类似标量对标量求导的链式法则。</p>
-<p>此时没有明确的链式法而是要使用公式进行推导，例如有$z = f(Y)$，其中Y为矩阵且$Y=AXB$，A、X、B、都为矩阵，求$\frac{\partial f}{\partial X}$。</p>
-<p>推导过程：</p>
-<script type="math/tex; mode=display">
-\begin{align*}
-dz &= tr[(\frac{\partial f}{\partial Y})^TdY] \\
-&= tr[(\frac{\partial f}{\partial Y})^Td(AXB)] \\
-&= tr[(\frac{\partial f}{\partial Y})^TdA·(XB)] + tr[(\frac{\partial f}{\partial Y})^TA·d(XB)] \\
-&= tr[(\frac{\partial f}{\partial Y})^TAdX·B] + tr[(\frac{\partial f}{\partial Y})^TAX·d(B)] \\
-&= tr[(\frac{\partial f}{\partial Y})^TAdX·B] \\
-&= tr[B·(\frac{\partial f}{\partial Y})^TAdX] \\
-&= tr[(A^T\frac{\partial f}{\partial Y}B^T)^TdX] \\
-&其中dA=dB=0
-\end{align*}</script><p>所以有$\frac{\partial z}{\partial X}=(A^T\frac{\partial f}{\partial Y}B^T)$</p>
+&argmin_{(a,b)}\sum_{i=1}^{m} -y_i ln\frac{1}{1 + e^{-(wx+b)}} - (1-y_i)ln\frac{e^{-(wx_i+b)}}{1 + e^{-(wx_i+b)}} \\
+=& argmin_{(a,b)}\sum_{i=1}^{m} -y_i ln\frac{1}{1 + e^{-(wx+b)}} - (1-y_i)ln[1-\frac{1}{1 + e^{-(wx_i+b)}}] \tag{2}
+\end{align*}</script><p>公式(2)是最常用的形式。这个公式相当于在说当$y_i = 1$时，损失函数为$ln\frac{1}{1 + e^{-(wx+b)}}$，当$y_i = 0$时，损失函数为$1-ln\frac{1}{1 + e^{-(wx+b)}}$。接下里就是利用梯度下降法或者其他方法求解最优解即可了。</p>
+<p><code>利用极大似然估计法寻找目标函数也是常用的一种方法</code>。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><code>logistic回归虽然它的名字是“回归”，但实际上却是一个分类学习方法</code>。这种方法有很多特点，它是基于线性回归模型的，具有很好的解释性。同时它是直接对分类可能性进行建模，无需要事先假设数据分布，这样就避免了假设分布不准确所带来的问题。</p>
+<p>它不仅是预测出类别，而是可得到近似概率预测。此外，对率函数是任意阶可导的凸函数。</p>
 
       
     </div>
@@ -1894,7 +1377,7 @@ dz &= tr[(\frac{\partial f}{\partial Y})^TdY] \\
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1960,14 +1443,14 @@ dz &= tr[(\frac{\partial f}{\partial Y})^TdY] \\
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">99</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">

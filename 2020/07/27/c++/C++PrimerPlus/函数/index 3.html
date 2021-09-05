@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="内联函数inline function在编译后实质上是函数代码块的替换，编译器不一定会实现inline function，如果编译器认为inline function太复杂或者有递归调用。inline function的链接性为内部链接，所以inline function的定义和声明不能放在不同的文件中。 引用类型作函数参数如果函数的参数为引用类型，如果传递的参数类型正确但是不是左值或者传递的参数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="函数">
+<meta property="og:url" content="http://swordandtea.github.io/2020/07/27/c++/C++PrimerPlus/%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="SwordAndTea&#39;s Blog">
+<meta property="og:description" content="内联函数inline function在编译后实质上是函数代码块的替换，编译器不一定会实现inline function，如果编译器认为inline function太复杂或者有递归调用。inline function的链接性为内部链接，所以inline function的定义和声明不能放在不同的文件中。 引用类型作函数参数如果函数的参数为引用类型，如果传递的参数类型正确但是不是左值或者传递的参数">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-07-27T08:35:04.000Z">
+<meta property="article:modified_time" content="2020-07-27T10:18:25.677Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="c++ primer plus">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2020/07/27/c++/C++PrimerPlus/%E5%87%BD%E6%95%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>函数 | SwordAndTea's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SwordAndTea's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/27/c++/C++PrimerPlus/%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          函数
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-07-27 16:35:04 / Modified: 18:18:25" itemprop="dateCreated datePublished" datetime="2020-07-27T16:35:04+08:00">2020-07-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-primer-plus/" itemprop="url" rel="index">
+                    <span itemprop="name">c++ primer plus</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h1><p>inline function在编译后实质上是函数代码块的替换，编译器不一定会实现inline function，如果编译器认为inline function太复杂或者有递归调用。<code>inline function的链接性为内部链接，所以inline function的定义和声明不能放在不同的文件中。</code></p>
+<h1 id="引用类型作函数参数"><a href="#引用类型作函数参数" class="headerlink" title="引用类型作函数参数"></a>引用类型作函数参数</h1><p>如果函数的参数为引用类型，如果传递的参数类型正确但是不是左值或者传递的参数类型不正确，但是可以转换为正确的类型，<code>编译将会创建一个临时变量，而将引用参数引用到该临时变量上</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">refcube</span><span class="params">(<span class="keyword">const</span> <span class="keyword">double</span> &amp;ra)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> re * ra * ra;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> side = <span class="number">3.0</span>;</span><br><span class="line"><span class="keyword">double</span> *pd = &amp;side;</span><br><span class="line"><span class="keyword">double</span> &amp;rd = side;</span><br><span class="line"></span><br><span class="line"><span class="keyword">long</span> edge = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">double</span> lens[<span class="number">4</span>] = &#123;<span class="number">2.0</span>, <span class="number">5.0</span>, <span class="number">10.0</span>, <span class="number">12.0</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> c1 = refcube(side);<span class="comment">//won&#x27;t create temporary variable</span></span><br><span class="line"><span class="keyword">double</span> c2 = refcube(lens[<span class="number">2</span>]);<span class="comment">//won&#x27;t create temporary variable</span></span><br><span class="line"><span class="keyword">double</span> c3 = refcube(rd);<span class="comment">//won&#x27;t create temporary variable</span></span><br><span class="line"><span class="keyword">double</span> c4 = refcube(*pd);<span class="comment">//won&#x27;t create temporary variable</span></span><br><span class="line"><span class="keyword">double</span> c5 = refcube(edge);<span class="comment">//will create temporary variable</span></span><br><span class="line"><span class="keyword">double</span> c6 = refcube(<span class="number">7.0</span>);<span class="comment">//will create temporary variable</span></span><br><span class="line"><span class="keyword">double</span> c7 = refcube(side + <span class="number">10.0</span>);<span class="comment">//will create temporary variable</span></span><br></pre></td></tr></table></figure>
+<h1 id="带默认参数的函数"><a href="#带默认参数的函数" class="headerlink" title="带默认参数的函数"></a>带默认参数的函数</h1><ul>
+<li>如果要用为某个参数设置默认值，则必须为<code>它右边的所有参数提供默认值</code>。</li>
+<li>函数定义中有默认参数，在函数实现中的函数头中可以不再写默认参数的值。</li>
+</ul>
+<h1 id="可变参数函数"><a href="#可变参数函数" class="headerlink" title="可变参数函数"></a>可变参数函数</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> n, ...)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>“…”代表可以<code>接受任意类型的数据</code>任意多个。</p>
+<p>获取到可变参数列表的方法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> n, ...)</span> </span>&#123;</span><br><span class="line">    va_list	ap;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    va_start(ap, n);</span><br><span class="line">    <span class="keyword">while</span> (n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> temp = va_arg(ap, <span class="keyword">int</span>);</span><br><span class="line">        sum += temp;</span><br><span class="line">        --n;</span><br><span class="line">    &#125;</span><br><span class="line">    va_end(ap);</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sum(<span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>、va_list args;			<span class="comment">//定义一个可变参数列表</span></span><br><span class="line"><span class="number">2</span>、va_start(args,n);	<span class="comment">//初始化args指向强制参数n的`下一个参数`</span></span><br><span class="line"><span class="number">3</span>、va_arg(args,type);	<span class="comment">//`获取当前参数内容`并将args指向下一个参数</span></span><br><span class="line"><span class="number">4</span>、va_end(args);			<span class="comment">//释放args</span></span><br></pre></td></tr></table></figure>
+<p>在使用va_arg宏时，<code>要求type是POD(Plain Old Data)类型</code>，能用 C 的 memcpy() 等函数进行操作的类、结构体就是 POD 类型的数据，所有基本数据类型都是POD。并且如果type和对应的参数不对的话会产生强制类型转换。如果类型转换失败就会将数据设置为0或者其他初始化的值。</p>
+<h1 id="函数重载"><a href="#函数重载" class="headerlink" title="函数重载"></a>函数重载</h1><ul>
+<li><p>函数的参数列表也称为函数特征标</p>
+</li>
+<li><p>函数重载要求函数的参数数目或参数类型<code>或参数的顺序</code>不同，而参数名是无关紧要，且编译器在检查时<code>不一定</code>会将引用类型和本身类型视为同一特征标，但是如果调用重载函数存在二义性则编译器会报错。</p>
+</li>
+<li><p><code>对于非引用传参，形参是否const是等价的</code>。但是<code>当使用引用传参时，有无const是不同的</code>。使用指针传参时，<code>指向const对象的指针和指向非const对象的指针做形参的函数是不同的</code></p>
+</li>
+<li><p>只是函数返回值不同不能构成函数重载</p>
+</li>
+<li><p><code>在类中，C++将区分常量和非常量函数(即函数本身是否为const)的特征标</code></p>
+</li>
+<li><p>函数重载匹配原则</p>
+<ul>
+<li>最匹配原则</li>
+<li>如果没有匹配的将会进行类型强转后进行匹配，但是进行类型强转后进行匹配后有多个匹配的会产生报错；</li>
+</ul>
+</li>
+</ul>
+<h1 id="函数模版"><a href="#函数模版" class="headerlink" title="函数模版"></a>函数模版</h1><p>函数模版并没有创建一个函数，它只是告诉编译器如何创建如何创建一个函数，编译器在遇到使用模版函数的地方会将模版函数展开成具体的函数。</p>
+<p>模版函数匹配原则：越具体越适配原则</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(T t)</span></span>;<span class="comment">//函数1</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(T *t)</span></span>;<span class="comment">//函数2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line">func(&amp;a);<span class="comment">//函数2更适配</span></span><br></pre></td></tr></table></figure>
+<h2 id="decltype-x-y"><a href="#decltype-x-y" class="headerlink" title="decltype(x) y"></a>decltype(x) y</h2><p>decltype用于将y作为和x一样的类型，当y的类型未知的时候，decltype的运用场景大多是模版</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</span><br><span class="line">auto gt(T1 x, T2 y) -&gt; decltype(x + y);</span><br></pre></td></tr></table></figure>
+<h1 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h1><p>函数指针的声明方式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">return_type (*pointer_name)(parameter);</span><br></pre></td></tr></table></figure>
+<p><code>注意</code>*和pointer_name要用括号括起来，否则就是返回指针的函数。</p>
+<p><code>注意</code>不能声明一个指向模版函数的指针，因为模版函数并没有实现真的函数，而只是说明如何声明函数</p>
+<h1 id="宏定义形式的函数"><a href="#宏定义形式的函数" class="headerlink" title="宏定义形式的函数"></a>宏定义形式的函数</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX(a, b) (a) &gt; (b) ? (a) : (b)</span></span><br></pre></td></tr></table></figure>
+<p><code>注意将参数用括号扩起来</code></p>
+<p>有些时候用宏定义的代码被do { } while(0);包含了起来，例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX(a, b) do &#123;    \</span></span><br><span class="line">    (a) &gt; (b) ? (a) : (b); \</span><br><span class="line">&#125; <span class="keyword">while</span>(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>这是因为宏的处理是文本替换，有时候将宏用文本替换后代码就产生了语法错误，而使用do {} while(0)是为了避免由于文本替换后带来的语法错误，并保证宏函数无论如何都会执行一次。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/c-primer-plus/" rel="tag"># c++ primer plus</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/27/c++/Effective-c++/%E6%9D%A1%E6%AC%BE04-%E7%A1%AE%E5%AE%9A%E5%AF%B9%E8%B1%A1%E8%A2%AB%E4%BD%BF%E7%94%A8%E5%89%8D%E5%B7%B2%E8%A2%AB%E5%88%9D%E5%A7%8B%E5%8C%96/" rel="prev" title="条款04-确定对象被使用前已被初始化">
+      <i class="fa fa-chevron-left"></i> 条款04-确定对象被使用前已被初始化
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/07/Docker/Docker%20%E5%88%9D%E5%AD%A6%E7%AC%94%E8%AE%B0/" rel="next" title="docker 初学笔记">
+      docker 初学笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">内联函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%BD%9C%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">引用类型作函数参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%A6%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">带默认参数的函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E5%87%BD%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">可变参数函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD"><span class="nav-number">5.</span> <span class="nav-text">函数重载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E6%A8%A1%E7%89%88"><span class="nav-number">6.</span> <span class="nav-text">函数模版</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#decltype-x-y"><span class="nav-number">6.1.</span> <span class="nav-text">decltype(x) y</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88"><span class="nav-number">7.</span> <span class="nav-text">函数指针</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%8F%E5%AE%9A%E4%B9%89%E5%BD%A2%E5%BC%8F%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">8.</span> <span class="nav-text">宏定义形式的函数</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.3.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
