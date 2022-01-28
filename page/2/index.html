@@ -180,6 +180,514 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/05/10/machine_learning/neural_network&deep_learning/cnn/multiple-input-and-multiple-output-channel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/10/machine_learning/neural_network&deep_learning/cnn/multiple-input-and-multiple-output-channel/" class="post-title-link" itemprop="url">multiple_input_and_multiple_output_channel</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-05-10 05:28:01" itemprop="dateCreated datePublished" datetime="2021-05-10T05:28:01+08:00">2021-05-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-26 14:06:18" itemprop="dateModified" datetime="2021-05-26T14:06:18+08:00">2021-05-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id><a href="#" class="headerlink" title=" "></a> </h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/04/16/machine_learning/neural_network&deep_learning/cnn/padding-and-stride/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/16/machine_learning/neural_network&deep_learning/cnn/padding-and-stride/" class="post-title-link" itemprop="url">padding_and_stride</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-04-16 15:33:50" itemprop="dateCreated datePublished" datetime="2021-04-16T15:33:50+08:00">2021-04-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-23 13:10:30" itemprop="dateModified" datetime="2021-05-23T13:10:30+08:00">2021-05-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Padding"><a href="#Padding" class="headerlink" title="Padding"></a>Padding</h1><p>一般来说，如果我们对一个$n_h \times n_w$的图片用一个$k_h \times k_w$的卷积核进行卷积操作，那么输出图片的大小为$(n_h - k_h + 1) \times (n_w - k_w + 1)$。经过卷积操作之后，图片的大小会减小，同时，图片的边缘的信息也会被抹去。通常，一个卷积神经网络有好几层卷积层，如果不进行任何处理的话，那么经过多层卷积层之后，图片携带的信息可能就非常少了。</p>
+<p>对输入图片进行Padding是一个常用的解决上面问题的方法。Padding即在图片周围填充额外的像素，通常，这些像素的值设置为0。如果我们对图像加入$p_h$行填充和$p_w$列填充，那么输出的图片的大小为$(n_h - k_h + p_h + 1) \times (n_w - k_w + p_w + 1)$</p>
+<center>
+  <img src="/2021/04/16/machine_learning/neural_network&deep_learning/cnn/padding-and-stride/padding.png" alt="padding.png" style="zoom:40%;">
+  <br>
+  <span>padding example</span>
+</center>
+
+<p>在许多情况下，通常会将$p_h$设置为$k_h - 1$，将$p_w$设置为$k_w - 1$，这样经过卷积之后的输出图片就和输入图片的大小一致。如果$k_h$为奇数(则$k_h - 1$为偶数)，那么一般就在输入图片的上面和下面都加上$\frac{k_h - 1}{2}$行填充，如果$k_h$为偶数(则$k_h - 1$为奇数)，那么可以在图片上方添加$\frac{k_h}{2}$行填充，在图片下方添加$(\frac{k_h}{2} - 1)$行填充，或者反过来。对于列填充来说也是这样的。</p>
+<p>CNN中通常使用长和宽都为奇数的卷积核，使用奇数卷积核心可以保障在图片上下和左右添加的填充是均匀的。<font color="orange">另外还有一个好处就是对于输出图片中的像素$Y[i, j]$来说，它正好是以输入图片中$X[i, j]$(注意输入图片的坐标以未添加padding的原始图片的左上角为原点)为中心周围像素的卷积运算的结果。</font></p>
+<p>下面以一个8 x 8的输入图片，一个3 x 3的卷积核来做padding处理下的卷积代码示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">conv2d = tf.keras.layers.Conv2D(<span class="number">1</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">&#x27;same&#x27;</span>)</span><br><span class="line"><span class="comment"># Here (1, 1) indicates that the batch size and the number of channels</span></span><br><span class="line">input_tensor = tf.random.uniform(shape=(<span class="number">1</span>, <span class="number">8</span>, <span class="number">8</span>, <span class="number">1</span>))</span><br><span class="line">output_tensor = conv2d(input_tensor)</span><br><span class="line">print(output_tensor.shape)</span><br></pre></td></tr></table></figure>
+<h1 id="Stride"><a href="#Stride" class="headerlink" title="Stride"></a>Stride</h1><p>在之前的对图片进行卷积计算时，都是从图片左上角开始，每次向右移动一个像素，当一行计算完后，再往下移动一个像素。但是有些时候，为了计算效率和缩减采样次数，卷积窗口可以每次多向右或向下移动几个像素，跳过中间几个像素的计算。如下图：</p>
+<p><center>
+  <img src="/2021/04/16/machine_learning/neural_network&deep_learning/cnn/padding-and-stride/stride.png" alt="padding.png" style="zoom:40%;">
+  <br>
+  <span>stride example</span>
+</center><br>上图中的示例中，使用了水平2像素的stride，垂直3像素的stride。</p>
+<p>假设输入图片的尺寸为$n_h \times n_w$，padding的尺寸为$p_h \times p_w$，卷积核的尺寸为$k_h \times k_w$，stride的尺寸为$s_h \times s_w$，则最终输出的结果的尺寸为$(n_h + p_h -k_h + s_h / s_h, \space n_w + p_w - k_w + s_w / s_w)$。</p>
+<p>使用stride的代码示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">conv2d = tf.keras.layers.Conv2D(<span class="number">1</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">&#x27;same&#x27;</span>, strides=<span class="number">2</span>)</span><br><span class="line"><span class="comment">#or</span></span><br><span class="line">conv2d = tf.keras.layers.Conv2D(<span class="number">1</span>, kernel_size=(<span class="number">3</span>, <span class="number">5</span>), padding=<span class="string">&quot;valid&quot;</span>, strides=(<span class="number">3</span>, <span class="number">4</span>))</span><br></pre></td></tr></table></figure>
+<p>通常来说，我们会将padding的长宽设置为相同的，stride的长宽也设置为相同的，即使用<code>正方形</code>的padding和stride。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/04/16/machine_learning/neural_network&deep_learning/cnn/convolutions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/16/machine_learning/neural_network&deep_learning/cnn/convolutions/" class="post-title-link" itemprop="url">convolutions</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-04-16 15:31:39" itemprop="dateCreated datePublished" datetime="2021-04-16T15:31:39+08:00">2021-04-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-26 13:23:40" itemprop="dateModified" datetime="2021-05-26T13:23:40+08:00">2021-05-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="The-Cross-Correlation-Operation"><a href="#The-Cross-Correlation-Operation" class="headerlink" title="The Cross-Correlation Operation"></a>The Cross-Correlation Operation</h1><p>假设对于一个只有一个颜色空间的3x3的图片，另外有一个2x2的卷积核，Cross-Correlation Operation的定义如下图：</p>
+<p><img src="/2021/04/16/machine_learning/neural_network&deep_learning/cnn/convolutions/cross-correlation-example.png" alt="cross-correlation-example" style="zoom:50%;"></p>
+<p>代码实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">corr2d</span>(<span class="params">X, K</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Compute 2D cross-correlation.&quot;&quot;&quot;</span></span><br><span class="line">    h, w = K.shape</span><br><span class="line">    Y = tf.Variable(tf.zeros((X.shape[<span class="number">0</span>] - h + <span class="number">1</span>, X.shape[<span class="number">1</span>] - w + <span class="number">1</span>)))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(Y.shape[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(Y.shape[<span class="number">1</span>]):</span><br><span class="line">            Y[i, j].assign(tf.reduce_sum(X[i:i + h, j:j + w] * K))</span><br><span class="line">    <span class="keyword">return</span> Y</span><br></pre></td></tr></table></figure>
+<h1 id="Custom-Convolution-Layer"><a href="#Custom-Convolution-Layer" class="headerlink" title="Custom Convolution Layer"></a>Custom Convolution Layer</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Conv2DDense</span>(<span class="params">tf.keras.layers.Layer</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">super</span>(Conv2DDense, self).__init__()</span><br><span class="line">        self.weight = <span class="literal">None</span></span><br><span class="line">        self.bias = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">build</span>(<span class="params">self, input_shape</span>):</span></span><br><span class="line">        initializer = tf.random_normal_initializer()</span><br><span class="line">        self.weight = self.add_weight(name=<span class="string">&quot;weight&quot;</span>, shape=input_shape, initializer=initializer)</span><br><span class="line">        self.bias = self.add_weight(name=<span class="string">&quot;bias&quot;</span>, shape=(<span class="number">1</span>,), initializer=initializer)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span>(<span class="params">self, inputs, **kwargs</span>):</span></span><br><span class="line">        <span class="keyword">return</span> corr2d(inputs, self.weight) + self.bias</span><br></pre></td></tr></table></figure>
+<font color="orange">注意卷机层的输出shape是由输入和自己的卷积核一起决定的，而之前自定义Layer的输出shape是初始化时由用户决定的。</font>
+
+
+
+<h1 id="Learning-a-Kernel"><a href="#Learning-a-Kernel" class="headerlink" title="Learning a Kernel"></a>Learning a Kernel</h1><p>在对图片进行卷积操作时，我们很多时候是不知道应该将卷积核的每个元素的数值设置为多少的。假设我们知道输入的图片以及经过卷积操作之后应该得到的输出图片，要想知道卷积核每个元素的取值，这个问题其实本质上就是一个线性规划的问题，可以用梯度下降法来求的近似数值解。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">learning_a_kernel</span>(<span class="params"><span class="built_in">input</span>: Union[tf.Tensor, tf.Variable], wanted_output: Union[tf.Tensor, tf.Variable], kernel_shape</span>):</span></span><br><span class="line">    <span class="comment"># Construct a two-dimensional convolutional layer with 1 output channel and a</span></span><br><span class="line">    <span class="comment"># kernel of kernal_shape. For the sake of simplicity, we ignore the bias here</span></span><br><span class="line">    conv2d = tf.keras.layers.Conv2D(<span class="number">1</span>, shape=kernel_shape, use_bias=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    reshaped_input = tf.reshape(<span class="built_in">input</span>, (<span class="number">1</span>, <span class="built_in">input</span>.shape[<span class="number">0</span>], <span class="built_in">input</span>.shape[<span class="number">1</span>], <span class="number">1</span>))</span><br><span class="line">    reshaped_wanted_output = tf.reshape(wanted_output, (<span class="number">1</span>, wanted_output.shape[<span class="number">0</span>], wanted_output.shape[<span class="number">1</span>], <span class="number">1</span>))</span><br><span class="line">    _ = conv2d(reshaped_input) <span class="comment"># this is use to gen weights in layer</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">        <span class="keyword">with</span> tf.GradientTape(watch_accessed_variables=<span class="literal">False</span>) <span class="keyword">as</span> g:</span><br><span class="line">            g.watch(conv2d.weights[<span class="number">0</span>])</span><br><span class="line">            calculated_output = conv2d(reshaped_input)</span><br><span class="line">            loss = (<span class="built_in">abs</span>(calculated_output - reshaped_wanted_output)) ** <span class="number">2</span></span><br><span class="line"></span><br><span class="line">            update = tf.multiply(<span class="number">3.21e-2</span>, g.gradient(loss, conv2d.weights[<span class="number">0</span>]))</span><br><span class="line"></span><br><span class="line">            weights = conv2d.get_weights()</span><br><span class="line">            weights[<span class="number">0</span>] = conv2d.weights[<span class="number">0</span>] - update</span><br><span class="line">            conv2d.set_weights(weights)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/03/30/machine_learning/neural_network&deep_learning/deep_learning_computation/deep_learning_computaion/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/30/machine_learning/neural_network&deep_learning/deep_learning_computation/deep_learning_computaion/" class="post-title-link" itemprop="url">deep_learning_computaion</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-03-30 18:33:30" itemprop="dateCreated datePublished" datetime="2021-03-30T18:33:30+08:00">2021-03-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-16 18:09:04" itemprop="dateModified" datetime="2021-04-16T18:09:04+08:00">2021-04-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Custom-Layers-and-Blocks"><a href="#Custom-Layers-and-Blocks" class="headerlink" title="Custom Layers and Blocks"></a>Custom Layers and Blocks</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>对于神经网络，不论是单个神经元，还是一层神经元，还是多层神经元组成的神经网络，它们都有同样的抽象结构：</p>
+<ul>
+<li>接受一组输入</li>
+<li>产生对应的输出</li>
+<li>有可调节的网络参数</li>
+</ul>
+<p>在深度学习中，通常会封装一个多层网络，这个多层<font color="orange">比单层神经网络要多，但是比整个深度神经网络要少的网络</font>。这个多层网络同样具有以上的抽象结构。封装这个多层网络的是为了方便复用网络结构，例如在ResNet-152架构中（用于计算机视觉的深度网络），整个模型有几百层神经网络，但是这个神经网络是由重复的几组多层网络结构构成的。这种设计在许多深度神经网络中都很常见。</p>
+<p>通常，我们把这种封装好的多层网络结构叫做block。而且，在深度学习编程框架中，一个Block通常封装在一个类中。这个类需要实现以下功能：</p>
+<ul>
+<li>一个forward function用于将输入转换为输出</li>
+<li>保存网络的参数</li>
+<li>一个backward function用于计算梯度，但是感谢深度学习框架中的自动微分功能，我们通常不用实现这个backward function。</li>
+</ul>
+<h2 id="自定义block示例"><a href="#自定义block示例" class="headerlink" title="自定义block示例"></a>自定义block示例</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyBlock</span>(<span class="params">tf.keras.Model</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    a custom block with a hidden layer(256 unit) and a output layer(10 unit)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, *args, **kwargs</span>):</span></span><br><span class="line">        <span class="built_in">super</span>().__init__(*args, **kwargs)</span><br><span class="line">        self.hidden = tf.keras.layers.Dense(units=<span class="number">256</span>, activation=tf.nn.relu)</span><br><span class="line">        self.out = tf.keras.layers.Dense(units=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span>(<span class="params">self, inputs, training=<span class="literal">None</span>, mask=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.out(self.hidden(inputs))</span><br></pre></td></tr></table></figure>
+<h2 id="自定义layer"><a href="#自定义layer" class="headerlink" title="自定义layer"></a>自定义layer</h2><h1 id="参数管理"><a href="#参数管理" class="headerlink" title="参数管理"></a>参数管理</h1><h1 id="延迟初始化"><a href="#延迟初始化" class="headerlink" title="延迟初始化"></a>延迟初始化</h1><h1 id="参数存储和加载"><a href="#参数存储和加载" class="headerlink" title="参数存储和加载"></a>参数存储和加载</h1><h1 id="使用GPU"><a href="#使用GPU" class="headerlink" title="使用GPU"></a>使用GPU</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/03/24/others/c++%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/24/others/c++%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">c++项目构建工具简单介绍</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-03-24 17:23:56" itemprop="dateCreated datePublished" datetime="2021-03-24T17:23:56+08:00">2021-03-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-24 17:28:26" itemprop="dateModified" datetime="2021-05-24T17:28:26+08:00">2021-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c/" itemprop="url" rel="index">
+                    <span itemprop="name">c++</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="不使用任何构建工具"><a href="#不使用任何构建工具" class="headerlink" title="不使用任何构建工具"></a>不使用任何构建工具</h1><p>对于C/C++代码来说，不使用任何构建工具来辅助编译C/C++代码的话，就需要自己手动指定使用的编译器(clang、gcc/g++或者其他编译器)，一般来说需要在编译命令下指定这些：</p>
+<ul>
+<li>指定需要编译的源文件</li>
+<li>指定头文件的搜索目录</li>
+<li>指定库文件的搜索目录</li>
+<li>需要链接的动态库和静态库</li>
+<li>指定需要额外定义的宏或者取消定义的宏来控制编译</li>
+<li>指定编译优化选项</li>
+<li>指定语言标准</li>
+<li>等等</li>
+</ul>
+<p>以gcc/g++为例，使用-D指定额外定义的宏，-U取消宏定义：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-DUseXX //#define UseXX</span><br><span class="line">-DMaxSize=500 //#define MaxSize 500</span><br><span class="line">-UUseXX //#undef UseXX</span><br></pre></td></tr></table></figure>
+<p>-I（i的大写） 添加头文件搜索目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-I/usr/local/include/xxx -I/usr/local/Cellor/yyy</span><br></pre></td></tr></table></figure>
+<p>-L 添加库文件搜索目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-L/usr/local/lib -L/usr/local/Cellor/lib</span><br></pre></td></tr></table></figure>
+<p>-l（L的小写）添加链接库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-la -lb -lz</span><br></pre></td></tr></table></figure>
+<p>-g生成调试信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-g #以操作系统的本地格式产生调试信息</span><br><span class="line">-g1 #输出的调试信息</span><br><span class="line">-g2 #输出默认量的调试信息</span><br><span class="line">-g3 #输出更多的调试信息</span><br></pre></td></tr></table></figure>
+<p>警告选项</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-w #关闭显示所有警告信息</span><br><span class="line">-Wall #开启大部分警告提示，默认</span><br><span class="line">-Werror #将警告视为错误，出现警告即放弃编译</span><br></pre></td></tr></table></figure>
+<p>-O优化选项</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-O0 #不优化</span><br><span class="line">-O1 #</span><br><span class="line">-O2</span><br><span class="line">-O3</span><br></pre></td></tr></table></figure>
+<p>语言选项</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-ansi #支持符合ANSI标准的C程序</span><br><span class="line">-std=c99 #C99标准</span><br><span class="line">-std=c++11 # c++11标准</span><br></pre></td></tr></table></figure>
+<p>直接使用gcc/g++命令在使用代码文件不多，库直接的依赖关系不复杂的情况下是可以接受的。但是在一些大型项目中，源文件上千上万，各个文件和库直接的依赖关系复杂，如果还手动输入编译命令的话，复杂度就会变得很大。</p>
+<h1 id="make工具"><a href="#make工具" class="headerlink" title="make工具"></a>make工具</h1><p>make工具是一个从源码自动构建所需“目标”的构建工具，他依赖通过读取一个叫做Makefile的脚本文件来实现自动化构建。</p>
+<p>Makefile本身其实一种管理代码源文件之间依赖关系的脚本，在这个脚本中描述了项目工程中的各个“目标”或者源文件之间的依赖关系以及构建各个目标所需要的命令。</p>
+<p>斯图亚特·费尔德曼在1977年在贝尔实验室里制作了最初的make程序，最初的make程序被多次重/改写，形成了多种版本的make工具，比较出名的有GNU make， BSD make，microsoft nmake等等。这些make工具都有不同的规范和标准，使用的Makefile的语法标准也不同。</p>
+<p>下面以GNU Make使用的Makefile的格式对Makefile进行简介。</p>
+<h2 id="GNU-Makefile格式"><a href="#GNU-Makefile格式" class="headerlink" title="GNU Makefile格式"></a>GNU Makefile格式</h2><p>编写Makefile的规则一般如下：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">target: prerequisites</span></span><br><span class="line">[tab]COMMAND</span><br><span class="line">[tab]COMMAND</span><br><span class="line">		 ...</span><br><span class="line">		 ...</span><br><span class="line">		 ...</span><br><span class="line"></span><br><span class="line"><span class="section">target2: prerequisites</span></span><br><span class="line">		...</span><br><span class="line">		...</span><br></pre></td></tr></table></figure>
+<p>Makefile中target就是make命令中所需指定的构建目标。<code>make会把在Makefile中定义的第一target作为默认target，即如果不给make命令传递target参数，则默认为makefile中的第一个定义的target。</code></p>
+<p>prerequisites说明了这个target依赖哪些其他的target或者文件，这个字段可以为空，说明这个target没有依赖。如果target有依赖的情况下，make会记录target是否有更新，如果依赖没有更新，make就不会重复构建target。</p>
+<p>command就是这个生成这个target所需要的命令，这个命令可以是任意的命令</p>
+<p><code>注意，可能有一个误区就是prerequisites字段只是用来让make进行依赖解析和判断target是否需要重建的，依赖和command本身没有任何关系。如果以为某个target依赖了某些源文件，那么make在解析的时候自动会将这些源文件传递给命令，这是不对的。</code>例如target main依赖了main.cpp文件，那么这么写是没有用的：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">main: main.cpp</span></span><br><span class="line">	g++ -o main</span><br></pre></td></tr></table></figure>
+<p>应该这么写：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">main: main.cpp</span></span><br><span class="line">	g++ -o main main.cpp</span><br></pre></td></tr></table></figure>
+<p>下面举一个例子来使用makefile构建一个可执行文件，在a.h定义了类A，在a.cpp中实现了类A的方法，在main.cpp中引入了a.h使用了类A的方法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//a.h</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">say</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//c.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;a.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">A::say</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;hello world&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//main.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;a.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  A a;</span><br><span class="line">  a.say();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对应的Makefile的一种形式</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">CXX = g++</span><br><span class="line"><span class="section">main: a.cpp.o main.cpp.o</span></span><br><span class="line">	<span class="variable">$(CXX)</span> -o test main.o a.o</span><br><span class="line"></span><br><span class="line"><span class="section">main.o: a.h main.cpp</span></span><br><span class="line">	echo <span class="string">&quot;main&quot;</span></span><br><span class="line">	<span class="variable">$(CXX)</span> -c main.cpp -o main.o</span><br><span class="line"></span><br><span class="line"><span class="section">a.o: a.h a.cpp</span></span><br><span class="line">	echo <span class="string">&quot;a&quot;</span></span><br><span class="line">	<span class="variable">$(CXX)</span> -c a.cpp -o a.o</span><br></pre></td></tr></table></figure>
+<p>还有很多其他写法：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CXX = g++</span><br><span class="line"><span class="section">main: a.h a.cpp main.cpp</span></span><br><span class="line">	<span class="variable">$(CXX)</span> -o test main.cpp a.cpp</span><br></pre></td></tr></table></figure>
+<p>但是这种写法不好的地方在于，如果a.h，a.cpp，main.cpp中有任意一个文件有变化，这几个文件都要重新再编译一次。</p>
+<p>执行make命令就会构建出目标main，生成test可执行文件。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make #等价使用make main</span><br></pre></td></tr></table></figure>
+<p>也可以不构建目标main，选择构建其他目标，例如构建main.cpp.o目标：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make main.cpp.o #执行g++ -c main.cpp，生成main.o文件</span><br></pre></td></tr></table></figure>
+<p>make对target依赖的解析是一个类似递归的过程，例如上例中目标main依赖了目录a.cpp.o和main.cpp.o那么make会先去执行a.cpp.o下的命令和main.cpp.o下的命令，然后再来执行目标main定义的命令。</p>
+<p>在make file中有几个特殊的target，一个是clean，另外一个是install，<code>不是说这些命令必须执行某种命令，而是大家默认了使用cmake执行这些target应该做的事</code>，clean就应该是去清除之前构建目标生成出来的文件，而install应该将构建目标生成出来的文件安装到指定目录下。你也可以在Makefile中将clean定义为执行安装操作的命令，然后把install定义为执行clean操作的命令，但是这不合理。</p>
+<p>之前提到Makefile本质上就是一个脚本文件，既然是脚本文件，<code>那就可以在Makefile中定义变量，使用变量，使用条件控制语句，定义函数，使用函数，include其他Makefile文件等</code>。这些使用可以去网上自己去搜索。</p>
+<p>Makefile本身只关心各个文件或目标之间的依赖关系，省去了开发者在修改某些代码文件后判断需要重新编译生成目标文件的时间。但是在Makefile中最后还是需要自己去调用编译器命令，在命令中指定include的目录，链接库的路径，需要链接的库。另外在不同的操作系统下还需要指定不同的编译器，指定不同的include头文件目录等等。</p>
+<p>最后说明一下，由于Makefile本身不关心编译过程的，因为最后的编译还是通过在Makefile中编写调用编译命令，所以使用make+Makefile理论上可以用来编译任何代码。</p>
+<h1 id="GNU-Autotools"><a href="#GNU-Autotools" class="headerlink" title="GNU Autotools"></a>GNU Autotools</h1><p>之前说到在不同的代码运行平台下，可能需要在Makefile中指定不同的编译器的名称，指定不同的头文件路径，链接不同的链接库等等，如果用make工具，那么就需要对不同的运行平台，就需要编写不同的Makefile，这不仅会增加工作量，而且要求程序员对各个平台也要有一定的熟悉程度。GNU Autotools的目的就是为了在不同类Unix平台下，针对GNU make工具快速生成对应的Makefile文件。</p>
+<p>GUN Autotools是一个GNU工具集，它包括autoscan、autoheader，autoconf，automake，aclocal和libtool等等。最主要使用的两个工具就是autoconf和automake。使用Autotools最终也会生成Makefile文件，然后调用make命令来构建出项目。使用Autotools构建项目的三部曲一般是./configure，make，make install。</p>
+<p>运行configure脚本用于系统检测，一般主要检测当前平台的编译器、库文件、头文件等等，这些检查的结果将用于将config.h.in和Makefile.in文件转化为最终的config.h和Makefile文件。configure脚本一般有几千行，非常复杂，如果要手写的话很困难，可以使用autoconf工具来自动生成这个configure脚本。autoconf工具通过读取一个configure.ac的模版文件，来生成configure脚本。configure.ac文件是一个由m4宏编写的文件，autoconf在处理configure.ac文件时就会将这些宏展开为shell脚本代码。</p>
+<p>在开始的时候，可以使用autoscan工具来生成一个configure.ac的模版，autoscan生成的文件的名字为configure.scan，直接修改configure.scan名字为configure.ac即可。</p>
+<p>再以写Makefile时的示例项目为例，通过对autoscan生成的模版再进行修改的情况下，编写的configure.ac文件如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">                                               -*- Autoconf -*-</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Process this file with autoconf to produce a configure script.</span></span><br><span class="line"></span><br><span class="line">AC_PREREQ([2.69]) #autoconf版本最低要求2.69</span><br><span class="line">AC_INIT([test], [1.0], [www.xxx-bug-report.com]) #设置项目名称，版本号，bug上报网址</span><br><span class="line">AM_INIT_AUTOMAKE # 项目需要使用automake，初始化automake</span><br><span class="line">AC_CONFIG_FILES([Makefile]) #告诉configure 根据系统信息和Makefile.in生成Makefile文件</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Checks <span class="keyword">for</span> programs.</span></span><br><span class="line">AC_PROG_CXX #告诉configure 检查c++编译器，由于没有指定这个宏的参数，默认参数为g++</span><br><span class="line">AC_PROG_CC  #告诉configure 检查c编译器，由于没有指定这个宏的参数，默认参数为gcc</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Checks <span class="keyword">for</span> libraries.</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Checks <span class="keyword">for</span> header files.</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Checks <span class="keyword">for</span> typedefs, structures, and compiler characteristics.</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Checks <span class="keyword">for</span> library <span class="built_in">functions</span>.</span></span><br><span class="line"></span><br><span class="line">AC_OUTPUT</span><br></pre></td></tr></table></figure>
+<p>configure脚本会根据Makefile.in来生成Makefile，但是Makefile.in的脚本也是又长又复杂的，但是和configure的生成一样，Makefile.in可以由一个模版文件通过automake来生成，这个模版文件就是Makefile.am。</p>
+<p>在这个例子下，对应的Makefile.am：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">AUTOMAKE_OPTIONS = foreign #因为这里的例子不是标准的 GNU 项目的结构，所以结构声明为 foreign</span><br><span class="line">bin_PROGRAMS = test #告诉automake 需要Makefile构建的项目是一个可执行文件，其名称为test</span><br><span class="line">test_SOURCES = main.cpp a.cpp #告诉automake 项目使用的源文件</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">test_CPPFLAGS = <span class="comment">#设置c++编译的编译选项，这里不需要额外的编译选项</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">test_LDFLAGS = <span class="comment">#设置链接选项，这了不需要额外的链接选项，</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">test_LDADD = <span class="comment">#设置要链接的库文件，这里也没有</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">INCLUDES = <span class="comment">#设置头文件搜索目录，这里也没有额外的头文件</span></span></span><br></pre></td></tr></table></figure>
+<p>接下来，依次运行下面几个命令即可完成对项目的编译</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">aclocal #使用aclocal初始化m4环境</span><br><span class="line">autoconf #将configure.ac生成configure脚本</span><br><span class="line">automake --add-missing #将Makefile.am生成Makefile.in</span><br><span class="line">./configure #检查系统环境，将Makefile.in和config.h.in(这里没有使用到)生成Makefile和config.h</span><br><span class="line">make </span><br></pre></td></tr></table></figure>
+<p>在发布软件的时候，不需要将configure.ac和Makefile.am文件发布出去，只需要将Makefile.in，config.in.h和configure脚本发布出去即可。</p>
+<p>GNU Autotools工具对类Unix系统的用户来说比较友好，对于使用windows系统的用户来说就很不友好了，需要进行很多的配置才行。</p>
+<h1 id="CMake"><a href="#CMake" class="headerlink" title="CMake"></a>CMake</h1><p>之前提到不同的平台下，不同的IDE间使用的make工具的规范和标准是不同的，Makefile的标准也就不同，CMake的出现解决了不同make工具之间规范和标准不同的问题。</p>
+<p>CMake让构建人员通过一个与平台无关的CMakeList.txt文件来说明这个项目的构建流程，然后再根据目标平台生成对应的Makefile文件。</p>
+<p>CMakeList.txt是使用CMake自己的一套语法来编写的。还是以之前的例子来说明一个CMaList.txt有哪些内容：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.13</span>) <span class="comment">#cmake最低版本3.13</span></span><br><span class="line"><span class="keyword">project</span>(<span class="keyword">Test</span>) <span class="comment">#设置CMake项目名称</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>) <span class="comment">#设置C++标准为C++11</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(TEST_SRC main.cpp a.cpp)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(<span class="keyword">test</span> <span class="variable">$&#123;TEST_SRC&#125;</span>) <span class="comment">#添加说明要构建一个可执行文件，文件名为test，源码文件为main.cpp，a.cpp</span></span><br></pre></td></tr></table></figure>
+<p>之后执行命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cmake .</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+<p>就可以完成对项目的编译构建。</p>
+<p>CMake会自动检查当前平台使用的编译器信息，当然也可以在CMake中要使用的编译器</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><h2 id="代码构建工具的目的"><a href="#代码构建工具的目的" class="headerlink" title="代码构建工具的目的"></a>代码构建工具的目的</h2><p>1、代码构建工具的首要目的就是帮助程序员能够从代码构建出最后的产物</p>
+<p>2、帮助管理代码中的依赖问题</p>
+<p>3、加快编译构建速度，能够并行编译，并且只对需要重新编译的部分进行编译。</p>
+<h2 id="为什么c-c-的项目这么难管理"><a href="#为什么c-c-的项目这么难管理" class="headerlink" title="为什么c/c++的项目这么难管理"></a>为什么c/c++的项目这么难管理</h2><p>以下原因只是我的主观看法：</p>
+<p>1、c/c++发展的太早，早到发展初期根本没有想到依赖管理的问题，早到当时根本没有考虑各个平台下统一标准，统一规范的问题。</p>
+<p>2、</p>
+<p>3、与系统强相关，在不同系统中，使用的c/c++的头文件，库文件都是不同的，另外，在一个平台下编译出来的二进制文件有可能无法在另外一个平台下使用，需要从源码重新编译。</p>
+<p>TODO: 将PPT中的一些内容补充到这篇博客中</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/03/22/design_patterns/%E7%BB%93%E6%9E%84%E6%80%A7%E6%A8%A1%E5%BC%8F/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -784,444 +1292,6 @@ then \\
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/02/22/design_patterns/%E7%BB%93%E6%9E%84%E6%80%A7%E6%A8%A1%E5%BC%8F/%E6%A1%A5%E6%8E%A5%E5%99%A8%E6%A8%A1%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/22/design_patterns/%E7%BB%93%E6%9E%84%E6%80%A7%E6%A8%A1%E5%BC%8F/%E6%A1%A5%E6%8E%A5%E5%99%A8%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">桥接器模式</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-02-22 20:26:31" itemprop="dateCreated datePublished" datetime="2021-02-22T20:26:31+08:00">2021-02-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-03 17:05:08" itemprop="dateModified" datetime="2021-03-03T17:05:08+08:00">2021-03-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/design-pattern/" itemprop="url" rel="index">
-                    <span itemprop="name">design pattern</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>假设你有一个叫<code>形状(shape)</code>的基类，它扩展出来两个子类：<code>圆形(Circle)和方形(Square)</code>，同时你希望对这两个形状添加颜色（红色和蓝色），一个方法是基于继承，基于圆形和方形分别创建两个子类，如<code>RedCircle</code>和<code>RedSquare</code>。这样的问题是，每增加新的形状和颜色，都需要创建更多的子类。另外一种方法就是将颜色抽象成一个类，然后让形状类有一个颜色的成员变量，现在形状类可以将所有与颜色相关的工作委派给自己的颜色成员变量。</p>
-<h1 id="桥接模式简介"><a href="#桥接模式简介" class="headerlink" title="桥接模式简介"></a>桥接模式简介</h1><p>桥接模式模式可以看作一种最简单的组合，外部只和组合类交互，而不会接触到内部的被组合的类。</p>
-<h1 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h1><p>遥控器和可遥控设备直接的桥接示例，用户只直接使用遥控器，而不会直接和设备进行交互。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Device</span> &#123;</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="keyword">int</span> _volume;</span><br><span class="line">    <span class="keyword">int</span> _channel;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">isEnabled</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">enable</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">disable</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">getVolume</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">setVolume</span><span class="params">(<span class="keyword">int</span> volume)</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">getChannel</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">setChannel</span><span class="params">(<span class="keyword">int</span> channel)</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Remote</span> &#123;</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    Device *_device;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Remote(Device *device): _device(device) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">togglePower</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (_device-&gt;isEnabled()) &#123;</span><br><span class="line">            _device-&gt;disable();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            _device-&gt;enabel();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">volumeDown</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        _device-&gt;setVolume(_device-&gt;getVolume() - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">volumeUp</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        _device-&gt;setVolume(_device-&gt;getVolume() + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">channelDown</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        _device-&gt;setChannel(_device-&gt;getChannel() - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">channelUp</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        _device-&gt;setChannel(_device-&gt;getChannel() + <span class="number">1</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Radio</span>:</span> <span class="keyword">public</span> Device &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//function implementations</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TV</span>:</span> <span class="keyword">public</span> Device &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//function implementations</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>桥接模式通常会用于开发前期进行设计，</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/02/22/design_patterns/%E7%BB%93%E6%9E%84%E6%80%A7%E6%A8%A1%E5%BC%8F/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/22/design_patterns/%E7%BB%93%E6%9E%84%E6%80%A7%E6%A8%A1%E5%BC%8F/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">适配器模式</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-02-22 18:19:39" itemprop="dateCreated datePublished" datetime="2021-02-22T18:19:39+08:00">2021-02-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-03 17:04:58" itemprop="dateModified" datetime="2021-03-03T17:04:58+08:00">2021-03-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/desgin-pattern/" itemprop="url" rel="index">
-                    <span itemprop="name">desgin pattern</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>适配器模式目的是为了让接口不兼容的对象能够相互合作，例如一个流数据处理的第三方库，它目前只能处理XML格式输入的数据，但是你自己从生产环境获取到数据流是JSON格式的，因此你无法直接使用这个第三方库，因为它所需的输入数据与你的程序不兼容。</p>
-<p>你可以修改这个第三方库来支持JSON，但是这可能需要修改其他依赖这个第三库的现有代码，甚至你可能根本就没有这个第三方库的源代码。</p>
-<p>这时，你可以创建一个适配器，它用于将JSON格式数据转换为XML格式的数据，并调用第三方库进行数据处理，你的代码之后就与这个适配器进行交互。</p>
-<h1 id="适配器模式简介"><a href="#适配器模式简介" class="headerlink" title="适配器模式简介"></a>适配器模式简介</h1><ul>
-<li>适配器实现与其中一个现有对象兼容的接口</li>
-<li>其他对象可以使用该接口安全得调用适配器方法</li>
-<li>适配器方法被调用后再调用其内部对象的接口</li>
-</ul>
-<font color="orange">有时你甚至可以创建一个双向适配器来实现双向转换调用</font>
-
-
-
-<h1 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h1><p>经典的方钉圆孔问题：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RoundReg</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> _radius;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    RoundReg(<span class="keyword">int</span> radius): _radius(radius) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">getRadius</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> _radius</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RoundHole</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> _radius;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    RoundHole(<span class="keyword">int</span> radius): _radius(radius) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">getRadius</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> _radius</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">bool</span> fits(RoundReg &amp;roundReg) &#123;</span><br><span class="line">        <span class="keyword">return</span> _radius == roundReg.getRadius()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SquareReg</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> _edge;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    SquareReg(<span class="keyword">int</span> edge): _edge(edge) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getEdge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> _edge;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SquarePegAdapter</span>:</span> RoundReg &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    SquareReg _squareReg;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    SquarePegAdapter(<span class="keyword">const</span> SquareReg&amp; peg): _squareReg(peg) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getRadius</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> _squareReg.getEdge() * <span class="built_in">sqrt</span>(<span class="number">2</span>) / <span class="number">2</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>SquarePegAdapter内部封装了SquareReg，RoundHole不能直接和SquareReg交互，而和SquarePegAdapter进行交互。</p>
-<p>虽然SquarePegAdapter继承自RoundReg，但是这里继承的目的只是为了获取和RoundReg相同的接口而已，SquareRegAdapter相当于为SquarePeg增加了新的接口</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/02/20/machine_learning/neural_network&deep_learning/parameter-initialization/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/20/machine_learning/neural_network&deep_learning/parameter-initialization/" class="post-title-link" itemprop="url">parameter_initialization</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-02-20 17:27:22" itemprop="dateCreated datePublished" datetime="2021-02-20T17:27:22+08:00">2021-02-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-23 20:43:34" itemprop="dateModified" datetime="2021-02-23T20:43:34+08:00">2021-02-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">machine learning</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在深度学习中，参数初始化也是很重要的一步，糟糕的初始参数可能会导致模型在训练时遇到<code>梯度消失</code>和<code>梯度爆炸</code>这两个情况</p>
-<h1 id="梯度消失"><a href="#梯度消失" class="headerlink" title="梯度消失"></a>梯度消失</h1><p>梯度消失是指在训练是，参数的梯度变为0，或者是非常接近0，导致参数在迭代过程中不再更新或者说更新很小。</p>
-<p>除了糟糕的初始化参数，<font color="orange">另外一个导致梯度消失原因是激活函数的选择</font>，曾经，sigmoid函数$\frac{1}{1+e^{-x}}$常常作为激活函数，但是sigmoid函数的梯度在自变量较小和自变量较大时，对应的导数值都非常接近0，所以水用sigmoid激活函数往往会导致梯度消失的问题。所以现在大家基本上都选择ReLU函数作为默认的激活函数。</p>
-<h1 id="梯度爆炸"><a href="#梯度爆炸" class="headerlink" title="梯度爆炸"></a>梯度爆炸</h1><p>梯度爆炸是指在训练时，参数的梯度变得非常大。</p>
-<h1 id="参数对称问题"><a href="#参数对称问题" class="headerlink" title="参数对称问题"></a>参数对称问题</h1><p>如果初始化参数时，如果参数出现很多相似的参数，那个就可能会导致多个神经元表现得像一个神经元。一个极端的例子，如果在输出化参数时，所有参数都初始化为一个常数，如果输入样本的特征也是相同的话，那么对于每次迭代，每个参数的偏导数值也是相同的，更新之后的值也是相同的，那么这些神经元就和一个神经元的效果一样了。</p>
-<h1 id="参数初始化的方法"><a href="#参数初始化的方法" class="headerlink" title="参数初始化的方法"></a>参数初始化的方法</h1><h2 id="Default-Initialization"><a href="#Default-Initialization" class="headerlink" title="Default Initialization"></a>Default Initialization</h2><p>在使用深度学习框架创建网络时，如果是传入模型初始化方法的参数，则会使用深度学习框架默认的参数初始化方法，通常不会出现什么大问题。</p>
-<h2 id="Xavier-Initialization"><a href="#Xavier-Initialization" class="headerlink" title="Xavier Initialization"></a>Xavier Initialization</h2><p>Xavier Initialization使用期望为0，方差为$\frac{2}{n_{in} + n_{out}}$的正态分布来初始化参数，其中$n_{in}$为<font color="orange">当前层</font>的输入神经元个数，$n_{out}$为当前层的输出神经元的个数，即下一层神经元的个数。</p>
-<h1 id="others"><a href="#others" class="headerlink" title="others"></a>others</h1><p>神经网络中的参数初始化方法也是目前研究的一个领域</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/02/13/machine_learning/neural_network&deep_learning/dropout/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/13/machine_learning/neural_network&deep_learning/dropout/" class="post-title-link" itemprop="url">dropout</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-02-13 10:49:18" itemprop="dateCreated datePublished" datetime="2021-02-13T10:49:18+08:00">2021-02-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-03 20:43:35" itemprop="dateModified" datetime="2021-04-03T20:43:35+08:00">2021-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">machine learning</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>通常，在深度学习任务中，我们可以通过在损失函数中添加正则化项来避免过拟合，L2正则化项是通常使用的正则化项，L2正则化项使得模型最终的权重值分布比较均匀，<font color="orange">使用L2正则化项时，我们就假设了我们的模型的对于样本的每个特征都相似的看重，而不只是看重某几个可能是关键特征的特征。</font></p>
-<font color="orange">对于线形模型，在样本特征多样本数量少的情况下，线形模型很有可能会过拟合，但是只要增加样本数量，线形模型大概率就能摆脱过拟合的风险。</font>但是线形这种可靠的特性也是有代价的，线形模型不关系样本特征之间的关系。对于每个样本特征，线形模型就只是要么给一个正的权重或者负的权重，而不会考虑任何背景信息。
-
-不同于线形模型，神经网络通常不会独立对待每个样本特征，神经网络能够学习样本之间的关系，<font color="red">但是，对于深度神经网络来说，即使样本数量远远多于样本特征，深度神经网络仍然会有过拟合的风险。</font>
-
-<p>同时来说，使用简单的模型可以避免过拟合。使用更少纬度的特征、使用正则化项让权重值分布比较均匀都可以让模型变得简单。另外还有一种让模型变得简单的方法叫做<code>光滑(smoothness)</code>，即模型不会对输入的细微改变而敏感。</p>
-<font color="orange">在神经网络中，训练时，对于每层网络向后传播的过程中，引入噪声就能让神经网络变得`光滑`，这种方法被叫做dropout。</font>这种方法已经成为了一种训练神经网络的标准方法。叫做dropout的原因是因为在训练时对于每层网络我们都会随机丢弃一些神经元。<font color="red">在丢弃神经元的时候，我们要保证丢弃后的该层网络神经元的期望值和丢弃前的值是一致的。</font>
-
-
-
-<h1 id="dropout函数"><a href="#dropout函数" class="headerlink" title="dropout函数"></a>dropout函数</h1><p>在标准的dropout中，其定义为：对于<font color="orange">每层</font>的每个<font color="orange">神经</font>元，都有$p$的概率丢弃掉（置零），如果没有丢弃，则值变为$\frac{x}{1-p}$，$x$为该神经元的原始输出值。即：</p>
-<script type="math/tex; mode=display">
-x' = 
-\begin{cases} 
-    0, \space with \space probability \space p \\
-    \frac{x}{1-p}, \space otherwise
-\end{cases}</script><p>可以证明$E(x) = x$</p>
-<h1 id="drop-out-代码实现"><a href="#drop-out-代码实现" class="headerlink" title="drop out 代码实现"></a>drop out 代码实现</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dropout_layer</span>(<span class="params">one_layer: tf.tensor, dropout_probability: <span class="built_in">float</span></span>):</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="number">0</span> &lt;= dropout_probability &lt;= <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> dropout_probability == <span class="number">1</span>:</span><br><span class="line">        <span class="comment"># in this case, all elements are dropped out</span></span><br><span class="line">        <span class="keyword">return</span> tf.zeros_like(one_layer)  <span class="comment"># tf.zeros_like: create a tensor with all elements set to zero</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> dropout_probability == <span class="number">0</span>:</span><br><span class="line">        <span class="comment"># in this case, all elements are kept</span></span><br><span class="line">        <span class="keyword">return</span> one_layer</span><br><span class="line"></span><br><span class="line">    <span class="comment"># tf.random.uniform: outputs random values from a uniform distribution.</span></span><br><span class="line">    <span class="comment"># with (1-p)&#x27;s probability that value will become x / (1-p)</span></span><br><span class="line">    mask = tf.random.uniform(shape=tf.shape(one_layer), minval=<span class="number">0</span>, maxval=<span class="number">1</span>) &lt; (<span class="number">1</span> - dropout_probability)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> tf.cast(mask, dtype=tf.float32) * one_layer / (<span class="number">1.0</span> - dropout_probability)</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># 在框架中使用快速调用drop out</span></span><br><span class="line">net = tf.keras.models.Sequential([tf.keras.layers.Dense(<span class="number">256</span>, activation=tf.nn.relu,</span><br><span class="line">                                                        kernel_regularizer=tf.keras.regularizers.l2(<span class="number">0.3</span>)),</span><br><span class="line">                                  tf.keras.layers.Dropout(<span class="number">0.5</span>),</span><br><span class="line">                                  tf.keras.layers.Dense(<span class="number">256</span>, activation=tf.nn.relu,</span><br><span class="line">                                                        kernel_regularizer=tf.keras.regularizers.l2(<span class="number">0.3</span>)),</span><br><span class="line">                                  tf.keras.layers.Dropout(<span class="number">0.2</span>),</span><br><span class="line">                                  tf.keras.layers.Dense(<span class="number">10</span>)])</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/02/04/machine_learning/neural_network&deep_learning/multilayer-perceptrons/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/04/machine_learning/neural_network&deep_learning/multilayer-perceptrons/" class="post-title-link" itemprop="url">multilayer_perceptrons</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-02-04 07:41:24" itemprop="dateCreated datePublished" datetime="2021-02-04T07:41:24+08:00">2021-02-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-05 07:59:34" itemprop="dateModified" datetime="2021-02-05T07:59:34+08:00">2021-02-05</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">machine learning</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="隐藏层"><a href="#隐藏层" class="headerlink" title="隐藏层"></a>隐藏层</h1><p>在许多学习任务中，样本的特征和输出标签之间并不是线形关系。对于单层神经网络，它的能处理的学习任务比较有限。我们可以通过在输入层和输出层之间增加一层或多层的隐藏层来解决增加模型的复杂度，来增加模型的学习能力。<font color="red">但是如果只是增加隐藏层，这个网络仍然是线形模型。</font>原因是每相邻的两层神经网络之间都是一个仿射变换，而仿射变换之上再叠加一个仿射变换，仍然是一个仿射变换。<font color="orange">所以为将线形的神经网络变成非线性的神经网络，我们需要引入激活函数。</font>激活函数决定一个一个神经元是否应该继续参与后续的计算。激活函数通常是非线性的函数。</p>
-<h1 id="常用激活函数"><a href="#常用激活函数" class="headerlink" title="常用激活函数"></a>常用激活函数</h1><p>激活函数决定一个一个神经元是否应该继续参与后续的计算。激活函数通常是非线性的函数</p>
-<h2 id="ReLU-Function"><a href="#ReLU-Function" class="headerlink" title="ReLU Function"></a>ReLU Function</h2><p>ReLu激活函数是最流行的一种激活函数，应为它的实现简单并且使用ReLU的神经网络效果也很好。它的定义如下：</p>
-<script type="math/tex; mode=display">
-ReLU(x) = max(x, 0)</script><p>即ReLU函数只保留正值的神经元，并且原封不动的进行传播，同时将所有负值的神经元丢弃。</p>
-<p>对于ReLU函数的导数来说，当自变量小于0时，ReLU函数的梯度等于0，当自变量大于0时，函数的梯度等于1。但是当自变量的取值为0时，ReLu函数是不可导的。通常在工程上的处理是，当自变量为0时，认为梯度等于0。</p>
-<h2 id="pReLU-Function"><a href="#pReLU-Function" class="headerlink" title="pReLU Function"></a>pReLU Function</h2><p>pReLU函数是ReLU函数的一个变种，它允许负值输入有限的向后传播：</p>
-<script type="math/tex; mode=display">
-pReLU(x) = max(0, x) + \alpha min(0, x)</script><h2 id="Sigmoid-Function"><a href="#Sigmoid-Function" class="headerlink" title="Sigmoid Function"></a>Sigmoid Function</h2><p>在logistic-regression中我们使用过sigmoid function来作为对输出的处理。同时sigmoid 函数也可以作为神经网络中的激活函数。</p>
-<script type="math/tex; mode=display">
-sigmoid(x) = \frac{1}{1+e^{(-x)}}</script><p>sigmoid函数将取值为任意实数的输入映射到一个（0，1）的区间，所以sigmoid函数也被叫做squashing函数。</p>
-<p>sigmoid函数是一个光滑的，任意阶可导的函数，它的一阶导数在自变量为0时最大，从0向两边逐渐减小。</p>
-<p>sigmoid function通常用于二分类任务神经网络输出层的激活函数。</p>
-<h2 id="Tanh-Function"><a href="#Tanh-Function" class="headerlink" title="Tanh Function"></a>Tanh Function</h2><p>类似sigmoid function，tanh（hyperbolic tangent）也将实数范围内的输入挤压到（-1，1）之间的输出。</p>
-<script type="math/tex; mode=display">
-tanh(x) = \frac{1 - e^{(-2x)}}{1 + e^{(-2x)}}</script><p>tanh的函数图像和一阶导函数的图像和sigmoid函数十分类似。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1292,20 +1362,20 @@ tanh(x) = \frac{1 - e^{(-2x)}}{1 + e^{(-2x)}}</script><p>tanh的函数图像和�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-count">104</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -1330,7 +1400,7 @@ tanh(x) = \frac{1 - e^{(-2x)}}{1 + e^{(-2x)}}</script><p>tanh的函数图像和�
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

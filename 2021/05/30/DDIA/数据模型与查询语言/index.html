@@ -46,15 +46,15 @@
   };
 </script>
 
-  <meta name="description" content="关系模型与文档模型文档数据库在处理一对多的关系有很大优势，可以直接把记录记在一个文档中，但是在处理多对一，多对多的关系时相比于关系数据库则稍逊一些，因为在多对一、多对多的查询下，通常需要联结（join）多张数据库来查询，而一般文档数据库对联结操作的支持很差。有些文档数据库甚至本身都不支持联结，必须在应用程序代码中，通过对数据的多次查询来模拟联结。 如果应用数据具有类似文档的结构（即一对多关系，通常">
+  <meta name="description" content="关系模型与文档模型支持文档数据模型的主要论点是模式灵活，对于某些应用来说，它更接近与应用程序所使用的数据结构。关系模型则强在联结操作、多对一和多对多关系更简介的表达上，与文档模型抗衡。 文档数据库在处理一对多的关系有很大优势，可以直接把记录记在一个文档中，但是在处理多对一，多对多的关系时相比于关系数据库则稍逊一些，因为在多对一、多对多的查询下，通常需要联结（join）多张数据库来查询，而一般文档数">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据模型与查询语言">
 <meta property="og:url" content="http://swordandtea.github.io/2021/05/30/DDIA/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2%E8%AF%AD%E8%A8%80/index.html">
 <meta property="og:site_name" content="SwordAndTea&#39;s Blog">
-<meta property="og:description" content="关系模型与文档模型文档数据库在处理一对多的关系有很大优势，可以直接把记录记在一个文档中，但是在处理多对一，多对多的关系时相比于关系数据库则稍逊一些，因为在多对一、多对多的查询下，通常需要联结（join）多张数据库来查询，而一般文档数据库对联结操作的支持很差。有些文档数据库甚至本身都不支持联结，必须在应用程序代码中，通过对数据的多次查询来模拟联结。 如果应用数据具有类似文档的结构（即一对多关系，通常">
+<meta property="og:description" content="关系模型与文档模型支持文档数据模型的主要论点是模式灵活，对于某些应用来说，它更接近与应用程序所使用的数据结构。关系模型则强在联结操作、多对一和多对多关系更简介的表达上，与文档模型抗衡。 文档数据库在处理一对多的关系有很大优势，可以直接把记录记在一个文档中，但是在处理多对一，多对多的关系时相比于关系数据库则稍逊一些，因为在多对一、多对多的查询下，通常需要联结（join）多张数据库来查询，而一般文档数">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-05-30T07:35:43.000Z">
-<meta property="article:modified_time" content="2021-09-05T02:52:05.436Z">
+<meta property="article:modified_time" content="2022-01-16T03:07:45.830Z">
 <meta property="article:author" content="SwordAndTea">
 <meta property="article:tag" content="Designing Data-Intensive Applications">
 <meta name="twitter:card" content="summary">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-09-05 10:52:05" itemprop="dateModified" datetime="2021-09-05T10:52:05+08:00">2021-09-05</time>
+                <time title="Modified: 2022-01-16 11:07:45" itemprop="dateModified" datetime="2022-01-16T11:07:45+08:00">2022-01-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -240,13 +240,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="关系模型与文档模型"><a href="#关系模型与文档模型" class="headerlink" title="关系模型与文档模型"></a>关系模型与文档模型</h1><p>文档数据库在处理一对多的关系有很大优势，可以直接把记录记在一个文档中，但是在处理多对一，多对多的关系时相比于关系数据库则稍逊一些，因为在多对一、多对多的查询下，通常需要联结（join）多张数据库来查询，而一般文档数据库对联结操作的支持很差。有些文档数据库甚至本身都不支持联结，必须在应用程序代码中，通过对数据的多次查询来模拟联结。</p>
+        <h1 id="关系模型与文档模型"><a href="#关系模型与文档模型" class="headerlink" title="关系模型与文档模型"></a>关系模型与文档模型</h1><p>支持文档数据模型的主要论点是模式灵活，对于某些应用来说，它更接近与应用程序所使用的数据结构。关系模型则强在联结操作、多对一和多对多关系更简介的表达上，与文档模型抗衡。</p>
+<p>文档数据库在处理一对多的关系有很大优势，可以直接把记录记在一个文档中，但是在处理多对一，多对多的关系时相比于关系数据库则稍逊一些，因为在多对一、多对多的查询下，通常需要联结（join）多张数据库来查询，而一般文档数据库对联结操作的支持很差。有些文档数据库甚至本身都不支持联结，必须在应用程序代码中，通过对数据的多次查询来模拟联结。</p>
 <p>如果应用数据具有类似文档的结构（即一对多关系，通常一次加载整个树），那么使用文档数据库更为合适。但是如果应用程序中经常使用多对多关系，那么关系系数据库是一个很好的选择。<font color="orange">通常，我们无法一概而论那种数据模型的应用代码更简单。这主要取决于数据项之间的关系模型。有时候使用文档模型是最合适的，有时候用关系模型会更好，有些时候还可以使用图模型。</font></p>
 <h2 id="对象关系不匹配"><a href="#对象关系不匹配" class="headerlink" title="对象关系不匹配"></a>对象关系不匹配</h2><p>目前大多数应用开发都采用面向对象的编程语言，如果数据存储在关系表中，那么应用层代码中的对象与表、行和列的数据库模型之间需要一个笨拙的转换层。一般在开发中会使用对象-关系映射（ORM）框架来减少此层转换之间的代码量，但是ORM框架并不能完全隐藏两个模型之间的差异。</p>
-<h2 id="文档数据库的数据局部性"><a href="#文档数据库的数据局部性" class="headerlink" title="文档数据库的数据局部性"></a>文档数据库的数据局部性</h2><p>文档通常存储编码为JSON、XML或其二进制变体（如MongoDB的BSON）的连续字符串。如果应用程序需要频繁访问真个文档，则存储句不行具有性能优势。但是，如果应用只是访问其中的一小部分，那对于大型文档数据来讲就有些浪费。对文档进行更新时，通常会重写整个文档，而只有修改量不改变原文档大小时，原地覆盖更新才更有效。因此，通常建议文档应该尽量小切避免写入是增加文档大小。这些性能方面的不利因此大大限制了文档数据库的适用场景。</p>
+<h2 id="文档数据库的数据局部性"><a href="#文档数据库的数据局部性" class="headerlink" title="文档数据库的数据局部性"></a>文档数据库的数据局部性</h2><p>文档通常存储编码为JSON、XML或其二进制变体（如MongoDB的BSON）的连续字符串。如果应用程序需要频繁访问整个文档，则存储局部性具有性能优势。<font color="orange">局部性优势仅适用需要同时访问文档的大部分内容的场景，</font>，如果应用只是访问其中的一小部分，那对于大型文档数据来讲就有些浪费。对文档进行更新时，通常会重写整个文档，而只有修改量不改变原文档大小时，原地覆盖更新才更有效。因此，通常建议文档应该尽量小且避免写入时增加文档大小。这些性能方面的不利因此大大限制了文档数据库的适用场景。</p>
 <h1 id="数据查询语言"><a href="#数据查询语言" class="headerlink" title="数据查询语言"></a>数据查询语言</h1><p>在关系模型被提出的最初时期，就出现两总查询数据的方法：声明式查询和命令式查询。命令式查询需要告诉计算机如何以特定的顺序来执行查询操作，一次查询基本上对应一段查询代码。而对于声明式查询语言（如SQL或关系代数），则只需要指定所需的数据模式，结果需满足什么条件，以及如何转换数据（例如，排序、分组和聚合），而不需要指明如何实现这一目标。数据库系统的查询优化器会决定采用那种索引和联结，以及用何种顺序来执行查询的各个语句。另外声明式查询语言对外隐藏了数据引擎的很多实现细节，这样数据库能够在不改变查询语句的情况下提高性能。</p>
 <h2 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h2><p>MapReduce是一种编程模型，用于在许多机器上批量处理海量数据。<font color="orange">MapReduce既不是声明式查询语言，也不是一个完全命令式的查询API，而是介于两者之间：</font>查询的逻辑用代码片段表示，这些代码片段可以被处理框架重复地调用。它主要基于许多函数式编程中的map和reduce函数，map函数用于对每一条数据进行过滤筛选，reduce用于对过滤出来的记录进行相关操作。不同数据库对MapReduce的执行实现都不同。</p>
-<p>//TODO: 看完第10章对MapReduce的详细描述后再补全这部分</p>
 <h1 id="图数据模型"><a href="#图数据模型" class="headerlink" title="图数据模型"></a>图数据模型</h1><blockquote>
 <p>在处理多对多关系时，关系模型能够处理简单的多对多关系，但是随着数据之间的关联越来越复杂，将数据建模转换为图模型会更加自然</p>
 </blockquote>
@@ -271,7 +271,9 @@
 <li>属性的集合（键-值对）</li>
 </ul>
 <p>// TODO: 在实际使用了图数据之后在补充一下，目前只做基础了解，知道哪些场景适用图模型即可。</p>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>文档模型、关系模型和图模型如今都有广泛的应用，而且在各自的目标领域都足够优秀。我们观察到，一个模型可以用另外一个模型来模拟，但是处理起来很笨拙。这就是为什么不同的系统用于不同的目的，而不是一个万能的解决方法。对于每个数据模型，都有自己的查询语言或框架。</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>文档模型、关系模型和图模型如今都有广泛的应用，而且在各自的目标领域都足够优秀。我们观察到，一个模型可以用另外一个模型来模拟，但是处理起来很笨拙。这就是为什么不同的系统用于不同的目的，而不是一个万能的解决方法。</p>
+<p>文档数据库和图数据库有一个共同点，那就是它们通常不会对存储的数据强加某个模式，这可以使应用程序更容易适应不断变化的需求。但是，应用程序很可能仍然假定数据具有一定的结构，之过失模式是显示（写时强制）还是隐式（读时处理）的问题。</p>
+<p>对于每个数据模型，都有自己的查询语言或框架。</p>
 
     </div>
 
@@ -370,20 +372,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-count">104</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -408,7 +410,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

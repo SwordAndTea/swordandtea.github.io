@@ -180,6 +180,352 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/14/c++/Effective-c++/%E6%9D%A1%E6%AC%BE07-%E4%B8%BA%E5%A4%9A%E6%80%81%E5%9F%BA%E7%B1%BB%E5%A3%B0%E6%98%8Evirtual%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/14/c++/Effective-c++/%E6%9D%A1%E6%AC%BE07-%E4%B8%BA%E5%A4%9A%E6%80%81%E5%9F%BA%E7%B1%BB%E5%A3%B0%E6%98%8Evirtual%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">Untitled</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-07-14 15:55:17 / Modified: 15:59:12" itemprop="dateCreated datePublished" datetime="2020-07-14T15:55:17+08:00">2020-07-14</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="为多态基类声明virtual析构函数"><a href="#为多态基类声明virtual析构函数" class="headerlink" title="为多态基类声明virtual析构函数"></a>为<strong>多态</strong>基类声明virtual析构函数</h1><p>在使用c++多态特性的时候，通常会用基类指针或者基类引用来指向派生类对象，如果派生类对象是动态创建出来的，当delete的时候传入的是基类指针，如果析构函数是non-virtual的话，那么就可能出现属于派生类对象的部分未被析构的情况。因此，<strong>任何class只要带有virtual函数都几乎确定应该有一个virtual析构函数</strong>。</p>
+<p>但是无端地将所有class的析构函数函数声明为virtual，也是错误的。<strong>在c++中所有STL容器如vector，list，set，map等都是不带virtual析构函数的class</strong>。</p>
+<h1 id="某些情况将析构函数声明为pure-virtual函数"><a href="#某些情况将析构函数声明为pure-virtual函数" class="headerlink" title="某些情况将析构函数声明为pure virtual函数"></a>某些情况将析构函数声明为pure virtual函数</h1><p>比如有时候你希望拥有抽象class，但是手上没有任何pure virtual函数时，可以将该类的析构函数声明为pure virtual函数，然而这里有个窍门：你必须为这个pure virtual析构函数提供一份定义，因为抽象class的析构函数仍会在派生类的析构函数中被调用，如果不提供定义，那么连接器就会报错。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><strong>给base class一个virtual析构函数，这个规则只适用于有多态性质的base class</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/14/c++/Effective-c++/%E6%9D%A1%E6%AC%BE06-%E5%A6%82%E6%9E%9C%E4%B8%8D%E6%83%B3%E4%BD%BF%E7%94%A8%E7%BC%96%E8%AF%91%E5%99%A8%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E7%9A%84%E5%87%BD%E6%95%B0%EF%BC%8C%E5%B0%B1%E8%AF%A5%E6%98%8E%E7%A1%AE%E6%8B%92%E7%BB%9D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/14/c++/Effective-c++/%E6%9D%A1%E6%AC%BE06-%E5%A6%82%E6%9E%9C%E4%B8%8D%E6%83%B3%E4%BD%BF%E7%94%A8%E7%BC%96%E8%AF%91%E5%99%A8%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E7%9A%84%E5%87%BD%E6%95%B0%EF%BC%8C%E5%B0%B1%E8%AF%A5%E6%98%8E%E7%A1%AE%E6%8B%92%E7%BB%9D/" class="post-title-link" itemprop="url">Untitled</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-07-14 15:30:15" itemprop="dateCreated datePublished" datetime="2020-07-14T15:30:15+08:00">2020-07-14</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="如果不想使用编译器自动生成的函数，就该明确拒绝"><a href="#如果不想使用编译器自动生成的函数，就该明确拒绝" class="headerlink" title="如果不想使用编译器自动生成的函数，就该明确拒绝"></a>如果不想使用编译器自动生成的函数，就该明确拒绝</h1><p>如果不想让编译器生成默认的copy构造函数和copy assignment函数，可以使用c++11的新特性</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UncopyableClass</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  UncopyableClass(<span class="keyword">const</span> UncopyableClass&amp; uncopyableClass) = <span class="keyword">delete</span>;</span><br><span class="line">  UncopyableClass&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> UncopyableClass&amp; uncopyableClass) = <span class="keyword">delete</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/14/c++/Effective-c++/%E6%9D%A1%E6%AC%BE05-%E4%BA%86%E8%A7%A3C++%E9%BB%98%E8%AE%A4%E7%BC%96%E5%86%99%E5%B9%B6%E8%B0%83%E7%94%A8%E4%BA%86%E5%93%AA%E4%BA%9B%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/14/c++/Effective-c++/%E6%9D%A1%E6%AC%BE05-%E4%BA%86%E8%A7%A3C++%E9%BB%98%E8%AE%A4%E7%BC%96%E5%86%99%E5%B9%B6%E8%B0%83%E7%94%A8%E4%BA%86%E5%93%AA%E4%BA%9B%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">Untitled</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-07-14 11:45:14 / Modified: 15:14:41" itemprop="dateCreated datePublished" datetime="2020-07-14T11:45:14+08:00">2020-07-14</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="了解C-默认编写并调用了哪些函数"><a href="#了解C-默认编写并调用了哪些函数" class="headerlink" title="了解C++默认编写并调用了哪些函数"></a>了解C++默认编写并调用了哪些函数</h1><p>在class中，如果你自己没声明，编译器会为一个类自动声明(编译器版本的)一个默认构造函数，一个copy构造(拷贝构造)函数和一个copy assignment(拷贝赋值)操作符函数，这些函数都是public且inline的。但是只有当这些函数被调用了，它们才会被编译器创建出来。另外编译器还会提供一个默认的析构函数，这个析构函数是non-virtual的，除非这个class的base class自身声明有virtual 析构函数。</p>
+<p>对于编译器提供的copy构造函数和copy assignment操作符函数，都只是单纯地将来源对象的每个non-static成员变量进行<strong>浅拷贝</strong>到目标对象。</p>
+<h1 id="某些情况下即使你自己未声明copy-assignment操作符函数，编译器也会拒绝提供"><a href="#某些情况下即使你自己未声明copy-assignment操作符函数，编译器也会拒绝提供" class="headerlink" title="某些情况下即使你自己未声明copy assignment操作符函数，编译器也会拒绝提供"></a>某些情况下即使你自己未声明copy assignment操作符函数，编译器也会拒绝提供</h1><ul>
+<li>class内含reference成员</li>
+<li>class内含const成员</li>
+<li>Base class将copy assignment操作符声明未private，编译器将拒绝为其derived class生成一个copy assignment操作符</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/04/19/machine_learning/SVM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/19/machine_learning/SVM/" class="post-title-link" itemprop="url">SVM</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-04-19 07:45:50" itemprop="dateCreated datePublished" datetime="2020-04-19T07:45:50+08:00">2020-04-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="间隔与支持向量"><a href="#间隔与支持向量" class="headerlink" title="间隔与支持向量"></a>间隔与支持向量</h1><p>给定训练样本集$D= \{(x_i, y_i)\}_{i=1}^m, y_i \in \{-1, +1\}$，分类学习最基本的思想就是基于训练集D再样本空间中找到一个划分超平面，将不同类别的样本分开，但能将样本分开来的超平面可能有很多。例如：</p>
+<p><img src="/2020/04/19/machine_learning/SVM/划分平面.jpeg" alt="划分平面" style="zoom:25%;"></p>
+<p>对于上图，直观上看，应该去找位于两类训练样本“正中间”的划分超平面，因为该划分超平面对训练样本局部扰动的“容忍”性最好。例如，由于训练集的局限性或噪声的因素，<code>训练集外</code>的样本可能比上图中的训练样本更接近两个类的分隔界，而红色的超平面受影响最小，因此其对未见示例的泛化能力最强。</p>
+<p>在样本空间中，划分超平面可通过如下线性方程来描述：</p>
+<script type="math/tex; mode=display">
+w^T x + b = 0</script><p>其中$w = (w_1, w_2, \cdots, w_d)$为法向量，决定了超平面的方向，$b$为位移项，决定了超平面与原点之间的距离(其实二维平面上的直线$y = kx + b$本质上也是法向量的形式，其可以转换成$kx - y + b = 0$，即$(k, -1)(x, y)^T + b = 0$)。显然，划分超平面可被法向量$w$和位移$b$确定，下面我们将其记为$(w, b)$，样本空间中任意点$x$到超平面$(w, b)$的距离可写为:</p>
+<script type="math/tex; mode=display">
+r = \frac{|w^T x + b|}{||w||}</script><p>假设超平面$(w, b)$能将训练样本正确分类，即对$(x_i, y_i) \in D$，若$y_i = +1$，则有$w^T x_i + b &gt; 0$(在超平面上方)；若$y_i = -1$，则有$w^T x_i + b &lt; 0$(在超平面下方)。令</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+    w^T x_i + b \geq +1, y_i = +1 \\
+    w^T x_i + b \leq -1, y_i = -1
+\end{cases} \tag{1} \\
+即找到那些使得所有样例到平面的距离都大于1的平面</script><p>可以证明，如果存在超平面$(w, b)$能将训练样本正确分类，则总存在缩放变换，使得上式成立，即总存在满足上式的超平面。下图是一个例子：</p>
+<p><img src="/2020/04/19/machine_learning/SVM/支持向量与间隔.jpeg" alt="间隔与支持向量" style="zoom:25%;"></p>
+<p>在上图中，<code>距离超平面最近的几个训练样本点被称为“支持向量”，两个异类支持向量到超平面的距离之和称为“间隔”</code>，在上图中，间隔为$\gamma = \frac{2}{||w||}$。</p>
+<p>欲找到具有“最大间隔”的划分超平面，也就是要找到能满足(1)式约束的$w、b$，使得距离$\gamma$最大，即</p>
+<script type="math/tex; mode=display">
+max_{\{w,b\}} \frac{2}{||w||}，在满足约束y_i · (w^T x_i + b) \geq 1的条件下</script><p>显然为了最大化间隔，仅需要最大化$||w||^{-1}$，这等价于最小化$||w||^2$，于是，上式可重写为</p>
+<script type="math/tex; mode=display">
+min_{\{w, b\}} \frac{1}{2} ||w||^2，在满足约束y_i · (w^T x_i + b) \geq 1的条件下</script><p><code>这就是支持向量机的基本型</code></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/04/17/machine_learning/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/17/machine_learning/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">遗传算法</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-04-17 20:34:27" itemprop="dateCreated datePublished" datetime="2020-04-17T20:34:27+08:00">2020-04-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/04/17/machine_learning/%E6%A8%A1%E6%8B%9F%E9%80%80%E7%81%AB%E7%AE%97%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -921,458 +1267,6 @@ Ent(\overline{D}) &= -\sum_{\overline{p_k}}^{|Y|}\overline{p_k} \log_2 \space \o
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/19/math/probability_theory/%E5%A4%A7%E6%95%B0%E5%AE%9A%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/19/math/probability_theory/%E5%A4%A7%E6%95%B0%E5%AE%9A%E7%90%86/" class="post-title-link" itemprop="url">大数定理</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-19 11:22:29" itemprop="dateCreated datePublished" datetime="2020-02-19T11:22:29+08:00">2020-02-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/math/" itemprop="url" rel="index">
-                    <span itemprop="name">math</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="切比雪夫大数定律"><a href="#切比雪夫大数定律" class="headerlink" title="切比雪夫大数定律"></a>切比雪夫大数定律</h1><p>假设$\{X_n\}$是相互<code>独立</code>的随机变量，如果方差$DX_i$存在，且有一致有上界，则</p>
-<script type="math/tex; mode=display">
-\frac{1}{n} \sum_{i=1}^{n} X_i \space \space \space \space \underrightarrow{P(概率收敛)} \space \space \space \space \space \frac{1}{n} \sum_{i=1}^{n} EX_i</script><h1 id="伯努利大数定律"><a href="#伯努利大数定律" class="headerlink" title="伯努利大数定律"></a>伯努利大数定律</h1><p>假设$u_n$是n重伯努利实验中事件A发生的次数，在每次实验中事件A发生的概率为$p$，则</p>
-<script type="math/tex; mode=display">
-\frac{u_n}{n} \space \space \space \space \underrightarrow{P(概率收敛)} \space \space \space \space \space p</script><h1 id="辛钦大数定律"><a href="#辛钦大数定律" class="headerlink" title="辛钦大数定律"></a>辛钦大数定律</h1><p>假设$\{X_n\}$是<code>独立同分布的</code>的随机变量序列，如果$EX_i=u$存在，则</p>
-<script type="math/tex; mode=display">
-\frac{1}{n} \sum_{i=1}^{n} \space \space \space \space \underrightarrow{P(概率收敛)} \space \space \space \space \space \space u</script><h1 id="中心极限定理"><a href="#中心极限定理" class="headerlink" title="中心极限定理"></a>中心极限定理</h1><p>假设$\{X_n\}$是<code>独立同分布</code>的随机变量序列，如果$EX_i=u$，$DX_i = \sigma^2$存在，则$\{X_n\}$服从中心极限定理，有</p>
-<script type="math/tex; mode=display">
-\sum_{i=1}^{n}X_i 近似服从N(nu,n\sigma^2)</script>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/19/machine_learning/linear_model/%E7%B1%BB%E5%88%AB%E4%B8%8D%E5%B9%B3%E8%A1%A1%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/19/machine_learning/linear_model/%E7%B1%BB%E5%88%AB%E4%B8%8D%E5%B9%B3%E8%A1%A1%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">类别不平衡问题</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-19 11:18:39" itemprop="dateCreated datePublished" datetime="2020-02-19T11:18:39+08:00">2020-02-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">machine learning</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="什么是类别不同平衡问题"><a href="#什么是类别不同平衡问题" class="headerlink" title="什么是类别不同平衡问题"></a>什么是类别不同平衡问题</h1><p>类别不平衡就是指<code>分类任务中</code>不同类别的训练样例数目差别很大的情况。例如在二分类任务中有998个正例，2个反例，那么学习方法只需要返回一个永远将新样本预测为反例的学习器，就能达到99.8%的精度，然而这个学习器往往没有价值，因为它不能预测出任何正例。还有，在通过拆分法解决多分类问题时，<code>即使原始问题中不同类别的训练样例数目相当</code>，在使用OvR、MvM策略后产生的二分类任务仍可能出现类别不平衡现象。</p>
-<h1 id="处理类别不平衡问题"><a href="#处理类别不平衡问题" class="headerlink" title="处理类别不平衡问题"></a>处理类别不平衡问题</h1><p>以logistic回归处理二分类任务为例，分类任务的输出一般都是判断某个样例为正例的概率。假如输出$y$表示样例为正例的概率，则$1-y$就表示样例为反例的概率。</p>
-<p>在训练集中，正、反例的数目不同时，令$m^+$表示正例数目，$m^-$表示反例数目。于是，只要分类器的预测概率比例高于$\frac{m^+}{m^-}$就应该判为正例。即：</p>
-<script type="math/tex; mode=display">
-\frac{y}{1-y} > \frac{m^+}{m^-}</script><p>还有一种形式为将$\frac{m^+}{m^-}$替换为$\frac{cost^+}{cost^-}$，其中$cost^+$表示将正例误分为反例的代价，$cost^-$是将反例误分为正例的代价，这其实就是<code>代价敏感学习</code>的思想。</p>
-<p>但是使用这种方法一般要求“训练集时真是样本总体的无偏采样”，而这个要求一般很难实现。除了上面的这个方法还有其他两种方法：“欠采样”和“过采样”。</p>
-<p>欠采样即去除一些多的样例，使得正、反样例数目接近，然后再进行学习。欠采样若丢弃样例后，可能丢失一些重要的信息。欠采样的代表算法EasyEnsemble则是利用集成学习机制，将样例多的类别中的样例划分为若干个集合供不同的学习器使用，<code>这样对每个学习器来看都进行了欠采样，但在全局来看却不会丢失重要信息</code>。</p>
-<p>过采样即赠加一些样例数较少的类别的样例，使得正、反例数目接近，然后再学习。但是过采样<code>不能简单对初始的样本进行重复采样，否则将会导致严重的过拟合</code>。过采样的代表算法SMOTE是通过对训练集中的样例进行插值来表示额外的样例。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/19/machine_learning/linear_model/%E5%A4%9A%E5%88%86%E7%B1%BB%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/19/machine_learning/linear_model/%E5%A4%9A%E5%88%86%E7%B1%BB%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">多分类学习</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-19 10:00:36" itemprop="dateCreated datePublished" datetime="2020-02-19T10:00:36+08:00">2020-02-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">machine learning</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="从二分类到多分类"><a href="#从二分类到多分类" class="headerlink" title="从二分类到多分类"></a>从二分类到多分类</h1><p>在遇到多分类任务时，有些二分类学习方法可直接推广到多分类，例如线性判别分析LDA，但在更多情形下，我们是基于一些基本策略，利用二分类学习器来解决多分类问题。</p>
-<p>一般的，对于N个类别$C_1, c_2, \cdots,C_N$，多分类学习器的基本思想是<code>拆解法</code>，即将多分类任务拆为若干个二分类任务求解。在测试时，对这些二分类器的预测结果进行集成以获得最终的多分类结果，比如说可以选择概率最大的那个结果。</p>
-<h1 id="拆分策略"><a href="#拆分策略" class="headerlink" title="拆分策略"></a>拆分策略</h1><h3 id="OvO策略"><a href="#OvO策略" class="headerlink" title="OvO策略"></a>OvO策略</h3><p>给定数据集$D=\{(x_i y_i)\}_{i=1}^{m}$，$y_i \in \{C_1, C_2, \cdots, C_N \}$，OvO将这N个类别两两配对，从而产生$\frac{N(n-1)}{2}$</p>
-<p>个二分类任务。在一个二分类任务中，把一种类别当做正例(随便选定两者中的一个)，另一种类别当做负例。</p>
-<p>在测试阶段 ，新样本将同时提交给所有分类器，将会得到$\frac{N(N-1)}{2}$个分类结果，最终结果结果可通过投票产生：即<code>把被预测得最多的类别作为最终结果</code>。</p>
-<h3 id="OvR策略"><a href="#OvR策略" class="headerlink" title="OvR策略"></a>OvR策略</h3><p>对于OvR，则是每次将一个类别的样例作为正例，<code>所有其他类</code>的样例作为反例来训练N个分类器。在测试时，<code>若仅有一个分类器预测为正类</code>，则对应的类别标记作为最终分类结果；<code>若有多个分类器预测为正类</code>，则通常考虑各分类器的预测置信度，选择置信度最大的类别作为分类结果。</p>
-<h3 id="OvO于OvR策略比较"><a href="#OvO于OvR策略比较" class="headerlink" title="OvO于OvR策略比较"></a>OvO于OvR策略比较</h3><p>OvR相比于OvO只需要训练N个分类器，而OvO需训练$\frac{N(N-1)}{2}$个分类器，因此，OvO的存储开销和测试时间开销通常比OvR更大。但在训练时，OvR的每个分类器均使用全部训练样例，而OvO的每个分类器仅用两个类的样例，因此，<code>在类别很多时</code>，OvO的训练时间开销通常比OvR更小。<code>至于预测性能</code>，则取决于具体的数据分布，在多数情况下两种策略差不多</p>
-<h3 id="MvM"><a href="#MvM" class="headerlink" title="MvM"></a>MvM</h3><p>MvM是每次将<code>若干个</code>类作为正类，<code>若干个</code>其他类作为反类。<code>MvM的正、反类构造必须有特殊的设计，不能随意选取</code>。有一种常用的MvM技术：<code>纠错输出码(Error Correcting Output Codes, ECOC)</code>。</p>
-<h5 id="纠错输出码ECOC"><a href="#纠错输出码ECOC" class="headerlink" title="纠错输出码ECOC"></a>纠错输出码ECOC</h5><p>ECOC工作过程主要分为两步：</p>
-<ul>
-<li>编码：对N个类别分别做M次划分，每次划分将一部分类别划分为正类，一部分划分为反类，从而形成一个二分类训练集；这样一共产生M个训练集，可以训练出M个分类器。</li>
-<li>解码：M个分类器分别对测试样本进行预测，这些预测标记组成一个编码。将这个编码与每个类别各自的编码进行比较，返回其中距离(海明距离或者欧式距离)最小的类别作为最终预测结果</li>
-</ul>
-<p>类别划分通过<code>编码矩阵</code>指定，编码矩阵有多种形式，常见的主要有<code>二元码</code>和<code>三元码</code>。二元码将每个类别分别指定正类和反类；三元码在正、反类之外，还可指定停用类。</p>
-<p><img src="/2020/02/19/machine_learning/linear_model/%E5%A4%9A%E5%88%86%E7%B1%BB%E5%AD%A6%E4%B9%A0/ECOC.jpeg" alt="ECOC" style="zoom:50%;"></p>
-<p>在编码矩阵中，使用“+1”、“-1”分别表示正、反例，0表示不使用该类样本即停用类。在上图的例子中，(a)图中的测试用例最后分类结果应归为$C_3$类，(b)图中的测试用例最后分类结果应归为$C_2$类。</p>
-<p>为什么叫做“纠错输出码”呢？原因是<code>在测试阶段</code>，<code>ECOC编码对分类器的错误有一定的容错和纠正能力</code>。例如，图(a)中对测试用例的正确预测编码是$(-1,+1,+1,-1,+1)$，假设在预测时某个分类器出错了，假设$f_2$分类器出错了，从而导致了错误的编码$(-1,-1,+1,-1,+1)$，但基于这个编码仍能产生正确的最终分类结果$C_3$。<code>一般来说，对同一个学习任务，ECOC编码越长，纠错能力越强</code>。然而，<code>编码越长意味着所需训练的分类器越多</code>，计算、存储开销都会增大；另一方面，对有限类别数，可能的<code>组合</code>数目是有限的，码长超过一定范围后就失去了意义。</p>
-<p>对于等长度的编码，理论上来说，任意<code>两个类别之间的</code>编码距离越远，则纠错能力越强。因此，在码长较小时可根据这个原则计算出理论最优编码。然而一般很难求的最优的编码，选择一个较优的编码就足够了。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/16/machine_learning/linear_model/%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/16/machine_learning/linear_model/%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">线性判别分析</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-16 20:07:44" itemprop="dateCreated datePublished" datetime="2020-02-16T20:07:44+08:00">2020-02-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">machine learning</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>线性判别分析(Linear Discriminant Analysis, LDA)是一种经典的<code>线性分类学习方法</code>。LDA的思想非常朴素：<code>给定训练集样例，设法将样例投影到一条直线上，使得同类样例的投影点尽可能接近，异类样例的投影点尽可能远离</code>；在对新样本进行分类时，将其投影到同样的这条直线上，再根据投影点的位置来确定新样本的类别。</p>
-<p><img src="/2020/02/16/machine_learning/linear_model/%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90/LDA.jpeg" alt="线性判别分析" style="zoom:30%;"></p>
-<h1 id="模型求解"><a href="#模型求解" class="headerlink" title="模型求解"></a>模型求解</h1><h1 id="模型推广到多分类任务"><a href="#模型推广到多分类任务" class="headerlink" title="模型推广到多分类任务"></a>模型推广到多分类任务</h1><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/16/machine_learning/linear_model/logistic%E5%9B%9E%E5%BD%92/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/16/machine_learning/linear_model/logistic%E5%9B%9E%E5%BD%92/" class="post-title-link" itemprop="url">logistic回归</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-16 20:07:11" itemprop="dateCreated datePublished" datetime="2020-02-16T20:07:11+08:00">2020-02-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-20 18:26:48" itemprop="dateModified" datetime="2020-11-20T18:26:48+08:00">2020-11-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">machine learning</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="什么是logistic回归"><a href="#什么是logistic回归" class="headerlink" title="什么是logistic回归"></a>什么是logistic回归</h1><p>logistic回归又叫做对数几率回归，它是基于线性模型的一种<code>分类</code>模型。那么如何用线性回归得到的输出进行分类任务呢？只需找一个<code>单调可微</code>的函数将分类任务的真实标记y与线性回归模型的预测值联系起来。单调可微的目的是为了方便模型的求解。</p>
-<p>例如对于二分类任务，其输出标记$y \in \{0, 1\}$，而线性回归模型产生的预测值$z = wx + b$是实值，于是，我们需要将实值转换为0/1值。最理想的是单位阶跃函数：</p>
-<script type="math/tex; mode=display">
-y = 
-\begin{cases}
-    0, & z < 0 \\
-    0.5, & z = 0 \\
-    1, & z > 0
-\end{cases}</script><p>即若预测值$z$大于0就判为正例，小于0则判为反例，<code>预测值为临界值0则可任意判别</code>。</p>
-<p>但是，单位阶跃函数不连续，所以直接使用单位阶跃函数的话，该分类模型则将很难求解。</p>
-<p>由于不能使用阶跃函数，所有我们希望找到能在一定程度上近似单位阶跃函数的“替代函数”，并希望它单调可微。<code>对数几率函数(logistic function)</code>正是这样一个常用的替代函数：</p>
-<script type="math/tex; mode=display">
-y = \frac{1}{1+e^{-z}}</script><p>阶跃函数和对数几率函数的图像为：</p>
-<p><img src="/2020/02/16/machine_learning/linear_model/logistic%E5%9B%9E%E5%BD%92/logistic.jpeg" alt="logistic" style="zoom:30%;"></p>
-<p>从上图可以看出，对数几率函数是一种”Sigmoid函数”(即形似S的函数)，对率函数是Sigmoid函数中最重要的代表。</p>
-<p>将线性模型和对数几率函数结合得到最后的logistic回归的模型：</p>
-<script type="math/tex; mode=display">
-y = \frac{1}{1 + e^{-(wx+b)}}</script><h1 id="logistic模型求解"><a href="#logistic模型求解" class="headerlink" title="logistic模型求解"></a>logistic模型求解</h1><p>logistic模型求解就是求出最优的$w$和$b$。<code>然而这里不能直接使用求解线性回归的方法进行求解</code>，即不能定义目标函数为$argmin_{(w,b)}\sum_{i=1}^{m}(wx_i+b - y_i)^2$。因为在这里，数据集中的y只能取0和1(对于二分类来说)，如果仍然使用均方误差来作为损失函数的话，那么在这里均方误差函数将不再是一个凸函数，所以我们要寻求另外的目标函数。</p>
-<p>logistic回归中的对率函数的实际输出其意义为：样本为正例(即$y=1$)的概率。例如对于某个样例$x$，在参数为$w,b$的条件下的输出为0.7，则表示该样例有0.7的概率为正例。相反如果输出为0.3，则表示该样例为正例的概率为0.3，即为反例的概率有0.7。</p>
-<p>则由此即有：</p>
-<script type="math/tex; mode=display">
-p(y=1 | x,w,b) = \frac{1}{1 + e^{-(wx+b)}}</script><script type="math/tex; mode=display">
-p(y=0 | x,w,b) =\frac{e^{-(wx+b)}}{1 + e^{-(wx+b)}}</script><p>于是，可<code>通过极大似然法</code>来估计$w$和$b$。给定数据集$\{(x_i, y_i)\}_{i=1}^{m}$，其中$y_i \in \{0,1\}$，则可得极大似然函数为：</p>
-<script type="math/tex; mode=display">
-l(w,b) = \sum_{i=1}^{m}ln \space p(y_i |x_i,w,b)</script><p>其中$p(y_i|x_i,w,b)$可改写为$y_ip(y=1|x_i,w,b) + (1-y_i)p(y=0 | x_i,w,b)$，则似然函数可写为：</p>
-<script type="math/tex; mode=display">
-l(w,b) = \sum_{i=1}^{m}ln [y_ip(y=1|x_i,w,b) + (1-y_i)p(y=0 | x_i,w,b)]</script><p>由于<code>似然函数法的思想就是求出使得得出当前结果的概率最大的参数</code>，$l(w,b)$的意义其实就是在参数为$w$和$b$的条件下，取值为当前数据集的y的概率再取对数。由于对数函数和原函数具有相同的单调性，当对数函数取最大值时，原函数也去最大值。所以最后我们的目标函数即为：</p>
-<script type="math/tex; mode=display">
-\begin{align*}
-&argmax_{(w,b)}\sum_{i=1}^{m}ln [y_ip(y=1|x_i,w,b) + (1-y_i)p(y=0 | x_i,w,b)] \\
-=& argmax_{(a,b)}\sum_{i=1}^{m}ln [y_i\frac{1}{1 + e^{-(wx_i+b)}} + (1-y_i)\frac{e^{-(wx_i+b)}}{1 + e^{-(wx_i+b)}}] \tag{1}
-\end{align*}</script><p><code>注意是argmax</code>。</p>
-<p>最大化(1)式，等价于：</p>
-<script type="math/tex; mode=display">
-\begin{align*}
-&argmin_{(a,b)}\sum_{i=1}^{m} -y_i ln\frac{1}{1 + e^{-(wx+b)}} - (1-y_i)ln\frac{e^{-(wx_i+b)}}{1 + e^{-(wx_i+b)}} \\
-=& argmin_{(a,b)}\sum_{i=1}^{m} -y_i ln\frac{1}{1 + e^{-(wx+b)}} - (1-y_i)ln[1-\frac{1}{1 + e^{-(wx_i+b)}}] \tag{2}
-\end{align*}</script><p>公式(2)是最常用的形式。这个公式相当于在说当$y_i = 1$时，损失函数为$ln\frac{1}{1 + e^{-(wx+b)}}$，当$y_i = 0$时，损失函数为$1-ln\frac{1}{1 + e^{-(wx+b)}}$。接下里就是利用梯度下降法或者其他方法求解最优解即可了。</p>
-<p><code>利用极大似然估计法寻找目标函数也是常用的一种方法</code>。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><code>logistic回归虽然它的名字是“回归”，但实际上却是一个分类学习方法</code>。这种方法有很多特点，它是基于线性回归模型的，具有很好的解释性。同时它是直接对分类可能性进行建模，无需要事先假设数据分布，这样就避免了假设分布不准确所带来的问题。</p>
-<p>它不仅是预测出类别，而是可得到近似概率预测。此外，对率函数是任意阶可导的凸函数。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1443,20 +1337,20 @@ l(w,b) = \sum_{i=1}^{m}ln [y_ip(y=1|x_i,w,b) + (1-y_i)p(y=0 | x_i,w,b)]</script>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-count">104</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -1481,7 +1375,7 @@ l(w,b) = \sum_{i=1}^{m}ln [y_ip(y=1|x_i,w,b) + (1-y_i)p(y=0 | x_i,w,b)]</script>
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

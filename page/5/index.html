@@ -180,6 +180,551 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/10/01/opengl/opengl%E7%AE%80%E4%BB%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/01/opengl/opengl%E7%AE%80%E4%BB%8B/" class="post-title-link" itemprop="url">opengl简介</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-01 10:32:44" itemprop="dateCreated datePublished" datetime="2020-10-01T10:32:44+08:00">2020-10-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-16 11:07:45" itemprop="dateModified" datetime="2022-01-16T11:07:45+08:00">2022-01-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenGL</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="OpenGL简介-What-is-OpenGL"><a href="#OpenGL简介-What-is-OpenGL" class="headerlink" title="OpenGL简介(What is OpenGL)"></a>OpenGL简介(What is OpenGL)</h1><p>OpenGL是一个提供操作图形和图像的API标准(注意是标准，而不是实际的某种编程语言的接口)，这些接口标准由Khronos Group管理。OpenGL接口标准定义每个函数的输入输出是什么，每个函数应该有怎样的表现等等。这些接口最终由开发者来实际实现（一般是显卡厂商）。虽然不同开发者实现的Open GL的代码细节不同，但是由于标准的存在，对于用户来说使用方式和最终结果是没有区别的（如果有，那就是显卡制造商写的OpenGL实现有问题）。</p>
+<h2 id="Core-Profile模式和Immdiate-模式"><a href="#Core-Profile模式和Immdiate-模式" class="headerlink" title="Core Profile模式和Immdiate 模式"></a>Core Profile模式和Immdiate 模式</h2><p>在以前，使用OpenGL开发用的是immdiate模式，immediate模式是指固定的渲染管线，用户只需要开发少量的代码，就能获得最终的渲染图形，但是同时，用户对渲染过程的控制度很低，在处理渲染上灵活性很差。从OpenGL 3.2开始，OpenGL开始使用core-profile模式，从3.2版本开始，这是OpenGL的一个分支，这个版本删除了所有旧的不推荐使用的功能。当我们在core-profile模式下，OpenGL会强迫我们使用现代的渲染方法，当我们尝试使用已经Deprecated的方法时，OpenGL会抛出异常并停止渲染。</p>
+<h2 id="OpenGL扩展-Extensions"><a href="#OpenGL扩展-Extensions" class="headerlink" title="OpenGL扩展(Extensions)"></a>OpenGL扩展(Extensions)</h2><p>OpenGL一个很好的特性就是扩展，当显卡公司对于渲染有了新的优化或者有新的渲染技术，这些就可以通过扩展的形式发布出去给用户使用，而不用等OpenGL把这些功能新加入到OpenGL标准中，对于用户而言，在编写OpenGL程序的时候只需要判断是否有相应扩展，如果有就可以使用相应的接口。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(GL_ARB_extension_name)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Do cool new and modern stuff supported by hardware</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Extension not supported: do it the old way</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="状态机"><a href="#状态机" class="headerlink" title="状态机"></a>状态机</h2><p>OpenGL标准本身可以看作是一个状态机的定义：定义当前OpenGL应该如果运行的变量集合。OpenGL的状态同城称为OpenGL context，在使用OpenGL时，我们经常通过设置一些选项、操作一些缓冲区然后对当前上下文进行渲染来更改其状态。</p>
+<h2 id="GLAD"><a href="#GLAD" class="headerlink" title="GLAD"></a>GLAD</h2><p>OpenGL 实际上只是一个标准/规范，由驱动程序制造商将规范实现到特定显卡支持的驱动程序。由于OpenGL驱动有很多不同的版本，其大部分函数的位置在编译时是未知的，需要在运行时查询。然后开发人员的任务是检索需要的函数的位置并将它们存储在函数指针中供以后使用，这个步骤可以通过GLAD这个库来帮助实现。</p>
+<h1 id="渲染管线"><a href="#渲染管线" class="headerlink" title="渲染管线"></a>渲染管线</h1><p>在OpenGL中，所有的都是3维空间，但是屏幕石油二维的像素组成的，所以OpenGL大多数的工作其实就是将3维空间的坐标转换到二维空间的像素，这个过程就是有渲染管线来完成的。渲染管线可以分为两大部分：第一部分，将3D坐标转换为2D坐标；第二部分将2D坐标转换为具体的颜色像素。</p>
+<p>渲染管线的具体步骤可以分为多步，每一步都需要将前一步的输出作为自己的输入，并且每一步都是高度可定制化的，而且可以很方便的并行处理。由于并行化的特性，现代图形卡可以快速处理渲染管线中的步骤。</p>
+<blockquote>
+<p>Because of their parallel nature, graphics cards of today have thousands of small processing cores to quickly process your data within the graphics pipeline. The processing cores run small programs on the GPU for each step of the pipeline. These small programs are called <font color="orange">shaders.</font></p>
+</blockquote>
+<h2 id="vertex-shader"><a href="#vertex-shader" class="headerlink" title="vertex shader"></a>vertex shader</h2><p>vertex shader将单个vertex作为输入，单个vertex作为输出。vertex shader的主要作用是将3D坐标转换为另外一个3D坐标，并对vertex的属性做一些额外的处理。</p>
+<h2 id="primitive-assembly"><a href="#primitive-assembly" class="headerlink" title="primitive assembly"></a>primitive assembly</h2><p>primitive assembly步骤将vertex shader的所有输出作为输入，以此来形成primitive shape，primitive shape是组成最终物体的基础形状。</p>
+<blockquote>
+<p>In order for OpenGL to know what to make of your collection of coordinates and color values OpenGL requires you to hint what kind of render types you want to form with the data. Do we want the data rendered as a collection of points, a collection of triangles or perhaps just one long line? Those hints are called <font color="orange">primitives</font> and are given to OpenGL while calling any of the drawing commands. Some of these hints are GL_POINTS, GL_TRIANGLES and GL_LINE_STRIP.</p>
+</blockquote>
+<h2 id="geometry-shader"><a href="#geometry-shader" class="headerlink" title="geometry shader"></a>geometry shader</h2><p>primitive assembly步骤的输出作为geometry shader的输入。geometry shader将一组形成primitive的vertex作为输入，geometry shader在此基础上通过生成新的点来生成新的primitive（可以和primitve assembly阶段生成的primitive不同）以此来生成其他新的形状。</p>
+<h1 id="rasterization"><a href="#rasterization" class="headerlink" title="rasterization"></a>rasterization</h1><p>resterization步骤将geometry shader的输出作为输入，rasterization阶段将最终的primitive转换为最终显示在屏幕的像素点位置，并且将超出屏幕部分的去掉以提高性能。</p>
+<h2 id="fragment-shader"><a href="#fragment-shader" class="headerlink" title="fragment shader"></a>fragment shader</h2><p>fragment shader的主要目的是计算像素点的最终颜色，这个阶段一般是所有OpenGL高级特效生成的阶段。通常fragment shader包含可以用来计算最终像素颜色的数据，例如光照，光照颜色，阴影等信息。</p>
+<blockquote>
+<p>A fragment in OpenGL is all the data required for OpenGL to render a single pixel.</p>
+</blockquote>
+<h2 id="alpha-test-and-blender"><a href="#alpha-test-and-blender" class="headerlink" title="alpha test and blender"></a>alpha test and blender</h2><p>在所有颜色值都已经被决定后，会进入到alpha test和blender阶段。这个阶段会检查frament的深度信息和stencil信息，判断这个fragment是在其他object的前面还是后面，一次判断是否需要最终渲染这个fragment。另外这一步也会检查alpha通道，以此来混合（blend）颜色信息。因此，即使在fragment shader中计算出了像素的输出颜色，最终像素的实际颜色也可能会和计算出来的不同。</p>
+<p>可以看到，一个渲染管线包含了很多步骤和很多可配置的渲染属性。但是，在大多数情况下，我们只需要和处理vertex shader和fragment shader就可以了。geometry shader是可选的并且通常用默认的geometry shader实现就可以了。vertex shader和fragment shader是现代OpenGL要求用户至少提供的两个shader，这两个shader没有默认的实现。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/09/28/others/coin-or%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/28/others/coin-or%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/" class="post-title-link" itemprop="url">Untitled</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-28 11:25:13" itemprop="dateCreated datePublished" datetime="2020-09-28T11:25:13+08:00">2020-09-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-24 17:28:11" itemprop="dateModified" datetime="2021-05-24T17:28:11+08:00">2021-05-24</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="coin-or-简介"><a href="#coin-or-简介" class="headerlink" title="coin-or 简介"></a>coin-or 简介</h1><h1 id="single-compile-single-lib-by-using-configure"><a href="#single-compile-single-lib-by-using-configure" class="headerlink" title="single: compile single lib by using configure"></a>single: compile single lib by using configure</h1><p>./configure \<br>—host=arm-apple-darwin \<br>—enable-static \<br>—disable-shared \<br>—prefix=$PWD/build/arm64 \<br>CC=gcc \<br>CFLAGS=”-DNDEBUG -miphoneos-version-min=8.0 -arch arm64 -g -O0 -fembed-bitcode \<br>-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk” \<br>CXX=g++ \<br>CXXFLAGS=”-DNDEBUG -miphoneos-version-min=8.0 -arch arm64 -g -O0 -fembed-bitcode \<br>-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk \<br>-std=c++11 -stdlib=libc++” \<br>LDFLAGS=”” \<br>LIBS=”-lc++ -lc++abi”</p>
+<h2 id="导出-PKG-CONFIG-PATH"><a href="#导出-PKG-CONFIG-PATH" class="headerlink" title="导出 PKG_CONFIG_PATH"></a>导出 PKG_CONFIG_PATH</h2><p>export pkgconfig path<br>export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/Users/bytedance/Desktop/coin-or/Osi/build/arm64/lib/pkgconfig<br>export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/Users/bytedance/Desktop/coin-or/CoinUtils/build/arm64/lib/pkgconfig</p>
+<p>pkgconfig folder can be read by <code>pkg-config</code></p>
+<h2 id="遇到报错ld-bind-at-load-and-bitcode-bundle-Xcode-setting-ENABLE-BITCODE-YES-cannot-be-used-together"><a href="#遇到报错ld-bind-at-load-and-bitcode-bundle-Xcode-setting-ENABLE-BITCODE-YES-cannot-be-used-together" class="headerlink" title="遇到报错ld: -bind_at_load and -bitcode_bundle (Xcode setting ENABLE_BITCODE=YES) cannot be used together"></a>遇到报错ld: -bind_at_load and -bitcode_bundle (Xcode setting ENABLE_BITCODE=YES) cannot be used together</h2><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/53121019/ld-bind-at-load-and-bitcode-bundle-xcode-setting-enable-bitcode-yes-cannot">export MACOSX_DEPLOYMENT_TARGET=”10.15.0”</a></p>
+<h1 id="ios"><a href="#ios" class="headerlink" title="ios"></a>ios</h1><p>./coinbrew build Clp \<br>—host=arm-apple-darwin \<br>—enable-static \<br>—disable-shared \<br>—prefix=$PWD/ios \<br>CC=gcc \<br>CFLAGS=”-DNDEBUG -miphoneos-version-min=8.0 -arch arm64 -g -O0 -fembed-bitcode \<br>-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk” \<br>CXX=g++ \<br>CXXFLAGS=”-DNDEBUG -miphoneos-version-min=8.0 -arch arm64 -g -O0 -fembed-bitcode \<br>-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk \<br>-std=c++11 -stdlib=libc++” \<br>LDFLAGS=”” \<br>LIBS=”-lc++ -lc++abi” \<br>—tests none \<br>—no-third-party \<br>—verbosity 4 </p>
+<h1 id="osx-to-be-fixed"><a href="#osx-to-be-fixed" class="headerlink" title="osx to_be_fixed"></a>osx to_be_fixed</h1><p>./coinbrew build Clp —enable-static —disable-shared CC=clang CXX=clang++ —tests none —prefix=$PWD/osx —no-third-party</p>
+<h1 id="android"><a href="#android" class="headerlink" title="android"></a>android</h1><h2 id="android-armv8-a"><a href="#android-armv8-a" class="headerlink" title="android armv8-a"></a>android armv8-a</h2><p>export NDK=/Users/bytedance/Downloads/android-ndk-r21b<br>export TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/darwin-x86_64<br>export TARGET=aarch64-linux-android<br>export API=21<br>export AR=$TOOLCHAIN/bin/$TARGET-ar<br>export AS=$TOOLCHAIN/bin/$TARGET-as<br>export CC=$TOOLCHAIN/bin/$TARGET$API-clang<br>export CXX=$TOOLCHAIN/bin/$TARGET$API-clang++<br>export LD=$TOOLCHAIN/bin/$TARGET-ld<br>export RANLIB=$TOOLCHAIN/bin/$TARGET-ranlib<br>export STRIP=$TOOLCHAIN/bin/$TARGET-strip</p>
+<p>./coinbrew build Clp \<br>—host=$TARGET \<br>—enable-static \<br>—disable-shared \<br>—prefix=$PWD/android/armv8-a \<br>—tests none \<br>—no-third-party</p>
+<h2 id="android-armv7-a"><a href="#android-armv7-a" class="headerlink" title="android armv7-a"></a>android armv7-a</h2><p>export NDK=/Users/bytedance/Downloads/android-ndk-r21b<br>export TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/darwin-x86_64<br>export TARGET=armv7a-linux-androideabi<br>export API=21<br>export AR=$TOOLCHAIN/bin/arm-linux-androideabi-ar<br>export AS=$TOOLCHAIN/bin/arm-linux-androideabi-as<br>export CC=$TOOLCHAIN/bin/$TARGET$API-clang<br>export CXX=$TOOLCHAIN/bin/$TARGET$API-clang++<br>export LD=$TOOLCHAIN/bin/arm-linux-androideabi-ld<br>export RANLIB=$TOOLCHAIN/bin/arm-linux-androideabi-ranlib<br>export STRIP=$TOOLCHAIN/bin/$arm-linux-androideabi-strip</p>
+<p>./coinbrew build Clp \<br>—host=$TARGET \<br>—enable-static \<br>—disable-shared \<br>—prefix=$PWD/android/armv7-a \<br>—tests none \<br>—no-third-party</p>
+<h1 id="local"><a href="#local" class="headerlink" title="local"></a>local</h1><h2 id="static"><a href="#static" class="headerlink" title="static"></a>static</h2><p>./coinbrew build Clp —enable-static —disable-shared —tests none —prefix=$PWD/static —no-third-party</p>
+<h2 id="dynamic"><a href="#dynamic" class="headerlink" title="dynamic"></a>dynamic</h2><p>./coinbrew build Clp —prefix=$PWD/dynamic —no-third-party —verbosity 4</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/09/04/redis/redis%E9%85%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/04/redis/redis%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">redis配置</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-04 20:47:41" itemprop="dateCreated datePublished" datetime="2020-09-04T20:47:41+08:00">2020-09-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-05 09:36:29" itemprop="dateModified" datetime="2020-09-05T09:36:29+08:00">2020-09-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><p>redis的配置文件位于Redis的安装目录下，文件名为redis.conf，windows下为redis.windows.conf，这个文件是一个文本文件。</p>
+<h1 id="配置命名"><a href="#配置命名" class="headerlink" title="配置命名"></a>配置命名</h1><p>在redis命令行下，你可以使用CONFIG命令获取或者设置相关配置</p>
+<p>例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFIG GET loglevel</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFIG GET * # 用于获取所有配置</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFIG SET loglevel &quot;notice&quot;</span><br></pre></td></tr></table></figure>
+<h1 id="Redis参数说明"><a href="#Redis参数说明" class="headerlink" title="Redis参数说明"></a>Redis参数说明</h1><p><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/redis-conf.html">详见</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/08/07/others/Docker%20%E5%88%9D%E5%AD%A6%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/07/others/Docker%20%E5%88%9D%E5%AD%A6%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">docker 初学笔记</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-07 15:20:41" itemprop="dateCreated datePublished" datetime="2020-08-07T15:20:41+08:00">2020-08-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-11 14:50:27" itemprop="dateModified" datetime="2021-04-11T14:50:27+08:00">2021-04-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Docker-镜像与容器"><a href="#Docker-镜像与容器" class="headerlink" title="Docker 镜像与容器"></a>Docker 镜像与容器</h1><h1 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h1><p>Dockerfile 是一个用来构建镜像的文本文件，文本内容包含了一系列构建镜像所需的指令和说明。</p>
+<p>Dockerfile字段介绍:</p>
+<ul>
+<li><p>FROM: 定制的镜像所基于的基础的镜像，后续的操作都将基于这个基础镜像。</p>
+<ul>
+<li>FROM的基础镜像是必须指定的，如果确实没有基于的其他镜像，可以指定为一个特殊的空镜像叫scratch。</li>
+</ul>
+</li>
+<li><p>RUN: 后面接命令行命令，它有两种形式:</p>
+<ul>
+<li>RUN 直接跟要执行的命令行命令</li>
+<li>RUN [“可执行文件”, “参数1”, “参数2”, …]</li>
+</ul>
+<p>Dockerfile 的指令每执行一次都会在 docker 上新建一层。所以过多无意义的层，会造成镜像膨胀过大。如果命令太多，可以使用&amp;&amp;符号连接命令，例如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RUN yum install wget \</span><br><span class="line">  &amp;&amp; wget -O redis.tar.gz &quot;http://download.redis.io/releases/redis-5.0.3.tar.gz&quot; \</span><br><span class="line">  &amp;&amp; tar -xvf redis.tar.gz</span><br></pre></td></tr></table></figure></li>
+<li><p>COPY: 复制指令，从<a href="#使用Dockerfile构建镜像">上下文目录中</a>复制文件或者目录到容器里指定路径：</p>
+<ul>
+<li>```shell<br>COPY [—chown=<user>:<group>] &lt;源路径1&gt;…  &lt;目标路径&gt;<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  * 源文件或者源目录，这里可以是通配符表达式，其通配符规则要满足 Go 的 filepath.Match 规则，如COPY hom* &#x2F;mydir&#x2F;</span><br><span class="line"></span><br><span class="line">  * 目标路径: 容器内的指定路径</span><br><span class="line"></span><br><span class="line">* CMD: 类似于RUN指令，但是CMD的命令是在容器开始运行时会被运行，RUN命令是在构建镜像时被运行。CMD命令为启动的容器指定默认要运行的程序，程序运行结束，容器也就结束。CMD 指令指定的程序可被 docker run 命令行参数中指定要运行的程序所覆盖。**如果Dockerfile有多个CMD命令，仅最后一个生效**</span><br><span class="line"></span><br><span class="line">* EVN: 设置环境变量，定义了环境变量，那么在后续的指令中，就可以使用这个环境变量。EVN命令使用格式如下：</span><br><span class="line"></span><br><span class="line">  * &#96;&#96;&#96;shell</span><br><span class="line">    ENV &lt;key&gt; &lt;value&gt;</span><br><span class="line">    ENV &lt;key1&gt;&#x3D;&lt;value1&gt; &lt;key2&gt;&#x3D;&lt;value2&gt;...</span><br></pre></td></tr></table></figure></group></user></li>
+</ul>
+</li>
+<li><p>WORKDIR: 指定工作目录。用 WORKDIR 指定的工作目录，会在构建镜像的每一层中都存在。(WORKDIR 指定的工作目录，必须是提前创建好的)。docker build 构建镜像过程中的，每一个 RUN 命令都是新建的一层。只有通过 WORKDIR 创建的目录才会一直存在。</p>
+</li>
+<li><p>其他更多命令见<a target="_blank" rel="noopener" href="https://www.runoob.com/docker/docker-dockerfile.html">这里</a></p>
+</li>
+</ul>
+<h1 id="Docker-常用命令及介绍"><a href="#Docker-常用命令及介绍" class="headerlink" title="Docker 常用命令及介绍"></a>Docker 常用命令及介绍</h1><h1 id="Registry相关"><a href="#Registry相关" class="headerlink" title="Registry相关"></a>Registry相关</h1><p>1、切换Registry</p>
+<h2 id="镜像相关"><a href="#镜像相关" class="headerlink" title="镜像相关"></a>镜像相关</h2><h5 id="获取镜像"><a href="#获取镜像" class="headerlink" title="获取镜像"></a>获取镜像</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull &lt;image-name&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="查找镜像"><a href="#查找镜像" class="headerlink" title="查找镜像"></a>查找镜像</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search &lt;image-name&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="列出本地镜像"><a href="#列出本地镜像" class="headerlink" title="列出本地镜像"></a>列出本地镜像</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br><span class="line">or</span><br><span class="line">docker image ls</span><br></pre></td></tr></table></figure>
+<p>列出来表格有以下几个字端</p>
+<ul>
+<li>REPOSITORY: 镜像名称</li>
+<li>TAG: 镜像的标签</li>
+<li>IMAGE ID: 镜像ID</li>
+<li>CREATED: 镜像创建时间</li>
+<li>SIZE: 镜像大小</li>
+</ul>
+<p>同一仓库源可以有多个 TAG，代表这个仓库源的不同个版本，如 ubuntu 仓库源里，有 15.10、14.04 等多个不同的版本，我们使用 REPOSITORY:TAG 来定义不同的镜像。如果不指定TAG，默认会使用为TAG被标记为latest的那个。</p>
+<h5 id="删除镜像"><a href="#删除镜像" class="headerlink" title="删除镜像"></a>删除镜像</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi [-f] &lt;image-id&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-f 表示force</li>
+</ul>
+<h5 id="使用Dockerfile构建镜像"><a href="#使用Dockerfile构建镜像" class="headerlink" title="使用Dockerfile构建镜像"></a>使用Dockerfile构建镜像</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Docker build -t &lt;image name&gt;:&lt;tag name&gt; .</span><br></pre></td></tr></table></figure>
+<p>-t 参数是标签，如果不给tag name，会自动将tag name设置为latest，<code>如果该镜像之前已经有被标记为latest tag 的镜像，那个这个之前的镜像的tag会被标记为none</code>。所以最好为每个镜像给一个tag。</p>
+<p>“.”表示上下文路径，是指 docker 在构建镜像，有时候想要使用到本机的文件（比如复制），docker build 命令得知这个路径后，会将路径下的所有内容打包。可以类比cmake命令的”cmake .”</p>
+<p><strong>解析</strong>：由于 docker 的运行模式是 C/S。我们本机是 C，docker 引擎是 S。实际的构建过程是在 docker 引擎下完成的，所以这个时候无法用到我们本机的文件。这就需要把我们本机的指定目录下的文件一起打包提供给 docker 引擎使用。</p>
+<p><strong>注意</strong>：上下文路径下不要放无用的文件，因为会一起打包发送给 docker 引擎，如果文件过多会造成过程缓慢。</p>
+<h2 id="容器相关"><a href="#容器相关" class="headerlink" title="容器相关"></a>容器相关</h2><ul>
+<li><code>docker ps -a</code><ul>
+<li>查看目前创建的所有容器的状态</li>
+</ul>
+</li>
+<li><code>docker stop &lt;container id&gt;</code><ul>
+<li>暂停运行某个容器</li>
+<li>Cotainer id 可以通过docker ps命令查看</li>
+</ul>
+</li>
+<li><code>docker restart &lt;container id&gt;</code><ul>
+<li>重启某个容器</li>
+</ul>
+</li>
+<li><code>docker rm &lt;container id&gt;</code><ul>
+<li>删除某个容器</li>
+</ul>
+</li>
+<li><code>docker rm $(docker ps -aq)</code><ul>
+<li>删除所有容器</li>
+</ul>
+</li>
+<li><code>docker run -it &lt;image_name&gt;:&lt;image_tag&gt; /bin/bash</code><ul>
+<li>使用某个镜像启动某个容器，并以<font color="orange">命令行形式</font>进入该容器</li>
+<li>-i 参数：交互式操作</li>
+<li>-t参数: 为容器重新分配一个伪输入终端</li>
+<li>-i、-t一般同时使用</li>
+<li>/bin/bash：使用的shell</li>
+<li><font color="orange">通过该命令如果在shell中执行exit命令后，容器将会停止运行</font></li>
+</ul>
+</li>
+<li><code>docker run -d &lt;image_name&gt;:&lt;image_tag&gt; [--name &lt;custom_container_name&gt;] [-p &lt;outter_port&gt;:&lt;inner_port&gt;]</code><ul>
+<li>以守护进程模式在后台启动一个容器</li>
+<li>-d参数：表示以守护进程形式在后台启动</li>
+<li>—name参数：容器的名称，如果不定义则会是一个随机的名称</li>
+<li>-p参数：端口映射，docker容器内部默认是不开放端口的，需要手动指定哪些端口开放，并且外部从哪些端口访问对应容器内的端口</li>
+</ul>
+</li>
+<li><code>docker exec -it &lt;container id&gt; /bin/bash</code><ul>
+<li>以命令行的形式进入某个容器</li>
+<li>docker exec 用于在一个运行的container中运行一个命令，更多docker exec的使用可以用docker exec —help查看</li>
+</ul>
+</li>
+<li><code>docker export &lt;container id&gt; &gt; &lt;filename&gt;</code> <ul>
+<li>创建容器快照</li>
+<li>示例：<code>docker export 1e560fca3906 &gt; ubuntu.tar</code></li>
+</ul>
+</li>
+<li><code>docker import &lt;filePath | url&gt; &lt;imageName:tag&gt;</code><ul>
+<li>将容器快照文件再导入为镜像</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/27/c++/C++PrimerPlus/%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/27/c++/C++PrimerPlus/%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">函数</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-07-27 16:35:04 / Modified: 18:18:25" itemprop="dateCreated datePublished" datetime="2020-07-27T16:35:04+08:00">2020-07-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-primer-plus/" itemprop="url" rel="index">
+                    <span itemprop="name">c++ primer plus</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h1><p>inline function在编译后实质上是函数代码块的替换，编译器不一定会实现inline function，如果编译器认为inline function太复杂或者有递归调用。<code>inline function的链接性为内部链接，所以inline function的定义和声明不能放在不同的文件中。</code></p>
+<h1 id="引用类型作函数参数"><a href="#引用类型作函数参数" class="headerlink" title="引用类型作函数参数"></a>引用类型作函数参数</h1><p>如果函数的参数为引用类型，如果传递的参数类型正确但是不是左值或者传递的参数类型不正确，但是可以转换为正确的类型，<code>编译将会创建一个临时变量，而将引用参数引用到该临时变量上</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">refcube</span><span class="params">(<span class="keyword">const</span> <span class="keyword">double</span> &amp;ra)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> re * ra * ra;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> side = <span class="number">3.0</span>;</span><br><span class="line"><span class="keyword">double</span> *pd = &amp;side;</span><br><span class="line"><span class="keyword">double</span> &amp;rd = side;</span><br><span class="line"></span><br><span class="line"><span class="keyword">long</span> edge = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">double</span> lens[<span class="number">4</span>] = &#123;<span class="number">2.0</span>, <span class="number">5.0</span>, <span class="number">10.0</span>, <span class="number">12.0</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> c1 = refcube(side);<span class="comment">//won&#x27;t create temporary variable</span></span><br><span class="line"><span class="keyword">double</span> c2 = refcube(lens[<span class="number">2</span>]);<span class="comment">//won&#x27;t create temporary variable</span></span><br><span class="line"><span class="keyword">double</span> c3 = refcube(rd);<span class="comment">//won&#x27;t create temporary variable</span></span><br><span class="line"><span class="keyword">double</span> c4 = refcube(*pd);<span class="comment">//won&#x27;t create temporary variable</span></span><br><span class="line"><span class="keyword">double</span> c5 = refcube(edge);<span class="comment">//will create temporary variable</span></span><br><span class="line"><span class="keyword">double</span> c6 = refcube(<span class="number">7.0</span>);<span class="comment">//will create temporary variable</span></span><br><span class="line"><span class="keyword">double</span> c7 = refcube(side + <span class="number">10.0</span>);<span class="comment">//will create temporary variable</span></span><br></pre></td></tr></table></figure>
+<h1 id="带默认参数的函数"><a href="#带默认参数的函数" class="headerlink" title="带默认参数的函数"></a>带默认参数的函数</h1><ul>
+<li>如果要用为某个参数设置默认值，则必须为<code>它右边的所有参数提供默认值</code>。</li>
+<li>函数定义中有默认参数，在函数实现中的函数头中可以不再写默认参数的值。</li>
+</ul>
+<h1 id="可变参数函数"><a href="#可变参数函数" class="headerlink" title="可变参数函数"></a>可变参数函数</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> n, ...)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>“…”代表可以<code>接受任意类型的数据</code>任意多个。</p>
+<p>获取到可变参数列表的方法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> n, ...)</span> </span>&#123;</span><br><span class="line">    va_list	ap;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    va_start(ap, n);</span><br><span class="line">    <span class="keyword">while</span> (n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> temp = va_arg(ap, <span class="keyword">int</span>);</span><br><span class="line">        sum += temp;</span><br><span class="line">        --n;</span><br><span class="line">    &#125;</span><br><span class="line">    va_end(ap);</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sum(<span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>、va_list args;			<span class="comment">//定义一个可变参数列表</span></span><br><span class="line"><span class="number">2</span>、va_start(args,n);	<span class="comment">//初始化args指向强制参数n的`下一个参数`</span></span><br><span class="line"><span class="number">3</span>、va_arg(args,type);	<span class="comment">//`获取当前参数内容`并将args指向下一个参数</span></span><br><span class="line"><span class="number">4</span>、va_end(args);			<span class="comment">//释放args</span></span><br></pre></td></tr></table></figure>
+<p>在使用va_arg宏时，<code>要求type是POD(Plain Old Data)类型</code>，能用 C 的 memcpy() 等函数进行操作的类、结构体就是 POD 类型的数据，所有基本数据类型都是POD。并且如果type和对应的参数不对的话会产生强制类型转换。如果类型转换失败就会将数据设置为0或者其他初始化的值。</p>
+<h1 id="函数重载"><a href="#函数重载" class="headerlink" title="函数重载"></a>函数重载</h1><ul>
+<li><p>函数的参数列表也称为函数特征标</p>
+</li>
+<li><p>函数重载要求函数的参数数目或参数类型<code>或参数的顺序</code>不同，而参数名是无关紧要，且编译器在检查时<code>不一定</code>会将引用类型和本身类型视为同一特征标，但是如果调用重载函数存在二义性则编译器会报错。</p>
+</li>
+<li><p><code>对于非引用传参，形参是否const是等价的</code>。但是<code>当使用引用传参时，有无const是不同的</code>。使用指针传参时，<code>指向const对象的指针和指向非const对象的指针做形参的函数是不同的</code></p>
+</li>
+<li><p>只是函数返回值不同不能构成函数重载</p>
+</li>
+<li><p><code>在类中，C++将区分常量和非常量函数(即函数本身是否为const)的特征标</code></p>
+</li>
+<li><p>函数重载匹配原则</p>
+<ul>
+<li>最匹配原则</li>
+<li>如果没有匹配的将会进行类型强转后进行匹配，但是进行类型强转后进行匹配后有多个匹配的会产生报错；</li>
+</ul>
+</li>
+</ul>
+<h1 id="函数模版"><a href="#函数模版" class="headerlink" title="函数模版"></a>函数模版</h1><p>函数模版并没有创建一个函数，它只是告诉编译器如何创建如何创建一个函数，编译器在遇到使用模版函数的地方会将模版函数展开成具体的函数。</p>
+<p>模版函数匹配原则：越具体越适配原则</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(T t)</span></span>;<span class="comment">//函数1</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(T *t)</span></span>;<span class="comment">//函数2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line">func(&amp;a);<span class="comment">//函数2更适配</span></span><br></pre></td></tr></table></figure>
+<h2 id="decltype-x-y"><a href="#decltype-x-y" class="headerlink" title="decltype(x) y"></a>decltype(x) y</h2><p>decltype用于将y作为和x一样的类型，当y的类型未知的时候，decltype的运用场景大多是模版</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</span><br><span class="line">auto gt(T1 x, T2 y) -&gt; decltype(x + y);</span><br></pre></td></tr></table></figure>
+<h1 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h1><p>函数指针的声明方式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">return_type (*pointer_name)(parameter);</span><br></pre></td></tr></table></figure>
+<p><code>注意</code>*和pointer_name要用括号括起来，否则就是返回指针的函数。</p>
+<p><code>注意</code>不能声明一个指向模版函数的指针，因为模版函数并没有实现真的函数，而只是说明如何声明函数</p>
+<h1 id="宏定义形式的函数"><a href="#宏定义形式的函数" class="headerlink" title="宏定义形式的函数"></a>宏定义形式的函数</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX(a, b) (a) &gt; (b) ? (a) : (b)</span></span><br></pre></td></tr></table></figure>
+<p><code>注意将参数用括号扩起来</code></p>
+<p>有些时候用宏定义的代码被do { } while(0);包含了起来，例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX(a, b) do &#123;    \</span></span><br><span class="line">    (a) &gt; (b) ? (a) : (b); \</span><br><span class="line">&#125; <span class="keyword">while</span>(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>这是因为宏的处理是文本替换，有时候将宏用文本替换后代码就产生了语法错误，而使用do {} while(0)是为了避免由于文本替换后带来的语法错误，并保证宏函数无论如何都会执行一次。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/27/c++/Effective-c++/%E6%9D%A1%E6%AC%BE04-%E7%A1%AE%E5%AE%9A%E5%AF%B9%E8%B1%A1%E8%A2%AB%E4%BD%BF%E7%94%A8%E5%89%8D%E5%B7%B2%E8%A2%AB%E5%88%9D%E5%A7%8B%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -753,326 +1298,6 @@ using namespace std;
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/21/c++/Effective-c++/%E6%9D%A1%E6%AC%BE19-%E8%AE%BE%E8%AE%A1class%E7%8A%B9%E5%A6%82%E8%AE%BE%E8%AE%A1%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/21/c++/Effective-c++/%E6%9D%A1%E6%AC%BE19-%E8%AE%BE%E8%AE%A1class%E7%8A%B9%E5%A6%82%E8%AE%BE%E8%AE%A1%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" class="post-title-link" itemprop="url">Untitled</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-07-21 11:51:58" itemprop="dateCreated datePublished" datetime="2020-07-21T11:51:58+08:00">2020-07-21</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="设计class犹如设计基本数据类型"><a href="#设计class犹如设计基本数据类型" class="headerlink" title="设计class犹如设计基本数据类型"></a>设计class犹如设计基本数据类型</h1><p>在设计一个class时，可以问一下以下几个问题：</p>
-<ul>
-<li>对象应该如何被创建和销毁</li>
-<li>对象的初始化和对象的赋值该有什么样的差别</li>
-<li>对象如果被passed by value，意味着什么？<strong>copy构造函数用来定义一个class的pass-by-value的行为</strong></li>
-<li>对象数据成员的合法值</li>
-<li>class的继承关系</li>
-<li>class需要什么样的转换(显示转换和隐式转换)</li>
-<li>class需要用到操作符函数嘛？应该使用成员函数版还是非成员函数版？</li>
-<li>class成员的访问属性</li>
-<li>是要设计成一个class还是设计成一个template class</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/16/c++/Effective-c++/%E6%9D%A1%E6%AC%BE18-%E8%AE%A9%E6%8E%A5%E5%8F%A3%E5%AE%B9%E6%98%93%E8%A2%AB%E6%AD%A3%E7%A1%AE%E4%BD%BF%E7%94%A8%EF%BC%8C%E4%B8%8D%E6%98%93%E8%A2%AB%E8%AF%AF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/16/c++/Effective-c++/%E6%9D%A1%E6%AC%BE18-%E8%AE%A9%E6%8E%A5%E5%8F%A3%E5%AE%B9%E6%98%93%E8%A2%AB%E6%AD%A3%E7%A1%AE%E4%BD%BF%E7%94%A8%EF%BC%8C%E4%B8%8D%E6%98%93%E8%A2%AB%E8%AF%AF%E7%94%A8/" class="post-title-link" itemprop="url">Untitled</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-07-16 16:35:49" itemprop="dateCreated datePublished" datetime="2020-07-16T16:35:49+08:00">2020-07-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-21 11:41:01" itemprop="dateModified" datetime="2020-07-21T11:41:01+08:00">2020-07-21</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="让接口容易被正确使用，不易被误用"><a href="#让接口容易被正确使用，不易被误用" class="headerlink" title="让接口容易被正确使用，不易被误用"></a>让接口容易被正确使用，不易被误用</h1><p>尽量将接口设计得让别人使用的时候不会出现错用接口的情况。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/16/c++/Effective-c++/%E6%9D%A1%E6%AC%BE17-%E4%BB%A5%E7%8B%AC%E7%AB%8B%E8%AF%AD%E5%8F%A5%E5%B0%86newed%E5%AF%B9%E8%B1%A1%E7%BD%AE%E5%85%A5%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/16/c++/Effective-c++/%E6%9D%A1%E6%AC%BE17-%E4%BB%A5%E7%8B%AC%E7%AB%8B%E8%AF%AD%E5%8F%A5%E5%B0%86newed%E5%AF%B9%E8%B1%A1%E7%BD%AE%E5%85%A5%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">Untitled</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-07-16 12:20:02 / Modified: 14:43:55" itemprop="dateCreated datePublished" datetime="2020-07-16T12:20:02+08:00">2020-07-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="以独立语句将newed对象置入智能指针"><a href="#以独立语句将newed对象置入智能指针" class="headerlink" title="以独立语句将newed对象置入智能指针"></a>以独立语句将newed对象置入智能指针</h1><p>看下面的例子：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span> &#123;</span> ... &#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">priority</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">processWidget</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Widget&gt; pw, <span class="keyword">int</span> priority)</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mian</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ...;</span><br><span class="line">  processWidget(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Widget&gt;(<span class="keyword">new</span> Widget), priority());</span><br><span class="line">  ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在调用processWidget函数之前，编译器创建代码会做三件事：</p>
-<p>1、调用priority</p>
-<p>2、执行”new Widget”</p>
-<p>3、调用std::share_ptr的构造函数</p>
-<p>但是C++编译器以什么样的次序完成这件事是不确定，唯一确定的顺序是”new Widget”一定在调用std::share_ptr的构造函数之前，编译器有可能在第二步执行调用priority函数。如果此时priority函数的调用发生异常，此时”new Widget”返回的指针可能将会遗失，此时可能引发资源泄漏。为了避免这个问题，最好把创建Widget的语句单独拿出来：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ...;</span><br><span class="line">  <span class="function"><span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Widget&gt; <span class="title">pw</span><span class="params">(<span class="keyword">new</span> Widget)</span></span>;</span><br><span class="line">  processWidget(pw, priority());</span><br><span class="line">  ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/16/c++/Effective-c++/%E6%9D%A1%E6%AC%BE16-%E6%88%90%E5%AF%B9%E4%BD%BF%E7%94%A8new%E5%92%8Cdelete%E6%97%B6%E8%A6%81%E9%87%87%E7%94%A8%E7%9B%B8%E5%90%8C%E5%BD%A2%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/16/c++/Effective-c++/%E6%9D%A1%E6%AC%BE16-%E6%88%90%E5%AF%B9%E4%BD%BF%E7%94%A8new%E5%92%8Cdelete%E6%97%B6%E8%A6%81%E9%87%87%E7%94%A8%E7%9B%B8%E5%90%8C%E5%BD%A2%E5%BC%8F/" class="post-title-link" itemprop="url">Untitled</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-07-16 11:58:17 / Modified: 12:19:20" itemprop="dateCreated datePublished" datetime="2020-07-16T11:58:17+08:00">2020-07-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="成对使用new和delete时要采用相同形式"><a href="#成对使用new和delete时要采用相同形式" class="headerlink" title="成对使用new和delete时要采用相同形式"></a>成对使用new和delete时要采用相同形式</h1><p>如果你在new表达式中使用[ ]，必须在相应的delete表达式中也使用[ ]。如果你在new表达式中不使用[ ]，一定不要在相应的delete表达式中使用[ ]。</p>
-<p><strong>另外尽量不要对数组形式做typedef动作</strong>，否则会导致new和delete的不匹配。例如：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">std</span>::<span class="built_in">string</span> Address[<span class="number">4</span>];<span class="comment">//用四个字符串来表示地址</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> *pA = <span class="keyword">new</span> Address;</span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> pA;<span class="comment">//应该使用 delete [] pA;</span></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/16/c++/Effective-c++/%E6%9D%A1%E6%AC%BE15-%E5%9C%A8%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E7%B1%BB%E4%B8%AD%E6%8F%90%E4%BE%9B%E5%AF%B9%E5%8E%9F%E5%A7%8B%E8%B5%84%E6%BA%90%E7%9A%84%E8%AE%BF%E9%97%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/16/c++/Effective-c++/%E6%9D%A1%E6%AC%BE15-%E5%9C%A8%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E7%B1%BB%E4%B8%AD%E6%8F%90%E4%BE%9B%E5%AF%B9%E5%8E%9F%E5%A7%8B%E8%B5%84%E6%BA%90%E7%9A%84%E8%AE%BF%E9%97%AE/" class="post-title-link" itemprop="url">Untitled</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-07-16 11:47:42 / Modified: 11:57:46" itemprop="dateCreated datePublished" datetime="2020-07-16T11:47:42+08:00">2020-07-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="在资源管理类中提供对原始资源的访问"><a href="#在资源管理类中提供对原始资源的访问" class="headerlink" title="在资源管理类中提供对原始资源的访问"></a>在资源管理类中提供对原始资源的访问</h1><p>std中的shared_ptr和unique_ptr都提供了对原始资源对象的访问函数get()。在自己设计的资源管理类中也要提供一个访问原始资源的函数。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1143,20 +1368,20 @@ using namespace std;
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-count">104</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -1181,7 +1406,7 @@ using namespace std;
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

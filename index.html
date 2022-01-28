@@ -180,6 +180,797 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/" class="post-title-link" itemprop="url">数据编码与演化</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-16 22:15:28" itemprop="dateCreated datePublished" datetime="2022-01-16T22:15:28+08:00">2022-01-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-22 12:00:04" itemprop="dateModified" datetime="2022-01-22T12:00:04+08:00">2022-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DDIA/" itemprop="url" rel="index">
+                    <span itemprop="name">DDIA</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="数据编码格式"><a href="#数据编码格式" class="headerlink" title="数据编码格式"></a>数据编码格式</h1><p>一个程序通常使用两种不同的数据表示形式：</p>
+<ol>
+<li><p>在内存中，数据保存在对象、结构体、列表、数组、哈希表和树等结构中。这些数据结构针对CPU的高效访问和操作进行了优化（通常使用指针）</p>
+</li>
+<li><p>将数据写入文件或者通过网络发送时，必须将其编码为某种自包含的的字节序列（例如json文档）。由于一个进程的指针对于其他进程来说是没有意义的，所以这个字节序列会与内存中使用的数据结构不大一样</p>
+</li>
+</ol>
+<p>因此，在这两种表示之间需要进行类型的转化。<font color="orange">从内存中的表示到字节序列的表示称为编码（或序列化），相反的过程称为解码（或反序列化）</font></p>
+<h1 id="语言特定的编解码格式"><a href="#语言特定的编解码格式" class="headerlink" title="语言特定的编解码格式"></a>语言特定的编解码格式</h1><p>许多语言都内置支持将内存中的对象序列化为字节序列的工具包，例如java有<code>java.io.Serializable</code>，ruby有<code>Marshal</code>，python有<code>pickle</code>等。这些序列化反序列化库使用其他很方便，它们只需要很少的代码就可保存和恢复内存中的对象。然后也有一些问题：</p>
+<ul>
+<li><p>它们通常和语言绑定在一起，而使用另外一种语言时访问数据就非常困难</p>
+</li>
+<li><p>效率，有些编程语言的序列化反序列化工具库性能非常差，例如java</p>
+</li>
+</ul>
+<p>由于这些原因，使用语言内置的编码方案通常不是一个好主意</p>
+<h1 id="JSON、XML"><a href="#JSON、XML" class="headerlink" title="JSON、XML"></a>JSON、XML</h1><p>JSON和XML是两种被广泛支持的，可有不同编程语言编写和读取的标准化编码，虽然XML经常被批评过于冗长与不必要的复杂。</p>
+<p>JSON与XML都是文本格式，因此具有不错的可读性，但是它们也有一些小问题：</p>
+<ul>
+<li><p>对数字的编码有很多模糊之处。在XML中，无法区分数字和数字组成的字符串。JSON区分字符串和数字，但是不区分整数和浮点数，并且不指定精度。</p>
+<p>这在处理大数字时是一个问题，大于$2^{53}$的整数在IEEE 754标准中的双精度浮点数不能精确显示，所以这些数据在使用浮点数的语言（如JavaScript）中进行分析时，会得到不准确的结果。</p>
+</li>
+<li><p>JSON和XML对二进制数据支持得不是很好，通常的处理是将二进制数据用base64编码为文本来解决这个限制，虽然可行，但是会使数据变得混乱，而且会使二进制数据大小相对于原来增加33%左右</p>
+</li>
+</ul>
+<font color="orange">尽管存在一些缺陷，但JSON和XML已经可用于很多应用。特别是作为数据交换格式，在某些情况下，只要人们就格式本身达成一致，格式多么美观或者高效往往不太重要。</font>
+
+<h1 id="二进制编码"><a href="#二进制编码" class="headerlink" title="二进制编码"></a>二进制编码</h1><p>虽然JSON不像XML那样冗长，但是与二进制格式相比，两者仍然占用大量空间，虽然有很多JSON和XML的二进制变体（例如BSON），这些格式在一些细分领域被采用，但是没有一个像JSON和XML那样被广泛采用。另外，由于JSON和XML没有规定格式，所以需要在编码数据时包含所有的对象字段名称。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;username&quot;</span>: <span class="string">&quot;Martin&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;favoriteNumber&quot;</span>: <span class="number">1337</span>,</span><br><span class="line">    <span class="attr">&quot;interests&quot;</span>: [<span class="string">&quot;daydreaming&quot;</span>, <span class="string">&quot;hacking&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的JSON文档中，它们必须在包含字符串userName，favoriteNumber，interest。</p>
+<h2 id="Thrift和Protocol-Buffers"><a href="#Thrift和Protocol-Buffers" class="headerlink" title="Thrift和Protocol Buffers"></a>Thrift和Protocol Buffers</h2><p>Apache Thrift和Protocol Buffers是目前使用得最广泛的两种二进制编码。Protocol Buffers最初是在Google开发的，Thrift最初是在Facebook开发的，并且都是在2007~2008年开源的。</p>
+<p><font color="orange">Thrift和Protocol Buffers都需要模式来编码任意的数据，它们都使用接口描述语言来描述模式。</font>Thrift的IDL示例：</p>
+<figure class="highlight thrift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="number">1</span>: <span class="keyword">required</span> <span class="built_in">string</span> userName,</span><br><span class="line">    <span class="number">2</span>: <span class="keyword">optional</span> <span class="built_in">i64</span> favoriteNumber,</span><br><span class="line">    <span class="number">3</span>: <span class="keyword">optional</span> list&lt;<span class="keyword">string</span>&gt; interests</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Protocol Buffers IDL示例：</p>
+<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">required</span> <span class="built_in">string</span> user_name = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">optional</span> <span class="built_in">int64</span> favorte_number = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">repeated</span> <span class="built_in">string</span> interests = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Thrift 和 Portocol Buffers各有对应的代码生成工具，采用和上面类似的模式定义，并生成支持多种编程语言的类，应用程序可以直接调用生成的代码来编码或解码该模式的数据。</p>
+<h3 id="Thrift的编码模式"><a href="#Thrift的编码模式" class="headerlink" title="Thrift的编码模式"></a>Thrift的编码模式</h3><p>Thrift有三种二进制编码格式和两种基于JSON的编码格式，这里主要讨论两种二进制的编码格式——BinaryProtocol和CompactProtocol（这两种二进制编码是跨语音的，第三种DenseProtocol只支持c++实现）。</p>
+<p>先看看使用BinaryProtocol编码上面同格式的json数据是怎么的：</p>
+<p><img title src="/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-2.png" alt width="471" data-align="center"></p>
+<p>每一个字段都使用一个字节进行类型标注（用于指定它是字符串、整数、列表等），并且在需要时指定数据长度（包括字符串的长度、列表中的项数），数据中的字符串被编码成UTF-8格式的编码。<font color="orange">与JSON相比，最大的区别是没有字段名，相反，编码数据包含数字类型的字段标签（1、2和3）。</font>这些是模式定义中出现的数字，字段标签就像字段的别名，用来指示当前的字段。</p>
+<p>上面的JSON文本编码需要占用81字节（去掉空格），而BinaryProtocol编码只需要59字节。</p>
+<p>Thrift CompactProtocol编码在语意上等同于BinaryProtocol，它编码出来同格式的数据如下：</p>
+<p><img title src="/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-3.png" alt width="478" data-align="center"></p>
+<p>CompactProtocol编码出来的数据只有34字节，它通过将字段类型和字段标签打包到单个字节中，并使用可变长度整数来对数字进行编码。对数字1337，不使用全部8字节，而是使用两个字节进行编码，每字节的最高位来指示是否还有更多的字节（但是这也意味着每个字节都会失去一位有效数字，在某些情况下使用字节数还会比BinaryProtocol用得多）。</p>
+<h3 id="Protocol-Buffers的编码模式"><a href="#Protocol-Buffers的编码模式" class="headerlink" title="Protocol Buffers的编码模式"></a>Protocol Buffers的编码模式</h3><p>Protocol Buffers只有一种二进制编码格式，对上面的JSON数据进行编码，它的结果如下：</p>
+<p><img title src="/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-4.png" alt width="486" data-align="center"></p>
+<p>Protocol Buffers将字段类型和字段标签打包到单个字节中，并且数字类型只有变长编码的方式，并且对于list类型的编码是通过重复类型和字段tag来实现的，这一点和thirft也不同。</p>
+<h2 id="字段标签和演化格式"><a href="#字段标签和演化格式" class="headerlink" title="字段标签和演化格式"></a>字段标签和演化格式</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2022/01/01/effective_python/%E5%88%97%E8%A1%A8%E4%B8%8E%E5%AD%97%E5%85%B8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/01/effective_python/%E5%88%97%E8%A1%A8%E4%B8%8E%E5%AD%97%E5%85%B8/" class="post-title-link" itemprop="url">列表与字典</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-01 16:43:18" itemprop="dateCreated datePublished" datetime="2022-01-01T16:43:18+08:00">2022-01-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-22 19:18:47" itemprop="dateModified" datetime="2022-01-22T19:18:47+08:00">2022-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/effective-python/" itemprop="url" rel="index">
+                    <span itemprop="name">effective python</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="第11条：学会对序列进行切片"><a href="#第11条：学会对序列进行切片" class="headerlink" title="第11条：学会对序列进行切片"></a>第11条：学会对序列进行切片</h1><p>python支持从序列里面切割出一部分内容，让我们能够放轻松地获取原序列地某个子集合，最简单的用法就是切割内置的list，str与bytes。其实，凡是实现了<code>__getitem__</code>与<code>__setitem__</code>这两个特殊方法的类都可以进行切割。</p>
+<p>切片最基本的用法就是<code>somelist[start:end]</code>这一形式来切割，也就是从start开始一直取到end这个位置，但不包含end本身的元素。如果从头开始切割列表，那就应该省略start，如果一直取到末尾，那就应该省略end。用负数作下标表示从倒数第k个。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a[:]</span><br><span class="line">a[:<span class="number">5</span>]</span><br><span class="line">a[<span class="number">2</span>:]</span><br><span class="line">a[-<span class="number">3</span>:]</span><br><span class="line">a[<span class="number">1</span>:-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<font color="orange">使用切片时，即使下标越界也不会有问题，python会自动忽略不存在的元素。</font><font color="red">使用切片切割处理的列表是一份新的列表，即使把某个元素替换掉，也不会影响原列表中的相应位置。</font>
+
+<p>切片可以出现在赋值符号的左侧，表示用右侧那些元素把原列表中位于这个范围之内的元素换掉。与unpacking形式的赋值不同，这种赋值不要求等号两边所指定的元素个数必须相同，但是如果元素个数不同，列表的长度会发生变化。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a[<span class="number">2</span>:<span class="number">5</span>] = [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>] <span class="comment"># list&#x27;s length not change</span></span><br><span class="line">a[<span class="number">2</span>:<span class="number">5</span>] = [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">4</span>] <span class="comment"># list&#x27;s length will grow 1</span></span><br><span class="line">a[<span class="number">2</span>:<span class="number">5</span>] = [<span class="number">2</span>, <span class="number">3</span>] <span class="comment"># list&#x27;s length will desc 1</span></span><br></pre></td></tr></table></figure>
+<h1 id="第12条：在切片中指定步进"><a href="#第12条：在切片中指定步进" class="headerlink" title="第12条：在切片中指定步进"></a>第12条：在切片中指定步进</h1><p>python的切片还支持不仅切片形式，也就是<code>somelist[start:end:stride]</code>。这种形式从start开始取，每n个元素里面选取一个。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="string">&#x27;red&#x27;</span>, <span class="string">&#x27;orange&#x27;</span>, <span class="string">&#x27;yellow&#x27;</span>, <span class="string">&#x27;green&#x27;</span>, <span class="string">&#x27;blue&#x27;</span>, <span class="string">&#x27;purple&#x27;</span>]</span><br><span class="line">print(x[::<span class="number">2</span>])</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="string">&#x27;red&#x27;</span>, <span class="string">&#x27;yellow&#x27;</span>, <span class="string">&#x27;blue&#x27;</span>]</span><br></pre></td></tr></table></figure>
+<p>当步进值设置为负数时，表示从start开始，从后往前取</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">print(x[-<span class="number">3</span>: <span class="number">2</span>])</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="string">&#x27;green&#x27;</span>, <span class="string">&#x27;orange&#x27;</span>]</span><br></pre></td></tr></table></figure>
+<p>设置步进值为负数的一个应用就是用于将列表进行反转</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">print(x[::-<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="string">&#x27;purple&#x27;</span>, <span class="string">&#x27;blue&#x27;</span>, <span class="string">&#x27;green&#x27;</span>, <span class="string">&#x27;yellow&#x27;</span>, <span class="string">&#x27;orange&#x27;</span>, <span class="string">&#x27;red&#x27;</span>]</span><br></pre></td></tr></table></figure>
+<h1 id="第13条：通过带星号的unpacking来捕获多个元素"><a href="#第13条：通过带星号的unpacking来捕获多个元素" class="headerlink" title="第13条：通过带星号的unpacking来捕获多个元素"></a>第13条：通过带星号的unpacking来捕获多个元素</h1><p>python基本unpacking操作有一项限制，就是必须提前需要确定要拆解的序列的长度。但是如果不事先知道长度，而且想把一些元素仍然以list的形式保存，一种办法是通过获取长度，然后通过下标获取加切片的形式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">car_ages = [<span class="number">0</span>, <span class="number">9</span>, <span class="number">4</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">20</span>, <span class="number">19</span>, <span class="number">1</span>, <span class="number">6</span>, <span class="number">15</span>]</span><br><span class="line">car_ages_desc = <span class="built_in">sorted</span>(car_ages, reverse=<span class="literal">True</span>)</span><br><span class="line">oldest = car_ages_desc[<span class="number">0</span>]</span><br><span class="line">others = car_ages_desc[<span class="number">1</span>:]</span><br></pre></td></tr></table></figure>
+<p>更好的方式是使用带<code>*</code>的unpacking：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">oldest, *others = car_ages_desc</span><br></pre></td></tr></table></figure>
+<p>这种带星号的表达式可以出现在任意位置，所以它能够获取序列中的任何一段元素：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">oldest, *others, youngest = car_ages_desc</span><br></pre></td></tr></table></figure>
+<font color="orange">但是带星号的unpacking要求必须至少有一个普通的接受变量和它匹配，并且同一级unpacking里面至多只能有一个带星号的变量</font>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*<span class="built_in">all</span> = car_ages_desc <span class="comment"># syntax error</span></span><br><span class="line">first, *middle, *second_middle, last = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>] <span class="comment"># syntax error</span></span><br></pre></td></tr></table></figure>
+<p>另外，如果要拆分的列表里以及没有元素留给带<code>*</code>的变量，那么该变量会是一个长度为0的列表</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">short_list = [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">first, second, *rest = short_list</span><br><span class="line"></span><br><span class="line">print(short_list)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[]</span><br></pre></td></tr></table></figure>
+<p>使用带星号的unpacking需要注意一点，带星号的这部分总是会形成一份列表，这有可能会耗尽计算机的全部内存并导致程序崩溃，尤其是在和生成器（yield方法）一起使用的时候。</p>
+<h1 id="第14条：用sort方法的key参数来表示复杂的排序逻辑"><a href="#第14条：用sort方法的key参数来表示复杂的排序逻辑" class="headerlink" title="第14条：用sort方法的key参数来表示复杂的排序逻辑"></a>第14条：用sort方法的key参数来表示复杂的排序逻辑</h1><p>内置的列表类型提供了名叫sort的方法，可以按照多项指标给list实例中的元素进行排序。在默认情况下，sort方法总是按照自然升序排列列表内的元素。例如，如果列表中的元素都是整数，那么它就按数值从小到大排列</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">numbers = [<span class="number">93</span>, <span class="number">86</span>, <span class="number">11</span>, <span class="number">68</span>, <span class="number">70</span>]</span><br><span class="line">numbers.sort()</span><br><span class="line">print(numbers)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">11</span>, <span class="number">68</span>, <span class="number">70.</span> <span class="number">86</span>, <span class="number">93</span>]</span><br></pre></td></tr></table></figure>
+<p>凡是具备自然顺序的内置类型几乎都可以用sort方法进行排列，例如字符串、浮点数等。但是一般的对象又该如何排序呢？比如，假如这里定义了一个People类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">People</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name, age, gender</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.gender = gender</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">peoples = [</span><br><span class="line">    People(<span class="string">&#x27;Tom&#x27;</span>, <span class="number">23</span>, <span class="string">&#x27;male&#x27;</span>),</span><br><span class="line">    People(<span class="string">&#x27;Jane&#x27;</span>, <span class="number">22</span>, <span class="string">&#x27;female&#x27;</span>),</span><br><span class="line">    People(<span class="string">&#x27;henry&#x27;</span>, <span class="number">24</span>, <span class="string">&#x27;male&#x27;</span>),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>如果仅仅这样写，那么这个由该类的对象所构成的列表是没办法用sort方法排序的，因为sort方法发现，排序所需要的特殊方法并没有在People类中实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">perples.sort()</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">Traceback ...</span><br><span class="line">TypeError: <span class="string">&#x27;&lt;&#x27;</span> <span class="keyword">not</span> supported between instances of <span class="string">&#x27;People&#x27;</span> <span class="keyword">and</span> <span class="string">&#x27;People&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>虽然我们可以在People类中定义一些特殊的方法让我们在无须额外参数的情况下就能直接在这些类的实例所构成的列表上进行排序。但是更为常见的情况是，很多对象需要在不同的情况下按照不同的标准排序，此时定义自然排序实际上没有意义。这些排序标准通常是针对对象中的某个属性，我们可以把这样的排序逻辑定义成函数，然后将这个函数传给sort方法的key参数。这个函数只有一个参数，用于指代列表中有待排序的对象，函数返回的应该是一个可比较的，具有自然顺序的值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">peoples.sort(key=<span class="keyword">lambda</span> p:p.name)</span><br></pre></td></tr></table></figure>
+<p>有些时候我们可能需要用多个标准来排序。例如，在名字位首要标准的情况下，再按年龄进行排序，这种怎么实现呢？最简单的办法是利用元组类型来实现</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/11/23/effective_python/pythonic%E7%BC%96%E7%A0%81%E6%80%9D%E7%BB%B4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/23/effective_python/pythonic%E7%BC%96%E7%A0%81%E6%80%9D%E7%BB%B4/" class="post-title-link" itemprop="url">pythonic编码思维</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-11-23 00:12:13" itemprop="dateCreated datePublished" datetime="2021-11-23T00:12:13+08:00">2021-11-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-16 19:35:47" itemprop="dateModified" datetime="2022-01-16T19:35:47+08:00">2022-01-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/effective-python/" itemprop="url" rel="index">
+                    <span itemprop="name">effective python</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="第1条：获取Python版本"><a href="#第1条：获取Python版本" class="headerlink" title="第1条：获取Python版本"></a>第1条：获取Python版本</h1><p>在代码中，可以使用内置的sys模块来查询当前python的版本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">print(sys.version_info)</span><br><span class="line">print(sys.version)</span><br></pre></td></tr></table></figure>
+<p>python2从2020.01.01号之后就不再有新版本发布了，所以尽量使用python3进行开发</p>
+<h1 id="第2条：PEP-8-风格指南"><a href="#第2条：PEP-8-风格指南" class="headerlink" title="第2条：PEP 8 风格指南"></a>第2条：PEP 8 风格指南</h1><p>PEP 8的全称为Python Enhencement Proposal #8，他是一份针对python代码格式而编订的风格指南。<a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0008">PEP 8</a>非常详细的描述了如果编写清晰的python代码，而且随着python语言的发展，这份指南也在不断更新。这里只简单说明几种</p>
+<p><em>空格与空行</em></p>
+<ul>
+<li>用空格表示缩进（一般四个空格），而不使用tab表示缩进，现代的IDE都有将tab转换为空格的设置</li>
+<li>同一份文件中，函数与类之间用两个空行隔开</li>
+<li>同一个类中，方法与方法之间用一个空行隔开</li>
+</ul>
+<p>现代IDE都有控制空格与空行规范的format工具，可以借用IDE的format工具来实现空格与空行的规范，而不必手动进行改动。</p>
+<p><strong>变量命名相关建议</strong></p>
+<ul>
+<li>函数、变量及属性用小写+下划线命名</li>
+<li>受保护的实例属性，用一个下划线开头，例如：<code>_leading_underscore</code></li>
+<li>私有的实力属性，用两个下划线开头，例如<code>__double_leading_underscore</code></li>
+<li>类（包括异常）命名时，使用首字母大写+驼峰命名法，例如：<code>CaptializedWord</code></li>
+<li>模块级别的常量，所有字母都大写，各单词之间用下划线相连，例如：<code>ALL_CAPS</code></li>
+<li>类中的实例方法，第一个参数命名为self，用来表示该对象本身</li>
+<li>类方法的第一个参数，应该命名为cls，用来表示这个类本身</li>
+</ul>
+<p><strong>表达式相关建议</strong></p>
+<ul>
+<li>否定表达式将否定词直接写在要否定的内容前面，而不要放在整个表达式的前面，例如应该写<code>if a is not b</code> 而不是<code>if not a is b</code></li>
+</ul>
+<p><strong>与导入包相关的建议</strong></p>
+<ul>
+<li>引入模块时，尽量使用绝对名称，而不应该根据当前模块路径来使用相对名称。如果一定要用相对名称来导入，也应明确的写出<code>from .xxx import xxx</code>或<code>from ..xxx import xxx</code></li>
+<li>文件中import语句按顺序划分为三个部分：首先引入标准库里的模块，然后引入第三方模块，最后引入自己编写的模块。属于同一个部分的import语句尽量按照字母顺序排列（老实说个人理解做到按字母顺序排列有点难，除非靠专门的format工具）</li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.pylint.org/">Pylint</a>是一款流行的Python源码静态分析工具。它可以自动检测代码是否符合PEP 8风格指南，很多IDE都包含这样的linting工具</p>
+</blockquote>
+<h1 id="第3条：了解bytes与str的区别"><a href="#第3条：了解bytes与str的区别" class="headerlink" title="第3条：了解bytes与str的区别"></a>第3条：了解bytes与str的区别</h1><p>python有两种类型可以表示字符序列，一种是bytes，一种是str，bytes实例包含的是原始数据，即8位的无符号值（通常按照ASCII编码标准来显示）。str实例包含的是unicode码点，这些码点与人类语音之中的文本字符相对应。要把Unicode数据转换成二进制数据，必须调用str的<code>encode</code>方法，要把二进制数据转换为Unicode数据，必须调用bytes的<code>decode</code>方法。</p>
+<p>编写python程序的时候，一般把字符的解码和编码放在最外层来做，让程序的核心使用Unicode数据来运作（在程序的核心部分，用str类型来表示Unicode数据）。</p>
+<ul>
+<li><p>string和string之间，bytes和bytes之间可以使用<code>+</code>号连接，但是string和bytes之间不可以</p>
+</li>
+<li><p>string和string之间，bytes和bytes之间可以使用<code>&gt;</code> 、<code>&lt;</code>比较大小，但是string和bytes之间不行</p>
+</li>
+<li><p>string 和 bytes之间使用<code>==</code>比较大小总是会得到false，即使两个实例表示的字符完全相同</p>
+</li>
+<li><p>string和string之间，bytes和bytes之间，可以使用<code>%s</code>操作符来进行格式替换。但是如果格式字符串是bytes类型，那么不能使用str实例来替换其中的<code>%s</code>，因为python不知道这个str应该按照什么方式来编码。但是反过来，如果格式字符串时str类型，虽然可以用str实例来替换其中的<code>%s</code>，但是最终的结果可能和你想要的不一样。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">&#x27;red %s&#x27;</span> % <span class="string">b&#x27;blue&#x27;</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">red <span class="string">b&#x27;blue&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>另外一个需要注意的就是使用open函数对文本文件进行读写的问题，如果在打开一个文本文件使用<code>&#39;r&#39;</code>模式，则系统会采用默认的编码格式对二进制数据进行处理。如果要以二进制方式读取的话需要使用<code>rb</code>模式。</p>
+<h1 id="第4条：用f-string-取代-C-风格的格式化字符串和str-format方法"><a href="#第4条：用f-string-取代-C-风格的格式化字符串和str-format方法" class="headerlink" title="第4条：用f-string 取代 C 风格的格式化字符串和str.format方法"></a>第4条：用f-string 取代 C 风格的格式化字符串和str.format方法</h1><p>python 中对字符串进行格式化有多种方法，下面分别对这几种方法进行介绍和对比。</p>
+<p>第一种：</p>
+<p>采用<code>%</code>格式化操作符，这是python中最常用的字符串格式化方式。这个操作符左边的文字模板叫做格式字符串，<code>%</code>操作符右边是一个值或者多个值构成的元组，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">0b101111011</span></span><br><span class="line">b = <span class="number">0xc5f</span></span><br><span class="line">print(<span class="string">&#x27;binary is %d, hex is %d&#x27;</span> % (a, b))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">binary <span class="keyword">is</span> <span class="number">187</span>, <span class="built_in">hex</span> <span class="keyword">is</span> <span class="number">3167</span> </span><br></pre></td></tr></table></figure>
+<font color="orange">格式说明符的写法来自C语言的printf函数，所以常见的printf选项都可以当成python的格式说明符来用，例如%s, %x, %f，此外还可以控制小数点的位值，并指定填充与对其方式。</font>
+
+<p>C风格的格式化字符串，在python里有三个缺点：</p>
+<ol>
+<li>如果%右侧元组里的值在类型或顺序上有变化，那么程序可能会因为类型转换时发生不兼容问题而出现错误。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">key = <span class="string">&#x27;my_var&#x27;</span> </span><br><span class="line">value = <span class="number">1.234</span></span><br><span class="line">print(<span class="string">&#x27;%-10s = %.2f&#x27;</span> % (value, key))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">TypeError: must be real number, <span class="keyword">not</span> <span class="built_in">str</span></span><br></pre></td></tr></table></figure>
+<pre><code>如果%右侧的写法不变，但是左侧的格式字符串里说明符调换了位置，程序同样会发生这个错误。
+</code></pre><ol>
+<li><p>在填充模板之前，经常要先对准备填写进去的这个值稍稍做一些处理，但这样以来，整个表达式可能就会写得很长。</p>
+</li>
+<li><p>如果想用一个值来填充格式字符串里的多个位置，那么必须在<code>%</code>操作符右侧的元组中相应地多次重复该值。如果需要修改，那么必须同时修改多次</p>
+</li>
+</ol>
+<p>虽然%操作符允许我们使用dict来取代tuple，让格式字符串里面的说明符与dict里面的键以相应的名称对应起来以解决第三个问题，但是这样会让第二个问题更严重，每个键至少需要写两次</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">format_string = <span class="string">&#x27;%(key)-10 = %(value).2f&#x27;</span> % &#123;</span><br><span class="line">    <span class="string">&#x27;key&#x27;</span>: <span class="string">&#x27;my_var&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;value&#x27;</span>: <span class="number">1.234</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第二种：</p>
+<p>python3 添加了高级字符串格式化机制，它的表达能力比老式的格式字符串要强，且不再使用%操作符，而是用str的format方法，format方法不使用<code>%d</code>这样的C风格说明符。而是把格式有待调整的那些位置在字符串里面先用<code>&#123;&#125;</code>代替，然后按从左至右的顺序，依次填写到format方法的参数中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">format_string = <span class="string">&#x27;&#123;&#125; = &#123;&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="string">&#x27;my_var&#x27;</span>, <span class="number">1.234</span>)</span><br></pre></td></tr></table></figure>
+<p>你也可以在<code>&#123;&#125;</code>中写个冒号，然后把格式说明符写在冒号的右边，用以规定format方法所接受的这个值应该按照怎样的格式来调整。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">format_string = <span class="string">&#x27;&#123;:&lt;10&#125; = &#123;.2f&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="string">&#x27;my_var&#x27;</span>, <span class="number">1.234</span>)</span><br></pre></td></tr></table></figure>
+<p>C风格的格式字符串采用<code>%</code>操作符来引导格式说明符，所以如果要将这个符号按照原样输出，就必须进行转义，也就是连写两个<code>%</code>。同理，在调用str.format的时候，如果想把str里面的<code>&#123;&#125;</code>按原样输出，那么也得转义</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">&#x27;%.2f%%&#x27;</span> % <span class="number">12.5</span>)</span><br><span class="line">print(<span class="string">&#x27;&#123;&#125; replaces &#123;&#123;&#125;&#125;&#x27;</span>.fromat(<span class="number">1.23</span>))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">12.50</span>%</span><br><span class="line"><span class="number">1.23</span> replaces &#123;&#125;</span><br></pre></td></tr></table></figure>
+<font color="orange">使用format函数可以避免使用`%`操作符带来的第一个问题：格式字符串中的此项发生变动后，程序也不会有问题。</font>另外format还支持为`{}`指定索引，这样就不需要把多个值重复地传给format方法，于是就解决了前面的第三个缺点。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">format_string = <span class="string">&#x27;&#123;&#125; loves food, see &#123;0&#125; cook.&#x27;</span>.<span class="built_in">format</span>(<span class="string">&#x27;tom&#x27;</span>)</span><br><span class="line">print(format_string)</span><br><span class="line">format_string = <span class="string">&#x27;&#123;name&#125; loves food, see &#123;name&#125; cook.&#x27;</span>.<span class="built_in">format</span>(name=<span class="string">&#x27;tom&#x27;</span>)</span><br><span class="line">print(format_string)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">tom loves food, see tom cook.</span><br></pre></td></tr></table></figure>
+但是format 方法也没有解决上面的第二个问题。
+
+第三种：
+
+python 3.6之后增加了一种新的特性，叫做插值格式字符串，简称f-string，可以解决上面的所有问题。新语法特性要求在格式字符串的前面加字母`f`作为前缀，这跟字符`b`和`r`（分别表示字节形式的字符串与原始未经转义的字符串）的用法类似。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">key = <span class="string">&#x27;my_var&#x27;</span></span><br><span class="line">value = <span class="number">1.234</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">f&#x27;<span class="subst">&#123;key&#125;</span> = <span class="subst">&#123;value&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+同时f-string也支持在`{}`加冒号用于指定格式
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">key = <span class="string">&#x27;my_var&#x27;</span></span><br><span class="line">value = <span class="number">1.234</span></span><br><span class="line">print(<span class="string">f&#x27;<span class="subst">&#123;key:&lt;<span class="number">10</span>&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+另外python表达式也可以出现在f-string的格式说明符中
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">places = <span class="number">3</span></span><br><span class="line">number = <span class="number">1.23456</span></span><br><span class="line">print(<span class="string">f&#x27;my number is <span class="subst">&#123;number:&#123;places&#125;</span>f&#125;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">my number <span class="keyword">is</span> <span class="number">1.235</span></span><br></pre></td></tr></table></figure>
+<font color="orange">f-string可以简洁而清晰地表达出许多种逻辑，这使它成为程序员的最佳选择。</font>
+
+<h1 id="第5条：用辅助函数取代复杂的表达式"><a href="#第5条：用辅助函数取代复杂的表达式" class="headerlink" title="第5条：用辅助函数取代复杂的表达式"></a>第5条：用辅助函数取代复杂的表达式</h1><p>python拥有很强大的语法，有时候一条表达式就可以实现比较复杂的逻辑，但是有时候这种表达式会不利于代码阅读，编写同样功能的辅助函数反而是一个不错的选择。</p>
+<font color="orange">当你发现表达式越写越复杂，那就应该考虑把它拆分成多个部分，并把这套逻辑写道辅助函数中。</font>
+
+<h1 id="第6条：将数据结构直接拆分到多个变量里，不要专门通过下标访问"><a href="#第6条：将数据结构直接拆分到多个变量里，不要专门通过下标访问" class="headerlink" title="第6条：将数据结构直接拆分到多个变量里，不要专门通过下标访问"></a>第6条：将数据结构直接拆分到多个变量里，不要专门通过下标访问</h1><p>该条实际上建议多使用python中的unpacking机制，例如对于有两个元素的元组，可以通过下标来访问，也可以直接unpacking到两个变量中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">item = (<span class="string">&#x27;Peanut butter&#x27;</span>, <span class="string">&#x27;Jelly&#x27;</span>)</span><br><span class="line"><span class="comment"># unrecommended</span></span><br><span class="line">first = item[<span class="number">0</span>]</span><br><span class="line">second = item[<span class="number">1</span>]</span><br><span class="line"><span class="comment"># recommend</span></span><br><span class="line">first, second = item <span class="comment">#unpacking</span></span><br></pre></td></tr></table></figure>
+<p>并且unpacking还支持快速交换连个变量的值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">item = (<span class="string">&#x27;Peanut butter&#x27;</span>, <span class="string">&#x27;Jelly&#x27;</span>)</span><br><span class="line">first, second = item</span><br><span class="line">first, second = second, first</span><br></pre></td></tr></table></figure>
+<p>本质上python是先将<code>=</code>号右边的值放入一个临时元组内，然后对这个临时元组再做unpacking</p>
+<h1 id="第7条：尽量使用enumerate取代range"><a href="#第7条：尽量使用enumerate取代range" class="headerlink" title="第7条：尽量使用enumerate取代range"></a>第7条：尽量使用enumerate取代range</h1><p>python内置的range函数比较适合来迭代一系列整数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">32</span>):</span><br><span class="line">    do something</span><br></pre></td></tr></table></figure>
+<p>如果要迭代的是某种数据结构，例如字符串列表，则可以直接在这个序列上进行迭代：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fruit_list = [<span class="string">&#x27;vanilla&#x27;</span>, <span class="string">&#x27;chocolate&#x27;</span>, <span class="string">&#x27;pecan&#x27;</span>, <span class="string">&#x27;starwberry&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> fruit <span class="keyword">in</span> fruit_list:</span><br><span class="line">    print(fruit)</span><br></pre></td></tr></table></figure>
+<p>如果即需要知道index，也想要知道元素的值，使用range可以如下实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fruit_list = [<span class="string">&#x27;vanilla&#x27;</span>, <span class="string">&#x27;chocolate&#x27;</span>, <span class="string">&#x27;pecan&#x27;</span>, <span class="string">&#x27;starwberry&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(fruit_list)):</span><br><span class="line">    print(i, fruit_list[i])</span><br></pre></td></tr></table></figure>
+<p>python 还有一个内置函数，叫做enumerate，它可以方便地获取到元素的下标和元素值。enumerate本质上是将任何一种迭代器（例如list，dict）封装成惰性生成器，这样的话，每次循环的时候，它只需要从iterator里面获取下一个值就可以了。每一次取出的是一个包括元素下标和对应的值的元组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fruit_list = [<span class="string">&#x27;vanilla&#x27;</span>, <span class="string">&#x27;chocolate&#x27;</span>, <span class="string">&#x27;pecan&#x27;</span>, <span class="string">&#x27;starwberry&#x27;</span>]</span><br><span class="line">it = <span class="built_in">enumerate</span>(fruit_list)</span><br><span class="line">print(<span class="built_in">next</span>(it))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">(<span class="number">0</span>, <span class="string">&#x27;vanilla&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>在for循环中使用，加上unpacking：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i, fruit <span class="keyword">in</span> <span class="built_in">enumerate</span>(fruit_list):</span><br><span class="line">    print(i, fruit)</span><br></pre></td></tr></table></figure>
+<p>另外enumerate还可以指定第二个参数，用于指定启始的index</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i, fruit <span class="keyword">in</span> <span class="built_in">enumerate</span>(fruit_list, <span class="number">1</span>):</span><br><span class="line">    print(i, fruit)</span><br></pre></td></tr></table></figure>
+<h1 id="第8条：用zip函数同时遍历多个迭代器"><a href="#第8条：用zip函数同时遍历多个迭代器" class="headerlink" title="第8条：用zip函数同时遍历多个迭代器"></a>第8条：用zip函数同时遍历多个迭代器</h1><p>python的内置zip函数，能够两个或更多的迭代器封装成惰性生成器，每次循环时，它分别从这些迭代器里获取下一个元素，并把这些值放在一个元组里，可以利用unpacking将这个元组拆分到for语句里的那些变量之中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">names = [<span class="string">&#x27;name1&#x27;</span>, <span class="string">&#x27;name2&#x27;</span>, <span class="string">&#x27;name3&#x27;</span>]</span><br><span class="line">addresses = [<span class="string">&#x27;address1&#x27;</span>, <span class="string">&#x27;address2&#x27;</span>, <span class="string">&#x27;address3&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> name, address <span class="keyword">in</span> <span class="built_in">zip</span>(name, address):</span><br><span class="line">    print(name)</span><br><span class="line">    print(address)</span><br></pre></td></tr></table></figure>
+<p>但是，如果输入zip的那些列表的长度不一致，在这种情况下，zip表现的行为如下：如果其中任何一个迭代器处理完毕，则完成迭代。如果需要使最长的列表迭代，可以用itertools模块中的zip_longest。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> zip_longest</span><br><span class="line"><span class="keyword">for</span> name, address <span class="keyword">in</span> zip_longest(name, address):</span><br><span class="line">    print(name)</span><br><span class="line">    print(address)</span><br></pre></td></tr></table></figure>
+<h1 id="第9条：不要再for与while循环后面紧跟else代码块"><a href="#第9条：不要再for与while循环后面紧跟else代码块" class="headerlink" title="第9条：不要再for与while循环后面紧跟else代码块"></a>第9条：不要再for与while循环后面紧跟else代码块</h1><p>python的循环支持一项特性，即可以把else代码块紧跟在整个循环结构的后面</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">    print(<span class="string">f&#x27;&#x27;</span>loop &#123;i&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">&#x27;else block&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>但是，整个else语句的意思不是如果for循环没有执行完，就执行else语句。<font color="orange">恰恰相反，else语句在for循环完成后接着执行，如果循环中途退出，是不会执行else语句的。</font>另外，如果循环一次没有执行，也会执行else代码块中的内容。</p>
+<p>所以这种语句是一种不利于代码阅读的语法，不要使用这种语法。</p>
+<h1 id="第10条：用赋值表达式减少重复代码"><a href="#第10条：用赋值表达式减少重复代码" class="headerlink" title="第10条：用赋值表达式减少重复代码"></a>第10条：用赋值表达式减少重复代码</h1><p>赋值表达式是python3.8新引入的语法，它会用到海象操作符。<code>a = b</code>是一条普通的赋值语句，而<code>a := b</code>则是赋值表达式。这个符号为什么叫海象操作符呢，因为把<code>:=</code>瞬时间旋转90度之后，冒号就是海象的一双眼睛，等号就是它的獠牙，（感觉有点牵强…，完全不像好吧）。</p>
+<p>这种表达式很有用，可以在赋值语句无法应用的场合实现赋值，例如可以用在<code>if</code>语句中。赋值表达式的值，就是赋给海象操作符左侧的那个标识符的值。例如，如果有一筐水果要给果汁店做食材，那我们就可以定义其中的内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fruit = &#123;</span><br><span class="line">    <span class="string">&#x27;apple&#x27;</span>: <span class="number">10</span>,</span><br><span class="line">    <span class="string">&#x27;banana&#x27;</span>: <span class="number">8</span>,</span><br><span class="line">    <span class="string">&#x27;lemon&#x27;</span>: <span class="number">5</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>顾客点柠檬汁之前，我们先得确认现在还有柠檬：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_lemonade</span>(<span class="params">count</span>):</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">out_of_stock</span>():</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">count = fruit.get(<span class="string">&#x27;lemon&#x27;</span>, <span class="number">0</span>)</span><br><span class="line"><span class="keyword">if</span> count:</span><br><span class="line">    make_lemonade(count)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    out_of_stock()</span><br></pre></td></tr></table></figure>
+<p>count 只会在if语句中使用，把count写在外面，会给人一种后面还会使用到count变量的感觉，这时候就可以使用赋值表达式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> count := fruit.get(<span class="string">&#x27;lemon&#x27;</span>, <span class="number">0</span>):</span><br><span class="line">    make_lemonade(count)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    out_of_stock()</span><br></pre></td></tr></table></figure>
+<p>新代码虽然只节省了一行，但是读起来却清晰很多，因为这种写法明确体现出count变量只与if块有关。这个赋值表达式先把<code>:=</code>右边的值赋给左边的count变量，由于然后判断是否为0来决定是否要执行<code>if</code>代码块。如果不是和0比较，则需要将赋值表达式用括号扩起来：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (count := fruit.get(<span class="string">&#x27;lemon&#x27;</span>, <span class="number">0</span>)) &gt;= <span class="number">4</span>:</span><br><span class="line">    make_lemonade(count)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    out_of_stock()</span><br></pre></td></tr></table></figure>
+<p>另外，赋值表达语句还可以解决<code>if/else</code>语句嵌套的问题</p>
+<p>假设现在客户的要求是点柠檬汁，但是如果柠檬不够就做香蕉冰沙，如果香蕉不够就做苹果汁，现在做柠檬汁需要3个柠檬，做香蕉冰沙需要2个香蕉，做苹果汁需要1一个苹果，不适用赋值表达式的实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_bananas</span>(<span class="params">count</span>):</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_apple</span>(<span class="params">count</span>):</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">count = fruit.get(<span class="string">&#x27;lemon&#x27;</span>, <span class="number">0</span>)</span><br><span class="line"><span class="keyword">if</span> count &gt;= <span class="number">3</span>:</span><br><span class="line">    make_lemonade(count)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    count = fruit.get(<span class="string">&#x27;banana&#x27;</span>, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">if</span> count &gt;= <span class="number">2</span>:</span><br><span class="line">        make_banana(count)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        count = fruit.get(<span class="string">&#x27;apple&#x27;</span>, <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">if</span> count &gt;= <span class="number">1</span>:</span><br><span class="line">            make_apple(count)</span><br></pre></td></tr></table></figure>
+<p>使用赋值表达式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (count := fruit.get(<span class="string">&#x27;lemon&#x27;</span>, <span class="number">0</span>)) &gt;= <span class="number">3</span>:</span><br><span class="line">    make_lemonade(count)</span><br><span class="line"><span class="keyword">elif</span> (count := fruit.get(<span class="string">&#x27;banana&#x27;</span>, <span class="number">0</span>)) &gt;= <span class="number">2</span>:</span><br><span class="line">    make_banana(count)</span><br><span class="line"><span class="keyword">elif</span> (count := fruit.get(<span class="string">&#x27;apple&#x27;</span>, <span class="number">0</span>)) &gt;= <span class="number">1</span>:</span><br><span class="line">    make_apple(count)</span><br></pre></td></tr></table></figure>
+<p>另外赋值表达式也可以用在while循环的条件判断中，甚至来实现<code>do/while</code>的效果（python中不支持<code>do/while</code> 语法）。例如，当前需要随机选一种水果来做果汁，<code>pick_fruit</code>函数实现随机选水果的操作，店员一直做果汁，直到没有水果，不使用赋值表达式来实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    fruit = pick_fruit()</span><br><span class="line">    <span class="keyword">if</span> fruit <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    make_juice(fruit)</span><br></pre></td></tr></table></figure>
+<p>使用赋值表达式来实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (fruit := pick_fruit()):</span><br><span class="line">    make_juice(fruit)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/10/01/opengl/texture/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/01/opengl/texture/" class="post-title-link" itemprop="url">texture</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-10-01 10:41:19" itemprop="dateCreated datePublished" datetime="2021-10-01T10:41:19+08:00">2021-10-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-16 11:07:45" itemprop="dateModified" datetime="2022-01-16T11:07:45+08:00">2022-01-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenGL</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Texture"><a href="#Texture" class="headerlink" title="Texture"></a>Texture</h1><p>为了给渲染的物体添加更多的细节，我们可以使用更多的vertex和颜色，但是实际情况是，如果我们要渲染对象比较复杂，那么我们需要定义很多的vertex数据和颜色数据。这时候就可以利用texture来简化。</p>
+<p>texture通常来说是一个二维图片（虽然也有一维texture和三维texture存在）。</p>
+<p>为了将texture绘制到vertex组成的物体上，我们需要告诉每个vertex分别对应texture的那个部分，因此每个顶点就需要一个texture coordinate用于指定vertex对应纹理图片的那个部分，中间区域最后交给fragment interpolation去完成。</p>
+<p>texture coordinate一般来说每个轴的曲直范围为[0, 1]闭区间，对于二维texture来说，坐标原点为左下角，右上角的坐标为(1, 1)</p>
+<p><img src="/2021/10/01/opengl/texture/texture_coordinate.png" alt="texture coordinate" style="zoom:50%;"></p>
+<h1 id="Texture-Wrapping"><a href="#Texture-Wrapping" class="headerlink" title="Texture Wrapping"></a>Texture Wrapping</h1><p>Texture coordinate的取值范围通常来说通常是(0, 0) 到 (1, 1)，但是如果我们将坐标设置为大于1的值时，OpenGL的默认做法是重复texture图片，但是OpenGL也提供了其他的处理方式：</p>
+<ul>
+<li>GL_REPEATE，默认的处理方式，重复texture图片</li>
+<li>GL_MIRORED_REPEATE，重复texture图片，但是是镜像重复</li>
+<li>GL_CLAMP_TO_EDGE，将坐标压缩到0到1之间，最终结果是高坐标区域的图片被拉伸</li>
+<li>GL_CLAMP_TO_BORDER，超出范围的坐标区域会被赋予用户指定的边框颜色</li>
+</ul>
+<p>下图分别是四种选项对应的效果</p>
+<p><img src="/2021/10/01/opengl/texture/texture_wrapping.png" alt="texture wrapping"></p>
+<font color="orange">上面的选项可以针对每一个texture coordinate的坐标轴进行设定</font>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);</span><br><span class="line">glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);</span><br></pre></td></tr></table></figure>
+<p>如果我们使用GL_CLAMP_TO_BORDER选项，我们还必须指定border的颜色：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> borderColor[] = &#123; <span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span> &#125;;</span><br><span class="line">glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);  </span><br></pre></td></tr></table></figure>
+<p>如果坐标设置为小于1的值，会对texture图片进行裁剪。</p>
+<h1 id="Texture-filtering"><a href="#Texture-filtering" class="headerlink" title="Texture filtering"></a>Texture filtering</h1><p>texture coordinate和texture图片的分辨率没有关系，因此OpenGL必须决定如何将texture coordinate映射到texture图片上的具体像素去，这就叫Texture filtering。和Texture wrapping 一样，OpenGL也提供了多种 texture filtering的选项：</p>
+<ul>
+<li><p>GL_NEAREST，OpenGL默认的Texture filtering方法，使用这个选项时，OpenGL会选择中心最接近Texture coordinate点的像素点颜色最为最终的texture coordinate点颜色</p>
+<p><img src="/2021/10/01/opengl/texture/nearest_texture_filtering.png" alt="nearest texture filtering" style="zoom:50%;"></p>
+</li>
+<li><p>GL_LINEAR，使用这个选项时，texture coordinate对应颜色为周围像素的线形插值的和，像素点到texture coordinate中心距离越小，贡献的颜色值占比就越多</p>
+<p><img src="/2021/10/01/opengl/texture/linear_texture_filtering.png" alt="linear texture filtering" style="zoom:50%;"></p>
+</li>
+</ul>
+<p>下图分别是两种选项在实际使用中最终的渲染效果：</p>
+<p><img src="/2021/10/01/opengl/texture/texture_filtering_result.png" alt="texture filtering result" style="zoom:50%;"></p>
+<p>可以看到使用GL_LINEAR选项时，最终效果图更光滑，但是GL_LINEAR需要的计算量更多，GL_NEAREST效果更像8bit像素风。</p>
+<p>修改Texture filtreing选项的值仍然可以使用<code>glTexParameteri</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);</span><br><span class="line">glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);</span><br></pre></td></tr></table></figure>
+<h1 id="Mipmaps"><a href="#Mipmaps" class="headerlink" title="Mipmaps"></a>Mipmaps</h1><p>通常来说，一个场景会有很多物体对象，很多对象可能使用的是一个texture图片，但是有些对象离视窗很近，这些对象看着比较大一些，有些对象离得比较远，看着会小一些，这些小的物体最终可能只会生成几个fragment，相对于比较大的物体而言，OpenGL针对这些小的物体去获取texture上的颜色会比较困难，因为它必须遍历纹理图片的大部分区域来决定一个fragment的颜色，这不仅会导致内存浪费，同时也会导致小物体渲染效果很差。</p>
+<p>为了解决这个问题，OpenGL引入了Mipmaps的概念。所谓Mipmap就是一组texture图片，只不过后一个图片的长宽是前一个图片长宽的一半。在从视窗经过一定距离后，OpenGL在mipmap中会使用一个适合当前距离的texture图片，这样对于较远的，最终比较小的物体来说就有了合适的texture。</p>
+<p>一个mipmaps看起来一般是这样的：</p>
+<p><img src="/2021/10/01/opengl/texture/mipmaps_example.png" alt="mipmaps example" style="zoom:50%;"></p>
+<p>如果我们自己手动来制作一个mipmap贴图的话会很麻烦，但是幸运的是OpenGL为我们提供了根据已有texture对象创建mipmaps的方法。</p>
+<p>在渲染是，可能会遇到切换mipmaps级别的情况，这时为了决定最终的颜色值，和原来的texture filtering一样，OpenGL也为mipmaps提供了filtering的方法。我们可以使用下面四种选项：</p>
+<ul>
+<li>GL_NEAREST_MIPMAP_NEAREST，针对mipmaps使用nearest采样，针对texture filtering使用nearest采样</li>
+<li>GL_LINEAR_MIPMAP_NEAREST，针对mipmaps使用linear采样，针对texture filtering使用nearest采样</li>
+<li>GL_NEAREST_MIPMPAP_LINEAR，针对mipmaps使用nearest采样，针对texture filtering使用linear采样</li>
+<li>GL_LINEAR_MIPMAP_LINEAR，针对mipmaps使用linear采样，针对texture filtering使用linear采样</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);</span><br><span class="line">glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);</span><br></pre></td></tr></table></figure>
+<font color="orange">开发者一个经常犯的错误是将mipmaps filtering的选项设置到放大filter（magnification filter）的选项上，由于mipmaps解决的场景是texture需要缩小的场景，texture放大的场景不需要使用到mipmaps，在magnification filter上设置一个mipmaps的选项会导致 GL_INVALID_ENUM错误。</font>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/09/05/DDIA/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SwordAndTea's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/09/05/DDIA/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/" class="post-title-link" itemprop="url">数据存储与检索</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-09-05 11:17:32" itemprop="dateCreated datePublished" datetime="2021-09-05T11:17:32+08:00">2021-09-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-16 22:32:17" itemprop="dateModified" datetime="2022-01-16T22:32:17+08:00">2022-01-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DDIA/" itemprop="url" rel="index">
+                    <span itemprop="name">DDIA</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>作为一名应用系统开发人员，为什么要关注数据库内部的存储和检索呢？首先，你不太可能从头开始实现一套自己的存储引擎，往往需要从众多现有的存储引擎中选择一个适合自己应用的存储引擎。因此，为了针对你特定的工作负载而对数据库调优时，最好对存储引擎的底层机制有一个大概的了解。</p>
+</blockquote>
+<h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><p>索引是基于原始数据派生来的额外数据结构，很多数据库允许单独添加或删除索引，从而不影响数据库的内容，它只会影响查询性能。它们背后的基本想法是保留一些额外的元数据，这些数据作为路标，帮助定位想要的数据。索引作为额外引入的结构，在维护时势必会引入开销，特别是在新数据写入时。对于写入，它很难超过简单地追加文件方式的性能。对于每次写入数据时，需要更新索引，因此任何类型的索引通常都会降低写的速度。</p>
+<blockquote>
+<p>这里涉及存储系统中重要的权衡设计：适当的索引可以加速读取查询，但每个索引都会减慢写速度。为此，默认情况下，数据库通常不会对所有内容进行索引，它需要应用开发人员或数据库管理员，基于对应用程序典型查询模式的了解，来手动选择索引。目的是为应用程序提供最有利加速的同时，避免引入过多不必要的开销。</p>
+</blockquote>
+<h2 id="哈希索引"><a href="#哈希索引" class="headerlink" title="哈希索引"></a>哈希索引</h2><p>首先我们以key-value数据的索引开始，key-value类型数据并不是唯一可以索引的数据，但是它随处可见，而且<font color="orange">是其他复杂索引的基础构造模块。</font></p>
+<p>key-valuy存储与大多数编程语言所内置的字典结构非常相似，通常采用hash map来实现，那么既然已经有了内存数据结构的hash map，为什么不用它们在磁盘上直接索引数据呢。</p>
+<font color="orange">假设数据存储全部采用追加式文件组成，</font>那么最简单的索引策略就是：保存内存中的hash map，把每个键意义映射到数据文件中特定的字节偏移量，这就就可以找到每个值的位置。
+
+<img title src="/2021/09/05/DDIA/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/fig3-1.png" alt width="515" data-align="center">
+
+<font color="orange">如果所有的key可以放进内存，</font>只需要进行一次磁盘寻址，就可以将value从磁盘加载到内存。如果那部分的数据文件已经在文件系统的缓存中，则读取根本不需要任何的磁盘I/O。
+
+但是，如果数据只追加到一个文件，那么如果避免最终用尽磁盘空间？一个好的解决方法是将日志分解成一定大小的段，当文件达到一定大小时就关闭它，并将后续写入到新的段文件中。同时，对于已经关闭的段文件，可以在每个段文件内部执行压缩操作，丢弃重复的键，只保留每个键在在段文件中最新的值，一个段文件压缩之后通常会使得段文件变得更小。在多个已经关闭的段文件直接可以执行合并操作，将多个压缩过的段文件合并成一个段文件。
+
+<img title src="/2021/09/05/DDIA/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/fig3-2.png" alt width="529" data-align="center">
+
+<img title src="/2021/09/05/DDIA/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/fig3-3.png" alt width="532" data-align="center">
+
+这些冻结段的合并和压缩过程可以在后台线程中完成，而且运行时，仍可以使用未合并和压缩的段文件继续正常的读取。当合并过程完成后，再将读取请求切换到新的压缩合并完成的段文件上，旧的段文件则可以安全的删除。
+
+每个段文件都有自己的内存hash map，用于将键映射到段文件中的偏移量。为了找到键的值，需要将所有段文件的hash表加载进内存，然后首先检查最新段的hash map，如果键不存在，检查第二新的段，以此类推。由于合并后可以维持较少的段数量，因此查询通常不需要检查很多的hash map。
+
+<font color="orange">还有很多的细节方面的考虑才能使得这个简单的想法在实际中行之有效。简而言之，在真正地实现中有以下重要问题</font>：
+
+* 如果要删除键和它关联地值，则必须在数据文件中追加一个特殊的删除记录。当合并日志段时，一旦发现删除记录，则会丢弃这个已删除键的所有值。
+
+* 由于写入以严格的先后顺序追加到文件中，通常的实现方式是只有一个写线程。由于数据文件段是追加的，而且已经写入的数据是不可变的，所以它们可以被多个线程同时读取。
+
+一个追加式的存储看起来似乎很浪费空间：为什么不原地更新文件，用新值覆盖旧值？但是，事实上，追加式的设计是一个不错的设计，原因有以下几点：
+
+* 追加主要是顺序写，它通常比随机写快很多，特别是在旋转式磁性硬盘上。在某种程度上，属性写入在基于闪存的固态硬盘上也是合适的。
+
+* 如果段文件是追加或不可变的，则并发和崩溃恢复要简单得多。里如果不必担心在重写值时发生崩溃的情况，留下一个包含部分旧值和部分新值混杂在一起的文件。
+
+* 合并旧段可以避免随着时间推移数据文件出现碎片化的问题。
+
+但是，哈希表索引也有其局限性：
+
+* hash map必须全部放入内存，如果有大量的键，那么很可能超内存。原则上，可以在磁盘上维护hash map，但是，很难使磁盘上的hash map表现良好。它需要大量的随机访问I/O，并且哈希冲突时需要复杂的处理逻辑
+
+## SSTable
+
+对于单纯的将key-value按顺序添加到文件尾部的方式，如果在写入时对key进行排序，索引结构还是hash map。这样的存储形式就被成为SSTable（排序字符串表）。SSTable相对于单纯顺序添加的形式有以下几个优点：
+
+1、在合并冻结段时更高效，由于每个段中的key都是有序的，合并时方法类似与归并排序merge sort的方式
+
+<img title src="/2021/09/05/DDIA/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/fig3-4.png" alt width="466" data-align="center">
+
+2、不需要把段文件中每个key的偏移量都存进内存的hash map中，例如，如果当前查找的键handiwork，且不知道该键在段文件中的确切偏移量，但是如果知道键handbag和键handsome的偏移量，由于键在段文件中时有序的，可以跳到handbag的偏移，从那里开始顺序扫描，直到找到handiwork。<font color="orange">所以，虽然仍然需要内存的hash map做索引，但是它可以是稀疏的，而且由于顺序扫描可以很快的扫描几千个字节，所以通常对于一个段文件，只需要每隔几千个字节选一个key添加到内存中的hash map做索引即可。</font>
+
+<p><img title src="/2021/09/05/DDIA/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/fig3-4.png" alt width="466" data-align="center"></p>
+<p>但是，如何保证在写入段文件的key-value保持有序呢。虽然在磁盘上维护排序结构是可行的，例如B-trees，但是在内存中做排序更容易和高效，内存排序有很多广为人知的树状数据结构，例如红黑树或AVL树，可以在插入键时完成排序。</p>
+<p>所以SSTable结构的基本构建流程如下：</p>
+<p>1、写入key-value键值对时，将其添加到内存中的平衡树数据结构中</p>
+<p>2、当内存中的平衡树结构大于某个阈值时（通常为几M字节），将其作为段文件写入到磁盘，由于平衡树已经维护了排序过的键值对，所以写磁盘也很高效。在将平衡树写入磁盘的时候，后续的写入则添加到到另外一个新的内存中的平衡树中</p>
+<p>3、在处理读请求时，首先从内存的平衡树中查找，接着是最新的段文件，然后是此新的段文件，以此类推（相对于之前增加了一个内存查找的过程）</p>
+<p>4、后台进程周期性地执行段合并与压缩地过程。</p>
+<p>但是，如果内存中的平衡树还未写入到段文件时，此时系统崩溃了，怎么办呢，内存中的数据无法再恢复。所以，通常SSTable还需要配置日志使用，每个写内存平衡树的记录同时也要写到一个顺序添加的日志文件中。如果系统崩溃，已经写入段文件的可以直接读磁盘恢复，内存中的数据则从日志文件恢复。当内存中的平衡树写入到段文件后，该日志文件就可以丢弃了。</p>
+<h2 id="LSM-Tree"><a href="#LSM-Tree" class="headerlink" title="LSM-Tree"></a>LSM-Tree</h2><p>像SSTable这样类似日志不断在文件末尾进行添加的索引结构称为日志结构的合并树——LSM-Tree（Log-Structured Merge-Tree）</p>
+<h2 id="B-trees"><a href="#B-trees" class="headerlink" title="B-trees"></a>B-trees</h2><p>B-tree是一种常见和被广泛使用的索引类型，它几乎时所有关心数据库中的标准索引实现。</p>
+<p>B-tree本质上也是一种排序的树形数据结构，它在数据库系统中的使用形式一般如下：</p>
+<ol>
+<li><p>将数据库划分为固定大小的块或页，传统上大小为4KB，<font color="orange">页是内存读/写的最小单元。这种设计更接近底层硬件</font></p>
+</li>
+<li><p>每个页都可以使用地址或者位置进行标记，这样可以让一个页面引用另一个页面，类似指针，<font color="orange">只不过是指向磁盘地址，而不是内存，这样可以使用这些页面引用来构造一个树状页面</font></p>
+</li>
+<li><p>每一个页包含若干个键和对子页的引用。某一页被指定为B-tree的根，每当查找索引中的一个键时，总是从这里开始。B-tree中一个页包所包含的子页引用数量成为分支因子。在实际中，分支因子取决于存储页面引用和范围边界所需的空间总量，通常为几百个。</p>
+</li>
+<li><p>如果要更新B-tree中现有键的值，首先搜索包含该键的叶子页，更改该页的值，并将页写回到磁盘（B-tree中对该页的引用仍有效）。如果要添加键，则需要找到其范围包含新键的页，并将其添加到该页。如果页中没有足够的可用空间来容纳新键，则将其分裂为两个半满的页，并且父页也需要更新以包含分裂之后新的键的范围。</p>
+</li>
+</ol>
+<p><img title src="/2021/09/05/DDIA/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/fig3-6.png" alt width="500" data-align="center"></p>
+<p>B-tree底层的基本写操作时使用新数据覆盖磁盘上的旧页。它假设覆盖不会改变页的磁盘存储位置，也就是说，当页被覆盖时，对该页的所有引用保持不变。这与LSM-Tree引形成鲜明对比，LSM-Tree仅追加更新文件。</p>
+<p>但是，覆盖操作是危险的，在硬件层面，意味着磁头首先移动到正确的位置，然后旋转盘面，对于SSD，由于SSD必须一次擦除并重写非常大的存储芯片块，情况会更复杂。此外，某些操作需要覆盖多个不同的页，例如，如果插入导致页溢出，因而需要对页进行分裂，那么需要修改三个页（分裂后的两个页和父页），这是个比较危险的操作，因为如果数据库在完成部分页写入之后发生崩溃，最终会导致索引破坏，例如分裂后新形成的页的引用未更新到父页中，成为一个孤儿页。</p>
+<font color="orange">为了使数据库能从崩溃中恢复，常见B-tree的实现需要支持磁盘上的额外的数据结构：预写日志（write-ahead log，WAL），也成为重做日志。这是一个仅支持追加修改的文件，每个B-tree的修改必须先更新WAL然后再修改树本身的页。当数据库在崩溃后需要恢复时，该日志用于将B-tree恢复到最近一致的状态。</font>
+
+<h2 id="对比B-tree和LSM-tree"><a href="#对比B-tree和LSM-tree" class="headerlink" title="对比B-tree和LSM-tree"></a>对比B-tree和LSM-tree</h2><p>尽管B-Tree的实现比LSM-tree的实现更为成熟，然而由于LSM-tree的性能特点，LSM-tree目前仍很有吸引力。根据经验，LSM-tree通常对于写入更快，而B-tree被认为对于读取更快。读取通常在LSM-tree上较慢，因为它们必须在不同的压缩阶段检查多个不同的数据结构和SSTable</p>
+<p><strong>LSM-tree相对于B-tree的优点</strong></p>
+<p>B-tree索引必须至少写两次数据：一次写入预写日志，一次写入树的页本身（还可能发生页分裂）。即使该页中只有几个字节更改，也必须承受写整个页的开销。一些存储引擎甚至覆盖相同的页两次，以避免在电影故障的情况下最终出现部分更新的页。<font color="orange">像这种由于一次数据库写入请求导致多次磁盘写的情况成为写放大，</font>对于SSD来说，由于只能承受有限次地擦除覆盖，因此尤为关注写放大指标。</p>
+<p>对于大量写密集地应用程序，性能瓶颈很可能在于数据库写入磁盘地速率。在这种情况下，写放大具有直接地的性能成本。LSM-tree通常能够承受比B-tree更高的写入吞吐量，部分是因为它们具有较低的写放大，还有部分原因是因为它们以顺序方式写入紧凑的文件，而不必重写多个页（这种差异对于磁盘驱动器尤为重要，原因是磁盘的顺序写比随机写得要快得多）。</p>
+<p>由于B-tree以页为单位，每个页中很有可能有不能利用的磁盘空间，即磁盘碎片，而LSM-tree不是面向页的，而且定期对数据进行合并，所以它们具有较低的存储开销。</p>
+<font color="orange">在许多SSD上，硬件底层使用日志结构化算法会将随机写入转换为底层存储芯片上的顺序写入，所以对SSD来说，顺序写和随机写的影响差异不那么明显。</font>然而，更低的写放大和更少的磁盘碎片在SSD上仍然有益，以更紧凑的方式表示数据，从而在可用的I/O带宽中支持更多的读写请求。
+
+**LMS-tree相对于B-tree的缺点**
+
+LMS-tree的缺点就是压缩过程有时会干扰正在进行的读写操作，压缩和合并操作在后台进程中进行，由于磁盘的并发资源有限，所以当磁盘执行昂贵的压缩操作时，很容易发生读写请求等待的情况（B-tree的响应延迟更具有确定性）。随着数据库数据的增长，合并和压缩操作消耗磁盘的带宽会越来越多。
+
+另外B-tree的一个优点就是每个键都恰好唯一对应与索引中的某个位置，而日志结构的存储引擎可能在不同的段中具有相同键的多个副本。<font color="orange">如果数据库希望提供强大的事务语义，这方面B-tree显得更具有吸引力：在许多关系数据库中，事务隔离是通过键范围上的锁来实现的，并且在B-tree索引中 ，这些锁还可以直接定义到树中。</font>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><font color="red">不考虑使用场景，空谈那种存储引擎更适合是没有意义的，实地测试总是需要的。</font>
+
+<h1 id="其他索引结构"><a href="#其他索引结构" class="headerlink" title="其他索引结构"></a>其他索引结构</h1><p>之前讨论的key-value索引，它们就像关系模型中的主键索引。主键唯一标识关系表中的一行或文档数据库中的一个文档或图形数据库中的一个顶点。数据库中的一行/文档/顶点通过主键来引用。</p>
+<h2 id="在索引中存储值（聚集索引）"><a href="#在索引中存储值（聚集索引）" class="headerlink" title="在索引中存储值（聚集索引）"></a>在索引中存储值（聚集索引）</h2><p>索引中的key是需要查询的对象，索引中的value可以是以下两类之一：第一种，是实际行数据（或者文档，顶点），也可以是对其他地方存储的行的引用。在后一种情况下，存储行数据的具体位置被成为堆文件，而且它不以特定的顺序存储数据（它可以是追加的，也可以是覆盖的）。<font color="orange">堆文件方式比较常见，这样当存在多个二级索引时，它可以避免复制数据，即每个索引只引用堆文件中的位置信息，实际数据仍保存在一个位置。</font></p>
+<p>当更新值而不更新键时，堆文件方式会非常高效：只要新值的字节数不大于旧值，记录就可以直接覆盖，如果新值比较大，则情况比较复杂，它可能需要移动数据到一个最够大的新位置。在这种情况下，所有索引都需要更新以指向记录的新的堆位置，或者在旧堆位置保留一个间接指针。</p>
+<font color="orange">在某些情况下，从索引到堆文件的额外跳转对于读取来说意味着太多的性能损失，因此可能希望将行数据直接存储在索引中，这被称为聚集索引。</font>例如，在mysql的InnoDB存储引擎中，表的主键始终是聚集索引，二级索引引用主键（而不是堆文件位置）。
+
+在聚集索引（在索引中直接保存行数据）和非聚集索引（索引仅存储数据的引用）之间有一种折中设计称为覆盖索引或包含列的索引，它在索引中包含部分列值。它支持通过索引来回答某些简单查询。
+
+<font color="red">与任何类型的数据冗余一样，聚集和覆盖索引可以加快读取速度，但是它们需要额外的存储，并且会增加写入的开销。此外，数据库还需要更多的工作来保证事务性，这样应用程序不会因为数据冗余而得到不一致的结果。</font>
+
+<h2 id="多列索引"><a href="#多列索引" class="headerlink" title="多列索引"></a>多列索引</h2><p>到目前为止，讨论的索引都只有一个key，如果需要对多个key进行查询，就需要多列索引。但是多列索引是高维的，标准的B-tree和LSM-tree索引无法高效地应对这种查询，它们只能针对一个维度进行排序和查询。一种处理方式是将高维数据转换为一维度数据，但是，更常见的做法是使用专门的空间索引，如R树。</p>
+<h2 id="在内存中保存所有的内容"><a href="#在内存中保存所有的内容" class="headerlink" title="在内存中保存所有的内容"></a>在内存中保存所有的内容</h2><p>到目前位置，讨论的索引都是为了适应磁盘限制。与内存相比，磁盘更难处理。使用磁盘SSD，如果要获得良好的读写性能，需要精心地安排磁盘上地数据布局。然而这些工作是值得的，因为磁盘有两个显著的优点：数据持久化和低成本。</p>
+<p>随着内存变得更便宜，而许多数据集不是那么大的情况下，可以将它们全部保存在内存中，或者分布在多台机器上。这推动了内存数据库的发展。</p>
+<p>与直觉相反，内存数据库的性能优势并不是因为它们不需要从磁盘中读取。如果有足够的内存，即使是基于磁盘的存储引擎，也可能不需要从磁盘读取，因为操作系统将最近使用的磁盘块缓存在内存中。相反，<font color="orange">内存数据库可以更快，是因为它们避免了使用写磁盘的格式对内存数据结构编码的开销。</font></p>
+<p>另外，内存数据库提供了基于磁盘索引难以实现的某些数据模型。而且，内存数据库架构可以扩展到支持远大于可用内存的数据集，即当没有足够的内存时，通过将最近最少使用的数据从内存写到磁盘，并在将来再次访问时将其加载到内存。这与操作系统对虚拟内存和交换文件的操作类似，但数据库可以在记录级别而不是内存页的级别上工作。不过这种方法仍需要索引完全放入到内存。</p>
+<font color="orange">如果将来非易失性存储（non-volaitle memory，NVM）技术得到更广泛的普及，可能还会颠覆目前的存储引擎设计，</font>目前这还是一个新的研究领域，但值得密切关注。
+
+# 事务处理与分析处理
+
+数据库中的数据一般会用于两种用途，一种是用于在线事务处理（OLTP，online transaction processing），例如用户数据的增删改查，这种情况下一般只需要查找少量记录。另外一种是用于在线数据分析，例如获取一个月每个店铺的总收入是多少，这种情况一般会查找大量数据，这种叫做OLAP（online analytic processing）。
+
+## 
+
+# 数据仓库
+
+一个企业可能有十几种不同的交易系统，例如面向客户网站提供支持的系统、供应商管理系统、员工管理系统等。这些系统中的每一个都足够复杂，往往需要一个专门团队来维护，最终导致这些系统彼此独立运行。
+
+<font color="orange">由于这些OLTP系统对于业务的运行至关重要，所以往往期望它们高度可用，处理事务时延迟足够低，并且数据库管理员要密切关注OLTP数据库的运行状态。数据库管理员通常不愿意让业务分析人员在OLTP数据库上直接运行临时分析查询，这些查询通常代价很高，要扫描大量数据集，这可能会损害并发执行事务的能力。</font>
+
+<p>相比之下，数据仓库则是单独的数据库，分析人员可以在不影响OLTP操作的情况下尽情地使用。数据仓库包含公司所有各种OLTP系统的只读副本。从OLTP数据库（使用周期性数据转储或连续更新流）中提取数据，转换为分析友好的模式，执行必要的清理，然后加载到数据仓库中。</p>
+<p>几乎所有的大型企业都有数据仓库，但是在小型企业中却几乎闻所未闻。这可能是因为大多数小公司没有那么多不同的OLTP系统，大多数小公司只拥有少量的数据，完全可以在传统的SQL数据库中直接进行查询分析。</p>
+<p>另外使用单独的数据仓库而不是i直接查询OLTP系统来进行分析，很大的优势在于数据仓库可以针对分析访问模式进行优化。<font color="orange">事实证明，前半部分讨论的索引算法适合OLTP，但不擅长应对分析查询。接下来将会讨论一些针对分析型而优化的存储引擎。</font></p>
+<h2 id="星型与雪花型分析模式"><a href="#星型与雪花型分析模式" class="headerlink" title="星型与雪花型分析模式"></a>星型与雪花型分析模式</h2><p>在事务处理领域有多种不同的数据模型（文档模型，关系模型，图模型），但是在分析型业务中，用到的数据模型则比较少，其中最主要的数据模型就是星型模型。该模型的中心是一个事实表，事实表的每一个行表示在特定时间发生的事件（例如代表客户购买了某个商品），在事实表周围，是许多个维度表，维度表通常记录时间发生的对象、时间、地点、原定等信息。事实表中通过外键指向这些维度表。</p>
+<p><img title src="/2021/09/05/DDIA/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/fig3-9.png" alt="星型模型" width="475" data-align="center"></p>
+<p>通常，事实被捕获为单独的事件，这样之后的分析具有很大的灵活性，但同时这意味着事实表会变得非常庞大，在大公司中，其数据仓库可能有数十PB的交易历史，其中大多数都保存在事实表中。</p>
+<font color="orange">星型模型中如果对维度表进行进一步细分，将部分数据使用另外一个表格进行存储，然后再维度表中使用外键执行这些表格，这种变体就称为雪花模型。</font>雪花模型比星型模型更规范，但是星型模型通常是首选，主要是对于分析人员，星型模型使用起来更简单。
+
+<font color="orange">在典型的数据仓库中，表通常非常宽：事实表通常超过100列，有时候有几百列。维度表也可能非常宽。</font>
+
+<h2 id="列式存储"><a href="#列式存储" class="headerlink" title="列式存储"></a>列式存储</h2><p>如果事实表有数万亿行，则高效地存储和查询这些数据将成为一个具有挑战性的问题。虽然维度表通常超过100列，但典型得数据仓库查询往往一次只访问其中的几列（select * 查询很少用于分析）。</p>
+<p>在大多数OLTP数据库中，存储以面向行的方式布局：来自表的一行的所有值彼此相邻存储，文档数据库也是类似，整个文档通常被存储为一个连续的序列。为了处理数据仓库中在超过100列的数据中查询其中的几列的这种查询，如果仍使用面向行的存储引擎，则需要将所有一行中用不到的列数据从磁盘中加载到内存中。<font color="orange">而面向列的存储，不需要将一行中的所有值存储在一起，而是将每列中的所有数据存储在连续的空间中，这很适合数据仓库中的查询场景。</font>如果每个列存储在一个单独的文件中，查询只需要读取和解析在该查询中使用的那些列即可，这可以节省大量磁盘数据的加载。</p>
+<p><img title src="/2021/09/05/DDIA/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/fig3-10.png" alt="列存储" data-align="center" width="537"></p>
+<p>面向列的存储布局依赖一组列文件，每个文件以相同的顺序保存着数据行，因此，如果需要重新组装整行，可以从每个单独的列文件中获取对应的条目，然后将它们放在一起构成表的一行。</p>
+<h2 id="列压缩"><a href="#列压缩" class="headerlink" title="列压缩"></a>列压缩</h2><p>除了仅从磁盘中加载查询所需的列之外，还可以通过压缩数据来进一步降低磁盘数据的加载。幸运的是，面向列的存储恰好非常适合压缩，因为通常列中不同值的数量会小于行数（例如，零售商可能拥有数十亿个销售交易，但只有十万个不同的商品）。</p>
+<p>一种常见的列压缩方法是使用位图编码+游程编码：一个列中有n个不同的值，则可以创建一个长度位n的位图，位图中的每一位对应一个不同的值，每一行都会有一个位图。但是，如果n很大，那边位图中就会有很多0，这时就可以使用游程编码对位图进一步压缩。</p>
+<p><img title src="/2021/09/05/DDIA/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/fig3-11.png" alt width="528" data-align="center"></p>
+<h2 id="内存带宽和矢量化处理"><a href="#内存带宽和矢量化处理" class="headerlink" title="内存带宽和矢量化处理"></a>内存带宽和矢量化处理</h2><p>对于需要扫描数百行的数据仓库查询，将数据从磁盘磁盘加载到内存的带宽是一个瓶颈，然而，这不是唯一的瓶颈。分析数据库的开发人员还要关心如何高效节省CPU访问内存的带宽，甚至是尽量减少CPU分支预测错误和CPU指令处理流水线中的气泡，并利用现代CPU中的单指令多数据（SIMD）指令。</p>
+<p>面向列的存储布局也有利于高效利用CPU的缓存，例如，查询引擎可以将一大块压缩后的列数据放入CPU的L1缓存中，并以紧凑循环（即循环中没有函数调用和条件判断分支）进行迭代，这种技术被成为矢量化处理。</p>
+<h2 id="列存储中的排序"><a href="#列存储中的排序" class="headerlink" title="列存储中的排序"></a>列存储中的排序</h2><p>列存储中的排序并不是简单的单独对某列进行排序，这种排序是没有意义的，因为这样的话就无法知道列中的某一项实际属于哪一行。<font color="orange">即使数据是按列存储的，也需要以行位单位进行排序。</font></p>
+<p>数据库管理员可以基于经常查询的列来进行排序，例如，假如查询经常以日期范围作为目标，那么就可以对数据按照日期这一列作为第一个排序的key对数据进行排序。然后可以对第二经常访问的列作为第二排序key进行排序，以此类推。</p>
+<p><font color="orange">排序的另外一个优点就是它可以帮助进一步压缩列，排序之后该列值相同的行会挨在一起，这时候一个简单的游程编码就可以表示多行。</font>通常来说，第一个排序键的压缩效果最好，后面的排序键对压缩的提升效果就没有那么明显了。</p>
+<h2 id="列多存储排序"><a href="#列多存储排序" class="headerlink" title="列多存储排序"></a>列多存储排序</h2><p>由于不同的查询会从不同的排序中获益，同时数据需要被复制到多台机器上防止单台机器出现故障时不会丢失数据，不妨存储不同方式排序的冗余数据到不同的机器上，在查询时可以选择最适合的排序版本进行查询。</p>
+<p>面向列的存储具有多个排列顺序，有点类似面向行的存储中有多个不同的二级索引，但最大的区别是，面向行的存储将每一行都保存在一个位置（在堆文件或者聚集索引中），而二级索引只包含指向对应行的指针。而对于列存储，通常没有指向别处数据的指针，只有包含列的值。</p>
+<h1 id="列存储的写操作"><a href="#列存储的写操作" class="headerlink" title="列存储的写操作"></a>列存储的写操作</h1><p>面向列的存储、压缩和排序都非常有助于加速读取操作，但是，它们的缺点是让写入更加困难。</p>
+<p>像B-tree使用原地更新的方式，对于压缩的列是不可能的，如果在排序表的中间插入一行，那么很可能不得不重写所有的列文件。</p>
+<p>幸运的是，LSM-Tree可以比较好地解决这个问题：所有的写入首先写入内存，并在内存中进行排序，内存中的存储是面向行还是面向列的都无关紧要，当积累了足够的写入时，将它们和磁盘中的列文件合并，并批量写入新文件。执行查询时，就需要检测磁盘上的数据和内存中最近的写入。</p>
+<h2 id="聚合：数据立方体于物化视图"><a href="#聚合：数据立方体于物化视图" class="headerlink" title="聚合：数据立方体于物化视图"></a>聚合：数据立方体于物化视图</h2><p>基本思想是由于数据仓库的查询通常涉及聚合函数，例如计算总量、平均值，最大值，最小值，每次都处理原始数据将非常浪费，可以缓存查询最常使用的一些计数信息。具体细节不进行讲解。</p>
+<h1 id><a href="#" class="headerlink" title=" "></a> </h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/08/28/others/golang-json-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -481,7 +1272,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-09-05 10:52:05" itemprop="dateModified" datetime="2021-09-05T10:52:05+08:00">2021-09-05</time>
+                <time title="Modified: 2022-01-16 11:07:45" itemprop="dateModified" datetime="2022-01-16T11:07:45+08:00">2022-01-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -506,13 +1297,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="关系模型与文档模型"><a href="#关系模型与文档模型" class="headerlink" title="关系模型与文档模型"></a>关系模型与文档模型</h1><p>文档数据库在处理一对多的关系有很大优势，可以直接把记录记在一个文档中，但是在处理多对一，多对多的关系时相比于关系数据库则稍逊一些，因为在多对一、多对多的查询下，通常需要联结（join）多张数据库来查询，而一般文档数据库对联结操作的支持很差。有些文档数据库甚至本身都不支持联结，必须在应用程序代码中，通过对数据的多次查询来模拟联结。</p>
+          <h1 id="关系模型与文档模型"><a href="#关系模型与文档模型" class="headerlink" title="关系模型与文档模型"></a>关系模型与文档模型</h1><p>支持文档数据模型的主要论点是模式灵活，对于某些应用来说，它更接近与应用程序所使用的数据结构。关系模型则强在联结操作、多对一和多对多关系更简介的表达上，与文档模型抗衡。</p>
+<p>文档数据库在处理一对多的关系有很大优势，可以直接把记录记在一个文档中，但是在处理多对一，多对多的关系时相比于关系数据库则稍逊一些，因为在多对一、多对多的查询下，通常需要联结（join）多张数据库来查询，而一般文档数据库对联结操作的支持很差。有些文档数据库甚至本身都不支持联结，必须在应用程序代码中，通过对数据的多次查询来模拟联结。</p>
 <p>如果应用数据具有类似文档的结构（即一对多关系，通常一次加载整个树），那么使用文档数据库更为合适。但是如果应用程序中经常使用多对多关系，那么关系系数据库是一个很好的选择。<font color="orange">通常，我们无法一概而论那种数据模型的应用代码更简单。这主要取决于数据项之间的关系模型。有时候使用文档模型是最合适的，有时候用关系模型会更好，有些时候还可以使用图模型。</font></p>
 <h2 id="对象关系不匹配"><a href="#对象关系不匹配" class="headerlink" title="对象关系不匹配"></a>对象关系不匹配</h2><p>目前大多数应用开发都采用面向对象的编程语言，如果数据存储在关系表中，那么应用层代码中的对象与表、行和列的数据库模型之间需要一个笨拙的转换层。一般在开发中会使用对象-关系映射（ORM）框架来减少此层转换之间的代码量，但是ORM框架并不能完全隐藏两个模型之间的差异。</p>
-<h2 id="文档数据库的数据局部性"><a href="#文档数据库的数据局部性" class="headerlink" title="文档数据库的数据局部性"></a>文档数据库的数据局部性</h2><p>文档通常存储编码为JSON、XML或其二进制变体（如MongoDB的BSON）的连续字符串。如果应用程序需要频繁访问真个文档，则存储句不行具有性能优势。但是，如果应用只是访问其中的一小部分，那对于大型文档数据来讲就有些浪费。对文档进行更新时，通常会重写整个文档，而只有修改量不改变原文档大小时，原地覆盖更新才更有效。因此，通常建议文档应该尽量小切避免写入是增加文档大小。这些性能方面的不利因此大大限制了文档数据库的适用场景。</p>
+<h2 id="文档数据库的数据局部性"><a href="#文档数据库的数据局部性" class="headerlink" title="文档数据库的数据局部性"></a>文档数据库的数据局部性</h2><p>文档通常存储编码为JSON、XML或其二进制变体（如MongoDB的BSON）的连续字符串。如果应用程序需要频繁访问整个文档，则存储局部性具有性能优势。<font color="orange">局部性优势仅适用需要同时访问文档的大部分内容的场景，</font>，如果应用只是访问其中的一小部分，那对于大型文档数据来讲就有些浪费。对文档进行更新时，通常会重写整个文档，而只有修改量不改变原文档大小时，原地覆盖更新才更有效。因此，通常建议文档应该尽量小且避免写入时增加文档大小。这些性能方面的不利因此大大限制了文档数据库的适用场景。</p>
 <h1 id="数据查询语言"><a href="#数据查询语言" class="headerlink" title="数据查询语言"></a>数据查询语言</h1><p>在关系模型被提出的最初时期，就出现两总查询数据的方法：声明式查询和命令式查询。命令式查询需要告诉计算机如何以特定的顺序来执行查询操作，一次查询基本上对应一段查询代码。而对于声明式查询语言（如SQL或关系代数），则只需要指定所需的数据模式，结果需满足什么条件，以及如何转换数据（例如，排序、分组和聚合），而不需要指明如何实现这一目标。数据库系统的查询优化器会决定采用那种索引和联结，以及用何种顺序来执行查询的各个语句。另外声明式查询语言对外隐藏了数据引擎的很多实现细节，这样数据库能够在不改变查询语句的情况下提高性能。</p>
 <h2 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h2><p>MapReduce是一种编程模型，用于在许多机器上批量处理海量数据。<font color="orange">MapReduce既不是声明式查询语言，也不是一个完全命令式的查询API，而是介于两者之间：</font>查询的逻辑用代码片段表示，这些代码片段可以被处理框架重复地调用。它主要基于许多函数式编程中的map和reduce函数，map函数用于对每一条数据进行过滤筛选，reduce用于对过滤出来的记录进行相关操作。不同数据库对MapReduce的执行实现都不同。</p>
-<p>//TODO: 看完第10章对MapReduce的详细描述后再补全这部分</p>
 <h1 id="图数据模型"><a href="#图数据模型" class="headerlink" title="图数据模型"></a>图数据模型</h1><blockquote>
 <p>在处理多对多关系时，关系模型能够处理简单的多对多关系，但是随着数据之间的关联越来越复杂，将数据建模转换为图模型会更加自然</p>
 </blockquote>
@@ -537,7 +1328,9 @@
 <li>属性的集合（键-值对）</li>
 </ul>
 <p>// TODO: 在实际使用了图数据之后在补充一下，目前只做基础了解，知道哪些场景适用图模型即可。</p>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>文档模型、关系模型和图模型如今都有广泛的应用，而且在各自的目标领域都足够优秀。我们观察到，一个模型可以用另外一个模型来模拟，但是处理起来很笨拙。这就是为什么不同的系统用于不同的目的，而不是一个万能的解决方法。对于每个数据模型，都有自己的查询语言或框架。</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>文档模型、关系模型和图模型如今都有广泛的应用，而且在各自的目标领域都足够优秀。我们观察到，一个模型可以用另外一个模型来模拟，但是处理起来很笨拙。这就是为什么不同的系统用于不同的目的，而不是一个万能的解决方法。</p>
+<p>文档数据库和图数据库有一个共同点，那就是它们通常不会对存储的数据强加某个模式，这可以使应用程序更容易适应不断变化的需求。但是，应用程序很可能仍然假定数据具有一定的结构，之过失模式是显示（写时强制）还是隐式（读时处理）的问题。</p>
+<p>对于每个数据模型，都有自己的查询语言或框架。</p>
 
       
     </div>
@@ -588,7 +1381,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-09-04 15:33:17" itemprop="dateModified" datetime="2021-09-04T15:33:17+08:00">2021-09-04</time>
+                <time title="Modified: 2022-01-16 11:07:45" itemprop="dateModified" datetime="2022-01-16T11:07:45+08:00">2022-01-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -619,8 +1412,6 @@
 </blockquote>
 <font color="orange">一般，用于测试目的，可以故意提高故障发生概率，例如通过随机杀死某个进程，来确保系统仍保持健壮。</font>
 
-
-
 <h2 id="硬件故障"><a href="#硬件故障" class="headerlink" title="硬件故障"></a>硬件故障</h2><p>例如：磁盘崩溃、内存故障、网络故障、机房停电等等。<font color="orange">通常对于硬件故障，都会为硬件添加冗余来减少系统故障率。</font>例如，对磁盘配置RAID，服务器配备双电源，热拔插CPU，数据中心添加备用电源、发电机等。当一个组件发生故障，冗余组件可以快速接管，之后再更换失效的组件。</p>
 <h2 id="软件错误"><a href="#软件错误" class="headerlink" title="软件错误"></a>软件错误</h2><p>软件故障一般很难事先预料，因为导致软件故障的bug通常会长时间处于引而不发的状态，直到碰到特定的触发条件。软件问题有时没有快速解决办法，而只能仔细考虑很多细节，<font color="orange">包括认真检查依赖的假设条件与系统之间交互，进行全面的测试，进行隔离，运行进程崩溃并自动重启。</font></p>
 <h2 id="人为错误"><a href="#人为错误" class="headerlink" title="人为错误"></a>人为错误</h2><p>有一项针对大型互联网服务的调查发现，运维者的配置错误居然是系统下线的首要原因，而硬件问题（服务器或网络）仅在10%～25%的故障中有影响。对于人为故障，一般来说可以通过结合以下多种方法：</p>
@@ -633,8 +1424,6 @@
 </ul>
 <h2 id="我对可靠性的理解"><a href="#我对可靠性的理解" class="headerlink" title="我对可靠性的理解"></a>我对可靠性的理解</h2><p>系统的可靠性不是指让系统的任何一个部分在任何时刻都不发生故障，这是不可能的，随机事件的发生不可控的，系统的可靠性是指在系统的某个部分发生了故障时，能够尽快的从故障中恢复过来，同时<code>尽量</code>把由于故障导致的损失降到最小。并且在故障期间不会由于一个故障，像多米诺骨牌一样，引发一连串的其他故障。</p>
 <h1 id="可扩展性"><a href="#可扩展性" class="headerlink" title="可扩展性"></a>可扩展性</h1><font color="orange">对于可扩展性，一个重要讨论的内容是：如果系统以某种方式增长，我们应对增长的措施有哪些，我们该如何添加计算资源来处理额外的负载。</font>
-
-
 
 <h2 id="描述负载"><a href="#描述负载" class="headerlink" title="描述负载"></a>描述负载</h2><p>首先，我们需要简洁地描述系统当前的负载，这样才能更好地讨论后续增长的问题。负载可以用称为负载参数的若干数字来描述，<font color="orange">参数的最佳选择取决于系统的体系架构，</font>它可能是web服务器的每秒请求处理次数，数据库中写入的比例，缓存命中率等。</p>
 <h2 id="描述性能"><a href="#描述性能" class="headerlink" title="描述性能"></a>描述性能</h2><p>描述系统负载之后，接下来设想如果负载增加将会发生什么。一般有有两种考虑方式：</p>
@@ -828,514 +1617,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/05/10/machine_learning/neural_network&deep_learning/cnn/multiple-input-and-multiple-output-channel/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/10/machine_learning/neural_network&deep_learning/cnn/multiple-input-and-multiple-output-channel/" class="post-title-link" itemprop="url">multiple_input_and_multiple_output_channel</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-05-10 05:28:01" itemprop="dateCreated datePublished" datetime="2021-05-10T05:28:01+08:00">2021-05-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-05-26 14:06:18" itemprop="dateModified" datetime="2021-05-26T14:06:18+08:00">2021-05-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">machine learning</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id><a href="#" class="headerlink" title=" "></a> </h1>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/04/16/machine_learning/neural_network&deep_learning/cnn/padding-and-stride/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/16/machine_learning/neural_network&deep_learning/cnn/padding-and-stride/" class="post-title-link" itemprop="url">padding_and_stride</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-04-16 15:33:50" itemprop="dateCreated datePublished" datetime="2021-04-16T15:33:50+08:00">2021-04-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-05-23 13:10:30" itemprop="dateModified" datetime="2021-05-23T13:10:30+08:00">2021-05-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">machine learning</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Padding"><a href="#Padding" class="headerlink" title="Padding"></a>Padding</h1><p>一般来说，如果我们对一个$n_h \times n_w$的图片用一个$k_h \times k_w$的卷积核进行卷积操作，那么输出图片的大小为$(n_h - k_h + 1) \times (n_w - k_w + 1)$。经过卷积操作之后，图片的大小会减小，同时，图片的边缘的信息也会被抹去。通常，一个卷积神经网络有好几层卷积层，如果不进行任何处理的话，那么经过多层卷积层之后，图片携带的信息可能就非常少了。</p>
-<p>对输入图片进行Padding是一个常用的解决上面问题的方法。Padding即在图片周围填充额外的像素，通常，这些像素的值设置为0。如果我们对图像加入$p_h$行填充和$p_w$列填充，那么输出的图片的大小为$(n_h - k_h + p_h + 1) \times (n_w - k_w + p_w + 1)$</p>
-<center>
-  <img src="/2021/04/16/machine_learning/neural_network&deep_learning/cnn/padding-and-stride/padding.png" alt="padding.png" style="zoom:40%;">
-  <br>
-  <span>padding example</span>
-</center>
-
-<p>在许多情况下，通常会将$p_h$设置为$k_h - 1$，将$p_w$设置为$k_w - 1$，这样经过卷积之后的输出图片就和输入图片的大小一致。如果$k_h$为奇数(则$k_h - 1$为偶数)，那么一般就在输入图片的上面和下面都加上$\frac{k_h - 1}{2}$行填充，如果$k_h$为偶数(则$k_h - 1$为奇数)，那么可以在图片上方添加$\frac{k_h}{2}$行填充，在图片下方添加$(\frac{k_h}{2} - 1)$行填充，或者反过来。对于列填充来说也是这样的。</p>
-<p>CNN中通常使用长和宽都为奇数的卷积核，使用奇数卷积核心可以保障在图片上下和左右添加的填充是均匀的。<font color="orange">另外还有一个好处就是对于输出图片中的像素$Y[i, j]$来说，它正好是以输入图片中$X[i, j]$(注意输入图片的坐标以未添加padding的原始图片的左上角为原点)为中心周围像素的卷积运算的结果。</font></p>
-<p>下面以一个8 x 8的输入图片，一个3 x 3的卷积核来做padding处理下的卷积代码示例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">conv2d = tf.keras.layers.Conv2D(<span class="number">1</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">&#x27;same&#x27;</span>)</span><br><span class="line"><span class="comment"># Here (1, 1) indicates that the batch size and the number of channels</span></span><br><span class="line">input_tensor = tf.random.uniform(shape=(<span class="number">1</span>, <span class="number">8</span>, <span class="number">8</span>, <span class="number">1</span>))</span><br><span class="line">output_tensor = conv2d(input_tensor)</span><br><span class="line">print(output_tensor.shape)</span><br></pre></td></tr></table></figure>
-<h1 id="Stride"><a href="#Stride" class="headerlink" title="Stride"></a>Stride</h1><p>在之前的对图片进行卷积计算时，都是从图片左上角开始，每次向右移动一个像素，当一行计算完后，再往下移动一个像素。但是有些时候，为了计算效率和缩减采样次数，卷积窗口可以每次多向右或向下移动几个像素，跳过中间几个像素的计算。如下图：</p>
-<p><center>
-  <img src="/2021/04/16/machine_learning/neural_network&deep_learning/cnn/padding-and-stride/stride.png" alt="padding.png" style="zoom:40%;">
-  <br>
-  <span>stride example</span>
-</center><br>上图中的示例中，使用了水平2像素的stride，垂直3像素的stride。</p>
-<p>假设输入图片的尺寸为$n_h \times n_w$，padding的尺寸为$p_h \times p_w$，卷积核的尺寸为$k_h \times k_w$，stride的尺寸为$s_h \times s_w$，则最终输出的结果的尺寸为$(n_h + p_h -k_h + s_h / s_h, \space n_w + p_w - k_w + s_w / s_w)$。</p>
-<p>使用stride的代码示例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">conv2d = tf.keras.layers.Conv2D(<span class="number">1</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">&#x27;same&#x27;</span>, strides=<span class="number">2</span>)</span><br><span class="line"><span class="comment">#or</span></span><br><span class="line">conv2d = tf.keras.layers.Conv2D(<span class="number">1</span>, kernel_size=(<span class="number">3</span>, <span class="number">5</span>), padding=<span class="string">&quot;valid&quot;</span>, strides=(<span class="number">3</span>, <span class="number">4</span>))</span><br></pre></td></tr></table></figure>
-<p>通常来说，我们会将padding的长宽设置为相同的，stride的长宽也设置为相同的，即使用<code>正方形</code>的padding和stride。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/04/16/machine_learning/neural_network&deep_learning/cnn/convolutions/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/16/machine_learning/neural_network&deep_learning/cnn/convolutions/" class="post-title-link" itemprop="url">convolutions</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-04-16 15:31:39" itemprop="dateCreated datePublished" datetime="2021-04-16T15:31:39+08:00">2021-04-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-05-26 13:23:40" itemprop="dateModified" datetime="2021-05-26T13:23:40+08:00">2021-05-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">machine learning</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="The-Cross-Correlation-Operation"><a href="#The-Cross-Correlation-Operation" class="headerlink" title="The Cross-Correlation Operation"></a>The Cross-Correlation Operation</h1><p>假设对于一个只有一个颜色空间的3x3的图片，另外有一个2x2的卷积核，Cross-Correlation Operation的定义如下图：</p>
-<p><img src="/2021/04/16/machine_learning/neural_network&deep_learning/cnn/convolutions/cross-correlation-example.png" alt="cross-correlation-example" style="zoom:50%;"></p>
-<p>代码实现：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">corr2d</span>(<span class="params">X, K</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Compute 2D cross-correlation.&quot;&quot;&quot;</span></span><br><span class="line">    h, w = K.shape</span><br><span class="line">    Y = tf.Variable(tf.zeros((X.shape[<span class="number">0</span>] - h + <span class="number">1</span>, X.shape[<span class="number">1</span>] - w + <span class="number">1</span>)))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(Y.shape[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(Y.shape[<span class="number">1</span>]):</span><br><span class="line">            Y[i, j].assign(tf.reduce_sum(X[i:i + h, j:j + w] * K))</span><br><span class="line">    <span class="keyword">return</span> Y</span><br></pre></td></tr></table></figure>
-<h1 id="Custom-Convolution-Layer"><a href="#Custom-Convolution-Layer" class="headerlink" title="Custom Convolution Layer"></a>Custom Convolution Layer</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Conv2DDense</span>(<span class="params">tf.keras.layers.Layer</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">super</span>(Conv2DDense, self).__init__()</span><br><span class="line">        self.weight = <span class="literal">None</span></span><br><span class="line">        self.bias = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">build</span>(<span class="params">self, input_shape</span>):</span></span><br><span class="line">        initializer = tf.random_normal_initializer()</span><br><span class="line">        self.weight = self.add_weight(name=<span class="string">&quot;weight&quot;</span>, shape=input_shape, initializer=initializer)</span><br><span class="line">        self.bias = self.add_weight(name=<span class="string">&quot;bias&quot;</span>, shape=(<span class="number">1</span>,), initializer=initializer)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span>(<span class="params">self, inputs, **kwargs</span>):</span></span><br><span class="line">        <span class="keyword">return</span> corr2d(inputs, self.weight) + self.bias</span><br></pre></td></tr></table></figure>
-<font color="orange">注意卷机层的输出shape是由输入和自己的卷积核一起决定的，而之前自定义Layer的输出shape是初始化时由用户决定的。</font>
-
-
-
-<h1 id="Learning-a-Kernel"><a href="#Learning-a-Kernel" class="headerlink" title="Learning a Kernel"></a>Learning a Kernel</h1><p>在对图片进行卷积操作时，我们很多时候是不知道应该将卷积核的每个元素的数值设置为多少的。假设我们知道输入的图片以及经过卷积操作之后应该得到的输出图片，要想知道卷积核每个元素的取值，这个问题其实本质上就是一个线性规划的问题，可以用梯度下降法来求的近似数值解。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">learning_a_kernel</span>(<span class="params"><span class="built_in">input</span>: Union[tf.Tensor, tf.Variable], wanted_output: Union[tf.Tensor, tf.Variable], kernel_shape</span>):</span></span><br><span class="line">    <span class="comment"># Construct a two-dimensional convolutional layer with 1 output channel and a</span></span><br><span class="line">    <span class="comment"># kernel of kernal_shape. For the sake of simplicity, we ignore the bias here</span></span><br><span class="line">    conv2d = tf.keras.layers.Conv2D(<span class="number">1</span>, shape=kernel_shape, use_bias=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    reshaped_input = tf.reshape(<span class="built_in">input</span>, (<span class="number">1</span>, <span class="built_in">input</span>.shape[<span class="number">0</span>], <span class="built_in">input</span>.shape[<span class="number">1</span>], <span class="number">1</span>))</span><br><span class="line">    reshaped_wanted_output = tf.reshape(wanted_output, (<span class="number">1</span>, wanted_output.shape[<span class="number">0</span>], wanted_output.shape[<span class="number">1</span>], <span class="number">1</span>))</span><br><span class="line">    _ = conv2d(reshaped_input) <span class="comment"># this is use to gen weights in layer</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">        <span class="keyword">with</span> tf.GradientTape(watch_accessed_variables=<span class="literal">False</span>) <span class="keyword">as</span> g:</span><br><span class="line">            g.watch(conv2d.weights[<span class="number">0</span>])</span><br><span class="line">            calculated_output = conv2d(reshaped_input)</span><br><span class="line">            loss = (<span class="built_in">abs</span>(calculated_output - reshaped_wanted_output)) ** <span class="number">2</span></span><br><span class="line"></span><br><span class="line">            update = tf.multiply(<span class="number">3.21e-2</span>, g.gradient(loss, conv2d.weights[<span class="number">0</span>]))</span><br><span class="line"></span><br><span class="line">            weights = conv2d.get_weights()</span><br><span class="line">            weights[<span class="number">0</span>] = conv2d.weights[<span class="number">0</span>] - update</span><br><span class="line">            conv2d.set_weights(weights)</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/03/30/machine_learning/neural_network&deep_learning/deep_learning_computation/deep_learning_computaion/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/30/machine_learning/neural_network&deep_learning/deep_learning_computation/deep_learning_computaion/" class="post-title-link" itemprop="url">deep_learning_computaion</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-03-30 18:33:30" itemprop="dateCreated datePublished" datetime="2021-03-30T18:33:30+08:00">2021-03-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-16 18:09:04" itemprop="dateModified" datetime="2021-04-16T18:09:04+08:00">2021-04-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">machine learning</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Custom-Layers-and-Blocks"><a href="#Custom-Layers-and-Blocks" class="headerlink" title="Custom Layers and Blocks"></a>Custom Layers and Blocks</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>对于神经网络，不论是单个神经元，还是一层神经元，还是多层神经元组成的神经网络，它们都有同样的抽象结构：</p>
-<ul>
-<li>接受一组输入</li>
-<li>产生对应的输出</li>
-<li>有可调节的网络参数</li>
-</ul>
-<p>在深度学习中，通常会封装一个多层网络，这个多层<font color="orange">比单层神经网络要多，但是比整个深度神经网络要少的网络</font>。这个多层网络同样具有以上的抽象结构。封装这个多层网络的是为了方便复用网络结构，例如在ResNet-152架构中（用于计算机视觉的深度网络），整个模型有几百层神经网络，但是这个神经网络是由重复的几组多层网络结构构成的。这种设计在许多深度神经网络中都很常见。</p>
-<p>通常，我们把这种封装好的多层网络结构叫做block。而且，在深度学习编程框架中，一个Block通常封装在一个类中。这个类需要实现以下功能：</p>
-<ul>
-<li>一个forward function用于将输入转换为输出</li>
-<li>保存网络的参数</li>
-<li>一个backward function用于计算梯度，但是感谢深度学习框架中的自动微分功能，我们通常不用实现这个backward function。</li>
-</ul>
-<h2 id="自定义block示例"><a href="#自定义block示例" class="headerlink" title="自定义block示例"></a>自定义block示例</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyBlock</span>(<span class="params">tf.keras.Model</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    a custom block with a hidden layer(256 unit) and a output layer(10 unit)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, *args, **kwargs</span>):</span></span><br><span class="line">        <span class="built_in">super</span>().__init__(*args, **kwargs)</span><br><span class="line">        self.hidden = tf.keras.layers.Dense(units=<span class="number">256</span>, activation=tf.nn.relu)</span><br><span class="line">        self.out = tf.keras.layers.Dense(units=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span>(<span class="params">self, inputs, training=<span class="literal">None</span>, mask=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.out(self.hidden(inputs))</span><br></pre></td></tr></table></figure>
-<h2 id="自定义layer"><a href="#自定义layer" class="headerlink" title="自定义layer"></a>自定义layer</h2><h1 id="参数管理"><a href="#参数管理" class="headerlink" title="参数管理"></a>参数管理</h1><h1 id="延迟初始化"><a href="#延迟初始化" class="headerlink" title="延迟初始化"></a>延迟初始化</h1><h1 id="参数存储和加载"><a href="#参数存储和加载" class="headerlink" title="参数存储和加载"></a>参数存储和加载</h1><h1 id="使用GPU"><a href="#使用GPU" class="headerlink" title="使用GPU"></a>使用GPU</h1>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/03/24/others/c++%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/24/others/c++%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">c++项目构建工具简单介绍</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-03-24 17:23:56" itemprop="dateCreated datePublished" datetime="2021-03-24T17:23:56+08:00">2021-03-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-05-24 17:28:26" itemprop="dateModified" datetime="2021-05-24T17:28:26+08:00">2021-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/c/" itemprop="url" rel="index">
-                    <span itemprop="name">c++</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="不使用任何构建工具"><a href="#不使用任何构建工具" class="headerlink" title="不使用任何构建工具"></a>不使用任何构建工具</h1><p>对于C/C++代码来说，不使用任何构建工具来辅助编译C/C++代码的话，就需要自己手动指定使用的编译器(clang、gcc/g++或者其他编译器)，一般来说需要在编译命令下指定这些：</p>
-<ul>
-<li>指定需要编译的源文件</li>
-<li>指定头文件的搜索目录</li>
-<li>指定库文件的搜索目录</li>
-<li>需要链接的动态库和静态库</li>
-<li>指定需要额外定义的宏或者取消定义的宏来控制编译</li>
-<li>指定编译优化选项</li>
-<li>指定语言标准</li>
-<li>等等</li>
-</ul>
-<p>以gcc/g++为例，使用-D指定额外定义的宏，-U取消宏定义：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-DUseXX //#define UseXX</span><br><span class="line">-DMaxSize=500 //#define MaxSize 500</span><br><span class="line">-UUseXX //#undef UseXX</span><br></pre></td></tr></table></figure>
-<p>-I（i的大写） 添加头文件搜索目录</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-I/usr/local/include/xxx -I/usr/local/Cellor/yyy</span><br></pre></td></tr></table></figure>
-<p>-L 添加库文件搜索目录</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-L/usr/local/lib -L/usr/local/Cellor/lib</span><br></pre></td></tr></table></figure>
-<p>-l（L的小写）添加链接库</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-la -lb -lz</span><br></pre></td></tr></table></figure>
-<p>-g生成调试信息</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-g #以操作系统的本地格式产生调试信息</span><br><span class="line">-g1 #输出的调试信息</span><br><span class="line">-g2 #输出默认量的调试信息</span><br><span class="line">-g3 #输出更多的调试信息</span><br></pre></td></tr></table></figure>
-<p>警告选项</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-w #关闭显示所有警告信息</span><br><span class="line">-Wall #开启大部分警告提示，默认</span><br><span class="line">-Werror #将警告视为错误，出现警告即放弃编译</span><br></pre></td></tr></table></figure>
-<p>-O优化选项</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-O0 #不优化</span><br><span class="line">-O1 #</span><br><span class="line">-O2</span><br><span class="line">-O3</span><br></pre></td></tr></table></figure>
-<p>语言选项</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-ansi #支持符合ANSI标准的C程序</span><br><span class="line">-std=c99 #C99标准</span><br><span class="line">-std=c++11 # c++11标准</span><br></pre></td></tr></table></figure>
-<p>直接使用gcc/g++命令在使用代码文件不多，库直接的依赖关系不复杂的情况下是可以接受的。但是在一些大型项目中，源文件上千上万，各个文件和库直接的依赖关系复杂，如果还手动输入编译命令的话，复杂度就会变得很大。</p>
-<h1 id="make工具"><a href="#make工具" class="headerlink" title="make工具"></a>make工具</h1><p>make工具是一个从源码自动构建所需“目标”的构建工具，他依赖通过读取一个叫做Makefile的脚本文件来实现自动化构建。</p>
-<p>Makefile本身其实一种管理代码源文件之间依赖关系的脚本，在这个脚本中描述了项目工程中的各个“目标”或者源文件之间的依赖关系以及构建各个目标所需要的命令。</p>
-<p>斯图亚特·费尔德曼在1977年在贝尔实验室里制作了最初的make程序，最初的make程序被多次重/改写，形成了多种版本的make工具，比较出名的有GNU make， BSD make，microsoft nmake等等。这些make工具都有不同的规范和标准，使用的Makefile的语法标准也不同。</p>
-<p>下面以GNU Make使用的Makefile的格式对Makefile进行简介。</p>
-<h2 id="GNU-Makefile格式"><a href="#GNU-Makefile格式" class="headerlink" title="GNU Makefile格式"></a>GNU Makefile格式</h2><p>编写Makefile的规则一般如下：</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">target: prerequisites</span></span><br><span class="line">[tab]COMMAND</span><br><span class="line">[tab]COMMAND</span><br><span class="line">		 ...</span><br><span class="line">		 ...</span><br><span class="line">		 ...</span><br><span class="line"></span><br><span class="line"><span class="section">target2: prerequisites</span></span><br><span class="line">		...</span><br><span class="line">		...</span><br></pre></td></tr></table></figure>
-<p>Makefile中target就是make命令中所需指定的构建目标。<code>make会把在Makefile中定义的第一target作为默认target，即如果不给make命令传递target参数，则默认为makefile中的第一个定义的target。</code></p>
-<p>prerequisites说明了这个target依赖哪些其他的target或者文件，这个字段可以为空，说明这个target没有依赖。如果target有依赖的情况下，make会记录target是否有更新，如果依赖没有更新，make就不会重复构建target。</p>
-<p>command就是这个生成这个target所需要的命令，这个命令可以是任意的命令</p>
-<p><code>注意，可能有一个误区就是prerequisites字段只是用来让make进行依赖解析和判断target是否需要重建的，依赖和command本身没有任何关系。如果以为某个target依赖了某些源文件，那么make在解析的时候自动会将这些源文件传递给命令，这是不对的。</code>例如target main依赖了main.cpp文件，那么这么写是没有用的：</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">main: main.cpp</span></span><br><span class="line">	g++ -o main</span><br></pre></td></tr></table></figure>
-<p>应该这么写：</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">main: main.cpp</span></span><br><span class="line">	g++ -o main main.cpp</span><br></pre></td></tr></table></figure>
-<p>下面举一个例子来使用makefile构建一个可执行文件，在a.h定义了类A，在a.cpp中实现了类A的方法，在main.cpp中引入了a.h使用了类A的方法：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//a.h</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">say</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//c.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;a.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">A::say</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;hello world&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//main.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;a.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  A a;</span><br><span class="line">  a.say();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>对应的Makefile的一种形式</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">CXX = g++</span><br><span class="line"><span class="section">main: a.cpp.o main.cpp.o</span></span><br><span class="line">	<span class="variable">$(CXX)</span> -o test main.o a.o</span><br><span class="line"></span><br><span class="line"><span class="section">main.o: a.h main.cpp</span></span><br><span class="line">	echo <span class="string">&quot;main&quot;</span></span><br><span class="line">	<span class="variable">$(CXX)</span> -c main.cpp -o main.o</span><br><span class="line"></span><br><span class="line"><span class="section">a.o: a.h a.cpp</span></span><br><span class="line">	echo <span class="string">&quot;a&quot;</span></span><br><span class="line">	<span class="variable">$(CXX)</span> -c a.cpp -o a.o</span><br></pre></td></tr></table></figure>
-<p>还有很多其他写法：</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CXX = g++</span><br><span class="line"><span class="section">main: a.h a.cpp main.cpp</span></span><br><span class="line">	<span class="variable">$(CXX)</span> -o test main.cpp a.cpp</span><br></pre></td></tr></table></figure>
-<p>但是这种写法不好的地方在于，如果a.h，a.cpp，main.cpp中有任意一个文件有变化，这几个文件都要重新再编译一次。</p>
-<p>执行make命令就会构建出目标main，生成test可执行文件。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make #等价使用make main</span><br></pre></td></tr></table></figure>
-<p>也可以不构建目标main，选择构建其他目标，例如构建main.cpp.o目标：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make main.cpp.o #执行g++ -c main.cpp，生成main.o文件</span><br></pre></td></tr></table></figure>
-<p>make对target依赖的解析是一个类似递归的过程，例如上例中目标main依赖了目录a.cpp.o和main.cpp.o那么make会先去执行a.cpp.o下的命令和main.cpp.o下的命令，然后再来执行目标main定义的命令。</p>
-<p>在make file中有几个特殊的target，一个是clean，另外一个是install，<code>不是说这些命令必须执行某种命令，而是大家默认了使用cmake执行这些target应该做的事</code>，clean就应该是去清除之前构建目标生成出来的文件，而install应该将构建目标生成出来的文件安装到指定目录下。你也可以在Makefile中将clean定义为执行安装操作的命令，然后把install定义为执行clean操作的命令，但是这不合理。</p>
-<p>之前提到Makefile本质上就是一个脚本文件，既然是脚本文件，<code>那就可以在Makefile中定义变量，使用变量，使用条件控制语句，定义函数，使用函数，include其他Makefile文件等</code>。这些使用可以去网上自己去搜索。</p>
-<p>Makefile本身只关心各个文件或目标之间的依赖关系，省去了开发者在修改某些代码文件后判断需要重新编译生成目标文件的时间。但是在Makefile中最后还是需要自己去调用编译器命令，在命令中指定include的目录，链接库的路径，需要链接的库。另外在不同的操作系统下还需要指定不同的编译器，指定不同的include头文件目录等等。</p>
-<p>最后说明一下，由于Makefile本身不关心编译过程的，因为最后的编译还是通过在Makefile中编写调用编译命令，所以使用make+Makefile理论上可以用来编译任何代码。</p>
-<h1 id="GNU-Autotools"><a href="#GNU-Autotools" class="headerlink" title="GNU Autotools"></a>GNU Autotools</h1><p>之前说到在不同的代码运行平台下，可能需要在Makefile中指定不同的编译器的名称，指定不同的头文件路径，链接不同的链接库等等，如果用make工具，那么就需要对不同的运行平台，就需要编写不同的Makefile，这不仅会增加工作量，而且要求程序员对各个平台也要有一定的熟悉程度。GNU Autotools的目的就是为了在不同类Unix平台下，针对GNU make工具快速生成对应的Makefile文件。</p>
-<p>GUN Autotools是一个GNU工具集，它包括autoscan、autoheader，autoconf，automake，aclocal和libtool等等。最主要使用的两个工具就是autoconf和automake。使用Autotools最终也会生成Makefile文件，然后调用make命令来构建出项目。使用Autotools构建项目的三部曲一般是./configure，make，make install。</p>
-<p>运行configure脚本用于系统检测，一般主要检测当前平台的编译器、库文件、头文件等等，这些检查的结果将用于将config.h.in和Makefile.in文件转化为最终的config.h和Makefile文件。configure脚本一般有几千行，非常复杂，如果要手写的话很困难，可以使用autoconf工具来自动生成这个configure脚本。autoconf工具通过读取一个configure.ac的模版文件，来生成configure脚本。configure.ac文件是一个由m4宏编写的文件，autoconf在处理configure.ac文件时就会将这些宏展开为shell脚本代码。</p>
-<p>在开始的时候，可以使用autoscan工具来生成一个configure.ac的模版，autoscan生成的文件的名字为configure.scan，直接修改configure.scan名字为configure.ac即可。</p>
-<p>再以写Makefile时的示例项目为例，通过对autoscan生成的模版再进行修改的情况下，编写的configure.ac文件如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">                                               -*- Autoconf -*-</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Process this file with autoconf to produce a configure script.</span></span><br><span class="line"></span><br><span class="line">AC_PREREQ([2.69]) #autoconf版本最低要求2.69</span><br><span class="line">AC_INIT([test], [1.0], [www.xxx-bug-report.com]) #设置项目名称，版本号，bug上报网址</span><br><span class="line">AM_INIT_AUTOMAKE # 项目需要使用automake，初始化automake</span><br><span class="line">AC_CONFIG_FILES([Makefile]) #告诉configure 根据系统信息和Makefile.in生成Makefile文件</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Checks <span class="keyword">for</span> programs.</span></span><br><span class="line">AC_PROG_CXX #告诉configure 检查c++编译器，由于没有指定这个宏的参数，默认参数为g++</span><br><span class="line">AC_PROG_CC  #告诉configure 检查c编译器，由于没有指定这个宏的参数，默认参数为gcc</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Checks <span class="keyword">for</span> libraries.</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Checks <span class="keyword">for</span> header files.</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Checks <span class="keyword">for</span> typedefs, structures, and compiler characteristics.</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Checks <span class="keyword">for</span> library <span class="built_in">functions</span>.</span></span><br><span class="line"></span><br><span class="line">AC_OUTPUT</span><br></pre></td></tr></table></figure>
-<p>configure脚本会根据Makefile.in来生成Makefile，但是Makefile.in的脚本也是又长又复杂的，但是和configure的生成一样，Makefile.in可以由一个模版文件通过automake来生成，这个模版文件就是Makefile.am。</p>
-<p>在这个例子下，对应的Makefile.am：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">AUTOMAKE_OPTIONS = foreign #因为这里的例子不是标准的 GNU 项目的结构，所以结构声明为 foreign</span><br><span class="line">bin_PROGRAMS = test #告诉automake 需要Makefile构建的项目是一个可执行文件，其名称为test</span><br><span class="line">test_SOURCES = main.cpp a.cpp #告诉automake 项目使用的源文件</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">test_CPPFLAGS = <span class="comment">#设置c++编译的编译选项，这里不需要额外的编译选项</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">test_LDFLAGS = <span class="comment">#设置链接选项，这了不需要额外的链接选项，</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">test_LDADD = <span class="comment">#设置要链接的库文件，这里也没有</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">INCLUDES = <span class="comment">#设置头文件搜索目录，这里也没有额外的头文件</span></span></span><br></pre></td></tr></table></figure>
-<p>接下来，依次运行下面几个命令即可完成对项目的编译</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">aclocal #使用aclocal初始化m4环境</span><br><span class="line">autoconf #将configure.ac生成configure脚本</span><br><span class="line">automake --add-missing #将Makefile.am生成Makefile.in</span><br><span class="line">./configure #检查系统环境，将Makefile.in和config.h.in(这里没有使用到)生成Makefile和config.h</span><br><span class="line">make </span><br></pre></td></tr></table></figure>
-<p>在发布软件的时候，不需要将configure.ac和Makefile.am文件发布出去，只需要将Makefile.in，config.in.h和configure脚本发布出去即可。</p>
-<p>GNU Autotools工具对类Unix系统的用户来说比较友好，对于使用windows系统的用户来说就很不友好了，需要进行很多的配置才行。</p>
-<h1 id="CMake"><a href="#CMake" class="headerlink" title="CMake"></a>CMake</h1><p>之前提到不同的平台下，不同的IDE间使用的make工具的规范和标准是不同的，Makefile的标准也就不同，CMake的出现解决了不同make工具之间规范和标准不同的问题。</p>
-<p>CMake让构建人员通过一个与平台无关的CMakeList.txt文件来说明这个项目的构建流程，然后再根据目标平台生成对应的Makefile文件。</p>
-<p>CMakeList.txt是使用CMake自己的一套语法来编写的。还是以之前的例子来说明一个CMaList.txt有哪些内容：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.13</span>) <span class="comment">#cmake最低版本3.13</span></span><br><span class="line"><span class="keyword">project</span>(<span class="keyword">Test</span>) <span class="comment">#设置CMake项目名称</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>) <span class="comment">#设置C++标准为C++11</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(TEST_SRC main.cpp a.cpp)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(<span class="keyword">test</span> <span class="variable">$&#123;TEST_SRC&#125;</span>) <span class="comment">#添加说明要构建一个可执行文件，文件名为test，源码文件为main.cpp，a.cpp</span></span><br></pre></td></tr></table></figure>
-<p>之后执行命令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cmake .</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
-<p>就可以完成对项目的编译构建。</p>
-<p>CMake会自动检查当前平台使用的编译器信息，当然也可以在CMake中要使用的编译器</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><h2 id="代码构建工具的目的"><a href="#代码构建工具的目的" class="headerlink" title="代码构建工具的目的"></a>代码构建工具的目的</h2><p>1、代码构建工具的首要目的就是帮助程序员能够从代码构建出最后的产物</p>
-<p>2、帮助管理代码中的依赖问题</p>
-<p>3、加快编译构建速度，能够并行编译，并且只对需要重新编译的部分进行编译。</p>
-<h2 id="为什么c-c-的项目这么难管理"><a href="#为什么c-c-的项目这么难管理" class="headerlink" title="为什么c/c++的项目这么难管理"></a>为什么c/c++的项目这么难管理</h2><p>以下原因只是我的主观看法：</p>
-<p>1、c/c++发展的太早，早到发展初期根本没有想到依赖管理的问题，早到当时根本没有考虑各个平台下统一标准，统一规范的问题。</p>
-<p>2、</p>
-<p>3、与系统强相关，在不同系统中，使用的c/c++的头文件，库文件都是不同的，另外，在一个平台下编译出来的二进制文件有可能无法在另外一个平台下使用，需要从源码重新编译。</p>
-<p>TODO: 将PPT中的一些内容补充到这篇博客中</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1406,20 +1687,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-count">104</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -1444,7 +1725,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -1506,54 +1787,6 @@
   
 
   
-      
-<script type="text/x-mathjax-config">
-
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
-      processEscapes: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    },
-    TeX: {
-      equationNumbers: {
-        autoNumber: 'AMS'
-      }
-    }
-  });
-
-  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
-    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
-      if (data.display) {
-        var next = data.script.nextSibling;
-        while (next && next.nodeName.toLowerCase() === '#text') {
-          next = next.nextSibling;
-        }
-        if (next && next.nodeName.toLowerCase() === 'br') {
-          next.parentNode.removeChild(next);
-        }
-      }
-    });
-  });
-
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for (i = 0; i < all.length; i += 1) {
-      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
-      if (element.nodeName.toLowerCase() == 'li') {
-        element = element.parentNode;
-      }
-      element.classList.add('has-jax');
-    }
-  });
-</script>
-<script>
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
-    MathJax.Hub.Typeset();
-  }, window.MathJax);
-</script>
-
-    
 
   
 
