@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="复制主要指通过互联网络在多台机器上保存相同数据的副本，通过数据复制方案，人们通常希望达到以下目的：  使数据在地理位置上更接近用户，从而降低访问延迟  当部分组件出现故障，系统依然可以继续工作，从而提高可用性  扩展至多台机器以同时提供数据访问服务，从而提高吞吐量   本章讨论的内容都是在假设数据规模比较小，集群的每一台机器都可以保存数据集的完整副本。在接下来的第6章中，我们讨论单台机器无法容纳整">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据复制">
+<meta property="og:url" content="http://swordandtea.github.io/2022/02/20/DDIA/%E6%95%B0%E6%8D%AE%E5%A4%8D%E5%88%B6/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="复制主要指通过互联网络在多台机器上保存相同数据的副本，通过数据复制方案，人们通常希望达到以下目的：  使数据在地理位置上更接近用户，从而降低访问延迟  当部分组件出现故障，系统依然可以继续工作，从而提高可用性  扩展至多台机器以同时提供数据访问服务，从而提高吞吐量   本章讨论的内容都是在假设数据规模比较小，集群的每一台机器都可以保存数据集的完整副本。在接下来的第6章中，我们讨论单台机器无法容纳整">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-20T07:13:27.000Z">
+<meta property="article:modified_time" content="2022-03-03T02:17:16.568Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="DDIA">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2022/02/20/DDIA/%E6%95%B0%E6%8D%AE%E5%A4%8D%E5%88%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>数据复制 | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2022/02/20/DDIA/%E6%95%B0%E6%8D%AE%E5%A4%8D%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据复制
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-20 15:13:27" itemprop="dateCreated datePublished" datetime="2022-02-20T15:13:27+08:00">2022-02-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-03-03 10:17:16" itemprop="dateModified" datetime="2022-03-03T10:17:16+08:00">2022-03-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DDIA/" itemprop="url" rel="index">
+                    <span itemprop="name">DDIA</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>7 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>复制主要指通过互联网络在多台机器上保存相同数据的副本，通过数据复制方案，人们通常希望达到以下目的：</p>
+<ul>
+<li><p>使数据在地理位置上更接近用户，从而降低访问延迟</p>
+</li>
+<li><p>当部分组件出现故障，系统依然可以继续工作，从而提高可用性</p>
+</li>
+<li><p>扩展至多台机器以同时提供数据访问服务，从而提高吞吐量</p>
+</li>
+</ul>
+<p>本章讨论的内容都是在假设数据规模比较小，集群的每一台机器都可以保存数据集的完整副本。在接下来的第6章中，我们讨论单台机器无法容纳整个数据集的情况（即必须分区）。在后面的章节中，我们还将讨论复制过程中可能出现的各种故障，以及该如何处理这些故障。</p>
+<p>如果复制的数据一成不变，那么复制就非常容易：只需将数据复制到每个节点，一次即可搞定。然而所有的技术挑战都在于处理哪些持续更改的数据，而这正是本章讨论的核心。我们将讨论是那种流行的复制变化数据的方法：主从复制、多节点复制和无主节点复制。几乎所有的分布式数据库都使用上述方法中的某一种，而三种方法各有优缺点。</p>
+<h1 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h1><p>每个保存数据库完整数据集的节点称之为副本。当有了多个副本，不可避免地会引入一些问题：如何确保所有副本之间的数据是一致的？</p>
+<p>对于每一笔数据写入，所有副本都需要随之更新，否则，某些副本将出现不一致。最常见的解决方案是基于主节点的复制，也即主从复制。主从复制的工作原理如下：</p>
+<ol>
+<li><p>指定某一个副本为主副本（或主节点）。当客户写数据库时，必须将写请求发送给主副本</p>
+</li>
+<li><p>其他副本则全称为从副本（或从节点）。主副本把数据写入本地存储后，将数据更改为复制的日志或更改流发送给所有从副本。每个从副本获得更改日志后将其应用到本地，且严格保持与主副本相同的写入顺序。</p>
+</li>
+<li><p>客户端从数据库中读数据时，既可以在主副本也可以在从副本上执行查询。</p>
+</li>
+</ol>
+<p>//TODO: 贴图</p>
+<p>许多关系型数据库都内置支持主从复制，例如PostgresSQL、Mysql、SQL Server。一些非关系型数据库如MongoDB、RethinkDB和Espresso也支持主从复制。另外，主从复制技术也不仅限于数据库，还广泛应用于分布式消息队列如Kafka和RabbitMQ，以及一些网络文件系统和复制块设备（如DRBD）</p>
+<h2 id="同步复制与异步复制"><a href="#同步复制与异步复制" class="headerlink" title="同步复制与异步复制"></a>同步复制与异步复制</h2><p>复制非常重要的一个设计选项是同步复制还是异步复制。对于关系数据库系统，同步或异步通常是一个可配置的选项；而其他系统则可能是硬性指定或者只能二选一。</p>
+<p>结合一个例子，假设网站用户需要更新首页的头像图片。其基本流程是，客户将更新请求发送给主节点，主节点接收到请求，接下来将数据更新转发给从节点。最后，由主节点来通知客户端更新完成。</p>
+<p>TODO：//贴图</p>
+<p>在上图中，从节点1的复制是同步的，即主节点需等待直到从节点1确认完成了写入，然后才会向用户报告完成，并且将最新的写入对其他客户端可见。而从节点2的复制是异步的：主节点发送完消息之后立即返回，不用等待从节点2完成确认。</p>
+<p>从节点2在接收到复制日志并完成数据同步有一段延迟，通常情况下，复制速度会非常快，例如多数数据库系统可以在一秒之内完成所有从节点的更新，但是，系统其实并没有保证一定会在多长时间内完成复制。有些情况下，从节点可能落后主节点几分钟甚至更长时间，例如，由于从节点刚从故障中恢复，或者系统已经接近最大设计上限，或者节点之间的网络出现问题。</p>
+<p>同步复制的优点是，一旦向用户确认，从节点可以明确保证完成了与主节点的更新同步，数据已经处于最新版本。万一主节点发生故障，总是可以在从节点继续访问最新数据。缺点则是，如果同步的从节点无法完成确认（例如由于从节点发生崩溃，或者网络故障，或任何其他原因），写入就不能视为成功。节点会阻塞所有的写操作，直到同步副本确认完成。</p>
+<p>因此，把所有的节点都配置为同步复制有些不切实际。因为这样的话，任何一个同步节点的中断都会导致整个系统更新停滞不前。实践中，如果数据库启用了同步复制，通常意味着其中某一个从节点是同步的，而其他节点则是异步模式。万一同步的从节点变得不可用或性能下降，则将另一个异步的从节点提升为同步模型。这样可以保证至少有两个节点（即主节点和一个同步从节点）拥有最新的数据副本。这种配置有时也称为半同步。</p>
+<p>主从复制还经常会被配置为全异步模式。此时如果主节点发送失败且不可恢复，则所有尚未复制到从节点的写请求都会丢失。这意味着即使向客户端确认了写操作，却无法保证数据一定会持久化存储到。但全异步配置的优点则是，不管从节点上数据多么滞后，主节点总是可以继续响应写请求，系统的吞吐性能更好。</p>
+<p>全异步模式这种弱化的持久性听起来是一个非常不靠谱的折中设计，但是异步复制还是被广泛使用，特别是那些从节点数量巨大或者分布于广域地理环境。</p>
+<h2 id="配置新的从节点"><a href="#配置新的从节点" class="headerlink" title="配置新的从节点"></a>配置新的从节点</h2><p>如果出现一下情况时，如需要增加副本数以提高容错能力，或者替换失败的副本，就需要考虑增加新的从节点，但如何确保新的从节点和主节点保持数据一致呢？</p>
+<p>简单地将数据文件从一个节点复制到另一个节点通常是不够的，主要是因为客户端仍在不断向数据库写入新数据，数据始终处于不断变化之中，因此常规的文件拷贝方式将会导致不同节点上呈现不同时间点的数据，这不是我们所期待的。</p>
+<p>或许应该考虑锁定数据库（使其不可写）来使磁盘上的文件保持一致，但这会违反高可用的设计目标，好在我们可以做到不停机、数据服务不中断的前提下完成从节点的设置。逻辑上的主要操作步骤如下：</p>
+<ol>
+<li>在某个时间点对主节点的数据副本产生一个一致性快照，这样避免长时间锁定整个数据库。</li>
+<li>将此快照拷贝到新的从节点</li>
+<li>从节点连接到主节点请求快照点所发生的数据更改日志。因为在第一步创建快照时，快照与系统复制日志的某个确定位置相关联。</li>
+<li>获取日志之后，从节点来应用这些快照点之后所有数据变更，这个步骤称之为追赶。</li>
+</ol>
+<p>建立新的从副本具体操作步骤可能因数据库系统而异，某些系统中，这个过程是全自动化的，而在某些系统中由于所设计的步骤、流程可能会比较复杂，甚至需要管理员手动介入。</p>
+<h2 id="处理节点失效"><a href="#处理节点失效" class="headerlink" title="处理节点失效"></a>处理节点失效</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/DDIA/" rel="tag"># DDIA</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/12/devops/k8s/k8s%E5%88%9D%E5%AD%A6%E7%AC%94%E8%AE%B0/" rel="prev" title="k8s初学笔记">
+      <i class="fa fa-chevron-left"></i> k8s初学笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/20/program_language/python/effective_python/%E5%87%BD%E6%95%B0/" rel="next" title="函数">
+      函数 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">主从复制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E5%A4%8D%E5%88%B6%E4%B8%8E%E5%BC%82%E6%AD%A5%E5%A4%8D%E5%88%B6"><span class="nav-number">1.1.</span> <span class="nav-text">同步复制与异步复制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%B0%E7%9A%84%E4%BB%8E%E8%8A%82%E7%82%B9"><span class="nav-number">1.2.</span> <span class="nav-text">配置新的从节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E8%8A%82%E7%82%B9%E5%A4%B1%E6%95%88"><span class="nav-number">1.3.</span> <span class="nav-text">处理节点失效</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">150k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">8:18</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

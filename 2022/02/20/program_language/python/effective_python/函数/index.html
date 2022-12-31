@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="第19条：不要把函数返回的多个值拆分到三个以上的变量中python的unpacking机制允许python函数返回一个以上的值，函数返回一个以上的值的时候，实际上返回的是一个元组。 1234def get_min_max(numbers):    minimum &#x3D; min(numbers)    maximum &#x3D; max(numbers)    return minimum, maximum">
+<meta property="og:type" content="article">
+<meta property="og:title" content="函数">
+<meta property="og:url" content="http://swordandtea.github.io/2022/02/20/program_language/python/effective_python/%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="第19条：不要把函数返回的多个值拆分到三个以上的变量中python的unpacking机制允许python函数返回一个以上的值，函数返回一个以上的值的时候，实际上返回的是一个元组。 1234def get_min_max(numbers):    minimum &#x3D; min(numbers)    maximum &#x3D; max(numbers)    return minimum, maximum">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-20T07:14:27.000Z">
+<meta property="article:modified_time" content="2022-03-06T04:07:21.970Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="effective python">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2022/02/20/program_language/python/effective_python/%E5%87%BD%E6%95%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>函数 | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2022/02/20/program_language/python/effective_python/%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          函数
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-20 15:14:27" itemprop="dateCreated datePublished" datetime="2022-02-20T15:14:27+08:00">2022-02-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-03-06 12:07:21" itemprop="dateModified" datetime="2022-03-06T12:07:21+08:00">2022-03-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/effective-python/" itemprop="url" rel="index">
+                    <span itemprop="name">effective python</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>6.5k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>22 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="第19条：不要把函数返回的多个值拆分到三个以上的变量中"><a href="#第19条：不要把函数返回的多个值拆分到三个以上的变量中" class="headerlink" title="第19条：不要把函数返回的多个值拆分到三个以上的变量中"></a>第19条：不要把函数返回的多个值拆分到三个以上的变量中</h1><p>python的unpacking机制允许python函数返回一个以上的值，函数返回一个以上的值的时候，实际上返回的是一个元组。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_min_max</span>(<span class="params">numbers</span>):</span></span><br><span class="line">    minimum = <span class="built_in">min</span>(numbers)</span><br><span class="line">    maximum = <span class="built_in">max</span>(numbers)</span><br><span class="line">    <span class="keyword">return</span> minimum, maximum</span><br></pre></td></tr></table></figure>
+<p>在返回多个值的时候，可以用带星号的表达式接收那些没有被普通变量捕获到的值（参考第13条）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_avg_ratio</span>(<span class="params">numbers</span>):</span></span><br><span class="line">    average = <span class="built_in">sum</span>(numbers) / <span class="built_in">len</span>(numbers)</span><br><span class="line">    scaled = [x / average <span class="keyword">for</span> x <span class="keyword">in</span> numbers]</span><br><span class="line">    scaled.sort(reverse=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> scaled</span><br><span class="line"></span><br><span class="line">longest, *middle, shortest = get_avg_ratio(numbers)</span><br></pre></td></tr></table></figure>
+<p>当我们用超过三个变量去接收函数的返回值时，会很容易出现将顺序弄错的情况。所以一般来时，一个元组最多只拆分到三个普通变量或者拆分到两个普通变量与一个万能变量（带星号的变量）。假如要拆分的值确实很多，那最好还是定义一个轻便的类或namedtuple（参见第37条），并让函数返回这样的实例。</p>
+<h1 id="第20条：遇到意外状况时应该抛出异常，不要返回None"><a href="#第20条：遇到意外状况时应该抛出异常，不要返回None" class="headerlink" title="第20条：遇到意外状况时应该抛出异常，不要返回None"></a>第20条：遇到意外状况时应该抛出异常，不要返回None</h1><p>编写工具函数（utility function）时，许多python程序员都爱用None这个返回值来表示特殊情况。对于某些函数来说，这或许有几分道理。例如，我们要编写一个辅助函数计算两数相除的结果，在除数是0的情况下，返回None似乎合理，因为这种除法的结果是没有意义的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">careful_devide</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> a / b</span><br><span class="line">    <span class="keyword">except</span> ZeroDivisionError:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">x, y = <span class="number">1</span>, <span class="number">0</span></span><br><span class="line">result = careful_divide(x, y)</span><br><span class="line"><span class="keyword">if</span> result <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    print(<span class="string">&#x27;invalid inputs&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>但是，如果传给careful_divide函数的被除数为0时，会怎么样呢？在这种情况下，只要除数不为0，函数返回的结果就应该是0。但是问题时，别人在使用这个工具函数时，在if表达式中不会明确判断返回值是否是None，而是去判断返回值是否相当于False：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x, y = <span class="number">0</span>, <span class="number">5</span></span><br><span class="line">result = careful_divide(x, y)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> result:</span><br><span class="line">    print(<span class="string">&#x27;invalid inputs&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>上面这种if语句，会把函数返回0的情况和返回None的情况一样处理。由于这种写法经常出现在python代码里，因此，像careful_divide这样，用None来表示特殊情况的函数是很容易出错的。有两种办法可以减少这样的错误。</p>
+<p>第一种，利用二元组把计算结果分成两部分返回，元组的首个元素表示操作是否成功，第二个元素表示计算的实际值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">careful_divide</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span>, a / b</span><br><span class="line">    <span class="keyword">except</span> ZeroDivisionError:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span>, <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">success, result = careful_divide(x, y)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> success:</span><br><span class="line">    print(<span class="string">&#x27;invalid inputs&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>但是，有些调用方总喜欢忽略元组的第一个部分。第二种方法比刚才那种更好，就是不采用None表示特例，而是向调用方抛出异常，让他们自己去处理。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">careful_divide</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> a / b</span><br><span class="line">    <span class="keyword">except</span> ZeroDivisionError:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">&#x27;invalid inputs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">x, y = <span class="number">5</span>, <span class="number">2</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    result = careful_divide(x, y)</span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    print(<span class="string">&#x27;invalid inputs&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>我们还可以利用类型注解指明函数返回float类型，这样就对外说明不会返回None了，但是，我们无法在函数的接口上说明函数可能抛出哪些异常，所以，我们只好把有可能抛出的异常写在文档里面，并希望调用方能够根据这份文档适当得捕获相关的异常（参见第84条）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">careful_divide</span>(<span class="params">a: <span class="built_in">float</span>, b:<span class="built_in">float</span></span>) -&gt; float:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Divides a by b</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Raises:</span></span><br><span class="line"><span class="string">        ValueError: When the inputs cannot by divided</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>: </span><br><span class="line">        <span class="keyword">return</span> a / b</span><br><span class="line">    <span class="keyword">except</span> ZeroDivisionError <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">&#x27;invalid inputs&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>总结：用返回值None表示特殊情况是很容易出错的，因为这样的值在条件表达式里面没法与0、空字符串、空数组之类的值进行区分，这些值都相当于False。</p>
+<p>个人觉得作者在此处使用的代码示例不是很好，这个抛出异常版本的careful_divide函数根据没啥实际用处，使用者还不如直接去捕获ZeroDivisionError，作者的目的可能只是为了简明得解释这条建议。</p>
+<h1 id="第21条：了解如何在闭包里面使用外围作用域中的变量"><a href="#第21条：了解如何在闭包里面使用外围作用域中的变量" class="headerlink" title="第21条：了解如何在闭包里面使用外围作用域中的变量"></a>第21条：了解如何在闭包里面使用外围作用域中的变量</h1><p>假设，现在有一个需求，我们要给列表中的元素排序，而且要优先把在另外一个群组的元素放在其他元素的前面。实现这种做法的一种常见方案，是把辅助函数通过key参数传给列表的sort方法，让这个方法根据辅助函数返回的值来决定元素在列表中的先后顺序，辅助函数先判断当前元素是否处在重要群组里，如果在，就把返回值的第一项写成0，让它能够排在不属于这个组的那些元素之前</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sort_priority</span>(<span class="params">values, group</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">helper</span>(<span class="params">x</span>):</span></span><br><span class="line">        <span class="keyword">if</span> x <span class="keyword">in</span> group:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>, x</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>, x</span><br><span class="line"></span><br><span class="line">    values.sort(key=helper)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">numbers = [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">6</span>]</span><br><span class="line">priority_group = &#123;<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>&#125;</span><br><span class="line"></span><br><span class="line">sort_priority(numbers, priority_group)</span><br><span class="line">print(numbers)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>]</span><br></pre></td></tr></table></figure>
+<p>在sort_priority函数中，引用了外部函数的group参数，<font color="orange">在一个内部函数中，对外部作用域的变量进行引用，那么内部函数就被认为是闭包。</font></p>
+<p>假设现在需求新增，sort_priority函数还需要告诉我们，列表里面是否有位于重要群组之中，那么第一个想法就是添加一个标志位：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sort_priority</span>(<span class="params">values, group</span>):</span></span><br><span class="line">    found = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">helper</span>(<span class="params">x</span>):</span></span><br><span class="line">        <span class="keyword">if</span> x <span class="keyword">in</span> group:</span><br><span class="line">            found = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>, x</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>, x</span><br><span class="line"></span><br><span class="line">    values.sort(key=helper)</span><br><span class="line">    <span class="keyword">return</span> found</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">numbers = [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">6</span>]</span><br><span class="line">priority_group = &#123;<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>&#125;</span><br><span class="line"></span><br><span class="line">found = sort_priority(numbers, priority_group)</span><br><span class="line">print(numbers)</span><br><span class="line">print(<span class="string">&#x27;found: &#x27;</span>, found)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>]</span><br><span class="line">found:  <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>虽然排序结果没有问题，但是却发现标志本应该为True，但是返回的确是False。</p>
+<p>在表达式中引用某个变量时，Python解释器会按照下面的顺序，在各个作用域（scope）里面查找这个变量，以解析这次引用（变量出现在<code>=</code>右边时）。</p>
+<ol>
+<li><p>当前函数作用域</p>
+</li>
+<li><p>外围作用域（例如包含当前函数的其他函数所对应的作用域）</p>
+</li>
+<li><p>包含当前代码的那个模块所对应的作用域（也叫全局作用域，global scope）</p>
+</li>
+<li><p>内置作用域（built-in scope，也就是包含len与str等函数的那个作用域）</p>
+</li>
+</ol>
+<p>如果这些作用域中都没有定义名称相符的变量，那么程序就抛出NameError异常。</p>
+<p>当对变量进行赋值时（变量出现在<code>=</code>左边），需要分两种情况处理：如果变量已经定义在当前作用域中，那么直接把新值赋给它就行了。<font color="orange">如果当前作用域中不存在这个变量，那么即使外围作用域里有同名的变量，Python也还是会把这次赋值操作当成变量的定义来处理。</font>这会产生一个重要的效果，也就是说，Python会把包含赋值操作的这个函数当作新定义的这个变量的作用域。这也就解释了为什么found还是为False。</p>
+<p>这种问题有时也称为作用域bug（scoping bug），Python新手可能认为这样的赋值规则很奇怪，<font color="orange">但实际上Python是故意这么设计的，因为这样可以防止函数的局部变量污染外围模块，假设不这么做，那么函数里的每条赋值语句都有可能影响全局作用域的变量，</font>这不仅混乱，而且会让全局变量之间彼此交互影响，从而导致更多难以探查的bug。</p>
+<font color="orange">Python有一种特殊的写法，可以把闭包里面的数据赋给闭包外面的变量。</font>用`nonlocal`描述变量，就可以让系统在处理针对这个变量的赋值操作时，去外围作用域查找。<font color="orange">然而，nonlocal有个限制，就是不能侵入模块级别的作用域（以防污染全局作用域）。</font>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sort_priority</span>(<span class="params">values, group</span>):</span></span><br><span class="line">    found = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">helper</span>(<span class="params">x</span>):</span></span><br><span class="line">        <span class="keyword">if</span> x <span class="keyword">in</span> group:</span><br><span class="line">            <span class="keyword">nonlocal</span> found</span><br><span class="line">            found = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>, x</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>, x</span><br><span class="line"></span><br><span class="line">    values.sort(key=helper)</span><br><span class="line">    <span class="keyword">return</span> found</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">numbers = [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">6</span>]</span><br><span class="line">priority_group = &#123;<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>&#125;</span><br><span class="line"></span><br><span class="line">found = sort_priority(numbers, priority_group)</span><br><span class="line">print(numbers)</span><br><span class="line">print(<span class="string">&#x27;found: &#x27;</span>, found)</span><br></pre></td></tr></table></figure>
+<p>nonlocal语句清楚地说明，我们要把数据赋给闭包之外的变量。<font color="orange">有一种跟它互补的语句，叫做global，用这种语句描述某个变量后，在给这个变量赋值时，系统会直接把它放到模块作用域中。</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">to_global</span>():</span></span><br><span class="line">    <span class="keyword">global</span> a</span><br><span class="line">    a = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">to_global()</span><br><span class="line">print(a)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+<font color="orange">我们都知道全局变量不应该滥用，其实nonlocal也是这样，除比较简单的函数外，建议不要使用nonlocal语句。</font>因为它造成的副作用有时很难发现。尤其是在那些比较长的函数里，nonlocal语句与其关联变量的赋值操作之间可能隔很远。
+
+# 第22条：用数量可变的位置参数给函数设计清晰的参数列表
+
+让函数接收数量可变的位置参数，可以把函数设计得更清晰（这些位置参数通常称为varargs，或者称为star args，因为我们习惯用\*args指代）。例如假设我们要记录调试信息。如果采用参数数量固定的方案来设计，那么函数应该接受一个表示信息的message参数和value列表，这个列表用于存放需要用来debug的一些变量值。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">log</span>(<span class="params">msg, values</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> values:</span><br><span class="line">        print(message)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        values_str = <span class="string">&#x27;, &#x27;</span>.join(<span class="built_in">str</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> values)</span><br><span class="line">        print(<span class="string">f&#x27;<span class="subst">&#123;message&#125;</span>: <span class="subst">&#123;values_str&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line">log(<span class="string">&#x27;the numbers are&#x27;</span>, [<span class="number">1</span>, <span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+
+在调用log函数时，每次都需要传入一个列表，更好的方式是给values参数加上前缀\*，让其变量为数量可变的参数。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">log</span>(<span class="params">msg, *values</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> values:</span><br><span class="line">        print(message)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        values_str = <span class="string">&#x27;, &#x27;</span>.join(<span class="built_in">str</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> values)</span><br><span class="line">        print(<span class="string">f&#x27;<span class="subst">&#123;message&#125;</span>: <span class="subst">&#123;values_str&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line">log(<span class="string">&#x27;the numbers are&#x27;</span>, <span class="number">1</span>, <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+如果想把已有序列里面的元素当成参数传给像log这样的参数个数可变的函数，那么可以在传递序列时采用\*操作符，这样Python把序列中的元素都当成位置参数传给这个函数。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">log(<span class="string">&#x27;numbers are&#x27;</span>, *numbers)</span><br></pre></td></tr></table></figure>
+
+<font color="orange">但是，令函数接受数量可变的位置参数，可能导致两个问题。</font>第一个问题是，程序总是必须把这些参数转化为一个元组，然后才能把他们当成可选的位置参数传给函数。这意味着，在调用函数时，把带\*的操作符的生成器传了过去，那么程序必须先把这个生成器的所有元素迭代完（以便形成元组），然后才能继续往下执行（参见第30条）。这个元组包含生成器所给出的每个值，这可能耗费大量的内存，甚至会让程序崩溃。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_generator</span>():</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10000</span>):</span><br><span class="line">        <span class="keyword">yield</span> i</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_func</span>(<span class="params">*args</span>):</span></span><br><span class="line">    print(args)</span><br><span class="line"></span><br><span class="line">it = my_generator()</span><br><span class="line">my_func(*it)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">(<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, ... , <span class="number">9999</span>)</span><br></pre></td></tr></table></figure>
+
+<font color="orange">接受\*args参数的函数，适合处理输入值不太多，而且数量可以提前预估的情况。在调用这种函数时，传给\*args这一部分的应该是许多个字面值或变量名。</font>Python的这种机制主要是为了让代码写起来更方便、读起来更清晰。
+
+第二个问题是，如果采用了\*args之后，又要给函数添加新的位置参数，那么原来的调用操作就需要全部更新。例如给log函数的参数列表开头添加新的位置参数sequence，那么原来的调用就会表现有问题。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">log</span>(<span class="params">sequence, msg, *values</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> values:</span><br><span class="line">        print(<span class="string">f&#x27;<span class="subst">&#123;sequence&#125;</span> - <span class="subst">&#123;message&#125;</span>&#x27;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        values_str = <span class="string">&#x27;, &#x27;</span>.join(<span class="built_in">str</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> values)</span><br><span class="line">        print(<span class="string">f&#x27;<span class="subst">&#123;sequence&#125;</span> - <span class="subst">&#123;message&#125;</span>: <span class="subst">&#123;values_str&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">log(<span class="string">&#x27;the numbers are&#x27;</span>, <span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">the numbers are - <span class="number">1</span>: <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<font color="orange">关键的问题是，之前的函数调用是不会报语法错误，只是行为不正常甚至是导致运行时错误。</font>这样的bug有时很难去排查。为了避免这种漏洞，在给这种\*args函数添加参数时，应该使用只能通过关键字来指定的参数（keyword-only argument，参见25条）。要是想做得更稳妥一些，可以考虑添加类型注解（参见第90条）。
+
+# 第23条：用关键字参数来表示可选的行为
+
+与大多数其他编程语音一样，Python运行在调用函数时，按照位置传递参数，即按照参数列表所指定的顺序依次传递参数。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remainder</span>(<span class="params">number, divisor</span>):</span></span><br><span class="line">    <span class="keyword">return</span> number % divisor</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> remainder(<span class="number">20</span>, <span class="number">7</span>) == <span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+Python函数里面的所有普通参数，除了按位置传递外，还可以按关键字传递：调用函数时，在调用括号内可以把关键字的名称放在`=`左边，把参数写在右边。这种写法不在乎参数的顺序，只要把指定的所有位置参数全部传过去即可。另外，关键字形式与位置形式也可以混用，下面这四种写法效果相同：
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">remiander(<span class="number">20</span>, <span class="number">7</span>)</span><br><span class="line">remainder(<span class="number">20</span>, divisor=<span class="number">7</span>)</span><br><span class="line">remainder(number=<span class="number">20</span>, divisor=<span class="number">7</span>)</span><br><span class="line">remainder(divisor=<span class="number">7</span>, number=<span class="number">20</span>)</span><br></pre></td></tr></table></figure>
+
+<font color="orange">如果混用，那么位置参数必须出现在关键字参数之前，否则就会报错。</font>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">remainder(number=<span class="number">20</span>, <span class="number">7</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">Traceback ...</span><br><span class="line">SyntaxError: positional argument follows keyword argument</span><br></pre></td></tr></table></figure>
+<font color="orange">每个参数只能指定一次，不能既通过位置形式指定，又通过关键字形式指定。</font>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">remainder(<span class="number">20</span>, number=<span class="number">7</span>)</span><br></pre></td></tr></table></figure>
+<p>如果有一份字典，而且字典里面的内容能够用来调用remainder这样的函数，那么可以吧**运算符加在字典前面，这会让Python把字典里面的键值以关键字参数的形式传给函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">my_kwargs = &#123;</span><br><span class="line">    <span class="string">&#x27;number&#x27;</span>: <span class="number">20</span>,</span><br><span class="line">    <span class="string">&#x27;divisor&#x27;</span>: <span class="number">7</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">assert</span> remainder(**my_kwargs) == <span class="number">6</span></span><br></pre></td></tr></table></figure>
+<p>调用函数时，带**操作符的参数可以和位置参数或关键字参数混用，只要不重复指定就行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">my_kwargs = &#123;</span><br><span class="line">    <span class="string">&#x27;divisor&#x27;</span>: <span class="number">7</span> </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> remainder(number=<span class="number">20</span>, **my_kwargs) == <span class="number">6</span></span><br></pre></td></tr></table></figure>
+<p>也可以对多个字典分别施加**操作，只要这些字典所提供的参数不重叠就好。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">my_kwargs = &#123;</span><br><span class="line">    <span class="string">&#x27;number&#x27;</span>: <span class="number">20</span></span><br><span class="line">&#125;</span><br><span class="line">other_kwargs = &#123;</span><br><span class="line">    <span class="string">&#x27;divisor&#x27;</span>: <span class="number">7</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">assert</span> remainder(**my_kwargs, **other_kwargs) == <span class="number">6</span></span><br></pre></td></tr></table></figure>
+<font color="orange">定义函数时，如果想让这个函数接受任意数量的关键字参数，那么可以在参数列表里写上万能形参\*\*kwarg，</font>它会把调用者传进来的参数集合到一个字典里面。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_parameters</span>(<span class="params">**kwargs</span>):</span></span><br><span class="line">    <span class="keyword">for</span> key, value <span class="keyword">in</span> kwargs.items():</span><br><span class="line">        print(<span class="string">f&#x27;<span class="subst">&#123;key&#125;</span> = <span class="subst">&#123;value&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line">print_parameters(alpha=<span class="number">1.5</span>, beta=<span class="number">9</span>, gamma=<span class="number">4</span>)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">alpha = <span class="number">1.5</span></span><br><span class="line">beta = <span class="number">9</span></span><br><span class="line">gamma = <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+使用关键字参数调用函数有三个好处：
+
+1. 用关键字参数调用函数可以让初次阅读代码的人更容易看懂
+
+2. 它可以带有默认值，该值在定义函数时指定
+
+3. 我们可以很灵活地扩充函数的参数，而不担心会影响原来函调用的代码
+
+<font color="orange">对于函数中定义的非万能关键字参数，python仍然可以按照位置来传递参数</font>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculate_flow_rate</span>(<span class="params">weight_diff, time_diff, period=<span class="number">3600</span>, units_per_kg=<span class="number">2.2</span></span>):</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">calculate_flow_rate(<span class="number">100</span>, <span class="number">20</span>, <span class="number">3600</span>, <span class="number">2.5</span>)</span><br></pre></td></tr></table></figure>
+<font color="orange">通过位置来指定可选参数，可能会让读代码的人有点糊涂，所有最好是能以关键字的形式给这些参数传值，而不要按位置去传。</font>从设计函数的角度来说，还可以考虑用更加明确的方案以降低出错概率（参见25条）。
+
+# 第24条：用None和docstring来描述默认值会变的参数
+
+有时，我们想把那种不能够提前固定的值，当作关键字参数的默认值。例如，记录日志消息时，默认的时间应该是触发事件的那一刻。所以，如果调用者没有明确指定时间，那么就默认把调用函数的那一刻当成这条日志的记录时间。如果我们写如下代码来实现：
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">log</span>(<span class="params">msg, when=datetime.now(<span class="params"></span>)</span>):</span></span><br><span class="line">    print(<span class="string">f&#x27;<span class="subst">&#123;when&#125;</span>: <span class="subst">&#123;msg&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+这样写是不行的，因为`datetime.now()`只会执行一次，所有每条日志的时间戳都会相同。<font color="orange">参数的默认值只会在系统加载这个模块的时候，计算一遍，而不会在每次执行时都重新计算，这通常意味着这些默认值在程序启动后，就已经定下来了。</font>
+
+<p>要想在Python里实现这种效果，惯用的办法是把参数的默认值设为None，同时在docstring文档里面写清楚，这个参数为None时，函数会怎么运作（参见第84条）。给函数写实现代码时，在内部对参数进行判断。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">log</span>(<span class="params">msg, when=<span class="literal">None</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Log a message with a timestamp</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        msg: message to print</span></span><br><span class="line"><span class="string">        when: datetime of when the message occured.</span></span><br><span class="line"><span class="string">            Defaults to the present time</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> when <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        when = datetime.now()</span><br><span class="line">    print(<span class="string">f&#x27;<span class="subst">&#123;when&#125;</span>: <span class="subst">&#123;msg&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>把参数的默认值写成None还有个重要的意义，就是用来表示那种以后可能由调用者修改内容的默认值（例如某个可变容器）。例如，我们要写一个函数对采用JSON格式编码的数据进行解码。如果无法解码，那么就返回调用时所指定的默认结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decode</span>(<span class="params">data, default=&#123;&#125;</span>):</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> json.loads(data)</span><br><span class="line">    <span class="keyword">except</span> ValueError:</span><br><span class="line">        <span class="keyword">return</span> default</span><br></pre></td></tr></table></figure>
+<p>这样的写法与前面的datetime.now()的例子有同样的问题，系统只会计算一次default参数（在加载这个模块时），所有每次调用这个函数时，给调用者返回的都是一开始分配的那个字段，这就相当于凡是以默认值返回来调用这个函数的代码都共用的同一份字典。这会让程序出现奇怪的效果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">foo = decode(<span class="string">&#x27;bad data&#x27;</span>)</span><br><span class="line">foo[<span class="string">&#x27;stuff&#x27;</span>] = <span class="number">5</span></span><br><span class="line"></span><br><span class="line">bar = decode(<span class="string">&#x27;bad data&#x27;</span>)</span><br><span class="line">bar[<span class="string">&#x27;meep&#x27;</span>] = <span class="number">1</span></span><br><span class="line">print(<span class="string">&#x27;Foo:&#x27;</span>, foo)</span><br><span class="line">print(<span class="string">&#x27;Bar:&#x27;</span>, bar)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">Foo: &#123;<span class="string">&#x27;stuff&#x27;</span>: <span class="number">5</span>, <span class="string">&#x27;meep&#x27;</span>: <span class="number">1</span>&#125;</span><br><span class="line">Bar: &#123;<span class="string">&#x27;stuff&#x27;</span>: <span class="number">5</span>, <span class="string">&#x27;meep&#x27;</span>: <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>我们的本意是让这两次操作得到两个不同的空白字典，但是实际上foo和bar是同一个字典。要解决这个问题，可以把默认值设置为None，而且在docstring文档里面说明，函数在这个值为None时会怎么做：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decode</span>(<span class="params">data, default=<span class="literal">None</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Load JSON data from a string</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args: </span></span><br><span class="line"><span class="string">        data: JSON data to decode</span></span><br><span class="line"><span class="string">        default: Value to return if decoding fails.</span></span><br><span class="line"><span class="string">            Defaults to an empty dictionary.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> json.loads(data)</span><br><span class="line">    <span class="keyword">except</span> ValueError:</span><br><span class="line">        <span class="keyword">if</span> default <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            default = &#123;&#125;</span><br><span class="line">        <span class="keyword">return</span> default</span><br></pre></td></tr></table></figure>
+<h1 id="第25条：用只能以关键字指定和只能按位置传入的参数来设计清晰的参数列表"><a href="#第25条：用只能以关键字指定和只能按位置传入的参数来设计清晰的参数列表" class="headerlink" title="第25条：用只能以关键字指定和只能按位置传入的参数来设计清晰的参数列表"></a>第25条：用只能以关键字指定和只能按位置传入的参数来设计清晰的参数列表</h1><p>按关键字传递参数是Python函数的一项强大特性，这种关键字参数特别灵活，在很多情况下，都能让我们写出一看就冬的函数代码。</p>
+<p>例如，计算两数相除的结果时，可能需要仔细考虑各种特殊情况。例如在除数为0的情况下，时抛出异常还是返回无穷；在结果益处的情况下，是抛出异常还是返回0：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">safe_division</span>(<span class="params">number, divisor, </span></span></span><br><span class="line"><span class="function"><span class="params">                  ignore_overflow=<span class="literal">False</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                  ignore_zero_dvision=<span class="literal">False</span></span>):</span></span><br><span class="line">    <span class="keyword">try</span>: </span><br><span class="line">        <span class="keyword">return</span> number / divisor</span><br><span class="line">    <span class="keyword">except</span> OverflowError:</span><br><span class="line">        <span class="keyword">if</span> ignore_overflow:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span></span><br><span class="line">    <span class="keyword">except</span> ZeroDivisionError:</span><br><span class="line">        <span class="keyword">if</span> ignore_zero_division:</span><br><span class="line">            <span class="keyword">return</span> number * <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span></span><br><span class="line"></span><br><span class="line">result = safe_division(<span class="number">1.0</span>, <span class="number">0</span>, ignore_overflow=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<p>调用者可以根据自己的需要对ignore_overflow和ignore_zero_division参数进行指定，而且调用者使用关键字形式进行传递会让代码显得更清晰。<font color="orange">但是，按照上面的函数定义形式，我们没有办法要求调用者必须按照关键字形式来指定这两个参数。他们还是可以用传统的写法，按位置给safe_divison函数传递参数。</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">save_division(number, divisor, <span class="literal">False</span>, <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<p>对于这种参数比较复杂的函数，我们可以声明只能通过关键字指定的参数（keyword-only argument），这样的话，写出来的代码就能清楚地反映调用者的想法了。这种参数只能用关键字来指定，不能按位置传递。具体操作方式是使用<code>*</code>符号把参数列表分成两组，左边是位置参数，右边是只能通过关键字指定的参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_division</span>(<span class="params">number, divisor, *,</span></span></span><br><span class="line"><span class="function"><span class="params">                 ignore_overflow=<span class="literal">False</span>, </span></span></span><br><span class="line"><span class="function"><span class="params">                 ignore_zero_division=<span class="literal">False</span></span>):</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>这时，如果按位置给只能用关键字指定的参数传值，那么程序就会出错。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">save_division(<span class="number">1.0</span>, <span class="number">0</span>, <span class="literal">True</span>, <span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">Traceback ...</span><br><span class="line">TypeError: save_divisoin() takes <span class="number">2</span> positional arguments but <span class="number">4</span> were given</span><br></pre></td></tr></table></figure>
+<p>但是，这样改依然还是有问题，因为在这个函数中，调用者在提供number和divisor参数时，既可以按位置提供，也可以按关键字提供，还可以把这两种方式混起来用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">save_division(number=<span class="number">2</span>, <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+<p>在未来，也许因为扩展函数的需要，甚至是因为代码风格的变化，或许要修改这两个参数的名字。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_division</span>(<span class="params">numerator, denominator, *,</span></span></span><br><span class="line"><span class="function"><span class="params">                  ignore_overflow=<span class="literal">False</span>, </span></span></span><br><span class="line"><span class="function"><span class="params">                  ignore_zero_division=<span class="literal">False</span></span>):</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>这看起来只是字面上的微调，但之前所有通过关键字形式来指定这两个参数的调用代码，都会出错。其实最重要的问题在于，我们根本没有打算把number和divisor这两个名称纳入函数的接口；我们只是在编写函数时，随意挑了两个比较顺口的名称而已。</p>
+<font color="orange">Python3.8引入了一项新特性，可以解决这个问题，这就是只能按位置传递的参数（positional-only argument）。</font>这种参数与刚才的只能通过关键字指定的参数相反，它们必须按位置指定，绝不能通过关键字形式指定。具体操作方式是使用`/`符号表示左边的参数只能通过位置来指定：
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_division</span>(<span class="params">numerator, denominator, /, *,</span></span></span><br><span class="line"><span class="function"><span class="params">                  ignore_overflow=<span class="literal">False</span>, </span></span></span><br><span class="line"><span class="function"><span class="params">                  ignore_zero_division=<span class="literal">False</span></span>):</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+这时候，如果调用者使用关键字形式来指定numerator和denominator参数，程序就会在运行时抛出异常。
+
+<font color="orange">在函数的参数列表中， `/` 符号左侧的参数是只能按位置指定的参数，`*`符号右侧的参数则是只能按照关键字形式指定的参数。</font>如果`*`出现在`/`的左边，则会出现语法错误；如果有参数出现在`/`和`*`的中间，那意味着，这两个符号之间的参数，既可以按照位置提供，又可以用关键字形式指定（其实，如果不特别说明，Python函数的参数全都属于这种参数）。
+
+# 第26条：用functools.wraps定义函数修饰器
+
+Python中有一种特殊的写法，可以用修饰器（decorator）来封装某个函数，从而让程序在执行这个函数之前与执行这个函数之后，分别运行某些代码。这意味着，调用者传给函数的参数值、函数返回给调用者的值，以及函数抛出的异常，都可以有修饰器访问并修改，这是个很有用的机制。
+
+假如，我们要把函数执行时收到的参数与返回的值记录下来，这在调试递归函数时是很有用的，因为我们需要知道，这个函数执行没一层递归时，输入的是什么参数，返回的是什么参数。下面我们就定义一个修饰器，在实现这个修饰器时，用\*args与\*\*kwargs表示受修饰的原函数func所收到的参数：
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">trace</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        result = func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">f&#x27;<span class="subst">&#123;func.__name__&#125;</span>(<span class="subst">&#123;args!r&#125;</span>, <span class="subst">&#123;kwargs!r&#125;</span>) -&gt; <span class="subst">&#123;result!r&#125;</span>&#x27;</span></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+
+写好之后，我们用`@`符号把修饰器运用在想要调试的函数上面。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@trace</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fibonacci</span>(<span class="params">n</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Return the n-th Fibonacci number&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> (<span class="number">0</span>, <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">return</span> n</span><br><span class="line">    <span class="keyword">return</span> (fibonacci(n-<span class="number">2</span>) + fibonacci(n-<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<font color="orange">这样写，相当于先把受修饰的函数传给修饰器，然后将修饰器所返回的值赋给原来那个函数，这样的话，如果我们继续通过原来那个名字调用函数，那么执行的就是修饰器之后的函数。</font>
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">fibonacci(<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">fibonacci((0,), &#123;&#125;) -&gt; 0</span><br><span class="line">fibonacci((1,), &#123;&#125;) -&gt; 1</span><br><span class="line">fibonacci((2,), &#123;&#125;) -&gt; 1</span><br><span class="line">fibonacci((1,), &#123;&#125;) -&gt; 1</span><br></pre></td></tr></table></figure>
+<p>这样写确实能够满足要求，但是会带来一个我们不愿意看到的副作用。使用修饰器对fibonacci函数进行修饰后，fibonacci函数的名字本质上不再是fibonacci。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">print(fibonacci)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">&lt;funtion trace.&lt;<span class="built_in">locals</span>&gt;.wrapper at <span class="number">0x108955dc</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>这种现象解释起来并不困难。trace函数返回的，是它里面定义的wrapper函数，所以，当我们把这个返回值赋给fibonacci之后，fibonacci这个名称所表示的自然就是wrapper了。问题在于，这个可能会干扰需要利用反射机制来运作的工具。</p>
+<p>例如，如果用内置的help函数来查看修饰后的fibonacci，那么打印出来的并不是我们想看的帮助文档，它本来应该打印前面定义时的那行’Return the n-th Fibonacci number文本才对’。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">help</span>(fibonacci)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">Help on function wrapper <span class="keyword">in</span> module __main__:</span><br><span class="line"></span><br><span class="line">wrapper(*args, **kwargs) </span><br></pre></td></tr></table></figure>
+<p>对象序列化器也无法正常运作，因为它不能确定受修饰的那个原始函数的位置。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line">pickle.dumps(fibonacci)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">Traceback ...</span><br><span class="line">AttibuteError: Can<span class="string">&#x27;t pickle local object &#x27;</span>trace.&lt;<span class="built_in">locals</span>&gt;.wrappe<span class="string">r&#x27;</span></span><br></pre></td></tr></table></figure>
+<p><font color="orange">想要解决这些问题，可以改用functool内置模块之中的wraps辅助函数来实现。wraps本身也是个修饰器，它可以帮助你编写自己的修饰器。</font>把它运用到wrapper函数上面，它就会将重要的元数据全部从内部函数复制到外部函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">trace</span>(<span class="params">func</span>):</span></span><br><span class="line"><span class="meta">    @wraps(<span class="params">func</span>)</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">            ...</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@trace</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fibonacci</span>(<span class="params">n</span>):</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>现在我们就可以通过help函数看到正确的文档了，对象序列化器也可以正常使用，不会抛出异常了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/effective-python/" rel="tag"># effective python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/20/DDIA/%E6%95%B0%E6%8D%AE%E5%A4%8D%E5%88%B6/" rel="prev" title="数据复制">
+      <i class="fa fa-chevron-left"></i> 数据复制
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/06/program_language/python/effective_python/%E6%8E%A8%E5%AF%BC%E4%B8%8E%E7%94%9F%E6%88%90/" rel="next" title="推导与生成">
+      推导与生成 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC19%E6%9D%A1%EF%BC%9A%E4%B8%8D%E8%A6%81%E6%8A%8A%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E7%9A%84%E5%A4%9A%E4%B8%AA%E5%80%BC%E6%8B%86%E5%88%86%E5%88%B0%E4%B8%89%E4%B8%AA%E4%BB%A5%E4%B8%8A%E7%9A%84%E5%8F%98%E9%87%8F%E4%B8%AD"><span class="nav-number">1.</span> <span class="nav-text">第19条：不要把函数返回的多个值拆分到三个以上的变量中</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC20%E6%9D%A1%EF%BC%9A%E9%81%87%E5%88%B0%E6%84%8F%E5%A4%96%E7%8A%B6%E5%86%B5%E6%97%B6%E5%BA%94%E8%AF%A5%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8%EF%BC%8C%E4%B8%8D%E8%A6%81%E8%BF%94%E5%9B%9ENone"><span class="nav-number">2.</span> <span class="nav-text">第20条：遇到意外状况时应该抛出异常，不要返回None</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC21%E6%9D%A1%EF%BC%9A%E4%BA%86%E8%A7%A3%E5%A6%82%E4%BD%95%E5%9C%A8%E9%97%AD%E5%8C%85%E9%87%8C%E9%9D%A2%E4%BD%BF%E7%94%A8%E5%A4%96%E5%9B%B4%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F"><span class="nav-number">3.</span> <span class="nav-text">第21条：了解如何在闭包里面使用外围作用域中的变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC25%E6%9D%A1%EF%BC%9A%E7%94%A8%E5%8F%AA%E8%83%BD%E4%BB%A5%E5%85%B3%E9%94%AE%E5%AD%97%E6%8C%87%E5%AE%9A%E5%92%8C%E5%8F%AA%E8%83%BD%E6%8C%89%E4%BD%8D%E7%BD%AE%E4%BC%A0%E5%85%A5%E7%9A%84%E5%8F%82%E6%95%B0%E6%9D%A5%E8%AE%BE%E8%AE%A1%E6%B8%85%E6%99%B0%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8"><span class="nav-number">4.</span> <span class="nav-text">第25条：用只能以关键字指定和只能按位置传入的参数来设计清晰的参数列表</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">150k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">8:18</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

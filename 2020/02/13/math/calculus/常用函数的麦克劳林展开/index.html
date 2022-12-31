@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -14,6 +14,7 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 
 <script id="hexo-configurations">
@@ -28,7 +29,7 @@
     copycode: {"enable":false,"show_result":false,"style":null},
     back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
     bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
+    fancybox: true,
     mediumzoom: false,
     lazyload: false,
     pangu: false,
@@ -50,7 +51,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用函数的麦克劳林展开">
 <meta property="og:url" content="http://swordandtea.github.io/2020/02/13/math/calculus/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0%E7%9A%84%E9%BA%A6%E5%85%8B%E5%8A%B3%E6%9E%97%E5%B1%95%E5%BC%80/index.html">
-<meta property="og:site_name" content="SwordAndTea&#39;s Blog">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
 <meta property="og:description" content="麦克劳林公式是在$x&#x3D;0$点处展开的泰勒公式 常用函数的麦克劳林公式的展开式：1、指数函数  e^x &#x3D; \sum_{n&#x3D;0}^{\infty}\frac{x^n}{n!}2、正弦函数  sin x &#x3D; \sum_{n &#x3D; 0}^{\infty} (-1)^n \frac{x^{2n+1}}{(2n+1)!}3、余弦函数  cos x &#x3D; \sum_{n&#x3D;0}^{\infty}(-1)^n \fr">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-02-13T04:10:23.000Z">
@@ -72,7 +73,7 @@
   };
 </script>
 
-  <title>常用函数的麦克劳林展开 | SwordAndTea's Blog</title>
+  <title>常用函数的麦克劳林展开 | xiangwei's blog</title>
   
 
 
@@ -116,7 +117,7 @@
     <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">SwordAndTea's Blog</span>
+        <span class="site-title">xiangwei's blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -189,13 +190,13 @@
     <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/13/math/calculus/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0%E7%9A%84%E9%BA%A6%E5%85%8B%E5%8A%B3%E6%9E%97%E5%B1%95%E5%BC%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpeg">
       <meta itemprop="name" content="SwordAndTea">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
+      <meta itemprop="name" content="xiangwei's blog">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -230,7 +231,21 @@
                 </span>
             </span>
 
-          
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>316</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
 
         </div>
       </header>
@@ -351,6 +366,8 @@ ln(1+x) = \sum_{n=1}^{\infty} (-1)^{n-1} \frac{x^n}{n}</script><p>5、幂函数<
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
   <p class="site-author-name" itemprop="name">SwordAndTea</p>
   <div class="site-description" itemprop="description"></div>
 </div>
@@ -359,24 +376,29 @@ ln(1+x) = \sum_{n=1}^{\infty} (-1)^{n-1} \frac{x^n}{n}</script><p>5、幂函数<
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-count">119</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">26</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">39</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
 
 
 
@@ -402,8 +424,20 @@ ln(1+x) = \sum_{n=1}^{\infty} (-1)^{n-1} \frac{x^n}{n}</script><p>5、幂函数<
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">150k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">8:18</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.3.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
@@ -424,6 +458,8 @@ ln(1+x) = \sum_{n=1}^{\infty} (-1)^{n-1} \frac{x^n}{n}</script><p>5、幂函数<
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

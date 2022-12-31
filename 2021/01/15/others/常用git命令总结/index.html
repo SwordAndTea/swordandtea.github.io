@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -14,6 +14,7 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 
 <script id="hexo-configurations">
@@ -28,7 +29,7 @@
     copycode: {"enable":false,"show_result":false,"style":null},
     back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
     bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
+    fancybox: true,
     mediumzoom: false,
     lazyload: false,
     pangu: false,
@@ -50,11 +51,11 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用git命令总结">
 <meta property="og:url" content="http://swordandtea.github.io/2021/01/15/others/%E5%B8%B8%E7%94%A8git%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/index.html">
-<meta property="og:site_name" content="SwordAndTea&#39;s Blog">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
 <meta property="og:description" content="clone 仓库相关git clone仓库有两种形式，一种是以ssh协议的形式，另外一种是以https协议的形式。使用ssh协议的形式时，需要将ssh公钥上传到github或者gitlab。使用https协议需要在clone的时候输入github或者gitlab的账号和密码。  git clone [-b &lt;branch name&gt;] &lt;repository url&gt;  -">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-01-15T09:29:14.000Z">
-<meta property="article:modified_time" content="2021-05-11T07:57:19.000Z">
+<meta property="article:modified_time" content="2022-06-06T07:08:26.545Z">
 <meta property="article:author" content="SwordAndTea">
 <meta property="article:tag" content="git">
 <meta name="twitter:card" content="summary">
@@ -71,7 +72,7 @@
   };
 </script>
 
-  <title>常用git命令总结 | SwordAndTea's Blog</title>
+  <title>常用git命令总结 | xiangwei's blog</title>
   
 
 
@@ -115,7 +116,7 @@
     <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">SwordAndTea's Blog</span>
+        <span class="site-title">xiangwei's blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -188,13 +189,13 @@
     <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/01/15/others/%E5%B8%B8%E7%94%A8git%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpeg">
       <meta itemprop="name" content="SwordAndTea">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
+      <meta itemprop="name" content="xiangwei's blog">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -215,7 +216,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-05-11 15:57:19" itemprop="dateModified" datetime="2021-05-11T15:57:19+08:00">2021-05-11</time>
+                <time title="Modified: 2022-06-06 15:08:26" itemprop="dateModified" datetime="2022-06-06T15:08:26+08:00">2022-06-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -229,7 +230,21 @@
                 </span>
             </span>
 
-          
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.8k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>6 mins.</span>
+            </span>
 
         </div>
       </header>
@@ -252,15 +267,18 @@
 </li>
 </ul>
 <h1 id="工作区、暂存区状态相关"><a href="#工作区、暂存区状态相关" class="headerlink" title="工作区、暂存区状态相关"></a>工作区、暂存区状态相关</h1><ul>
-<li><code>git status</code><ul>
+<li><p><code>git status</code></p>
+<ul>
 <li>查看工作区和暂存区的文件状态</li>
 </ul>
 </li>
-<li><code>git add &lt;filename&gt;</code><ul>
+<li><p><code>git add &lt;filename&gt;</code></p>
+<ul>
 <li>将工作区的某个文件添加到暂存区</li>
 </ul>
 </li>
-<li><code>git add .</code><ul>
+<li><p><code>git add .</code></p>
+<ul>
 <li>将工作区全部文件添加到暂存区</li>
 </ul>
 </li>
@@ -311,31 +329,38 @@
 </li>
 </ul>
 <h1 id="分支相关"><a href="#分支相关" class="headerlink" title="分支相关"></a>分支相关</h1><ul>
-<li><code>git branch</code><ul>
+<li><p><code>git branch</code></p>
+<ul>
 <li>查看本地有哪些分支</li>
 </ul>
 </li>
-<li><code>git branch &lt;branch name&gt;</code><ul>
+<li><p><code>git branch &lt;branch name&gt;</code></p>
+<ul>
 <li>创建分支，但是目前仍然位于当前分支</li>
 </ul>
 </li>
-<li><code>git branch &lt;branch name&gt; &lt;commit id&gt;</code><ul>
+<li><p><code>git branch &lt;branch name&gt; &lt;commit id&gt;</code></p>
+<ul>
 <li>基于commit id创建分支，目前仍位于当前分支</li>
 </ul>
 </li>
-<li><code>git checkout -b &lt;branch name&gt;</code><ul>
+<li><p><code>git checkout -b &lt;branch name&gt;</code></p>
+<ul>
 <li>创建并切换分支</li>
 </ul>
 </li>
-<li><code>git checkout -b &lt;branch name&gt; &lt;commit id&gt;</code><ul>
+<li><p><code>git checkout -b &lt;branch name&gt; &lt;commit id&gt;</code></p>
+<ul>
 <li>基于某个commit id创建并切换分支</li>
 </ul>
 </li>
-<li><code>git checkout &lt;branch name&gt;</code><ul>
+<li><p><code>git checkout &lt;branch name&gt;</code></p>
+<ul>
 <li>切换分支，<font color="orange">如果本地没有对应分支但是远程仓库有</font>，则将对应的远程分支拉取到本地并切换到对应分支</li>
 </ul>
 </li>
-<li><code>git branch -d &lt;branch name&gt;</code><ul>
+<li><p><code>git branch -d &lt;branch name&gt;</code></p>
+<ul>
 <li>删除分支，如果分支有提交但是没有合入其他分支，会报错</li>
 </ul>
 </li>
@@ -382,15 +407,18 @@
 </li>
 </ul>
 <h1 id="子模块相关"><a href="#子模块相关" class="headerlink" title="子模块相关"></a>子模块相关</h1><ul>
-<li><code>git submodule add &lt;repository&gt; &lt;dir&gt;</code><ul>
+<li><p><code>git submodule add &lt;repository&gt; &lt;dir&gt;</code></p>
+<ul>
 <li>添加子模块，子模块的链接为url，添加到相对于当前目录的dir目录下</li>
 </ul>
 </li>
-<li><code>git submodule init</code><ul>
+<li><p><code>git submodule init</code></p>
+<ul>
 <li>读取本地子模块配置文件</li>
 </ul>
 </li>
-<li><code>git submodule update</code><ul>
+<li><p><code>git submodule update</code></p>
+<ul>
 <li>拉取子模块</li>
 </ul>
 </li>
@@ -501,8 +529,16 @@
 </li>
 </ul>
 <h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ul>
-<li>git-lfs<ul>
-<li>git大文件处理工具</li>
+<li><p>git-lfs</p>
+<ul>
+<li><p>git大文件处理工具</p>
+</li>
+<li><p><code>git lfs install</code>：开启lfs</p>
+</li>
+<li><p><code>git lfs track *.zip</code>：将zip文件作为lfs文件管理</p>
+</li>
+<li><p><code>GIT_LFS_SKIP_SMUDGE=1 git xxx</code>：此次操作不会去下载lfs文件</p>
+</li>
 </ul>
 </li>
 <li>分离头指针<ul>
@@ -600,6 +636,8 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
   <p class="site-author-name" itemprop="name">SwordAndTea</p>
   <div class="site-description" itemprop="description"></div>
 </div>
@@ -608,24 +646,29 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-count">119</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">26</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">39</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
 
 
 
@@ -651,8 +694,20 @@
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">150k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">8:18</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.3.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
@@ -673,6 +728,8 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

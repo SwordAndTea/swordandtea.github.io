@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -14,6 +14,7 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 
 <script id="hexo-configurations">
@@ -28,7 +29,7 @@
     copycode: {"enable":false,"show_result":false,"style":null},
     back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
     bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
+    fancybox: true,
     mediumzoom: false,
     lazyload: false,
     pangu: false,
@@ -50,7 +51,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="高级I&#x2F;O函数">
 <meta property="og:url" content="http://swordandtea.github.io/2020/11/06/hight_performance_linux_coding/%E9%AB%98%E7%BA%A7IO%E5%87%BD%E6%95%B0/index.html">
-<meta property="og:site_name" content="SwordAndTea&#39;s Blog">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
 <meta property="og:description" content="pipe函数pipe函数可用于创建一个管道，以实现进程间通信（例如父子进程间通信）。pipe函数的定义如下： 12#include &lt;unistd.h&gt;int pipe(int fd[2]); pipe函数的参数是一个包含两个int型整数的数字指针，是作结果输出的参数。该函数成功时返回0，并将一对打开的文件描述符值填入其参数指向的数组。如果失败，则返回-1，并设置errno。 通过pi">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-11-06T08:41:24.000Z">
@@ -71,7 +72,7 @@
   };
 </script>
 
-  <title>高级I/O函数 | SwordAndTea's Blog</title>
+  <title>高级I/O函数 | xiangwei's blog</title>
   
 
 
@@ -115,7 +116,7 @@
     <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">SwordAndTea's Blog</span>
+        <span class="site-title">xiangwei's blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -188,13 +189,13 @@
     <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/11/06/hight_performance_linux_coding/%E9%AB%98%E7%BA%A7IO%E5%87%BD%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpeg">
       <meta itemprop="name" content="SwordAndTea">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
+      <meta itemprop="name" content="xiangwei's blog">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -229,7 +230,21 @@
                 </span>
             </span>
 
-          
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>14 mins.</span>
+            </span>
 
         </div>
       </header>
@@ -282,6 +297,7 @@ mmap函数用于申请一段内存空间。`我们可以将这段内存作为进
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span>* <span class="title">mmap</span><span class="params">(<span class="keyword">void</span>* start, <span class="keyword">size_t</span> length, <span class="keyword">int</span> prot, <span class="keyword">int</span> flags, <span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">munmap</span><span class="params">(<span class="keyword">void</span>* start, <span class="keyword">size_t</span> length)</span></span>;</span><br></pre></td></tr></table></figure>
 
 
+
 * start参数允许用户使用某个特定的地址作为这段内存的起始地址，如果它被设置为NULL，则系统自动分配一个地址。
 * length参数指定内存段的长度。
 * prot参数用来设置内存段的访问权限。它可以取以下几个值的按位或
@@ -327,6 +343,7 @@ mmap函数成功时返回指向目标内存区域的指针，失败则返回MAP_
 splice函数用于在两个文件描述符之间移动数据，也是零拷贝操作。splice函数的定义如下：
 
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">splice</span><span class="params">(<span class="keyword">int</span> fd_in, <span class="keyword">loff_t</span>* off_in, <span class="keyword">int</span> fd_out, <span class="keyword">loff_t</span> *off_out, <span class="keyword">size_t</span> len, <span class="keyword">unsigned</span> <span class="keyword">int</span> flags)</span></span>;</span><br></pre></td></tr></table></figure>
+
 * fd_in参数是需要读数据的文件描述符。
 * off_in表示从输入数据流的何处开始读取数据，如果fd_in是一个管道文件描述符，那么off_in参数必须被设置为NULL，表示从输入数据流的当前偏移位置开始读取数据。
 * fd_out表示需要写数据的文件描述符。
@@ -543,6 +560,8 @@ splice函数用于在两个文件描述符之间移动数据，也是零拷贝�
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
   <p class="site-author-name" itemprop="name">SwordAndTea</p>
   <div class="site-description" itemprop="description"></div>
 </div>
@@ -551,24 +570,29 @@ splice函数用于在两个文件描述符之间移动数据，也是零拷贝�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-count">119</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">26</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">39</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
 
 
 
@@ -594,8 +618,20 @@ splice函数用于在两个文件描述符之间移动数据，也是零拷贝�
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">150k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">8:18</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.3.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
@@ -616,6 +652,8 @@ splice函数用于在两个文件描述符之间移动数据，也是零拷贝�
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

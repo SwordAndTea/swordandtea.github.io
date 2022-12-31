@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -14,6 +14,7 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 
 <script id="hexo-configurations">
@@ -28,7 +29,7 @@
     copycode: {"enable":false,"show_result":false,"style":null},
     back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
     bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
+    fancybox: true,
     mediumzoom: false,
     lazyload: false,
     pangu: false,
@@ -50,14 +51,17 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据编码与演化">
 <meta property="og:url" content="http://swordandtea.github.io/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/index.html">
-<meta property="og:site_name" content="SwordAndTea&#39;s Blog">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
 <meta property="og:description" content="数据编码格式一个程序通常使用两种不同的数据表示形式：  在内存中，数据保存在对象、结构体、列表、数组、哈希表和树等结构中。这些数据结构针对CPU的高效访问和操作进行了优化（通常使用指针）  将数据写入文件或者通过网络发送时，必须将其编码为某种自包含的的字节序列（例如json文档）。由于一个进程的指针对于其他进程来说是没有意义的，所以这个字节序列会与内存中使用的数据结构不大一样   因此，在这两种表">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://swordandtea.github.io/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-2.png">
 <meta property="og:image" content="http://swordandtea.github.io/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-3.png">
 <meta property="og:image" content="http://swordandtea.github.io/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-4.png">
+<meta property="og:image" content="http://swordandtea.github.io/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-5.png">
+<meta property="og:image" content="http://swordandtea.github.io/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-6.png">
+<meta property="og:image" content="http://swordandtea.github.io/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-7.png">
 <meta property="article:published_time" content="2022-01-16T14:15:28.000Z">
-<meta property="article:modified_time" content="2022-01-22T04:00:04.946Z">
+<meta property="article:modified_time" content="2022-03-03T02:17:16.569Z">
 <meta property="article:author" content="SwordAndTea">
 <meta property="article:tag" content="DDIA">
 <meta name="twitter:card" content="summary">
@@ -75,7 +79,7 @@
   };
 </script>
 
-  <title>数据编码与演化 | SwordAndTea's Blog</title>
+  <title>数据编码与演化 | xiangwei's blog</title>
   
 
 
@@ -119,7 +123,7 @@
     <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">SwordAndTea's Blog</span>
+        <span class="site-title">xiangwei's blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -192,13 +196,13 @@
     <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpeg">
       <meta itemprop="name" content="SwordAndTea">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SwordAndTea's Blog">
+      <meta itemprop="name" content="xiangwei's blog">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -219,7 +223,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-01-22 12:00:04" itemprop="dateModified" datetime="2022-01-22T12:00:04+08:00">2022-01-22</time>
+                <time title="Modified: 2022-03-03 10:17:16" itemprop="dateModified" datetime="2022-03-03T10:17:16+08:00">2022-03-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +237,21 @@
                 </span>
             </span>
 
-          
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>6.8k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>23 mins.</span>
+            </span>
 
         </div>
       </header>
@@ -275,23 +293,169 @@
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;username&quot;</span>: <span class="string">&quot;Martin&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;favoriteNumber&quot;</span>: <span class="number">1337</span>,</span><br><span class="line">    <span class="attr">&quot;interests&quot;</span>: [<span class="string">&quot;daydreaming&quot;</span>, <span class="string">&quot;hacking&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在上面的JSON文档中，它们必须在包含字符串userName，favoriteNumber，interest。</p>
 <h2 id="Thrift和Protocol-Buffers"><a href="#Thrift和Protocol-Buffers" class="headerlink" title="Thrift和Protocol Buffers"></a>Thrift和Protocol Buffers</h2><p>Apache Thrift和Protocol Buffers是目前使用得最广泛的两种二进制编码。Protocol Buffers最初是在Google开发的，Thrift最初是在Facebook开发的，并且都是在2007~2008年开源的。</p>
-<p><font color="orange">Thrift和Protocol Buffers都需要模式来编码任意的数据，它们都使用接口描述语言来描述模式。</font>Thrift的IDL示例：</p>
+<font color="orange">Thrift和Protocol Buffers都需要模式来编码任意的数据，它们都使用接口描述语言来描述模式。</font>Thrift的IDL示例：
+
 <figure class="highlight thrift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="number">1</span>: <span class="keyword">required</span> <span class="built_in">string</span> userName,</span><br><span class="line">    <span class="number">2</span>: <span class="keyword">optional</span> <span class="built_in">i64</span> favoriteNumber,</span><br><span class="line">    <span class="number">3</span>: <span class="keyword">optional</span> list&lt;<span class="keyword">string</span>&gt; interests</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Protocol Buffers IDL示例：</p>
+
+Protocol Buffers IDL示例：
+
 <figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">required</span> <span class="built_in">string</span> user_name = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">optional</span> <span class="built_in">int64</span> favorte_number = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">repeated</span> <span class="built_in">string</span> interests = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Thrift 和 Portocol Buffers各有对应的代码生成工具，采用和上面类似的模式定义，并生成支持多种编程语言的类，应用程序可以直接调用生成的代码来编码或解码该模式的数据。</p>
-<h3 id="Thrift的编码模式"><a href="#Thrift的编码模式" class="headerlink" title="Thrift的编码模式"></a>Thrift的编码模式</h3><p>Thrift有三种二进制编码格式和两种基于JSON的编码格式，这里主要讨论两种二进制的编码格式——BinaryProtocol和CompactProtocol（这两种二进制编码是跨语音的，第三种DenseProtocol只支持c++实现）。</p>
-<p>先看看使用BinaryProtocol编码上面同格式的json数据是怎么的：</p>
-<p><img title src="/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-2.png" alt width="471" data-align="center"></p>
-<p>每一个字段都使用一个字节进行类型标注（用于指定它是字符串、整数、列表等），并且在需要时指定数据长度（包括字符串的长度、列表中的项数），数据中的字符串被编码成UTF-8格式的编码。<font color="orange">与JSON相比，最大的区别是没有字段名，相反，编码数据包含数字类型的字段标签（1、2和3）。</font>这些是模式定义中出现的数字，字段标签就像字段的别名，用来指示当前的字段。</p>
-<p>上面的JSON文本编码需要占用81字节（去掉空格），而BinaryProtocol编码只需要59字节。</p>
-<p>Thrift CompactProtocol编码在语意上等同于BinaryProtocol，它编码出来同格式的数据如下：</p>
-<p><img title src="/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-3.png" alt width="478" data-align="center"></p>
-<p>CompactProtocol编码出来的数据只有34字节，它通过将字段类型和字段标签打包到单个字节中，并使用可变长度整数来对数字进行编码。对数字1337，不使用全部8字节，而是使用两个字节进行编码，每字节的最高位来指示是否还有更多的字节（但是这也意味着每个字节都会失去一位有效数字，在某些情况下使用字节数还会比BinaryProtocol用得多）。</p>
-<h3 id="Protocol-Buffers的编码模式"><a href="#Protocol-Buffers的编码模式" class="headerlink" title="Protocol Buffers的编码模式"></a>Protocol Buffers的编码模式</h3><p>Protocol Buffers只有一种二进制编码格式，对上面的JSON数据进行编码，它的结果如下：</p>
-<p><img title src="/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-4.png" alt width="486" data-align="center"></p>
-<p>Protocol Buffers将字段类型和字段标签打包到单个字节中，并且数字类型只有变长编码的方式，并且对于list类型的编码是通过重复类型和字段tag来实现的，这一点和thirft也不同。</p>
-<h2 id="字段标签和演化格式"><a href="#字段标签和演化格式" class="headerlink" title="字段标签和演化格式"></a>字段标签和演化格式</h2>
+
+Thrift 和 Portocol Buffers各有对应的代码生成工具，采用和上面类似的模式定义，并生成支持多种编程语言的类，应用程序可以直接调用生成的代码来编码或解码该模式的数据。
+
+### Thrift的编码模式
+
+Thrift有三种二进制编码格式和两种基于JSON的编码格式，这里主要讨论两种二进制的编码格式——BinaryProtocol和CompactProtocol（这两种二进制编码是跨语音的，第三种DenseProtocol只支持c++实现）。
+
+先看看使用BinaryProtocol编码上面同格式的json数据是怎么的：
+
+<img title src="/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-2.png" alt width="471" data-align="center">
+
+每一个字段都使用一个字节进行类型标注（用于指定它是字符串、整数、列表等），并且在需要时指定数据长度（包括字符串的长度、列表中的项数），数据中的字符串被编码成UTF-8格式的编码。<font color="orange">与JSON相比，最大的区别是没有字段名，相反，编码数据包含数字类型的字段标签（1、2和3）。</font>这些是模式定义中出现的数字，字段标签就像字段的别名，用来指示当前的字段。
+
+上面的JSON文本编码需要占用81字节（去掉空格），而BinaryProtocol编码只需要59字节。
+
+Thrift CompactProtocol编码在语意上等同于BinaryProtocol，它编码出来同格式的数据如下：
+
+<img title src="/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-3.png" alt width="478" data-align="center">
+
+CompactProtocol编码出来的数据只有34字节，它通过将字段类型和字段标签打包到单个字节中，并使用可变长度整数来对数字进行编码。对数字1337，不使用全部8字节，而是使用两个字节进行编码，每字节的最高位来指示是否还有更多的字节（但是这也意味着每个字节都会失去一位有效数字，在某些情况下使用字节数还会比BinaryProtocol用得多）。
+
+### Protocol Buffers的编码模式
+
+Protocol Buffers只有一种二进制编码格式，对上面的JSON数据进行编码，它的结果如下：
+
+<img title src="/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-4.png" alt width="486" data-align="center">
+
+Protocol Buffers将字段类型和字段标签打包到单个字节中，并且数字类型只有变长编码的方式，并且对于list类型的编码是通过重复类型和字段tag来实现的，这一点和thirft也不同。
+
+## 字段标签和字段增删
+
+在Thrift和Protocol Buffers的编码中可以看到，字段标签对编码数据的含义至关重要，<font color="orange">我们可以轻松更改模式中字段的名称，但不能随便更改字段的标签，因为编码永远不直接引用字段名称。</font>
+
+<p>可以添加新的字段到模式，只要给每个字段一个新的标记号码。如果旧的的代码试图解析新代码编码的数据，遇到它不能识别的字段标记号码时，则它可以简单忽略该字段。</p>
+<p>新代码也可以加解析旧代码编码的数据，因为之前的标记号码仍有意义，<font color="orange">唯一的要求是，如果添加一个新的字段，不能使其成为必须的字段。</font>如果将添加的字段设置为required，当新代码读取旧代码写入的数据时，则会检测失败，因为旧代码不会写入添加的required字段。</p>
+<p>删除字段和添加字段一样，只不过只能删除可选的字段，不能删除必须的字段，<font color="orange">而且删除之后的字段号码，后面添加字段时，不要使用已经删除的字段号码，因为很有可能仍然有代码还在写入已经删除的字段。</font></p>
+<h2 id="字段类型变动"><a href="#字段类型变动" class="headerlink" title="字段类型变动"></a>字段类型变动</h2><p>另外一个问题，是否可以改变字段的数据类型呢？<font color="orange">这是有可能的，但是会存在数据精度丢失或者数据被截断的风险。</font></p>
+<h1 id="Avro"><a href="#Avro" class="headerlink" title="Avro"></a>Avro</h1><p>avro 是另一种二进制编码格式，它与Protocol Buffers和Thrift有着一些有趣的差异。由于Thrift不适合Hadoop的用例，因此Avro在2009年作为Hadoop的子项目而启动。</p>
+<p>Avro也使用模式来指定编码的数据结构，<font color="orange">它有两种模式语音，一种Avro IDL易于人工编辑，另一种（基于JSON）更易于机器读取。</font></p>
+<p>用Avro IDL示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">record Person &#123;</span><br><span class="line">    string userName;</span><br><span class="line">    union &#123; null, long &#125; favoriteNumber &#x3D; null;</span><br><span class="line">    array&lt;string&gt; interests;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意，<font color="orange">模式中没有标签编号</font>，其对应等价的JSON表示：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;record&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Person&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;fields&quot;</span>: [</span><br><span class="line">        &#123;<span class="attr">&quot;name&quot;</span>: <span class="string">&quot;userName&quot;</span>, <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;string&quot;</span>&#125;,</span><br><span class="line">        &#123;<span class="attr">&quot;name&quot;</span>: <span class="string">&quot;favoriteNumber&quot;</span>, <span class="attr">&quot;type&quot;</span>: [<span class="string">&quot;null&quot;</span>, <span class="string">&quot;long&quot;</span>], <span class="attr">&quot;default&quot;</span>: <span class="literal">null</span>&#125;,</span><br><span class="line">        &#123;<span class="attr">&quot;name&quot;</span>: <span class="string">&quot;interests&quot;</span>, <span class="attr">&quot;type&quot;</span>: &#123;<span class="attr">&quot;type&quot;</span>: <span class="string">&quot;array&quot;</span>, <span class="attr">&quot;items&quot;</span>: <span class="string">&quot;string&quot;</span>&#125;&#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用avro对之前的json数据进行编码其结果如下</p>
+<p><img title src="/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-5.png" alt width="494" data-align="center"></p>
+<p>从上图中的字节序列中可以看出，<font color="orange">其中没有标识字段或数据类型，</font>用于标记长度的字节中的最后一位用来标记数据是否为null，编码只是由连在一起的一些列值组成。一个字符串只是一个长度前缀，后紧跟UTF-8字节流。</p>
+<p>为了解析二进制数据流，需要按照定义的模式顺序遍历这些字段，然后采用模式告诉的每个字段的类型，<font color="orange">这意味着avro的编解码和模式是强相关的</font>，那么Avro是如何支持模式的演化的呢？</p>
+<h2 id="写模式和读模式"><a href="#写模式和读模式" class="headerlink" title="写模式和读模式"></a>写模式和读模式</h2><p>avro在对某些数据进行编码时，它使用的模式成为写模式，反之，当arvo解码某些数据时使用的模式成为读模式。</p>
+<p>avro的关键思想是，写模式和读模式不必是完全一模一样的，它们只需要保持兼容。只需要给出对应的写模式和读模式给avro，相关avro库内部会解决这种差异。</p>
+<p><img title src="/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-6.png" alt data-align="center" width="530"></p>
+<ul>
+<li><p>如果字段顺序不同，解析模式匹配字段名称即可</p>
+</li>
+<li><p>如果字段在写模式中有，但是在读模式中无，则忽略该字段</p>
+</li>
+<li><p>如果字段在读模式中有，但是在写模式中没有，则使用读模式中声明的默认值填充</p>
+</li>
+</ul>
+<h2 id="模式演化规则"><a href="#模式演化规则" class="headerlink" title="模式演化规则"></a>模式演化规则</h2><font color="orange">为了保持兼容性，只能添加或删除具有默认值的字段。</font>如果要添加一个没有默认值的字段，新的reader将无法获取旧的writer写的数据，因此将破坏向后兼容性。如果删除没有默认值的字段，旧reader将无法读取新writer写入的数据，因此将破坏向前兼容性。
+
+在某些编程语言中，null是所有变量可以接受的默认值，但在avro中并非如此：如果要允许字段为null，则必须使用联合类型，例如`union{ null, long, string}`字段，表示该字段可以是数字、字符串或null，<font color="orange">只有当null是联合的分支之一时，才可以使用null作为默认值（确切地说，null必须是联合的第一个可能类型）。</font>这比默认情况下所有类型都可为空显得更加冗长一些，但是通过明确什么能为null和不能为null可以帮助防止一些错误。
+
+<font color="orange">avro对于类型转换更方便，因为编码后并不会标记字段类型，但是对于字段名称的改变会比较难处理。</font>avro可以在模式中为字段定义别名，因此旧writer模式可以和新reader的字段别名进行匹配做到向后兼容，<font color="orange">但是不能做到向前兼容。</font>
+
+<p>对于在union类型中添加新分支也是向后兼容的，但不能向前兼容。删除union类型的分支是向前兼容的，但不能向后兼容。</p>
+<h2 id="avro使用的场景"><a href="#avro使用的场景" class="headerlink" title="avro使用的场景"></a>avro使用的场景</h2><p>由于avro的编辑码需要确切的知道使用的写模式和读模式是什么，如果在每个编码数据中都包含一份写模式用于reader去解码是不太现实的，因为模式有时甚至比编码数据还要大得多，这样使用avro二进制编码所节省的空间都变得没有意义。</p>
+<p>但是在一些特点的使用场景下可以避免这个问题</p>
+<ul>
+<li><p>有很多记录的大文件</p>
+<ul>
+<li>avro的一个常见用于，尤其是在Hadoop的上下文中，是用于存储包含数百万条记录的大文件，所有记录都使用相同的模式进行编码，该文件的writer可以仅在文件的开头包含writer的模式信息</li>
+</ul>
+</li>
+<li><p>在数据库中保存写模式</p>
+<ul>
+<li>将写模式的变更记录在数据库中，并使用版本号进行标记。在每个编码记录的开始只需要包含一个版本号，reader根据版本号去数据库中获取到对应的写模式</li>
+</ul>
+</li>
+<li><p>网络长连接</p>
+<ul>
+<li>当两个进程通过网络连接进行通信时，可以在建立连接时协商使用的模式，然后在后续的生命周期中使用该模式。这也是Avro RPC协议的基本原理。</li>
+</ul>
+</li>
+</ul>
+<h2 id="动态生成的模式"><a href="#动态生成的模式" class="headerlink" title="动态生成的模式"></a>动态生成的模式</h2><p>与Protocol Buffers和Thrift相比，Avro的一个优点是不包含任何标签号，这样的关键之处在于avro对动态生成的模式更友好。例如，假如有一个关系数据库，想把它的内容转储到一个二进制文件中，如果使用avro，可以很容易根据数据库表的关系模式来动态生成一个avro模式（一个数据表对应一个avro record，每个列成为该record中的一个字段），并使用该模式对数据库中的数据进行编码。</p>
+<p>现在，假如数据库中的数据表的关系模式发生了变化，则可以动态生成新的avro模式，并使用新的avro模式来导出数据。相比之下，如果使用Thrift和Protocol Buffers，则可能必须手动分配字段标签：每次数据库模式更改时，管理员都必须手动更新从数据库名到字段标签的映射（这个部署可以通过代码来完成自动化，但是编写代码时必须非常小心，不要分配到以前使用的字段标签，尤其是删除或者增加列的情况）。</p>
+<h2 id="代码生成和动态类型语言"><a href="#代码生成和动态类型语言" class="headerlink" title="代码生成和动态类型语言"></a>代码生成和动态类型语言</h2><p>Thrift和Protocol Buffers依赖于代码生成：在定义了模式之后，可以使用选择的编程语言生成实现此模式的代码。这在Java、C++等静态类型语言中很有用，因为它允许使用高效的内存结构来解码数据。</p>
+<p>在动态类型编程语言中，如JavaScript、Ruby或Python，因为没有编译时类型检查，生成代码没有太多意义。代码生成在这些语言中经常被忽视。</p>
+<p>Avro为静态类型编程语言提供了可选的代码生成，但是它可可以在不生成代码的情况下直接使用，入股有一个avro文件（它嵌入了writer模式信息），可以简单地使用avro库打开它，并用和查看JSON文件一样的方式查看数据，该文件也是自描述的，它包含了所有必须的元信息。</p>
+<h1 id="模式的优点"><a href="#模式的优点" class="headerlink" title="模式的优点"></a>模式的优点</h1><ul>
+<li><p>它们在大多数情况下比各种“二进制JSON”变体更紧凑，可以节省编码数据中的字段名称</p>
+</li>
+<li><p>有较好的向前和向后兼容性支持</p>
+</li>
+<li><p>对于静态类型编程语言来说，从模式生成代码的能力是很有用的，它能编译时进行类型检查</p>
+</li>
+</ul>
+<h1 id="数据流模式"><a href="#数据流模式" class="headerlink" title="数据流模式"></a>数据流模式</h1><p>二进制数据流从一个进程流向另外一个进程通常有以下几种方式：</p>
+<ul>
+<li><p>通过数据库</p>
+</li>
+<li><p>通过服务调用</p>
+</li>
+<li><p>通过异步消息传递</p>
+</li>
+</ul>
+<h2 id="基于数据库的数据流"><a href="#基于数据库的数据流" class="headerlink" title="基于数据库的数据流"></a>基于数据库的数据流</h2><p>在数据库中，写入数据库的进程对数据进行编码，而读取数据库的进程对数据进行编码。可能只有一个进程会方法数据库，在这种情况下，reader只有一个进程，但是这个reader可能在不同时候用不同版本的模式对数据库进行读写，例如reader用模式写入后，就进行了服务更新，之后会使用新模式来读取数据库的内容。此时向后兼容性就很重要，否则未来的自己将无法解码以前自己写的内容。</p>
+<p>但是，一般而言，几个不同的进程同时访问数据库是很常见的。这些进程可能是几个不同的服务，也可能是一个服务的几个实例。无论哪种情况，访问数据库的进程可能某些运行着较新的代码，而其他运行着较旧的代码。这意味着既有可能数据库中的值由较旧的代码写入，较新的代码进行读取，又有可能由较新的代码写入，较旧的代码读取，所以向前和向后的兼容性都很重要。</p>
+<p>另外，还存在一个问题，假设在记录模式中添加了一个字段，并且较新的代码将该新字段的值写入数据库，随后，旧版本的代码（尚不知道该新字段）将其读取、更新记录并写回数据库，在这种情况下，理想的行为通常是旧代码保持新字段不变，即使它无法解释。<font color="orange">之前讨论的编码格式支持未知字段的保存，但是有时候还需要注意应用层面的影响，例如，如果将数据库中的值解码为应用程序中的对象，然后重新编码这些模型对象，则在转换过程中可能会丢失未知字段，在编写代码的时候要有这方面的意识</font></p>
+<p><img title src="/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-7.png" alt width="543" data-align="center"></p>
+<h3 id="不同时间写入不同的值"><a href="#不同时间写入不同的值" class="headerlink" title="不同时间写入不同的值"></a>不同时间写入不同的值</h3><p>数据库通常支持在任何时候写入，这意味着在单个数据库中，可能有一些值是在5ms前写入的，而有些值可能是在5年前写入的。</p>
+<p>部署新版本的服务应用程序时，可以在几分钟内用新版本完全替换旧版本。但是数据库内容的情况并不是这样的：将旧数据重写（迁移）为新模式当然是可能的，但在大型数据集上执行此操作代价不菲，因此很多数据库都进可能避免此操作。大多数关系数据库允许进行简单的模式更改，例如添加具有默认值为空的新列，而不重写现有数据。读取旧行时，数据库会为磁盘上编码数据缺失的所有列填充为空值。因此，模式演化支持整个数据库看起来像是采用了单个模式编码，即使底层存储可能包含各个版本模式所编码的记录。</p>
+<h3 id="归档存储"><a href="#归档存储" class="headerlink" title="归档存储"></a>归档存储</h3><p>有些时候我们会不时地为数据库创建快照，例如用于备份或加载到数据仓库，在这种情况下，数据转储通常使用最新的编码模式进行编码，即使源数据库中的数据包含了不同时代的各种模式版本。由于无论如何都要复制数据，所以此时最好对数据副本进行统一编码。</p>
+<font color="orange">由于数据转储时一次写入的，而且以后可能不可改变，因此像arvo这样的编码格式非常适合。</font>
+
+<h2 id="基于服务的数据流：REST和RPC"><a href="#基于服务的数据流：REST和RPC" class="headerlink" title="基于服务的数据流：REST和RPC"></a>基于服务的数据流：REST和RPC</h2><h2 id="网络http服务"><a href="#网络http服务" class="headerlink" title="网络http服务"></a>网络http服务</h2><p>http服务有两种流行的服务方法：REST和SOAP，它们在设计理念方面几乎式截然相反的。</p>
+<p>REST不是一种协议，而是一个基于HTTP原则的设计理念，它强调简单的数据格式，使用URL来标识资源，并使用HTTP功能进行缓存控、身份验证和内容类型协商。与SOAP相比，REST已经越来越受欢迎，根据REST原则所设计的API称为RESTful。</p>
+<p>相比之下，SOAP是一种基于XML的协议，用于发送网络API请求，虽然它最长用与HTTP，但其目的是独立于HTTP，并避免使用大多数HTTP功能，相反，它带有庞大而复杂的多种相关标准和新增的各种功能，SOAP Web服务的API使用被称为WSDL（Web Service Description Language，一种基于XML的语言）。WSDL支持代码生成，客户端可以使用本地类和方法调用（编码为XML消息并由框架进行解码）来访问远程服务。</p>
+<p>由于WSDL的设计目标不是人类可读的，而且SOAP消息通常过于复杂，无法手动构建，SOAP用户严重依赖工具支持、代码生成和IDE。对于没有SOAP提供商支持的编程语言用户来说，试图集成SOAP服务非常困难。由于这些原因，尽管它在某些大型企业中仍有使用，但是已经不再收到大多数小公司的青睐。</p>
+<h2 id="远程过程调用RPC"><a href="#远程过程调用RPC" class="headerlink" title="远程过程调用RPC"></a>远程过程调用RPC</h2><p>远程过程调用的思想从20世纪70年代以来就一直存在。RPC模式试图使向远程网络发送请求看起来与在同一进程调用编程语言中的函数或方法相同。<font color="orange">虽然RPC起初看起来很方便，但是这种方法在根本上是有缺陷的，网络请求与本地函数调用非常不同：</font></p>
+<ul>
+<li><p>本地函数调用是可预测的，并且成功或失败仅取决于参数的控制。网络请求是不可预测的：请求或响应可能有由于网络问题而丢失，或者远程计算机可能速度慢或不可用，这些问题完全不在控制范围之内，网络问题很常见，因此必须有所准备，例如重试失败的请求。</p>
+</li>
+<li><p>本地函数调用要门返回一个结果，要么抛出一个异常，或者永远不会返回（因为进入无限循环或者进程崩溃）。网络请求有另外一个可能的结果：由于超时，它返回时可能没有结果。在这种情况下，根本不知道发生了什么：如果没有接收到来自远程服务的响应，无法直到请求是否成功</p>
+</li>
+</ul>
+<ul>
+<li><p>当你重试失败的网络请求时，可能发生请求实际上通过，但是只有响应丢失的情况，在这种情况下，重试将导致该操作被执行多次，除非操作是幂等的。</p>
+</li>
+<li><p>每次调用本地功能时，通常需要大致相同的时间来执行，网络请求比函数调用要慢很多，而且其延迟会随着网络环境和机器负载而波动</p>
+</li>
+<li><p>调用本地函数时，可以高效地将引用（指针）传递给本地内存中的对象。当你发出一个网络请求时，所有这些参数都需要被编码成可以通过网络发送的一系列字节。</p>
+</li>
+<li><p>客户端和服务可以用不同的编程语音实现，所以RPC框架必须将数据从一种语音翻译成另外一种语音，这样可能会出问题，因为不是所有的语音都具有相同的数据类型（例如JavaScript数字大于$2^{53}$的问题）。</p>
+</li>
+<li><p><font color="orange">所有这些因素意味着尝试使远程服务看起来像编程语音中的本地函数调用一样是毫无意义的，因为这是两个根本不同的事情。</font>REST的部分吸引力在于，它并不试图隐藏它是一个网络协议的事实。</p>
+</li>
+</ul>
+<h2 id="RPC的当前方向"><a href="#RPC的当前方向" class="headerlink" title="RPC的当前方向"></a>RPC的当前方向</h2><p>尽管有这样那样的问题，RPC不会消失：thrift和Avro带有RPC支持，gRPC是使用Protocol Buffers的RPC实现。</p>
+<font color="orange">新一代的RPC框架更加明确的是，远程请求与本地函数调用不同。</font>例如，gPRC支持流，其中一个调用不仅包括一个请求和一个响应，还可以是随时间的一系列请求和响应。
+
+由于REST具有方便实验和调试（只需使用web浏览器或者命令行工具curl，无需任何代码生成或软件安装即可发送请求），能被所有主流的编程语音和平台所支持，还有大量可用的工具的生态系统（服务器、缓存、负载均衡、代理、防火墙、监控、调试和测试工具），<font color="orange">REST已经成为公共API的主要风格，RPC的主要重点在于同一组织内部服务器之间的请求。</font>
+
+<h2 id="RPC数据编码的演化"><a href="#RPC数据编码的演化" class="headerlink" title="RPC数据编码的演化"></a>RPC数据编码的演化</h2><p>对于RPC可演化性，关注的是可以独立更改和部署RPC客户端和服务器。与通过数据库流动的数据相比，一般来说都是所有的服务器先进行更新，其次再是客户端进行更新。所以RPC数据编码的演化需要考虑的是在请求上具有向后兼容性（服务器端对还未更新的客户端发来的请求可以识别并处理），并在响应上具有向前兼容（未更新的客户端对已经完成更新的服务端返回的响应也能够处理）。</p>
+<h1 id="异步消息传递中的数据流"><a href="#异步消息传递中的数据流" class="headerlink" title="异步消息传递中的数据流"></a>异步消息传递中的数据流</h1><p>进程间异步消息的传递通常是通过消息代理（消息队列）实现的，与直接RPC相比，使用消息代理有几个优点：</p>
+<ul>
+<li><p>如果接受消息的进程不可用或过载，消息代理可以充当消息代理，从而提供系统的可靠性。</p>
+</li>
+<li><p>避免消息发送的进程需要知道接收进程的IP地址和端口号</p>
+</li>
+<li><p>它允许将一条消息广播给多个接收方</p>
+</li>
+<li><p>将消息发送方和接收方进行解耦</p>
+</li>
+</ul>
+
     </div>
 
     
@@ -309,10 +473,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/01/01/effective_python/%E5%88%97%E8%A1%A8%E4%B8%8E%E5%AD%97%E5%85%B8/" rel="prev" title="列表与字典">
+    <a href="/2022/01/01/program_language/python/effective_python/%E5%88%97%E8%A1%A8%E4%B8%8E%E5%AD%97%E5%85%B8/" rel="prev" title="列表与字典">
       <i class="fa fa-chevron-left"></i> 列表与字典
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/12/devops/k8s/k8s%E5%88%9D%E5%AD%A6%E7%AC%94%E8%AE%B0/" rel="next" title="k8s初学笔记">
+      k8s初学笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -372,12 +539,14 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">数据编码格式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E7%89%B9%E5%AE%9A%E7%9A%84%E7%BC%96%E8%A7%A3%E7%A0%81%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">语言特定的编解码格式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JSON%E3%80%81XML"><span class="nav-number">3.</span> <span class="nav-text">JSON、XML</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">二进制编码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Thrift%E5%92%8CProtocol-Buffers"><span class="nav-number">4.1.</span> <span class="nav-text">Thrift和Protocol Buffers</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Thrift%E7%9A%84%E7%BC%96%E7%A0%81%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.1.1.</span> <span class="nav-text">Thrift的编码模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Protocol-Buffers%E7%9A%84%E7%BC%96%E7%A0%81%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.1.2.</span> <span class="nav-text">Protocol Buffers的编码模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E6%AE%B5%E6%A0%87%E7%AD%BE%E5%92%8C%E6%BC%94%E5%8C%96%E6%A0%BC%E5%BC%8F"><span class="nav-number">4.2.</span> <span class="nav-text">字段标签和演化格式</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">数据编码格式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E7%89%B9%E5%AE%9A%E7%9A%84%E7%BC%96%E8%A7%A3%E7%A0%81%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">语言特定的编解码格式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JSON%E3%80%81XML"><span class="nav-number">3.</span> <span class="nav-text">JSON、XML</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">二进制编码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Thrift%E5%92%8CProtocol-Buffers"><span class="nav-number">4.1.</span> <span class="nav-text">Thrift和Protocol Buffers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E6%AE%B5%E7%B1%BB%E5%9E%8B%E5%8F%98%E5%8A%A8"><span class="nav-number">4.2.</span> <span class="nav-text">字段类型变动</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Avro"><span class="nav-number">5.</span> <span class="nav-text">Avro</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E6%A8%A1%E5%BC%8F%E5%92%8C%E8%AF%BB%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.1.</span> <span class="nav-text">写模式和读模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E6%BC%94%E5%8C%96%E8%A7%84%E5%88%99"><span class="nav-number">5.2.</span> <span class="nav-text">模式演化规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#avro%E4%BD%BF%E7%94%A8%E7%9A%84%E5%9C%BA%E6%99%AF"><span class="nav-number">5.3.</span> <span class="nav-text">avro使用的场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E7%94%9F%E6%88%90%E7%9A%84%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.4.</span> <span class="nav-text">动态生成的模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%E5%92%8C%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B%E8%AF%AD%E8%A8%80"><span class="nav-number">5.5.</span> <span class="nav-text">代码生成和动态类型语言</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%BC%98%E7%82%B9"><span class="nav-number">6.</span> <span class="nav-text">模式的优点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%B5%81%E6%A8%A1%E5%BC%8F"><span class="nav-number">7.</span> <span class="nav-text">数据流模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="nav-number">7.1.</span> <span class="nav-text">基于数据库的数据流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%90%8C%E6%97%B6%E9%97%B4%E5%86%99%E5%85%A5%E4%B8%8D%E5%90%8C%E7%9A%84%E5%80%BC"><span class="nav-number">7.1.1.</span> <span class="nav-text">不同时间写入不同的值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%92%E6%A1%A3%E5%AD%98%E5%82%A8"><span class="nav-number">7.1.2.</span> <span class="nav-text">归档存储</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%9C%8D%E5%8A%A1%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B5%81%EF%BC%9AREST%E5%92%8CRPC"><span class="nav-number">7.2.</span> <span class="nav-text">基于服务的数据流：REST和RPC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9Chttp%E6%9C%8D%E5%8A%A1"><span class="nav-number">7.3.</span> <span class="nav-text">网络http服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E8%BF%87%E7%A8%8B%E8%B0%83%E7%94%A8RPC"><span class="nav-number">7.4.</span> <span class="nav-text">远程过程调用RPC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RPC%E7%9A%84%E5%BD%93%E5%89%8D%E6%96%B9%E5%90%91"><span class="nav-number">7.5.</span> <span class="nav-text">RPC的当前方向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RPC%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E7%9A%84%E6%BC%94%E5%8C%96"><span class="nav-number">7.6.</span> <span class="nav-text">RPC数据编码的演化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="nav-number">8.</span> <span class="nav-text">异步消息传递中的数据流</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
   <p class="site-author-name" itemprop="name">SwordAndTea</p>
   <div class="site-description" itemprop="description"></div>
 </div>
@@ -386,24 +555,29 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-count">119</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">26</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">39</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
 
 
 
@@ -429,8 +603,20 @@
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">150k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">8:18</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.3.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
@@ -451,6 +637,8 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
