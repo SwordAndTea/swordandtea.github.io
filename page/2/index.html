@@ -181,6 +181,342 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2022/03/26/program_language/python/effective_python/%E7%B1%BB%E4%B8%8E%E6%8E%A5%E5%8F%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/26/program_language/python/effective_python/%E7%B1%BB%E4%B8%8E%E6%8E%A5%E5%8F%A3/" class="post-title-link" itemprop="url">类与接口</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-26 21:33:56 / Modified: 23:44:01" itemprop="dateCreated datePublished" datetime="2022-03-26T21:33:56+08:00">2022-03-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/effective-python/" itemprop="url" rel="index">
+                    <span itemprop="name">effective python</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>346</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="第37条：用组合起来的类来实现多层结构，不要用嵌套的内置类型"><a href="#第37条：用组合起来的类来实现多层结构，不要用嵌套的内置类型" class="headerlink" title="第37条：用组合起来的类来实现多层结构，不要用嵌套的内置类型"></a>第37条：用组合起来的类来实现多层结构，不要用嵌套的内置类型</h1><p>一般我们在编写项目代码时，由于初始的需求简单，需要用到的数据结构也简单，所以我们会经常使用python提供的容器来用做类的内部状态记录。但是随着需求的迭代，我们可能会使用到数据结构可能会更变得复杂，这时，我们不能简单的对用于记录内部状态的容器进行嵌套，而是应该考虑将内部的某些状态封装成一个类，并在外部的接口类中对这些数据类进行组合。</p>
+<h1 id="第38条：让简单的接口接受函数，而不是类的实例"><a href="#第38条：让简单的接口接受函数，而不是类的实例" class="headerlink" title="第38条：让简单的接口接受函数，而不是类的实例"></a>第38条：让简单的接口接受函数，而不是类的实例</h1><p>Python有很多内置的API，都允许我们传入某个函数来定制它的行为，这种函数被成为hook函数，API在执行的时候，会调用这些hook函数。例如，list类的sort方法的key参数。<font color="orange">在其他编程语音中，hook函数可能是通过抽象类或者接口来定义的（例如Java），但在python中一般是直接使用无状态的函数（即不会对内部状态进行修改）</font></p>
+<h1 id="第39条：通过-classmethod多态来构造同一体系中的各类对象"><a href="#第39条：通过-classmethod多态来构造同一体系中的各类对象" class="headerlink" title="第39条：通过@classmethod多态来构造同一体系中的各类对象"></a>第39条：通过@classmethod多态来构造同一体系中的各类对象</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2022/03/06/program_language/python/effective_python/%E6%8E%A8%E5%AF%BC%E4%B8%8E%E7%94%9F%E6%88%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/06/program_language/python/effective_python/%E6%8E%A8%E5%AF%BC%E4%B8%8E%E7%94%9F%E6%88%90/" class="post-title-link" itemprop="url">推导与生成</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-06 12:07:53" itemprop="dateCreated datePublished" datetime="2022-03-06T12:07:53+08:00">2022-03-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-03-17 20:53:16" itemprop="dateModified" datetime="2022-03-17T20:53:16+08:00">2022-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/effective-python/" itemprop="url" rel="index">
+                    <span itemprop="name">effective python</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>5k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>17 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="第27条：用列表推导取代map与filter"><a href="#第27条：用列表推导取代map与filter" class="headerlink" title="第27条：用列表推导取代map与filter"></a>第27条：用列表推导取代map与filter</h1><p>Python里面有一种很精简的写法，可以根据某个序列或可迭代对象派生出一份新的列表。用这种写法写成的表达式，叫作列表推导。假设我们要用列表中每个元素的平方值构建一份新的列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]</span><br><span class="line">squares = [x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> a]</span><br></pre></td></tr></table></figure>
+<p>这种功能也可以使用内置函数map实现，它能够从多个列表中分别取出当前位置上的元素，并把它们当作参数传给映射函数，以求出新列表在这个位置上的元素值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alt = <span class="built_in">map</span>(<span class="keyword">lambda</span> x: x**<span class="number">2</span>, a)</span><br></pre></td></tr></table></figure>
+<font color="orange">如果映射关系比较简单，那么用列表推导来写还是要比用map简单一些，因为用map的时候，必须先把映射逻辑定义为lambda函数，这看上去稍微有点繁琐。</font>
+
+<p>列表推导还有一个地方比map好，就是它能够方便地过滤原列表，把某些输入值对应的计算结果从输出结果中排除。例如，假设新列表只需要纳入原列中那些偶数的平方值，那么我们可以在推导的时候再添加一个条件表达式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">even_squares = [x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> a <span class="keyword">if</span> x % <span class="number">2</span> == <span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<p>这种功能也可以通过内置的filter与map函数来实现，但是这两个函数相结合的写法要比列表推导难懂一些。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alt = <span class="built_in">map</span>(<span class="keyword">lambda</span> x : x**<span class="number">2</span>, <span class="built_in">filter</span>(<span class="keyword">lambda</span> x: x % <span class="number">2</span> == <span class="number">0</span>, a))</span><br></pre></td></tr></table></figure>
+<p>上面这个写法是先用filter对a中的元素进行过滤形成新的列表，然后在对这个新的列表用map函数生成最终结果。</p>
+<font color="orange">字典与集合也有相应的推导机制，分别叫做字典推导与集合推导，可以根据原字典与原集合创建新字典与新集合。</font>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">even_squares_dict = &#123;x: x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> a <span class="keyword">if</span> x % <span class="number">2</span> == <span class="number">0</span>&#125;</span><br><span class="line">threes_cubed_set = &#123;x**<span class="number">3</span> <span class="keyword">for</span> x <span class="keyword">in</span> a <span class="keyword">if</span> x % <span class="number">3</span> == <span class="number">0</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>如果改用map与filter实现，那么还必须调用相应的构造器（constructor），这会让代码变得很长，需要分成多行才能写得下。这样看起来比较乱，不如使用推导机制的代码清晰。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alt_dict = <span class="built_in">dict</span>(<span class="built_in">map</span>(<span class="keyword">lambda</span> x: (x, x**<span class="number">2</span>), <span class="built_in">filter</span>(<span class="keyword">lambda</span> x: x % <span class="number">2</span> == <span class="number">0</span>, a)))</span><br><span class="line">alt_set = <span class="built_in">set</span>(<span class="built_in">map</span>(<span class="keyword">lambda</span> x: (x, x**<span class="number">3</span>), <span class="built_in">filter</span>(<span class="keyword">lambda</span> x: x % <span class="number">3</span> == <span class="number">0</span>, a)))</span><br></pre></td></tr></table></figure>
+<h1 id="第28条：控制推导逻辑的子表达式不要超过两个"><a href="#第28条：控制推导逻辑的子表达式不要超过两个" class="headerlink" title="第28条：控制推导逻辑的子表达式不要超过两个"></a>第28条：控制推导逻辑的子表达式不要超过两个</h1><p>列表推导除了最基本的用法外，列表推导还支持多层循环。例如，要把二维列表转化为普通的一维列表，那么可以在推导时，使用两条for子表达式。这些子表达式会按照从左到右的顺序解读。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">matrix = [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], [<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]]</span><br><span class="line">flat = [x <span class="keyword">for</span> row <span class="keyword">in</span> matrix <span class="keyword">for</span> x <span class="keyword">in</span> row]</span><br></pre></td></tr></table></figure>
+<p>这样写简单易懂，也是多层循环在列表推导中的合理用法。多层循环还可以用来重制那种两层深的结构。例如，要根据二维矩阵里每个元素的平方值来构建一个新的二维矩阵：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">squared = [[x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> row] <span class="keyword">for</span> row <span class="keyword">in</span> matrix]</span><br></pre></td></tr></table></figure>
+<p>如果推导过程中还要再加一层循环，那么语句就会变得很长，必须把它分成多行来写，例如下面是把一个三维矩阵转化成普通一维列表的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">my_lists = [</span><br><span class="line">    [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]],</span><br><span class="line">    ...</span><br><span class="line">]</span><br><span class="line">flat = [x <span class="keyword">for</span> sublist1 <span class="keyword">in</span> my_lists </span><br><span class="line">        <span class="keyword">for</span> sublist2 <span class="keyword">in</span> sublist1</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> sublist2]</span><br></pre></td></tr></table></figure>
+<font color="orange">在这种情况下，采用列表推导来实现，其实并不会比传统的for循环节省多少代码。</font>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">flat = []</span><br><span class="line"><span class="keyword">for</span> sublist1 <span class="keyword">in</span> my_lists:</span><br><span class="line">    <span class="keyword">for</span> sublist2 <span class="keyword">in</span> sublist1:</span><br><span class="line">        flat.extend(sublist2)</span><br></pre></td></tr></table></figure>
+<p>推导的时候，可以使用多个if条件，如果这些if条件出现在同一层循环内，那么它们之间默认是and关系，也就是必须同时成立。例如，如果要用原列表中大于4且是偶数的值来构建新列表，那么既可以连用两个if，也可以只用一个if，下面两种写法效果相同：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]</span><br><span class="line">b = [x <span class="keyword">for</span> x <span class="keyword">in</span> a <span class="keyword">if</span> x &gt; <span class="number">4</span> <span class="keyword">if</span> x % <span class="number">2</span> == <span class="number">0</span>]</span><br><span class="line">c = [x <span class="keyword">for</span> x <span class="keyword">in</span> a <span class="keyword">if</span> x &gt; <span class="number">4</span> <span class="keyword">and</span> x % <span class="number">2</span> == <span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<p>在推导时，每一层的for子表达式都可以带有if条件。假如要根据原矩阵构建新的矩阵，把其中各元素之和大于等于10的那些行选出来，而且只保留其中能够被3整除的那些元素。这个逻辑用列表推导来写，并不需要太多的代码，但是这些代码理解起来会很困难：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">matrix = [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], [<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]]</span><br><span class="line">filterd = [[x <span class="keyword">for</span> x <span class="keyword">in</span> row <span class="keyword">if</span> x % <span class="number">3</span> == <span class="number">0</span>] <span class="keyword">for</span> row <span class="keyword">in</span> matrix <span class="keyword">if</span> <span class="built_in">sum</span>(row) &gt;= <span class="number">10</span>]</span><br></pre></td></tr></table></figure>
+<font color="orange">总之，在表示推导逻辑时，最多只应该写两个子表达式（例如两个if条件、两个for循环，或者一个if条件与一个for循环）。</font> 只要实现的逻辑比这还复杂，那就应该采用普通的if和for语句来实现。
+
+# 第29条：用赋值表达式消除推导中的重复代码
+
+推导list、dict与set等结构时，经常要在多个地方用到同一个计算结果。例如，我们要给制作紧固件的公司编写程序以管理订单。顾客下单后，我们要判断当前库存能否满足这份订单，也就是说，要和产每种产品的数量有没有达到可以发货的最低限制（8个为一批，至少要一批，才能发货）。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">stock = &#123;</span><br><span class="line">    <span class="string">&#x27;nails&#x27;</span>: <span class="number">125</span>,</span><br><span class="line">    <span class="string">&#x27;screws&#x27;</span>: <span class="number">35</span>,</span><br><span class="line">    <span class="string">&#x27;wingnuts&#x27;</span>: <span class="number">8</span>,</span><br><span class="line">    <span class="string">&#x27;washers&#x27;</span>: <span class="number">24</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">order = [<span class="string">&#x27;screws&#x27;</span>, <span class="string">&#x27;wingnuts&#x27;</span>, <span class="string">&#x27;clips&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_batches</span>(<span class="params">count, size</span>):</span></span><br><span class="line">    <span class="keyword">return</span> count // size</span><br><span class="line"></span><br><span class="line">result = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> order:</span><br><span class="line">    count = stock.get(name, <span class="number">0</span>)</span><br><span class="line">    batches = get_batches(count, <span class="number">8</span>)</span><br><span class="line">    <span class="keyword">if</span> batches:</span><br><span class="line">        result[name] = batches</span><br><span class="line"></span><br><span class="line">print(result)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">&#123;<span class="string">&#x27;screws&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;wingnuts&#x27;</span>: <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
+
+这段循环逻辑，如果改用字典推导来写，会简单一些：
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">result = &#123;name: get_batches(stock.get(name, <span class="number">0</span>), <span class="number">8</span>) </span><br><span class="line">         <span class="keyword">for</span> name <span class="keyword">in</span> order</span><br><span class="line">         <span class="keyword">if</span> get_batches(stock.get(name, <span class="number">0</span>), <span class="number">8</span>)&#125;</span><br></pre></td></tr></table></figure>
+
+这样写虽然比刚才简短，但问题是，它把`get_batches(stock.get(name, 0), 8)`写了两遍。有个简单的办法可以解决这个问题，那就是在推导的过程中使用Python3.8新引入的 `:=`操作符进行赋值表达
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result = &#123;name: batches <span class="keyword">for</span> name <span class="keyword">in</span> order </span><br><span class="line">         <span class="keyword">if</span> (batches := get_batches(stock.get(name, <span class="number">0</span>), <span class="number">8</span>))&#125;</span><br></pre></td></tr></table></figure>
+
+在推导过程中，<font color="orange">描述新值的那一部分也可以出现赋值表达式，但如果在其他部分引用了定义在那一部分的变量，那么程序可能就会在运行时出错：</font>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">result = &#123;name: (tenth := count // <span class="number">10</span>)</span><br><span class="line">          <span class="keyword">for</span> name, count <span class="keyword">in</span> stock.items() <span class="keyword">if</span> tenth &gt; <span class="number">0</span>&#125;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">Traceback ...</span><br><span class="line">NameError: name <span class="string">&#x27;tenth&#x27;</span> <span class="keyword">is</span> <span class="keyword">not</span> defined</span><br></pre></td></tr></table></figure>
+<p>但是，如果把赋值表达式移动到<code>if</code>条件里面，就可以解决这个问题：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result = &#123;name: tenth <span class="keyword">for</span> name, count <span class="keyword">in</span> stock.items() </span><br><span class="line">          <span class="keyword">if</span> (tenth := count // <span class="number">10</span>) &gt; <span class="number">0</span>&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="第30条：不要让函数直接返回列表，应该让它逐个生成列表里面的值"><a href="#第30条：不要让函数直接返回列表，应该让它逐个生成列表里面的值" class="headerlink" title="第30条：不要让函数直接返回列表，应该让它逐个生成列表里面的值"></a>第30条：不要让函数直接返回列表，应该让它逐个生成列表里面的值</h1><p>如果函数要返回的是个包含许多结果的序列，那么最简单的办法就是把这些结果放到列表中。例如，我们要返回字符串里每个单词的首字母在字符串中所对应的下标：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index_words</span>(<span class="params">text</span>):</span></span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">if</span> text:</span><br><span class="line">        result.append(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">for</span> i, latter <span class="keyword">in</span> <span class="built_in">enumerate</span>(text):</span><br><span class="line">        <span class="keyword">if</span> latter == <span class="string">&#x27; &#x27;</span>:</span><br><span class="line">            result.apppend(index + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">the_text = <span class="string">&#x27;Four score and seven years ago...&#x27;</span></span><br><span class="line">result = index_words(the_text)</span><br><span class="line">print(result[:<span class="number">10</span>])</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">0</span>, <span class="number">5</span>, <span class="number">11</span>, <span class="number">15</span>, <span class="number">21</span>, <span class="number">27</span>]</span><br></pre></td></tr></table></figure>
+<p>上面的<code>index_words</code>函数也可以改用生成器来实现。<font color="orange">生成器由包含yield表达式的函数创建。</font>下面就定义一个生成器函数，实现与刚才那个函数相同的效果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index_words_iter</span>(<span class="params">the_text</span>):</span></span><br><span class="line">    <span class="keyword">if</span> text:</span><br><span class="line">        <span class="keyword">yield</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> index, letter <span class="keyword">in</span> <span class="built_in">enumerate</span>(text):</span><br><span class="line">        <span class="keyword">if</span> letter == <span class="string">&#x27; &#x27;</span>:</span><br><span class="line">            <span class="keyword">yield</span> index + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<font color="orange">调用生成器函数并不会让其中的代码立刻得到执行，它会返回一个迭代器（iterator）。把迭代器传给Python内置的next函数，就可以将生成器函数推进到它的下一条yield表达式。生成器会把yield表达式的值通过迭代器返回给调用者。</font>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">it = index_words_iter(the_text)</span><br><span class="line">print(<span class="built_in">next</span>(it))</span><br><span class="line">print(<span class="built_in">next</span>(it))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">5</span></span><br></pre></td></tr></table></figure>
+<p>如果确实要制作一份列表，那可以把生成器函数返回的迭代器传给内置的list函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result = <span class="built_in">list</span>(index_words_iter(the_text))</span><br></pre></td></tr></table></figure>
+<p><code>index_words_iter</code>相对于<code>index_words</code>来说，不必一次性把所有结果都保存到列表中，在数据的数据较多的情况下，<code>index_words</code>有可能因为耗尽内存而导致程序崩溃。</p>
+<p>使用这些生成器函数时，只有一个地方需要注意，就是调用者无法重复使用函数所返回的迭代器，因为迭代器是有状态的（参见第31条）。</p>
+<h1 id="第31条：谨慎地迭代函数所接受的可迭代参数"><a href="#第31条：谨慎地迭代函数所接受的可迭代参数" class="headerlink" title="第31条：谨慎地迭代函数所接受的可迭代参数"></a>第31条：谨慎地迭代函数所接受的可迭代参数</h1><p>如果函数接受的参数是个可迭代对象，那么我们可能会在函数中对其迭代多次。例如，我们要分析美国德克萨斯州的游客数量。原始数据保存在一份列表中，其中的每个元素表示每年有多少游客（单位是百万）。我们要统计每个城市的游客数占游客总数的百分比。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">normalize</span>(<span class="params">numbers</span>):</span></span><br><span class="line">    total = <span class="built_in">sum</span>(numbers)</span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> value <span class="keyword">in</span> numbers:</span><br><span class="line">        percent = <span class="number">100</span> * value / total</span><br><span class="line">        result.append(percent)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>在<code>normalize</code>函数中会对<code>numbers</code>参数进行两次迭代，一次是在<code>sum</code>函数的调用中，一次是在<code>for</code>循环中。</p>
+<p>如果我们给<code>nomalize</code>函数传入参数的是一个列表，我们可以的得到正确的结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">visits = [<span class="number">15</span>, <span class="number">35</span>, <span class="number">80</span>]</span><br><span class="line">percentages = normalize(visits)</span><br><span class="line">print(percentages)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">11.538</span>, <span class="number">26.924</span>, <span class="number">61.538</span>]</span><br></pre></td></tr></table></figure>
+<p>但是如果我们传给<code>nomalize</code>函数的是个迭代器，例如在数据规模较大，需要从文件中读取数据时：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_visits</span>(<span class="params">data_path</span>):</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(data_path) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">            <span class="keyword">yield</span> <span class="built_in">int</span>(line)</span><br></pre></td></tr></table></figure>
+<p>奇怪的是，对<code>read_visits</code>所返回的迭代器调用<code>normalize</code>函数之后，并没有得到结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">it = read_visits(<span class="string">&#x27;my_numbers.txt&#x27;</span>)</span><br><span class="line">percentages = normalize(it)</span><br><span class="line">print(percentages)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[]</span><br></pre></td></tr></table></figure>
+<p>出现这种状况的原因在于，迭代器只能进行一次迭代，并且迭代后不可重置。在<code>sum</code>函数中，已经对迭代器进行过一次迭代了，所以在<code>for</code>循环中由于没有数据可迭代，所以也就不会进行循环内部。</p>
+<p>一种解决办法是让<code>normalize</code>函数接受另外一个函数，使它每次要使用迭代器时，都要向那个函数去索要：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">normalize_func</span>(<span class="params">get_iter</span>):</span></span><br><span class="line">    total = <span class="built_in">sum</span>(get_iter())</span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> value <span class="keyword">in</span> get_iter()</span><br><span class="line">        percent = <span class="number">100</span> * value / total</span><br><span class="line">        result.append(percent)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">percentages = normalize_func(<span class="keyword">lambda</span>: read_visits(<span class="string">&#x27;my_numbers.txt&#x27;</span>))</span><br></pre></td></tr></table></figure>
+<p>这么做虽然可行，但是每次调用<code>normalize_func</code>都需要传入一个函数，<font color="orange">更好的方法是自定义一种容器类，并让其实现迭代器协议（iterator protocol）。</font></p>
+<font color="orange">Python的for循环及相关的表达式，正是按照迭代器协议来遍历容器内容的。</font>Python执行`for x in foo`这样的语句时，实际上会调用`iter(foo)`，也就是把foo传给内置的iter函数。这个函数会触发`foo.__iter__`的特殊方法，该方法必须返回一个迭代器对象（即要实现`__next__`特殊方法）。最后，Python会用迭代器对象反复调用内置的`next`函数，知道迭代完成。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ReadVisits</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, data_path</span>):</span></span><br><span class="line">        self.data_path = data_path</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(self.data_data_path) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">                <span class="keyword">yield</span> <span class="built_in">int</span>(line)</span><br></pre></td></tr></table></figure>
+
+我们只需要把新的容器传给最早的那个normalize函数即可，函数的代码无需修改：
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">visits = ReadVisits(p[<span class="number">11.538</span>, <span class="number">26.924</span>, <span class="number">61.538</span>]ath)</span><br><span class="line">percentage = normalize(visits)</span><br><span class="line">print(percentages)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">11.538</span>, <span class="number">26.924</span>, <span class="number">61.538</span>]</span><br></pre></td></tr></table></figure>
+
+# 第32条：考虑用生成器表达式改写数据量较大的列表推导
+
+列表推导可以根据输入序列中的每个元素创建一个包含派生元素的新列表。如果输入的数据量比较小，那么这么做没有问题，但如果数据量很大，那么程序就有可能因为内存耗尽而崩溃。例如，我们要读取一份文件并返回每行的字符数：
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">value = [<span class="built_in">len</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">open</span>(<span class="string">&#x27;my_file.txt&#x27;</span>)]</span><br></pre></td></tr></table></figure>
+
+上面的代码有可能因为文件行数太多而导致list过长。<font color="orange">要想处理大规模的数据，可以使用生成器表达式来做，它扩展了列表推导和生成器机制。程序在对生成器表达式求值时，并不会让它把包含输出结果的那个序列立即构建出来，而是会把它当成一个迭代器，该迭代器每次可以根据表达式中的逻辑给出一个结果。</font>
+
+<font color="orange">生成器表达式的写法与列表推导类似，只不过它是写在一对圆括号里，而不是方括号里：</font>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">it = (<span class="built_in">len</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">open</span>(<span class="string">&#x27;my_file.txt&#x27;</span>))</span><br><span class="line">print(<span class="built_in">next</span>(it))</span><br><span class="line">print(<span class="built_in">next</span>(it))</span><br></pre></td></tr></table></figure>
+<p>生成器表达式还有个强大的特性，就是可以组合起来，例如，可以用刚才那条生成器表达式所形成的it迭代器作为输入，编写一条新的生成器表达式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roots = (x, x**<span class="number">0.5</span>) <span class="keyword">for</span> x <span class="keyword">in</span> it)</span><br></pre></td></tr></table></figure>
+<h1 id="第33条：通过yield-from把多个生成器连起来用"><a href="#第33条：通过yield-from把多个生成器连起来用" class="headerlink" title="第33条：通过yield from把多个生成器连起来用"></a>第33条：通过yield from把多个生成器连起来用</h1><p>生成器（yield）有很多好处，能够解决很多常见的问题。生成器的用途很广，所以许多程序都会频繁使用它们，而且是一个连一个地用。</p>
+<p>例如，我们要编写一个图形程序，让它在屏幕上面移动图像，从而形成动画效果。假设要实现这样一段动画：图片先快速移动一段时间，然后暂停，接下来慢速移动一段时间。我们用生成器来表示图片在当前时间段内应该保持的速度：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">move</span>(<span class="params">period, speed</span>):</span></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(period):</span><br><span class="line">        <span class="keyword">yield</span> speed</span><br></pre></td></tr></table></figure>
+<p>为了把完整的动画制作出来，我们需要调用三次move：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">animate</span>():</span></span><br><span class="line">    <span class="keyword">for</span> delta <span class="keyword">in</span> move(<span class="number">4</span>, <span class="number">5.0</span>)</span><br><span class="line">        <span class="keyword">yield</span> delta</span><br><span class="line">    <span class="keyword">for</span> delta <span class="keyword">in</span> move(<span class="number">3</span>, <span class="number">0.0</span>)</span><br><span class="line">        <span class="keyword">yield</span> delta</span><br><span class="line">    <span class="keyword">for</span> delta <span class="keyword">in</span> move(<span class="number">2</span>, <span class="number">3.0</span>)</span><br><span class="line">        <span class="keyword">yield</span> delta</span><br></pre></td></tr></table></figure>
+<p>上面这种写法的问题在于，animate函数里有很多重复的地方。比如它反复使用for结构来操作生成器，而且每个for结构都使用相同的yield表达式。为了解决这个问题，我们可以改用<code>yield from</code>形式的表达式来实现。这种形式，会先从嵌套进去的小生成器里面取值，如果该生成器已经用完，那么程序的控制流程就会回到<code>yield from</code>所在的这个函数之中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">animate</span>():</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">from</span> move(<span class="number">4</span>, <span class="number">5.0</span>)</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">from</span> move(<span class="number">3</span>, <span class="number">0.0</span>)</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">from</span> move(<span class="number">2</span>, <span class="number">3.0</span>)</span><br></pre></td></tr></table></figure>
+<p>上面使用<code>yield from</code>的代码看上去更清晰、更直观，<font color="orange">并且这种实现方式的运行效率要更快。</font></p>
+<h1 id="第34条：不要用send给生成器注入数据"><a href="#第34条：不要用send给生成器注入数据" class="headerlink" title="第34条：不要用send给生成器注入数据"></a>第34条：不要用send给生成器注入数据</h1><h1 id="第35条：不要通过throw变换生成器的状态"><a href="#第35条：不要通过throw变换生成器的状态" class="headerlink" title="第35条：不要通过throw变换生成器的状态"></a>第35条：不要通过throw变换生成器的状态</h1><font color="orange">说实话，第34条和第35条没怎么看懂，第一主要是生成器的这两个高级特性使用的场景也并不多，第二是感觉作者的代码示例也不太贴合实际场景中会写的代码。</font>
+
+<h1 id="第36条：考虑用itertools处理迭代器与生成器"><a href="#第36条：考虑用itertools处理迭代器与生成器" class="headerlink" title="第36条：考虑用itertools处理迭代器与生成器"></a>第36条：考虑用itertools处理迭代器与生成器</h1><p>Python内置的itertools模块中有很多函数，可以用来对迭代器进行一些高级处理。下面分三大类，列出其中最重要的函数。</p>
+<ul>
+<li><p><strong>连接多个迭代器</strong></p>
+<ul>
+<li><p><code>chain</code> : 可以把多个迭代器从头连接到尾形成一个新的迭代器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">it1 = <span class="built_in">iter</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">it2 = <span class="built_in">iter</span>([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br><span class="line">it3 = itertools.chain(it1, it2)</span><br><span class="line">print(<span class="built_in">list</span>(it))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>repeat</code> : 可以制作这样的一个迭代器，它会不停得输出某个值，或者通过第二个参数来控制最多能输出几次</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">it = itertools.repeat(<span class="string">&#x27;hello&#x27;</span>, <span class="number">3</span>)</span><br><span class="line">print(<span class="built_in">list</span>(it))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="string">&#x27;hello&#x27;</span>, <span class="string">&#x27;hello&#x27;</span>, <span class="string">&#x27;hello&#x27;</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>cycle</code> : 可以制作这样的一个迭代器，它会循环地输出某段内容之中的各个元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">it = itertools.cycle([<span class="number">1</span>, <span class="number">2</span>])</span><br><span class="line">result = [<span class="built_in">next</span>(it) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>)]</span><br><span class="line">print(result)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>tee</code> : 可以让一个迭代器分裂成多个平行迭代器，具体个数由第二个参数指定。如果这些迭代器推进的速度不一样，那么程序可能要用大量内存做缓存，以存放进度落后的迭代器会用到的元素。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">it1, it2, it3 = itertools.tee([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="number">3</span>)</span><br><span class="line">print(<span class="built_in">list</span>(it1))</span><br><span class="line">print(<span class="built_in">list</span>(it2))</span><br><span class="line">print(<span class="built_in">list</span>(it3))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>zip_longest</code> : 它与内置的zip函数类似（参见第8条），但区别是，如果源迭代器的长度不同，那么它会用<code>fillvalue</code>参数的值来填补提前耗尽的那些迭代器所留下的空缺。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">keys = [<span class="string">&#x27;one&#x27;</span>, <span class="string">&#x27;two&#x27;</span>, <span class="string">&#x27;three&#x27;</span>]</span><br><span class="line">values = [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">normal = <span class="built_in">zip</span>(keys, values)</span><br><span class="line">print(<span class="string">&#x27;zip:&#x27;</span>, <span class="built_in">list</span>(normal))</span><br><span class="line"></span><br><span class="line">it = itertools.zip_longest(key, values, fillvalue=<span class="string">&#x27;nope&#x27;</span>)</span><br><span class="line">print(<span class="string">&#x27;zip_longest:&#x27;</span>, <span class="built_in">list</span>(it))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="built_in">zip</span>: [(<span class="string">&#x27;one&#x27;</span>, <span class="number">1</span>), (<span class="string">&#x27;two&#x27;</span>, <span class="number">2</span>)]</span><br><span class="line">zip_longest: [(<span class="string">&#x27;one&#x27;</span>, <span class="number">1</span>), (<span class="string">&#x27;two&#x27;</span>, <span class="number">2</span>), (<span class="string">&#x27;three&#x27;</span>, <span class="string">&#x27;nope&#x27;</span>)]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>过滤迭代器中的元素</strong></p>
+<ul>
+<li><p><code>islice</code> : 可以在<font color="orange">不拷贝数据</font>的前提下，按照下标切割源迭代器，这种切割方式与标准的序列切片以及步进机制类似</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">it = <span class="built_in">iter</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>])</span><br><span class="line">first_five = itertools.islice(it, <span class="number">5</span>)</span><br><span class="line">print(<span class="string">&#x27;First Five:&#x27;</span>, <span class="built_in">list</span>(first_five))</span><br><span class="line"></span><br><span class="line">middle_odds = itertools.islice(it, <span class="number">2</span>, <span class="number">8</span>, <span class="number">2</span>)</span><br><span class="line">print(<span class="string">&#x27;Middle odds:&#x27;</span>, <span class="built_in">list</span>(middle_odds))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">First five: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line">Middle odds: [<span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>takewhile</code> : 会一值从源迭代器里获取元素，直到某元素让测试函数返回False为止：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">it1 = <span class="built_in">iter</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>])</span><br><span class="line">it2 = itertools.takewhile(<span class="keyword">lambda</span> x: x &lt; <span class="number">7</span>, it1)</span><br><span class="line">print(<span class="built_in">list</span>(it2))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>dropwhile</code> : 与takewhile相反，dropwhile会一直跳过源序列里的元素，直到某元素让测试函数返回True为止，然后它会从这个地方开始逐个取值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">it1 = <span class="built_in">iter</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>])</span><br><span class="line">it2 = itertools.dropwhile(<span class="keyword">lambda</span> x: x &lt; <span class="number">7</span>, it1)</span><br><span class="line">print(<span class="built_in">list</span>(it2))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>filterfalse</code> : 和内置的filter函数相反，它会逐个输出源迭代器里使得测试函数返回False的那些元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">it = <span class="built_in">iter</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>])</span><br><span class="line">evens = <span class="keyword">lambda</span> x : x % <span class="number">2</span> == <span class="number">0</span></span><br><span class="line"></span><br><span class="line">filter_result = <span class="built_in">filter</span>(evens, it)</span><br><span class="line">print(<span class="string">&#x27;Filter:&#x27;</span>, <span class="built_in">list</span>(filter_result))</span><br><span class="line"></span><br><span class="line">filter_false_result = itertools.filterfalse(evens, it)</span><br><span class="line">print(<span class="string">&#x27;Filter false:&#x27;</span>, <span class="built_in">list</span>(filter_false_result))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">Filter: [<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>]</span><br><span class="line">Filter false: [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>用源迭代器中的元素合成新元素</strong></p>
+<ul>
+<li><p><code>accumulate</code> : accumulate 会从源代码迭代器取出一个元素，并把已经累计的结果与这个元素一起传给表示累加逻辑的函数，然后输出那个函数的计算结果，并把结果当成新的累计值。<font color="orange">这与内置的functools模块中的reduce函数，实际上是一样的，只不过这个函数每次只给出一项累加值。如果调用者没有指定表示累加逻辑的函数，那么默认的逻辑就是两值相加。</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">it = <span class="built_in">iter</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>])</span><br><span class="line">sum_reduce = itertools.accumulate(it)</span><br><span class="line">print(<span class="string">&#x27;Sum:&#x27;</span>, <span class="built_in">list</span>(sum_reduct))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum_modulo_20</span>(<span class="params">first, second</span>):</span></span><br><span class="line">    output = first + second</span><br><span class="line">    <span class="keyword">return</span> output % <span class="number">20</span></span><br><span class="line">modulo_reduce = itertools.accumulate(it, sum_modulo_20)</span><br><span class="line">print(<span class="string">&#x27;Modulo:&#x27;</span> <span class="built_in">list</span>(module_reduce))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">Sum: [<span class="number">1</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">10</span>, ]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>product</code> : 会从一个或多个源迭代器里获取元素，并计算笛卡尔积，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">single = itertools.product([<span class="number">1</span>, <span class="number">2</span>], repeat=<span class="number">2</span>)</span><br><span class="line">print(<span class="string">&#x27;Single:&#x27;</span>, <span class="built_in">list</span>(single))</span><br><span class="line"></span><br><span class="line">multiple = itertools.product([<span class="number">1</span>, <span class="number">2</span>], [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>])</span><br><span class="line">print(<span class="string">&#x27;Multiple:&#x27;</span>, <span class="built_in">list</span>(multiple))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">Single: [(<span class="number">1</span>, <span class="number">1</span>), (<span class="number">1</span>, <span class="number">2</span>), (<span class="number">2</span>, <span class="number">1</span>), (<span class="number">2</span>, <span class="number">2</span>)]</span><br><span class="line">Multiple: [(<span class="number">1</span>, <span class="string">&#x27;1&#x27;</span>), (<span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>), (<span class="number">2</span>, <span class="string">&#x27;a&#x27;</span>), (<span class="number">2</span>, <span class="string">&#x27;b&#x27;</span>)]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>product</code> : 会从源迭代器中能给出的全部元素，并逐个输出由其中N个元素组成的有序排列</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">it = itertools.permutations([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="number">2</span>)</span><br><span class="line">print(<span class="built_in">list</span>(it))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[(<span class="number">1</span>, <span class="number">2</span>), (<span class="number">1</span>, <span class="number">3</span>), (<span class="number">2</span>, <span class="number">1</span>), (<span class="number">2</span>, <span class="number">3</span>), (<span class="number">3</span>, <span class="number">1</span>), (<span class="number">3</span>, <span class="number">2</span>)]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>combinations</code> : 会从源迭代器中能给出的全部元素，并逐个输出由其中N个元素组成的无序组合</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">it = itertools.combinations([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="number">2</span>)</span><br><span class="line">print(<span class="built_in">list</span>(it))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[(<span class="number">1</span>, <span class="number">2</span>), (<span class="number">1</span>, <span class="number">3</span>), (<span class="number">2</span>, <span class="number">3</span>)]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>combinations_with_replacement</code> : 和combination类似，但是它允许同一个元素在组合里多次出现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">it = itertools.combinations_with_replacement([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="number">2</span>)</span><br><span class="line">print(<span class="built_in">list</span>(it))</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[(<span class="number">1</span>, <span class="number">1</span>), (<span class="number">1</span>, <span class="number">2</span>), (<span class="number">1</span>, <span class="number">3</span>), (<span class="number">2</span>, <span class="number">2</span>) (<span class="number">2</span>, <span class="number">3</span>), (<span class="number">3</span>, <span class="number">3</span>)]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2022/02/20/program_language/python/effective_python/%E5%87%BD%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2077,240 +2413,11 @@ LMS-tree的缺点就是压缩过程有时会干扰正在进行的读写操作，
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/06/15/photography/%E7%9B%B8%E6%9C%BA%E5%9F%BA%E7%A1%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/15/photography/%E7%9B%B8%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">相机基础</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-06-15 00:21:31" itemprop="dateCreated datePublished" datetime="2021-06-15T00:21:31+08:00">2021-06-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-15 10:58:28" itemprop="dateModified" datetime="2021-08-15T10:58:28+08:00">2021-08-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/photography/" itemprop="url" rel="index">
-                    <span itemprop="name">photography</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>972</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>3 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="相机的分类"><a href="#相机的分类" class="headerlink" title="相机的分类"></a>相机的分类</h1><h2 id="按取景方式分"><a href="#按取景方式分" class="headerlink" title="按取景方式分"></a>按取景方式分</h2><p>单反相机：单镜头反光式取景相机，相机的镜头内部有一片反光镜，用于将镜头前的图像反射到取景窗，反光镜后面时感光元件当相机进行拍摄时，反光镜会先弹下（避免挡住感光元件），所以拍摄时镜头一般会黑一下。由于单反是通过物理的方法将镜头前的图像反射到取景窗中的，所以在没有开启相机电源的情况下，也能从取景窗中看到镜头中的画面。</p>
-<p><img src="/2021/06/15/photography/%E7%9B%B8%E6%9C%BA%E5%9F%BA%E7%A1%80/单反相机原理.png" alt="单反相机原理" style="zoom:50%;"></p>
-<p>微单相机：单镜头无反相机，无反相机，没有反光镜。无反相机直接通过感光原件将镜头前的画面输出到感光器和屏幕中，所以当微单相机未开机时，无法从取景窗中看到镜头前的画面。</p>
-<p>双反相机：双镜头反光式取景相机，一个镜头负责取景，一个镜头负责拍摄。双镜头相机一般在用于拍摄人文照片时比较方便（因为看取景窗时要从上往下看，别人一般觉察不到你在进行拍摄）</p>
-<p><img src="/2021/06/15/photography/%E7%9B%B8%E6%9C%BA%E5%9F%BA%E7%A1%80/双镜头相机.jpeg" alt="双镜头相机" style="zoom:50%;"></p>
-<p>旁轴相机：一般在相机右上角单独有一个取景窗，从取景窗中看到的和镜头中实际的图片有一些微小的差距（非常下，一般没有太大影响）</p>
-<h2 id="按成像介质分"><a href="#按成像介质分" class="headerlink" title="按成像介质分"></a>按成像介质分</h2><p>数码相机：利用感光元件将影像转换成电子数据的相机，都称为数码相机</p>
-<p>胶片相机：以化学方法，将影像记录在卤化银胶片上的相机</p>
-<h1 id="全画幅和APS-C画幅的区别"><a href="#全画幅和APS-C画幅的区别" class="headerlink" title="全画幅和APS-C画幅的区别"></a>全画幅和APS-C画幅的区别</h1><p>全画幅和APS-C画幅的主要区别是在于感光元件的大小不同，全画幅的感光元件大小一般在36mm <em> 24mm，APS-C画幅的感光元件的大小一般在23mm </em> 15mm。全画幅的感光元件比较大，所以在其他参数一致的条件下，全画幅拍到的画面会比较大一些。</p>
-<h1 id="如何清洁相机"><a href="#如何清洁相机" class="headerlink" title="如何清洁相机"></a>如何清洁相机</h1><p>对相机的显示屏幕和镜头的前镜头可以使用清洁布清理。对相机的内部镜头和观光元件<code>最多</code>使用气吹清理，必要时可以去专业的店进行清洗。</p>
-<h1 id="镜头的分类及镜头参数"><a href="#镜头的分类及镜头参数" class="headerlink" title="镜头的分类及镜头参数"></a>镜头的分类及镜头参数</h1><h2 id="定焦镜头和变焦镜头"><a href="#定焦镜头和变焦镜头" class="headerlink" title="定焦镜头和变焦镜头"></a>定焦镜头和变焦镜头</h2><p>定焦镜头只有一个固定的焦距，也只有一个固定的视野，没有变焦的功能。</p>
-<p>变焦镜头，在一定范围内，可以变换焦距，从而得到不同的视野。</p>
-<p>变焦镜头的好处就是焦段可动态调节。定焦镜头的好处是在同样焦段下，拍出来的图片细节保留更好。原因是变焦镜头为了可以变焦一般是多个镜片叠加起来的，而每通过一层镜片，由于折射和反射，就损失了一些细节。</p>
-<h2 id="最近对焦距离"><a href="#最近对焦距离" class="headerlink" title="最近对焦距离"></a>最近对焦距离</h2><p>对焦距离是感光元件到被摄对象之间的距离，而最近对焦距离就是：每一种镜头都有一个能使相机对上焦的最小对焦距离，如果小于这个距离，相机是无法对上焦的。如果需要非常近距离的拍摄，例如拍摄昆虫，可以使用微距镜头（最近对焦距离非常小）。</p>
-<h2 id="广角镜头简介"><a href="#广角镜头简介" class="headerlink" title="广角镜头简介"></a>广角镜头简介</h2><p>35mm以下焦段的镜头称为广角镜头。</p>
-<h2 id="中焦段镜头简介"><a href="#中焦段镜头简介" class="headerlink" title="中焦段镜头简介"></a>中焦段镜头简介</h2><p>35——70mm焦段的镜头称为中焦段镜头。</p>
-<h2 id="长焦镜头简介"><a href="#长焦镜头简介" class="headerlink" title="长焦镜头简介"></a>长焦镜头简介</h2><p>70mm以上的镜头称为长焦镜头</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/05/30/DDIA/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2%E8%AF%AD%E8%A8%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/30/DDIA/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2%E8%AF%AD%E8%A8%80/" class="post-title-link" itemprop="url">数据模型与查询语言</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-05-30 15:35:43" itemprop="dateCreated datePublished" datetime="2021-05-30T15:35:43+08:00">2021-05-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-01-16 22:16:34" itemprop="dateModified" datetime="2022-01-16T22:16:34+08:00">2022-01-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Designing-Data-Intensive-Applications/" itemprop="url" rel="index">
-                    <span itemprop="name">Designing Data-Intensive Applications</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.7k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>6 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="关系模型与文档模型"><a href="#关系模型与文档模型" class="headerlink" title="关系模型与文档模型"></a>关系模型与文档模型</h1><p>支持文档数据模型的主要论点是模式灵活，对于某些应用来说，它更接近与应用程序所使用的数据结构。关系模型则强在联结操作、多对一和多对多关系更简介的表达上，与文档模型抗衡。</p>
-<p>文档数据库在处理一对多的关系有很大优势，可以直接把记录记在一个文档中，但是在处理多对一，多对多的关系时相比于关系数据库则稍逊一些，因为在多对一、多对多的查询下，通常需要联结（join）多张数据库来查询，而一般文档数据库对联结操作的支持很差。有些文档数据库甚至本身都不支持联结，必须在应用程序代码中，通过对数据的多次查询来模拟联结。</p>
-<p>如果应用数据具有类似文档的结构（即一对多关系，通常一次加载整个树），那么使用文档数据库更为合适。但是如果应用程序中经常使用多对多关系，那么关系系数据库是一个很好的选择。<font color="orange">通常，我们无法一概而论那种数据模型的应用代码更简单。这主要取决于数据项之间的关系模型。有时候使用文档模型是最合适的，有时候用关系模型会更好，有些时候还可以使用图模型。</font></p>
-<h2 id="对象关系不匹配"><a href="#对象关系不匹配" class="headerlink" title="对象关系不匹配"></a>对象关系不匹配</h2><p>目前大多数应用开发都采用面向对象的编程语言，如果数据存储在关系表中，那么应用层代码中的对象与表、行和列的数据库模型之间需要一个笨拙的转换层。一般在开发中会使用对象-关系映射（ORM）框架来减少此层转换之间的代码量，但是ORM框架并不能完全隐藏两个模型之间的差异。</p>
-<h2 id="文档数据库的数据局部性"><a href="#文档数据库的数据局部性" class="headerlink" title="文档数据库的数据局部性"></a>文档数据库的数据局部性</h2><p>文档通常存储编码为JSON、XML或其二进制变体（如MongoDB的BSON）的连续字符串。如果应用程序需要频繁访问整个文档，则存储局部性具有性能优势。<font color="orange">局部性优势仅适用需要同时访问文档的大部分内容的场景，</font>，如果应用只是访问其中的一小部分，那对于大型文档数据来讲就有些浪费。对文档进行更新时，通常会重写整个文档，而只有修改量不改变原文档大小时，原地覆盖更新才更有效。因此，通常建议文档应该尽量小且避免写入时增加文档大小。这些性能方面的不利因此大大限制了文档数据库的适用场景。</p>
-<h1 id="数据查询语言"><a href="#数据查询语言" class="headerlink" title="数据查询语言"></a>数据查询语言</h1><p>在关系模型被提出的最初时期，就出现两总查询数据的方法：声明式查询和命令式查询。命令式查询需要告诉计算机如何以特定的顺序来执行查询操作，一次查询基本上对应一段查询代码。而对于声明式查询语言（如SQL或关系代数），则只需要指定所需的数据模式，结果需满足什么条件，以及如何转换数据（例如，排序、分组和聚合），而不需要指明如何实现这一目标。数据库系统的查询优化器会决定采用那种索引和联结，以及用何种顺序来执行查询的各个语句。另外声明式查询语言对外隐藏了数据引擎的很多实现细节，这样数据库能够在不改变查询语句的情况下提高性能。</p>
-<h2 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h2><p>MapReduce是一种编程模型，用于在许多机器上批量处理海量数据。<font color="orange">MapReduce既不是声明式查询语言，也不是一个完全命令式的查询API，而是介于两者之间：</font>查询的逻辑用代码片段表示，这些代码片段可以被处理框架重复地调用。它主要基于许多函数式编程中的map和reduce函数，map函数用于对每一条数据进行过滤筛选，reduce用于对过滤出来的记录进行相关操作。不同数据库对MapReduce的执行实现都不同。</p>
-<h1 id="图数据模型"><a href="#图数据模型" class="headerlink" title="图数据模型"></a>图数据模型</h1><blockquote>
-<p>在处理多对多关系时，关系模型能够处理简单的多对多关系，但是随着数据之间的关联越来越复杂，将数据建模转换为图模型会更加自然</p>
-</blockquote>
-<p>图由两种对象组成：顶点（也称为实体）和边（也称为关系），很多著名的算法都可以在图数据上运行，例如PageRank算法。</p>
-<p>图的不同顶点存储的数据可以是相同类型对象，也可以是不同类型对象，同理对于边来说，不同边可以表示相同的关系，也可以表示不同的关系。这就是图数据模型强大的地方。</p>
-<blockquote>
-<p>例如，Facebook维护了一个包含许多不同类型的顶点与边的大图：顶点包括人、地点、事件、签到和用户的评论；边表示哪些人是彼此的朋友，签到发生在哪些位置，谁评论了哪个帖子，谁参与了哪个事件等</p>
-</blockquote>
-<h2 id="属性图"><a href="#属性图" class="headerlink" title="属性图"></a>属性图</h2><p>在属性图模型中，每个顶点包括：</p>
-<ul>
-<li>唯一的标识符</li>
-<li>出边的集合</li>
-<li>入边的集合</li>
-<li>属性的集合（键-值对）</li>
-</ul>
-<p>每个边包括</p>
-<ul>
-<li>唯一的标识符</li>
-<li>边开始的节点</li>
-<li>边结束的节点</li>
-<li>描述两个顶点间关系的标签</li>
-<li>属性的集合（键-值对）</li>
-</ul>
-<p>// TODO: 在实际使用了图数据之后在补充一下，目前只做基础了解，知道哪些场景适用图模型即可。</p>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>文档模型、关系模型和图模型如今都有广泛的应用，而且在各自的目标领域都足够优秀。我们观察到，一个模型可以用另外一个模型来模拟，但是处理起来很笨拙。这就是为什么不同的系统用于不同的目的，而不是一个万能的解决方法。</p>
-<p>文档数据库和图数据库有一个共同点，那就是它们通常不会对存储的数据强加某个模式，这可以使应用程序更容易适应不断变化的需求。但是，应用程序很可能仍然假定数据具有一定的结构，之过失模式是显示（写时强制）还是隐式（读时处理）的问题。</p>
-<p>对于每个数据模型，都有自己的查询语言或框架。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -2378,20 +2485,20 @@ LMS-tree的缺点就是压缩过程有时会干扰正在进行的读写操作，
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-count">121</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-count">38</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -2431,13 +2538,13 @@ LMS-tree的缺点就是压缩过程有时会干扰正在进行的读写操作，
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">150k</span>
+    <span title="Symbols count total">153k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">8:21</span>
+    <span title="Reading time total">8:29</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>

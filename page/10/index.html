@@ -181,6 +181,307 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/14/math/calculus/%E5%B8%B8%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E7%9A%84%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/14/math/calculus/%E5%B8%B8%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E7%9A%84%E8%A7%A3/" class="post-title-link" itemprop="url">常微分方程的解</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-14 21:31:50" itemprop="dateCreated datePublished" datetime="2020-02-14T21:31:50+08:00">2020-02-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/math/" itemprop="url" rel="index">
+                    <span itemprop="name">math</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="常微分方程"><a href="#常微分方程" class="headerlink" title="常微分方程"></a>常微分方程</h1><p>方程的解为相若$y=f(x)$的，只有一个自变量的微分方程，称为常微分方程，如果有多个自变量，则称为偏微分方程。</p>
+<h1 id="可分离变量型"><a href="#可分离变量型" class="headerlink" title="可分离变量型"></a>可分离变量型</h1><p>形如$y’ = g(x)$的微分方程，为可分离变量型的常微分方程。</p>
+<p>其解法为：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+    \frac{dy}{dx} &= g(x) \\\\
+    dy &= g(x)dx \\\\
+    \text{对上式两边同时积分：}
+    \int dy &= \int g(x)dx
+\end{align*}</script><h1 id="可转化为可分离变量型"><a href="#可转化为可分离变量型" class="headerlink" title="可转化为可分离变量型"></a>可转化为可分离变量型</h1><p>形如$y’ = g(ay+bx+c)$的微分方程，可以转化为可分离变量型的微分方程</p>
+<p>解：</p>
+<p>​    令</p>
+<script type="math/tex; mode=display">
+u = ay+bx+c</script><p>​    则</p>
+<script type="math/tex; mode=display">
+\frac{du}{dx} = a\frac{dy}{dx} + b \\
+\frac{dy}{dx} = \frac{1}{a}(\frac{du}{dx} - b)</script><p>​    则原式变为：</p>
+<script type="math/tex; mode=display">
+\frac{1}{a}(\frac{du}{dx} - b) = g(u) \\
+\frac{du}{ag(u) + b} = dx</script><p>​    即转化为了可分离变量型</p>
+<h1 id="齐次常微分方程"><a href="#齐次常微分方程" class="headerlink" title="齐次常微分方程"></a>齐次常微分方程</h1><p>形如$\frac{dy}{dx} = g(\frac{y}{x})$或$\frac{dx}{dy} = g(\frac{x}{y})$的微分方程称为0次齐次常微分方程，其解法为：</p>
+<p>解：</p>
+<p>​    令</p>
+<script type="math/tex; mode=display">
+u = \frac{y}{x} \\
+y = ux \\
+\frac{dy}{dx} = u + x\frac{du}{dx}</script><p>​    则：</p>
+<script type="math/tex; mode=display">
+u + x\frac{du}{dx} = g(u) \\
+\frac{du}{g(u) - u} = \frac{dx}{x}</script><p>​    也转换为了可分离变量型的微分方程了。</p>
+<h1 id="一次线性常微分方程"><a href="#一次线性常微分方程" class="headerlink" title="一次线性常微分方程"></a>一次线性常微分方程</h1><p>1、$y’ + p(x)y = q(x)$</p>
+<p>其解的公式为：</p>
+<script type="math/tex; mode=display">
+y = e^{- \int p(x)dx}[\int e^{\int p(x)dx} q(x) + C \space dx],\space C为任意常数 \tag{1}</script><p>2、$y’ + p(x)y = q(x)y^n$</p>
+<p>解：</p>
+<p>​    原式两边同除$y^n$</p>
+<script type="math/tex; mode=display">
+y'y^{-n} + p(x)y^{1-n} = q(x)</script><p>​    令</p>
+<script type="math/tex; mode=display">
+u = y^{1-n}</script><p>​    则有</p>
+<script type="math/tex; mode=display">
+\frac{du}{dx} = (1-n)y^{-n}y' \\
+y'y^{-n} = \frac{du}{(1-n)dx}</script><p>​    则原式转换为：</p>
+<script type="math/tex; mode=display">
+\frac{du}{(1-n)dx} + p(x)u = q(x) \\
+\frac{du}{dx} + (1-n) p(x)u = (1-n)q(x)</script><p>​    再直接使用公式(1)即可。</p>
+<h1 id="二次微分方程"><a href="#二次微分方程" class="headerlink" title="二次微分方程"></a>二次微分方程</h1><h3 id="可降次二次微分方程"><a href="#可降次二次微分方程" class="headerlink" title="可降次二次微分方程"></a>可降次二次微分方程</h3><p>1、$y’’ = g(y’, x)$</p>
+<p>解：</p>
+<p>​    令</p>
+<script type="math/tex; mode=display">
+p = y'</script><p>​    则</p>
+<script type="math/tex; mode=display">
+y'' = p' = \frac{dp}{dx}</script><p>​    则原式转换为：</p>
+<script type="math/tex; mode=display">
+\frac{dp}{dx} = g(p,x)</script><p>2、$y’’ = g(y’, y)$</p>
+<p>解：</p>
+<p>​    令</p>
+<script type="math/tex; mode=display">
+p = y'</script><p>​    则</p>
+<script type="math/tex; mode=display">
+y'' = p' = \frac{dp}{dx} = \frac{dp}{dy} \frac{dy}{dx} = p \frac{dp}{dy}</script><p>​    则原式转换为：</p>
+<script type="math/tex; mode=display">
+p \frac{dp}{dy} = g(p, y)</script><h3 id="二次常系数微分方程"><a href="#二次常系数微分方程" class="headerlink" title="二次常系数微分方程"></a>二次常系数微分方程</h3><p>形如$y’’+py’ + qy = g(x)$，其中$p,q$为常数的微分方程称为二次常系数微分方程。</p>
+<h4 id="二次常系数齐次微分方程"><a href="#二次常系数齐次微分方程" class="headerlink" title="二次常系数齐次微分方程"></a>二次常系数齐次微分方程</h4><p>如果二次常系数微分方程中g(x) = 0，则称该方程为二次常系数齐次微分方程。其通解取决于其对应的特征方程的解的个数。</p>
+<p>若有$y’’+py’ + qy = 0$，其对应的特征方程为$\lambda^2 + p\lambda + q = 0$，则其通解为：</p>
+<script type="math/tex; mode=display">
+y = 
+\begin{cases}
+    C_1 e^{\lambda_1 x} + C_2 e^{\lambda_2 x}，\lambda_1 与 \lambda_2 为特征方程的两不同的实数解 \\
+    e^{\lambda x}(C_1 x + C_2)，\lambda_1 = \lambda_2 为特征方程两个相同的实数解 \\
+    e^{ax}(C_1 cosbx + C_2 sinbx)，\lambda = a \pm bi，为复数解
+\end{cases}</script><p>其中$C_1、C_2$为任意常数</p>
+<h4 id="二次常系数非齐次微分方程"><a href="#二次常系数非齐次微分方程" class="headerlink" title="二次常系数非齐次微分方程"></a>二次常系数非齐次微分方程</h4><p>二次常系数非齐次微分方程的解的结构为其对应的齐次微分方程的通解再加上非齐次微分方程对应的一个特解。</p>
+<p>一般考察的非齐次方程有两种：</p>
+<p>1、$g(x) = P_n(x)e^{ax}$，$P_n(x)$为x的n次多项式</p>
+<p>其特解公式为：</p>
+<script type="math/tex; mode=display">
+y^* = e^{ax} Q_n(x) x^k, 
+\begin{cases}
+    k=0, a不是特征方程的对应的解 \\
+    k=1, a是特征方程的其中一个实数解 \\
+    k=2, a是特征方程的二重根
+\end{cases}</script><p> $Q_n(x)$为x的n次多项式</p>
+<p>2、$g(x) = e^{ax} [P_n(x)cosbx + Q_m(x)sinbx]$，$h_n$为x的n次多项式，$h_m$为x的m次多项式</p>
+<p>其特解公式为：</p>
+<script type="math/tex; mode=display">
+y^* = e^{ax}[R_s^{(1)}(x)cosbx + R_s^{(2)}(x)sinbx]x^k,
+\begin{cases}
+    k=0, a \pm bi 不是特征方程的根 \\
+    k=1, a \pm bi 是特征方程的根
+\end{cases}</script><p>$h_s(x)$为x的s次多项式，其中s = $max\{m, n\}$</p>
+<p><code>要求出多项式的具体参数，就将特解带回原方程求解即可</code></p>
+<h1 id="欧拉方程"><a href="#欧拉方程" class="headerlink" title="欧拉方程"></a>欧拉方程</h1><p>$x^2 \frac{d^2y}{dx^2} + px \frac{dy}{dx} + qy = f(x)$，其中$p、q$为常数，这种方程即为欧拉方程。</p>
+<p>解：</p>
+<p>​    对于 x&gt;0，令</p>
+<script type="math/tex; mode=display">
+x = e^t</script><p>​    则</p>
+<script type="math/tex; mode=display">
+t = lnx \\
+\frac{dt}{dx} = \frac{1}{x}</script><p>​    则</p>
+<script type="math/tex; mode=display">
+\frac{dy}{dx} = \frac{dy}{dt} \frac{dt}{dx} = \frac{1}{x} \frac{dy}{dt} \\
+\frac{d^2 y}{dx^2} = \frac{d\frac{dy}{dx}}{dx} = -\frac{1}{x^2}\frac{dy}{dt} + \frac{1}{x} \frac{d^2 y}{dt dx} = -\frac{1}{x^2}\frac{dy}{dt} + \frac{1}{x} \frac{d^2 y}{dt^2} \frac{dt}{dx} = -\frac{1}{x^2}\frac{dy}{dt} + \frac{1}{x^2} \frac{d^2 y}{dt^2}</script><p>​    则原式转换为：</p>
+<script type="math/tex; mode=display">
+\frac{d^2 y}{dt^2} + (p-1)\frac{dy}{dt} + qy = f(e^t)</script><p>​    即转化为了二次常系数微分方程。</p>
+<p>​    同理对于x &lt; 0，也可以用同样的方法。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/14/math/calculus/%E4%B8%AD%E5%80%BC%E5%AE%9A%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/14/math/calculus/%E4%B8%AD%E5%80%BC%E5%AE%9A%E7%90%86/" class="post-title-link" itemprop="url">中值定理</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-14 21:31:04" itemprop="dateCreated datePublished" datetime="2020-02-14T21:31:04+08:00">2020-02-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-11 20:26:41" itemprop="dateModified" datetime="2020-07-11T20:26:41+08:00">2020-07-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/math/" itemprop="url" rel="index">
+                    <span itemprop="name">math</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>434</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="介值定理"><a href="#介值定理" class="headerlink" title="介值定理"></a>介值定理</h1><p>1、如果函数$f(x) \in C[a,b]$，即在$(a,b)$上连续，则存在$\eta \in (a,b)$，使得$f(\eta)$介于$f(a)$与$f(b)$之间。</p>
+<p>2、如果函数$f(x) \in C[a,b]$，且在$f(x)$在$[a,b]$上取得最小值min，最大值max，则存在$\eta \in (a,b)$，使得$f(\eta) in [min, max]$。</p>
+<h1 id="费马定理"><a href="#费马定理" class="headerlink" title="费马定理"></a>费马定理</h1><p>若函数$f(x)$一阶可导，且在点$x_0$出取得极值，则$f’(x_0) = 0$</p>
+<h1 id="罗尔中值定理"><a href="#罗尔中值定理" class="headerlink" title="罗尔中值定理"></a>罗尔中值定理</h1><p>若函数$f(x) \in C[a,b]$，且$f(a)=f(b)$，则存在$\eta \in (a,b)$，使得$f’(\eta) = 0$</p>
+<p>洛尔定理的推广：</p>
+<p>1、//TODO: finish this part</p>
+<h1 id="拉格朗日中值定理"><a href="#拉格朗日中值定理" class="headerlink" title="拉格朗日中值定理"></a>拉格朗日中值定理</h1><p>若函数$f(x) \in C[a,b]$，则存在$\eta \in (a,b)$，使得$f(b) - f(a) = f’(\eta)(b-a)$。</p>
+<p>证明：</p>
+<p>构造函数$F(x) = [f(b) - f(a)]x - (b-a)f(x)$，则有$F(a) = F(b)$，则根据罗尔中值定理可证得。</p>
+<h1 id="柯西中值定理"><a href="#柯西中值定理" class="headerlink" title="柯西中值定理"></a>柯西中值定理</h1><p>如函数$f(x) \in C[a,b], g(x) \in C[a,b]$，则存在$\eta \in (a,b)$，使得: </p>
+<script type="math/tex; mode=display">
+\frac{f'(\eta)}{g'(\eta)} = \frac{f(b)-f(a)}{g(b)-g(a)}</script><p>证明：</p>
+<p>构造函数$F(x) = f(x)[g(b) - g(a)] - f(x)[f(b) - f(a)]$ ，然后有$F(a) = F(b)$，则根据罗尔中值定理可证得。</p>
+<h1 id="积分中值定理"><a href="#积分中值定理" class="headerlink" title="积分中值定理"></a>积分中值定理</h1><p>若$f(x)$在$[a,b]$上可积分，则存在$\eta \in (a,b)$，使得$f(\eta)(b-a) = \int_{a}^{b} f(x)dx$</p>
+<h1 id="推广的积分中值定理"><a href="#推广的积分中值定理" class="headerlink" title="推广的积分中值定理"></a>推广的积分中值定理</h1><p>设$f(x)$，$g(x)$在$[a,b]$上连续，且$g(x)$在$[a,b]$上<code>不变号</code>，则存在$\eta \in (a,b)$，使得$\int_{a}^{b} f(x)g(x)dx = f(\eta) \int_{a}^{b}g(x)dx$</p>
+<p>证明：</p>
+<p>设$F(x) = \int_{a}^{x} f(t)g(t)dt$，$G(x) = \int_{a}^{x}g(t)dt$，在$(a,b)$上使用柯西中值定理即可证得。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/14/machine_learning/linear_model/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1856,199 +2157,11 @@ R=\begin{cases}
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/08/math/%E6%A0%87%E9%87%8F%E5%AF%B9%E7%9F%A9%E9%98%B5%E6%B1%82%E5%AF%BC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/08/math/%E6%A0%87%E9%87%8F%E5%AF%B9%E7%9F%A9%E9%98%B5%E6%B1%82%E5%AF%BC/" class="post-title-link" itemprop="url">标量对矩阵求导</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-08 20:51:36" itemprop="dateCreated datePublished" datetime="2020-02-08T20:51:36+08:00">2020-02-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-20 15:25:03" itemprop="dateModified" datetime="2021-02-20T15:25:03+08:00">2021-02-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/math/" itemprop="url" rel="index">
-                    <span itemprop="name">math</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>806</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>3 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h1><p>若有函数y=f(X)，其中X为一个矩阵，y为标量，则标量y对矩阵X的导数定义为<code>y对X逐元素求导排列成与X同型的矩阵</code></p>
-<script type="math/tex; mode=display">
-[\frac{\varphi{y}}{\varphi{X_{ij}}}]</script><p>但是在实际计算标量对矩阵求导时，并不是直接使用标量对矩阵中的逐元素求导，而是将矩阵当作一个整体来求导</p>
-<h1 id="标量对矩阵求导公式推导"><a href="#标量对矩阵求导公式推导" class="headerlink" title="标量对矩阵求导公式推导"></a>标量对矩阵求导公式推导</h1><p>若有y=f(X)，其中X为$m{\times}n$的矩阵，则由全微分公式可以得到</p>
-<script type="math/tex; mode=display">
-df=\sum_{i=1}^{m}\sum_{j=1}^{n}
-{\frac{\varphi{f}}{\varphi{X_{ij}}}}dX_{ij}</script><p>令：</p>
-<script type="math/tex; mode=display">
-\frac{\partial{f}}{\partial{X}}=
-\begin{pmatrix}
-
-{\frac{\partial{f}}{\partial{X_{11}}}} &
-{\frac{\partial{f}}{\partial{X_{12}}}} &
-\cdots &
-{\frac{\partial{f}}{\partial{X_{1n}}}}
-\\
-{\frac{\partial{f}}{\partial{X_{21}}}} &
-{\frac{\partial{f}}{\partial{X_{22}}}} &
-\cdots &
-{\frac{\partial{f}}{\partial{X_{2n}}}}
-\\
-\vdots & \vdots & & \vdots
-\\
-{\frac{\partial{f}}{\partial{X_{m1}}}} &
-{\frac{\partial{f}}{\partial{X_{m2}}}} &
-\cdots &
-{\frac{\partial{f}}{\partial{X_{mn}}}}
-
-\end{pmatrix}_{m{\times}n}</script><script type="math/tex; mode=display">
-dX=\begin{pmatrix}
-
-dX_{11} & dX_{12} & \cdots & dX_{1n}
-\\
-dX_{21} & dX_{22} & \cdots & dX_{2n}
-\\
-\vdots & \vdots & & \vdots
-\\
-dX_{m1} & dX_{m2} & \cdots & dX_{mn}
-
-\end{pmatrix}_{m{\times}n}</script><p>则</p>
-<script type="math/tex; mode=display">
-[(\frac{\partial{f}}{\partial{X}})^T·dX]_{ii}=
-\sum_{k=1}^{m}{\frac{\partial{f}}{\partial{X_{ki}}}}dX_{ki}</script><p>则</p>
-<script type="math/tex; mode=display">
-tr[(\frac{\partial{f}}{\partial{X}})^T·dX] = 
-\sum_{i=1}^{m}\sum_{j=1}^{n}{\frac{\partial{f}}{\partial{X_{ij}}}}dX_{ij}</script><script type="math/tex; mode=display">
-df = 
-tr[(\frac{\partial{f}}{\partial{X}})^T·dX] \tag{1}</script><p>其中tr表示矩阵的迹(trace)，是方阵对角元素之和。所以<code>只要求全微分的公式(1)左边的形式，就可以的得到</code>$\frac{\partial{f}}{\partial{X}}$$</p>
-<h1 id="矩阵微分的运算法则"><a href="#矩阵微分的运算法则" class="headerlink" title="矩阵微分的运算法则"></a>矩阵微分的运算法则</h1><p>1、加减法、乘法、转置、迹</p>
-<script type="math/tex; mode=display">
-d(X{\pm}Y) = dX {\pm} dY \\
-d(XY) = X(dY)+d(X)Y \\
-d(X^T) = (dX)^T \\
-dtr(X) = tr(dX)</script><p>2、逆</p>
-<script type="math/tex; mode=display">
-dX^{-1} = -X^{-1}dXX^{-1}</script><p>该公式可以使用公式$XX^{-1} = I$，两边同时对X求微分。</p>
-<p>3、行列式</p>
-<script type="math/tex; mode=display">
-d\left| X \right| = tr(X^*dX)</script><p>其中$X^*$为X的伴随矩阵</p>
-<p>4、逐函数乘法</p>
-<script type="math/tex; mode=display">
-d(X \bigodot Y) = dX \bigodot Y + X \bigodot dY</script><p>其中$\bigodot$表示同型矩阵逐元素相乘</p>
-<p>5、逐元素函数</p>
-<script type="math/tex; mode=display">
-d\sigma(X) =\sigma^{'} \bigodot dX</script><p>其中$\sigma(X)=[\sigma(X_{ij})]$是逐元素标量函数的计算</p>
-<h1 id="关于矩阵的迹的公式"><a href="#关于矩阵的迹的公式" class="headerlink" title="关于矩阵的迹的公式"></a>关于矩阵的迹的公式</h1><script type="math/tex; mode=display">
-a=tr(a)，a为标量 \\
-tr(A^T) = tr(A) \\
-tr(A \pm B) = tr(A) \pm tr(B) \\
-tr(BA) = tr(AB)</script><h1 id="一个例子"><a href="#一个例子" class="headerlink" title="一个例子"></a>一个例子</h1><p>y=ATXB，求$\frac{\partial y}{\partial X}$</p>
-<p>解：</p>
-<script type="math/tex; mode=display">
-\begin{align*}
-df &= A^Td(XB) + d(A^T)·XB \\
-&= A^TdX·B + A^TXdB \\
-&= A^TdX·B \\
-&其中d(A^T)=d(B)=0
-\end{align*}</script><p>应为df为标量，所以</p>
-<script type="math/tex; mode=display">
-\begin{align*}
-df &= tr(df) \\
-&= tr(A^TdX·B) \\
-&= tr(BA^TdX) \\
-&= tr[(AB^T)^Tdx]
-\end{align*}</script><p>所以$\frac{\partial y}{\partial X}=(AB^T)$</p>
-<h1 id="链式法则"><a href="#链式法则" class="headerlink" title="链式法则"></a>链式法则</h1><p>在标量对矩阵求导中，没有类似标量对标量求导的链式法则。</p>
-<p>此时没有明确的链式法而是要使用公式进行推导，例如有$z = f(Y)$，其中Y为矩阵且$Y=AXB$，A、X、B、都为矩阵，求$\frac{\partial f}{\partial X}$。</p>
-<p>推导过程：</p>
-<script type="math/tex; mode=display">
-\begin{align*}
-dz &= tr[(\frac{\partial f}{\partial Y})^TdY] \\
-&= tr[(\frac{\partial f}{\partial Y})^Td(AXB)] \\
-&= tr[(\frac{\partial f}{\partial Y})^TdA·(XB)] + tr[(\frac{\partial f}{\partial Y})^TA·d(XB)] \\
-&= tr[(\frac{\partial f}{\partial Y})^TAdX·B] + tr[(\frac{\partial f}{\partial Y})^TAX·d(B)] \\
-&= tr[(\frac{\partial f}{\partial Y})^TAdX·B] \\
-&= tr[B·(\frac{\partial f}{\partial Y})^TAdX] \\
-&= tr[(A^T\frac{\partial f}{\partial Y}B^T)^TdX] \\
-&其中dA=dB=0
-\end{align*}</script><p>所以有$\frac{\partial z}{\partial X}=(A^T\frac{\partial f}{\partial Y}B^T)$</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -2116,20 +2229,20 @@ dz &= tr[(\frac{\partial f}{\partial Y})^TdY] \\
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-count">121</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-count">38</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -2169,13 +2282,13 @@ dz &= tr[(\frac{\partial f}{\partial Y})^TdY] \\
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">150k</span>
+    <span title="Symbols count total">153k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">8:21</span>
+    <span title="Reading time total">8:29</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
