@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -270,7 +270,7 @@
 <p><img src="/2020/03/13/machine_learning/neural_network&deep_learning/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/神经元激活函数.jpeg" alt="神经元激活函数" style="zoom:25%;"></p>
 <p>把许多个这样的神经元按一定的层次结构连接起来，就得到了神经网络。</p>
 <h1 id="感知机与多层网络"><a href="#感知机与多层网络" class="headerlink" title="感知机与多层网络"></a>感知机与多层网络</h1><p>感知机由两层神经元组成，输入层接收外界输入信号后传递给输出层(输入层只负责接收信号，不负责处理)，输出层是M-P神经元，亦称“阈值逻辑单元”。感知机能实现逻辑与、或、非运算。例如对于只有两个输入、一个输出的感知机，令$w_1 = w_2 = 1$，$\theta = 1$，则$y = 1·x_1 + 1·x_2 - 1$则当$x_1 = x_2 = 1$时，$y=1$。</p>
-<p>给定训练集数据，权重$w_i(i=1,2,\cdots,n)$以及阈值$\theta$可通过学习算法得到，阈值$\theta$可看作一个固定输入为$-1$的结点，所对应的连接权重为$w_{n+1}$(即$x_{n+1} = -1, w_{n+1} = \theta$)，这样权重和阈值的学习就可以统一为权重的学习。感知机学习规则非常简单，对训练样例$(x,y)$，若当前感知机的输出为$\hat{y}$，则感知机权重将这样调整:</p>
+<p>给定训练集数据，权重$w<em>i(i=1,2,\cdots,n)$以及阈值$\theta$可通过学习算法得到，阈值$\theta$可看作一个固定输入为$-1$的结点，所对应的连接权重为$w</em>{n+1}$(即$x<em>{n+1} = -1, w</em>{n+1} = \theta$)，这样权重和阈值的学习就可以统一为权重的学习。感知机学习规则非常简单，对训练样例$(x,y)$，若当前感知机的输出为$\hat{y}$，则感知机权重将这样调整:</p>
 <script type="math/tex; mode=display">
 w_i \leftarrow w_i + \Delta w_i \\
 \Delta w_i = \eta(y - \hat{y})x_i</script><p>其中$\eta \in (0,1)$为学习率。</p>
@@ -283,7 +283,7 @@ w_i \leftarrow w_i + \Delta w_i \\
 <p><code>注意</code>，前馈并不意味着网络中信号不能向后传，而指网络拓扑结构上不存在环或回路。输入层神经元仅是接收输入，不进行函数处理，隐含层与输出层包含功能神经元。</p>
 <p>神经网络的学习过程，就是根据训练集数据来调整神经元之间的连接权以及每个功能神经元的阈值。</p>
 <h1 id="误差逆传播-BP-算法"><a href="#误差逆传播-BP-算法" class="headerlink" title="误差逆传播(BP)算法"></a>误差逆传播(BP)算法</h1><p>欲训练多层网络，简单的感知机学习规则显然不够了，需要更强大的学习算法。误差逆传播(Error BackPropagation, 简称<code>BP</code>)算法就是其中的最杰出的代表。<code>BP算法不仅可用于多层前馈神经网络，还可用于其他类型的神经网络，例如训练递归神经网络，但通常说BP网络时，一般是指用BP算法训练的多层前馈神经网络</code></p>
-<h4 id="标准BP算法推导"><a href="#标准BP算法推导" class="headerlink" title="标准BP算法推导"></a>标准BP算法推导</h4><p>对于给定的训练集$D = \{(x_i, y_i)\}_{i=1}^{m}$，其中$x_i \in R^d, y_i \in R^l$，即输入示例由$d$个属性描述，输出$l$维实值向量。首先定义一下变量：</p>
+<h4 id="标准BP算法推导"><a href="#标准BP算法推导" class="headerlink" title="标准BP算法推导"></a>标准BP算法推导</h4><p>对于给定的训练集$D = {(x<em>i, y_i)}</em>{i=1}^{m}$，其中$x_i \in R^d, y_i \in R^l$，即输入示例由$d$个属性描述，输出$l$维实值向量。首先定义一下变量：</p>
 <script type="math/tex; mode=display">
 \begin{align*}
 &d: 输入神经元个数 \\
@@ -313,7 +313,7 @@ v \leftarrow v + \Delta v</script><p><code>BP算法基于梯度下降策略</cod
 \begin{align*}
 \Delta w_{hj} &= -\eta \frac{\partial E_k}{\partial w_{hj}} \\
 &= \frac{\partial E_k}{\partial \hat{y}_j^k} \frac{\partial \hat{y}_j^k}{\partial \beta_j} \frac{\partial \beta_j}{\partial w_{hj}}
-\end{align*}</script><p>由于$\beta_j = \sum_{h=1}^{q} w_{hj}b_h$，则有</p>
+\end{align*}</script><p>由于$\beta<em>j = \sum</em>{h=1}^{q} w_{hj}b_h$，则有</p>
 <script type="math/tex; mode=display">
 \frac{\partial \beta_j}{\partial w_{hj}} = b_h \tag{1}</script><p>对于对数几率函数，有一个很好的性质：</p>
 <script type="math/tex; mode=display">
@@ -324,7 +324,7 @@ f'(x) = f(x)(1-f(x)) = \frac{e^x}{(e^x + 1)^2}</script><p>则：</p>
 =& \frac{\partial E_k}{\partial \hat{y}_j^k} \frac{\partial \hat{y}_j^k}{\partial (\beta_j - \theta_j)} \\
 =& (\hat{y}_j^k - y_j^k)f'(\beta_j - \theta_j) \\
 =& (\hat{y}_j^k - y_j^k)\hat{y}_j^k(1-\hat{y}_j^k)
-\end{align*}</script><p>令$g_j = - \frac{\partial E_k}{\partial \hat{y}_j^k} \frac{\partial \hat{y}_j^k}{\partial \beta_j} = \hat{y}_j^k(1-\hat{y}_j^k)(y_j^k - \hat{y}_j^k)$，则可得到关于$w_{hj}$的更新公式</p>
+\end{align*}</script><p>令$g<em>j = - \frac{\partial E_k}{\partial \hat{y}_j^k} \frac{\partial \hat{y}_j^k}{\partial \beta_j} = \hat{y}_j^k(1-\hat{y}_j^k)(y_j^k - \hat{y}_j^k)$，则可得到关于$w</em>{hj}$的更新公式</p>
 <script type="math/tex; mode=display">
 \Delta w_{hj} = \eta g_j b_h</script><p>同理可得到</p>
 <script type="math/tex; mode=display">
@@ -332,7 +332,7 @@ f'(x) = f(x)(1-f(x)) = \frac{e^x}{(e^x + 1)^2}</script><p>则：</p>
 \Delta v_{ih} = \eta e_h x_i \\
 \Delta \gamma_h = -\eta e_h \\
 其中 \\
-e_h = - \frac{\partial E_k}{\partial b_h} \frac{\partial b_h}{\partial \alpha_h} = b_h(1-b_h)\sum_{j=1}^{l}w_{hj}g_j</script><p>有时为了做精细调节，计算$\Delta w_{hj}、\Delta \theta_j$使用的$\eta$可以和计算$\Delta v_{ih}、\Delta \gamma_h$使用的$\eta$可以不同。</p>
+e_h = - \frac{\partial E_k}{\partial b_h} \frac{\partial b_h}{\partial \alpha_h} = b_h(1-b_h)\sum_{j=1}^{l}w_{hj}g_j</script><p>有时为了做精细调节，计算$\Delta w<em>{hj}、\Delta \theta_j$使用的$\eta$可以和计算$\Delta v</em>{ih}、\Delta \gamma_h$使用的$\eta$可以不同。</p>
 <h4 id="标准BP算法流程"><a href="#标准BP算法流程" class="headerlink" title="标准BP算法流程"></a>标准BP算法流程</h4><script type="math/tex; mode=display">
 \begin{align*}
 &输入： 训练集D = \{(x_i, y_i)\}_{i=1}^m \\
@@ -536,7 +536,7 @@ E = \lambda \frac{1}{m} \sum_{k=1}^{m}E_k + (1-\lambda)\sum_{i}w_i^2</script><p>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
     <span title="Reading time total">8:32</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

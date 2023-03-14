@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -251,7 +251,7 @@
       
         <h1 id="尽量以const，enum，inline替换-define"><a href="#尽量以const，enum，inline替换-define" class="headerlink" title="尽量以const，enum，inline替换#define"></a>尽量以const，enum，inline替换#define</h1><h1 id="具体描述"><a href="#具体描述" class="headerlink" title="具体描述"></a>具体描述</h1><p>使用#define定义的常量，尽量使用const 来定义，使用#define定义的函数，尽量使用inline函数来定义</p>
 <h1 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h1><p>看下面的例子：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX(a, b) (a) &gt; (b) ? (a) : (b)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">int</span> b = <span class="number">0</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; MAX(++a, b);<span class="comment">//a被累加两次</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; MAX(++a, b+<span class="number">10</span>);<span class="comment">//a被累加一次</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX(a, b) (a) &gt; (b) ? (a) : (b)</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a = <span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> b = <span class="number">0</span>;</span><br><span class="line">cout &lt;&lt; <span class="built_in">MAX</span>(++a, b);<span class="comment">//a被累加两次</span></span><br><span class="line">cout &lt;&lt; <span class="built_in">MAX</span>(++a, b+<span class="number">10</span>);<span class="comment">//a被累加一次</span></span><br></pre></td></tr></table></figure>
 <p>由于使用#define定义的函数或者常量都是本文替换，所以文本替换后其语意会产生偏差。</p>
 
     </div>
@@ -414,7 +414,7 @@
       <span class="post-meta-item-text">Reading time total &asymp;</span>
     <span title="Reading time total">8:32</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -451,14 +451,14 @@
 </div>
 <p><code>不能讲限定符与定位符一起使用，由于在紧靠换行或者单词边界的前面或者后面不能有一个以上位置</code>，因此不允许诸如<code>^*</code>之类的表达式</p>
 <p>如果要匹配一行文本开始处的文本，要在正则表达式的开始使用^字符。如果要匹配一行文本结束处的文本，要在正则表达式的结束处使用$字符。<br><code>^和$可以在一个正则表达式中同时使用</code>，例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^Chapter$</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^Chapter$</span><br></pre></td></tr></table></figure>
 <p>表示从文本开始匹配时和从末尾匹配时都是Chapter，说明该行只有Chapter这几个字符</p>
 <p>单词边界是单词和空格之间的位置，非单词边界是任何其他位置。</p>
 <p>\b字符位于要匹配的字符串的开始，它在单词的开始处查找匹配项，如果它位于字符串的结尾，他在单词的结尾处查找匹配项。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\bCha</span><br><span class="line">ter\b</span><br></pre></td></tr></table></figure>
 <h2 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h2><p>AAA | BBB<br>匹配 AAA 或者 BBB</p>
 <h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><h4 id="引用分组和反向引用"><a href="#引用分组和反向引用" class="headerlink" title="引用分组和反向引用"></a>引用分组和反向引用</h4><p>对一个正则表达式或部分模式两边添加圆括号将导致相关匹配到一个临时缓冲区中，所捕获的每个子匹配都按照正则表达式模式中从左到右出现的顺序存储。<font color="red">缓冲区的编号从1开始</font>，最多可以存储99个捕获的子表达式。每个缓冲区都可以使用\n访问，其中n为一个标识特定缓冲区的一位或两位十进制数。<br>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\b([a-z]+)\1\b</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\b([a-z]+)\1\b</span><br></pre></td></tr></table></figure>
 <p>反向引用只能用于之前出现的分组。</p>
 <p>反向引用的一个例子：要用正则表达式匹配日期，日期的格式为yyyy-mm-dd、yyyy/mm/dd和yyyy.mm.dd都是合理的，注意后面的分隔符和前面的分隔符要相等。则正则表达式可以写作：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\d&#123;4&#125;(-|/|.)\d&#123;2&#125;\1\d&#123;2&#125;</span><br></pre></td></tr></table></figure>
@@ -630,7 +630,7 @@
       <span class="post-meta-item-text">Reading time total &asymp;</span>
     <span title="Reading time total">8:32</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -259,7 +259,7 @@
         <h1 id="什么是梯度"><a href="#什么是梯度" class="headerlink" title="什么是梯度"></a>什么是梯度</h1><p>梯度本质上来说就是一个向量，这个向量的各个分量是多元函数在某点的各个一阶偏导数。既然是一个向量，那么就可以表示方向。进而由方向导数的定义可以知道，沿梯度方向，函数值<code>增大</code>的速度就越快，相反沿梯度的反方向，函数值<code>减小</code>的速度就越大</p>
 <h1 id="为什么要使用梯度下降法"><a href="#为什么要使用梯度下降法" class="headerlink" title="为什么要使用梯度下降法"></a>为什么要使用梯度下降法</h1><p>对于一些优化问题时，我们一般需要求解问题的局部最优解，而表现在函数上，局部最优解就是函数的极值点。根据费马定理，如果一个函数一阶可偏导，那么极值点处的一阶偏导数都为0。而一般绝大多数的函数都是一阶可偏导的。</p>
 <p>但是直接求出函数的偏导数，然后令偏导数等于0求解方程的这种方法一般很难求出方程的解。所以只有通过数值计算的方法来求解近似解。</p>
-<h1 id="梯度下降法的一般形式"><a href="#梯度下降法的一般形式" class="headerlink" title="梯度下降法的一般形式"></a>梯度下降法的一般形式</h1><p>首先确定一个初始点$W_0$，然后使用迭代公式: $w_{n+1}^i = w_n^i - \alpha f’_{w^i}(W_n)$，$w^i$表示点$W$的第$i$个分量，$\alpha$为学习率，一般为一个接近0的常数，例如0.001。</p>
+<h1 id="梯度下降法的一般形式"><a href="#梯度下降法的一般形式" class="headerlink" title="梯度下降法的一般形式"></a>梯度下降法的一般形式</h1><p>首先确定一个初始点$W<em>0$，然后使用迭代公式: $w</em>{n+1}^i = w<em>n^i - \alpha f’</em>{w^i}(W_n)$，$w^i$表示点$W$的第$i$个分量，$\alpha$为学习率，一般为一个接近0的常数，例如0.001。</p>
 <p>迭代，直到达到一定的迭代步数或者是目标函数的变化或参数的变化小于某一阈值时停止迭代。</p>
 <h1 id="实现细节问题"><a href="#实现细节问题" class="headerlink" title="实现细节问题"></a>实现细节问题</h1><h4 id="初始值的设定"><a href="#初始值的设定" class="headerlink" title="初始值的设定"></a>初始值的设定</h4><p>一般的，对于不带约束条件的优化问题，可以将初始值设置为0，或者设置为随机数。初始值的设定对算法的收敛很重要，不同的初始值最后可能收敛到不同的极值点。</p>
 <h4 id="学习率的设定"><a href="#学习率的设定" class="headerlink" title="学习率的设定"></a>学习率的设定</h4><p>一般可以令学习率为一个很小的正数例如0.001，并且在接下来的迭代过程中不再改变学习率。或者可以在迭代的过程中动态的调整学习率的值，例如前10000步迭代时学习率为0.001，然后10000步学习率减半。如果梯地下降算法运行异常的话，可能也是学习率设置得不太合理。</p>
@@ -434,7 +434,7 @@
       <span class="post-meta-item-text">Reading time total &asymp;</span>
     <span title="Reading time total">8:32</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -301,7 +301,7 @@
 <h1 id="UnionFS-联合文件系统"><a href="#UnionFS-联合文件系统" class="headerlink" title="UnionFS 联合文件系统"></a>UnionFS 联合文件系统</h1><p>Linux Namespace和cgroup分别解决了容器的资源隔离与资源限制，那么容器是很轻量的，通常每台机器中可以运行几十上百个容器，这些容器可能会公用一个image。所以容器在启动的时候，不可能各自将这个image复制一份。Docker在内部使用镜像分层存储以及UnionFS来实现多个容器共用一个镜像。</p>
 <ul>
 <li><p>镜像分层存储：docker镜像是由一系列的层组成的，每层代表Dockerfile中的一条指令，比如下面的Dockerfile文件：</p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">15.04</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . /app</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> make /app</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> python /app/app.py</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">15.04</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . /app</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> make /app</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> python /app/app.py</span></span><br></pre></td></tr></table></figure>
 <p>这个dockerfile文件最终生成镜像的时候会生成四层，这四层是不可写的，而通过镜像实例化容器的过程，其实就是在就是在这四层之上添加了一个可写层，也就是我们通常说的容器层。而对容器层的操作，主要是利用了写时复制（CoW，copy on write）的技术。例如，如果当前操作会改变下面四层的某一层，docker会先将该层拷贝到容器层，然后再在容器层中进行操作。</p>
 </li>
 <li><p>UnionFS 其实是一种为Linux操作系统设计的，用于把多个文件系统联合到同一个挂载点的文件系统服务。</p>
@@ -469,7 +469,7 @@
       <span class="post-meta-item-text">Reading time total &asymp;</span>
     <span title="Reading time total">8:32</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -270,7 +270,7 @@
 <p>在许多情况下，通常会将$p_h$设置为$k_h - 1$，将$p_w$设置为$k_w - 1$，这样经过卷积之后的输出图片就和输入图片的大小一致。如果$k_h$为奇数(则$k_h - 1$为偶数)，那么一般就在输入图片的上面和下面都加上$\frac{k_h - 1}{2}$行填充，如果$k_h$为偶数(则$k_h - 1$为奇数)，那么可以在图片上方添加$\frac{k_h}{2}$行填充，在图片下方添加$(\frac{k_h}{2} - 1)$行填充，或者反过来。对于列填充来说也是这样的。</p>
 <p>CNN中通常使用长和宽都为奇数的卷积核，使用奇数卷积核心可以保障在图片上下和左右添加的填充是均匀的。<font color="orange">另外还有一个好处就是对于输出图片中的像素$Y[i, j]$来说，它正好是以输入图片中$X[i, j]$(注意输入图片的坐标以未添加padding的原始图片的左上角为原点)为中心周围像素的卷积运算的结果。</font></p>
 <p>下面以一个8 x 8的输入图片，一个3 x 3的卷积核来做padding处理下的卷积代码示例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">conv2d = tf.keras.layers.Conv2D(<span class="number">1</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">&#x27;same&#x27;</span>)</span><br><span class="line"><span class="comment"># Here (1, 1) indicates that the batch size and the number of channels</span></span><br><span class="line">input_tensor = tf.random.uniform(shape=(<span class="number">1</span>, <span class="number">8</span>, <span class="number">8</span>, <span class="number">1</span>))</span><br><span class="line">output_tensor = conv2d(input_tensor)</span><br><span class="line">print(output_tensor.shape)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">conv2d = tf.keras.layers.Conv2D(<span class="number">1</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">&#x27;same&#x27;</span>)</span><br><span class="line"><span class="comment"># Here (1, 1) indicates that the batch size and the number of channels</span></span><br><span class="line">input_tensor = tf.random.uniform(shape=(<span class="number">1</span>, <span class="number">8</span>, <span class="number">8</span>, <span class="number">1</span>))</span><br><span class="line">output_tensor = conv2d(input_tensor)</span><br><span class="line"><span class="built_in">print</span>(output_tensor.shape)</span><br></pre></td></tr></table></figure>
 <h1 id="Stride"><a href="#Stride" class="headerlink" title="Stride"></a>Stride</h1><p>在之前的对图片进行卷积计算时，都是从图片左上角开始，每次向右移动一个像素，当一行计算完后，再往下移动一个像素。但是有些时候，为了计算效率和缩减采样次数，卷积窗口可以每次多向右或向下移动几个像素，跳过中间几个像素的计算。如下图：</p>
 <p><center>
   <img src="/2021/04/16/machine_learning/neural_network&deep_learning/cnn/padding-and-stride/stride.png" alt="padding.png" style="zoom:40%;">
@@ -443,7 +443,7 @@
       <span class="post-meta-item-text">Reading time total &asymp;</span>
     <span title="Reading time total">8:32</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -239,7 +239,7 @@
       
         <h1 id="成对使用new和delete时要采用相同形式"><a href="#成对使用new和delete时要采用相同形式" class="headerlink" title="成对使用new和delete时要采用相同形式"></a>成对使用new和delete时要采用相同形式</h1><p>如果你在new表达式中使用[ ]，必须在相应的delete表达式中也使用[ ]。如果你在new表达式中不使用[ ]，一定不要在相应的delete表达式中使用[ ]。</p>
 <p><strong>另外尽量不要对数组形式做typedef动作</strong>，否则会导致new和delete的不匹配。例如：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">std</span>::<span class="built_in">string</span> Address[<span class="number">4</span>];<span class="comment">//用四个字符串来表示地址</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> *pA = <span class="keyword">new</span> Address;</span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> pA;<span class="comment">//应该使用 delete [] pA;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> std::string Address[<span class="number">4</span>];<span class="comment">//用四个字符串来表示地址</span></span><br><span class="line"></span><br><span class="line">std::string *pA = <span class="keyword">new</span> Address;</span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> pA;<span class="comment">//应该使用 delete [] pA;</span></span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -398,7 +398,7 @@
       <span class="post-meta-item-text">Reading time total &asymp;</span>
     <span title="Reading time total">8:32</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

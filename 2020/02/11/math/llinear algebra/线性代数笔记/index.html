@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -264,12 +264,12 @@
 <p>3、分配律：$A(B+C) = AB+AC$</p>
 <p>4、<code>矩阵的乘法没有交换律</code>，即一般有$AB \neq BA$，如果有$AB \neq BA$，称A与B是不可交换的；当$AB=BA$时，称A与B是可交换的。</p>
 <p>5、即使有$A \neq 0(0矩阵)$，由$AB=BA$也不能退出$B=C$</p>
-<p>6、$f(A) = a_k A^k + a_{k-1} A^{k-1} + \cdots + a_1 A + a_0 I,(a_0、a_1、\ldots 、a_n为常数)$，称为方阵A的k次多项式，如果有多项式$f(x)$与$g(x)$，则有$f(A)g(A) = g(A)f(A)$，<code>注意都是A</code>。但是一般情况下$f(A)g(B) \neq f(B)f(A)$。</p>
+<p>6、$f(A) = a<em>k A^k + a</em>{k-1} A^{k-1} + \cdots + a_1 A + a_0 I,(a_0、a_1、\ldots 、a_n为常数)$，称为方阵A的k次多项式，如果有多项式$f(x)$与$g(x)$，则有$f(A)g(A) = g(A)f(A)$，<code>注意都是A</code>。但是一般情况下$f(A)g(B) \neq f(B)f(A)$。</p>
 <p>7、$(A+\lambda I)^n = \sum_{k=0}^{n} \lambda^k A^{n-k}$</p>
 <h1 id="矩阵的转置的性质"><a href="#矩阵的转置的性质" class="headerlink" title="矩阵的转置的性质"></a>矩阵的转置的性质</h1><p>1、$(A^T)^T = A$</p>
 <p>2、$(A+B)^T = A^T + B^T$</p>
 <p>3、$(kA)^T = k(A^T)$</p>
-<p>4、$(AB)^T = B^T A^T$，$(A_1 A_2 \cdots A_n)^T = {A_n}^T {A_{n-1}}^T \cdots {A_1}^T$，$(A^n)^T = (A^T)^n$</p>
+<p>4、$(AB)^T = B^T A^T$，$(A<em>1 A_2 \cdots A_n)^T = {A_n}^T {A</em>{n-1}}^T \cdots {A_1}^T$，$(A^n)^T = (A^T)^n$</p>
 <p>5、若$A^T A = 0$，则$A = A^T = 0$</p>
 <p>6、若$A^T = A$，则称A为对称矩阵；若$A^T = -A$，则称A为反称矩阵</p>
 <p>8、<code>实对称矩阵的n次方仍是实对称矩阵</code>，证明：$A^n = (A^T)^n = (A^n)^T $</p>
@@ -277,7 +277,7 @@
 <p><code>在使用处等变换求解矩阵的逆矩阵的过程中，如果使用行变换则只能全程使用行变换，如果使用列变换则只能全程使用列变换</code></p>
 <p>1、$(A^{-1})^{-1} = A$</p>
 <p>2、$(\lambda A)^{-1} = \frac{1}{\lambda} A^{-1}$</p>
-<p>3、$(AB)^{-1} = B^{-1} A^{-1}$，$(A_1 A_2 \cdots A_n) = {A_n}^{-1} {A_{n-1}}^{-1} \cdots {A_1}^{-1}$，$(A^n)^{-1} = (A^{-1})^n$</p>
+<p>3、$(AB)^{-1} = B^{-1} A^{-1}$，$(A<em>1 A_2 \cdots A_n) = {A_n}^{-1} {A</em>{n-1}}^{-1} \cdots {A_1}^{-1}$，$(A^n)^{-1} = (A^{-1})^n$</p>
 <p>4、</p>
 <script type="math/tex; mode=display">
 \begin{pmatrix}
@@ -310,7 +310,7 @@ a_{n,1} & & &
  & & \frac{1}{a_{n-1, 2}} & \\
  & \cdots & & \\
  \frac{1}{a_{1, n}} & & & \\
-\end{pmatrix}</script><p>6、$(E_{ij})^{-1} = E_{ij}$，$(E_{i(c)})^{-1} = E_{i(\frac{1}{c})}$，$(E_{ij(c)})^{-1} = E_{ij(-c)}$</p>
+\end{pmatrix}</script><p>6、$(E<em>{ij})^{-1} = E</em>{ij}$，$(E<em>{i(c)})^{-1} = E</em>{i(\frac{1}{c})}$，$(E<em>{ij(c)})^{-1} = E</em>{ij(-c)}$</p>
 <h1 id="行列式的性质"><a href="#行列式的性质" class="headerlink" title="行列式的性质"></a>行列式的性质</h1><p>1、</p>
 <script type="math/tex; mode=display">
 \left|
@@ -442,8 +442,8 @@ A^{*} =
      A_{12} & A_{22} & \cdots & A_{n2} \\
      \vdots & \vdots & & \vdots \\
      A_{1n} & A_{2n} & & A_{nn}
-\end{pmatrix}</script><p>其中$A_{ij}$为$a_{ij}$的代数余子式，<code>注意</code>$A^*$的下标排列方式</p>
-<p>1、$\sum_{k=1}^{n} a_{ik} A_{jk} = 0$，($i \neq j; i, j = 1、2、\ldots \space、n$)，即矩阵的任一行（列）的元素乘以另一行(列)对应元的代数余子式之和为0</p>
+\end{pmatrix}</script><p>其中$A<em>{ij}$为$a</em>{ij}$的代数余子式，<code>注意</code>$A^*$的下标排列方式</p>
+<p>1、$\sum<em>{k=1}^{n} a</em>{ik} A_{jk} = 0$，($i \neq j; i, j = 1、2、\ldots \space、n$)，即矩阵的任一行（列）的元素乘以另一行(列)对应元的代数余子式之和为0</p>
 <p>2、$AA^<em> = A^</em> A = |A|I$，$\implies A^{-1} = \frac{1}{|A|} A^*$</p>
 <p>3、$(kA)^<em> = k^{n-1}A^</em>$，n为方阵阶数</p>
 <p>4、$(A^<em>)^{-1} = (A^{-1})^</em>$，$(A^T)^<em> = (A^</em>)^T$</p>
@@ -454,9 +454,9 @@ A^{*} =
 <p>2、设A为$m \times n$矩阵，则R(A) = r的充分必要条件是通过行初等变换(行变换和列变换能同时使用)能将A化为具有r个非零行的行阶梯行矩阵。这也是求解矩阵的秩的基本方法。</p>
 <p>3、设$A$为n阶矩阵，则A可逆的充分必要条件是$R(A) = n$，即$A可逆 \iff R(A) = n$</p>
 <p>4、$R(A) = R(A^T)$，$R(A^TA) = R(AA^T) = R(A)$</p>
-<p>5、$R(A^*) = \begin{cases} n, \space 若R(A) = n \\ 1, \space 若R(A)=n-1 \\ 0, \space 若R(A) &lt; n-1 \end{cases}$ ，这个性质的一个应用是证明A*为0矩阵，则只需要证明$R(A)&lt; n-1$ 即可</p>
+<p>5、$R(A^*) = \begin{cases} n, \space 若R(A) = n \ 1, \space 若R(A)=n-1 \ 0, \space 若R(A) &lt; n-1 \end{cases}$ ，这个性质的一个应用是证明A*为0矩阵，则只需要证明$R(A)&lt; n-1$ 即可</p>
 <p>6、设$A$为$m \times n$矩阵，$B$为$n \times s$矩阵，若$AB = 0$，则$R(A) + R(B) \leq n$</p>
-<p>7、$R(AB) \leq min\{R(A), \space R(B)\}$，$R(A+B) \leq R(A) + R(B)$</p>
+<p>7、$R(AB) \leq min{R(A), \space R(B)}$，$R(A+B) \leq R(A) + R(B)$</p>
 <p>8、若B为<code>可逆矩阵</code>，则$R(AB) = R(BA) = R(A)$</p>
 <h1 id="正交矩阵"><a href="#正交矩阵" class="headerlink" title="正交矩阵"></a>正交矩阵</h1><h1 id="矩阵相似"><a href="#矩阵相似" class="headerlink" title="矩阵相似"></a>矩阵相似</h1><p>对于同型方阵A、B，若存在<code>可逆矩阵</code>Q，使得$Q^{-1}AQ = B$，记为$A～B$。</p>
 
@@ -621,7 +621,7 @@ A^{*} =
       <span class="post-meta-item-text">Reading time total &asymp;</span>
     <span title="Reading time total">8:32</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

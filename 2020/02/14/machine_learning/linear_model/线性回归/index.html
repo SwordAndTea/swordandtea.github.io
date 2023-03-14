@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -269,7 +269,7 @@
     \end{pmatrix} + b \\
     &= w x + b
 \end{align*}</script><p>在线性模型中$w$直观表达了个属性在预测中的重要性，<code>因此线性模型有很好的可解释性</code>。</p>
-<h1 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h1><p>给定数据集$D = \{(x_1,y_1),(x_2,y_2), \cdots, (x_m,y_m)\}$，其中$x_1$为d个特征描述的d维向量。线性回归试图学得</p>
+<h1 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h1><p>给定数据集$D = {(x_1,y_1),(x_2,y_2), \cdots, (x_m,y_m)}$，其中$x_1$为d个特征描述的d维向量。线性回归试图学得</p>
 <script type="math/tex; mode=display">
 f(x_i) = w x_i + b, 使得f(x_i)尽可能接近y_i</script><p>那么如何衡量尽可能接近呢？<code>均方误差是回归任务重最常用的性能度量</code>，因此我们可试图让均方误差最小化，即</p>
 <script type="math/tex; mode=display">
@@ -294,7 +294,7 @@ E_{(w,b)} = \sum_{i=1}^{m}(wx_i + b - y_i)^2</script><p>分别对w和b求偏导<
 w = \frac{\sum_{i=1}^{m}y_i(x_i - \overline x)}{\sum_{i=1}^{m}x_i^2 - \frac{1}{m}(\sum_{i=1}^{m}x_i)^2} \tag{3}</script><script type="math/tex; mode=display">
 b = \frac{1}{m} \sum_{i=1}^{m}(y_i - wx_i) \tag{4}</script><p>式(4)可由式(2)等于0直接得出，式(3)可有式(2)和式(4)联立推出。其中$\overline x = \frac{1}{m} \sum_{i=1}^{m}x_i$为$x$的均值。</p>
 <h3 id="多元线性回归"><a href="#多元线性回归" class="headerlink" title="多元线性回归"></a>多元线性回归</h3><p>上面对只有一个特征描述的数据集如何使用最小二乘法求解线性回归问题进行了说明，然而实际的问题更一般的情况是有多个特征标记的数据。这种称为<code>多元线性回归</code>。</p>
-<p>为了便于讨论多元线性回归中$w$和$x$都为向量的情况，我们将$b$吸收进入$w$，即令$\hat w = (w;b)$，$\hat w$是一个$(d+1) \times 1$的矩阵。把数据集$D=\{(x_i, y_i)\}_{i=1}^{m}$(<code>注意</code>$x_i$为向量，$y_i$为标量)表示为一个$m \times (d + 1)$大小的矩阵$X$，其中每行对应一个示例，每行的前d个元素对应一个示例的d个特征取值，最后一个元素恒置为1。并且把所有示例的最后结果表示为一个$m \times 1$的矩阵$Y$</p>
+<p>为了便于讨论多元线性回归中$w$和$x$都为向量的情况，我们将$b$吸收进入$w$，即令$\hat w = (w;b)$，$\hat w$是一个$(d+1) \times 1$的矩阵。把数据集$D={(x<em>i, y_i)}</em>{i=1}^{m}$(<code>注意</code>$x_i$为向量，$y_i$为标量)表示为一个$m \times (d + 1)$大小的矩阵$X$，其中每行对应一个示例，每行的前d个元素对应一个示例的d个特征取值，最后一个元素恒置为1。并且把所有示例的最后结果表示为一个$m \times 1$的矩阵$Y$</p>
 <p>即：</p>
 <script type="math/tex; mode=display">
 \hat w = (w_1, w_2, \cdots, w_d, b)^T</script><script type="math/tex; mode=display">
@@ -540,7 +540,7 @@ f(x) = x (X^T X)^{-1} X^T Y</script><p><code>这里求解模型的方法其实�
       <span class="post-meta-item-text">Reading time total &asymp;</span>
     <span title="Reading time total">8:32</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

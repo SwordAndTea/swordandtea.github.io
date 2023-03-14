@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -446,7 +446,7 @@
 <p><img src="/2020/03/13/machine_learning/neural_network&deep_learning/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/神经元激活函数.jpeg" alt="神经元激活函数" style="zoom:25%;"></p>
 <p>把许多个这样的神经元按一定的层次结构连接起来，就得到了神经网络。</p>
 <h1 id="感知机与多层网络"><a href="#感知机与多层网络" class="headerlink" title="感知机与多层网络"></a>感知机与多层网络</h1><p>感知机由两层神经元组成，输入层接收外界输入信号后传递给输出层(输入层只负责接收信号，不负责处理)，输出层是M-P神经元，亦称“阈值逻辑单元”。感知机能实现逻辑与、或、非运算。例如对于只有两个输入、一个输出的感知机，令$w_1 = w_2 = 1$，$\theta = 1$，则$y = 1·x_1 + 1·x_2 - 1$则当$x_1 = x_2 = 1$时，$y=1$。</p>
-<p>给定训练集数据，权重$w_i(i=1,2,\cdots,n)$以及阈值$\theta$可通过学习算法得到，阈值$\theta$可看作一个固定输入为$-1$的结点，所对应的连接权重为$w_{n+1}$(即$x_{n+1} = -1, w_{n+1} = \theta$)，这样权重和阈值的学习就可以统一为权重的学习。感知机学习规则非常简单，对训练样例$(x,y)$，若当前感知机的输出为$\hat{y}$，则感知机权重将这样调整:</p>
+<p>给定训练集数据，权重$w<em>i(i=1,2,\cdots,n)$以及阈值$\theta$可通过学习算法得到，阈值$\theta$可看作一个固定输入为$-1$的结点，所对应的连接权重为$w</em>{n+1}$(即$x<em>{n+1} = -1, w</em>{n+1} = \theta$)，这样权重和阈值的学习就可以统一为权重的学习。感知机学习规则非常简单，对训练样例$(x,y)$，若当前感知机的输出为$\hat{y}$，则感知机权重将这样调整:</p>
 <script type="math/tex; mode=display">
 w_i \leftarrow w_i + \Delta w_i \\
 \Delta w_i = \eta(y - \hat{y})x_i</script><p>其中$\eta \in (0,1)$为学习率。</p>
@@ -459,7 +459,7 @@ w_i \leftarrow w_i + \Delta w_i \\
 <p><code>注意</code>，前馈并不意味着网络中信号不能向后传，而指网络拓扑结构上不存在环或回路。输入层神经元仅是接收输入，不进行函数处理，隐含层与输出层包含功能神经元。</p>
 <p>神经网络的学习过程，就是根据训练集数据来调整神经元之间的连接权以及每个功能神经元的阈值。</p>
 <h1 id="误差逆传播-BP-算法"><a href="#误差逆传播-BP-算法" class="headerlink" title="误差逆传播(BP)算法"></a>误差逆传播(BP)算法</h1><p>欲训练多层网络，简单的感知机学习规则显然不够了，需要更强大的学习算法。误差逆传播(Error BackPropagation, 简称<code>BP</code>)算法就是其中的最杰出的代表。<code>BP算法不仅可用于多层前馈神经网络，还可用于其他类型的神经网络，例如训练递归神经网络，但通常说BP网络时，一般是指用BP算法训练的多层前馈神经网络</code></p>
-<h4 id="标准BP算法推导"><a href="#标准BP算法推导" class="headerlink" title="标准BP算法推导"></a>标准BP算法推导</h4><p>对于给定的训练集$D = \{(x_i, y_i)\}_{i=1}^{m}$，其中$x_i \in R^d, y_i \in R^l$，即输入示例由$d$个属性描述，输出$l$维实值向量。首先定义一下变量：</p>
+<h4 id="标准BP算法推导"><a href="#标准BP算法推导" class="headerlink" title="标准BP算法推导"></a>标准BP算法推导</h4><p>对于给定的训练集$D = {(x<em>i, y_i)}</em>{i=1}^{m}$，其中$x_i \in R^d, y_i \in R^l$，即输入示例由$d$个属性描述，输出$l$维实值向量。首先定义一下变量：</p>
 <script type="math/tex; mode=display">
 \begin{align*}
 &d: 输入神经元个数 \\
@@ -489,7 +489,7 @@ v \leftarrow v + \Delta v</script><p><code>BP算法基于梯度下降策略</cod
 \begin{align*}
 \Delta w_{hj} &= -\eta \frac{\partial E_k}{\partial w_{hj}} \\
 &= \frac{\partial E_k}{\partial \hat{y}_j^k} \frac{\partial \hat{y}_j^k}{\partial \beta_j} \frac{\partial \beta_j}{\partial w_{hj}}
-\end{align*}</script><p>由于$\beta_j = \sum_{h=1}^{q} w_{hj}b_h$，则有</p>
+\end{align*}</script><p>由于$\beta<em>j = \sum</em>{h=1}^{q} w_{hj}b_h$，则有</p>
 <script type="math/tex; mode=display">
 \frac{\partial \beta_j}{\partial w_{hj}} = b_h \tag{1}</script><p>对于对数几率函数，有一个很好的性质：</p>
 <script type="math/tex; mode=display">
@@ -500,7 +500,7 @@ f'(x) = f(x)(1-f(x)) = \frac{e^x}{(e^x + 1)^2}</script><p>则：</p>
 =& \frac{\partial E_k}{\partial \hat{y}_j^k} \frac{\partial \hat{y}_j^k}{\partial (\beta_j - \theta_j)} \\
 =& (\hat{y}_j^k - y_j^k)f'(\beta_j - \theta_j) \\
 =& (\hat{y}_j^k - y_j^k)\hat{y}_j^k(1-\hat{y}_j^k)
-\end{align*}</script><p>令$g_j = - \frac{\partial E_k}{\partial \hat{y}_j^k} \frac{\partial \hat{y}_j^k}{\partial \beta_j} = \hat{y}_j^k(1-\hat{y}_j^k)(y_j^k - \hat{y}_j^k)$，则可得到关于$w_{hj}$的更新公式</p>
+\end{align*}</script><p>令$g<em>j = - \frac{\partial E_k}{\partial \hat{y}_j^k} \frac{\partial \hat{y}_j^k}{\partial \beta_j} = \hat{y}_j^k(1-\hat{y}_j^k)(y_j^k - \hat{y}_j^k)$，则可得到关于$w</em>{hj}$的更新公式</p>
 <script type="math/tex; mode=display">
 \Delta w_{hj} = \eta g_j b_h</script><p>同理可得到</p>
 <script type="math/tex; mode=display">
@@ -508,7 +508,7 @@ f'(x) = f(x)(1-f(x)) = \frac{e^x}{(e^x + 1)^2}</script><p>则：</p>
 \Delta v_{ih} = \eta e_h x_i \\
 \Delta \gamma_h = -\eta e_h \\
 其中 \\
-e_h = - \frac{\partial E_k}{\partial b_h} \frac{\partial b_h}{\partial \alpha_h} = b_h(1-b_h)\sum_{j=1}^{l}w_{hj}g_j</script><p>有时为了做精细调节，计算$\Delta w_{hj}、\Delta \theta_j$使用的$\eta$可以和计算$\Delta v_{ih}、\Delta \gamma_h$使用的$\eta$可以不同。</p>
+e_h = - \frac{\partial E_k}{\partial b_h} \frac{\partial b_h}{\partial \alpha_h} = b_h(1-b_h)\sum_{j=1}^{l}w_{hj}g_j</script><p>有时为了做精细调节，计算$\Delta w<em>{hj}、\Delta \theta_j$使用的$\eta$可以和计算$\Delta v</em>{ih}、\Delta \gamma_h$使用的$\eta$可以不同。</p>
 <h4 id="标准BP算法流程"><a href="#标准BP算法流程" class="headerlink" title="标准BP算法流程"></a>标准BP算法流程</h4><script type="math/tex; mode=display">
 \begin{align*}
 &输入： 训练集D = \{(x_i, y_i)\}_{i=1}^m \\
@@ -642,15 +642,15 @@ E = \lambda \frac{1}{m} \sum_{k=1}^{m}E_k + (1-\lambda)\sum_{i}w_i^2</script><p>
 <p>1、减少一些特征。其手段也分为手动选择要丢掉的特征和使用一些算法来丢掉部分特征。但是减少特征就意味着丢失信息，所以要谨慎丢弃特征。</p>
 <p>2、在模型中加入正则化项。使用正则化项时不用删除特征。</p>
 <h1 id="正则化项的作用"><a href="#正则化项的作用" class="headerlink" title="正则化项的作用"></a>正则化项的作用</h1><p>正则化项的使用<code>其思想是</code>让某些特征的参数尽可能小(这也叫做对某些参数的惩罚)，从而让这个特征所占的重要性变低。</p>
-<p>例如某个模型为$f(x) = w_1 x + w_2 x^2 + w_3 x^3 + w_4 x^4$ + b，其对应的目标函数是$argmin_{(w, b)} \sum_{i=1}^{m} [f(x_i) - y_i]^2$，那么可以<code>对目标函数</code>加入正则化项得：$argmin_{(w,b)}\sum_{i=1}^{m}[f(x_i) - y_i]^2 + 1000w_3^3 + 1000w_4^4$，来使训练后的模型中$w_3$和$w_4$尽可能小，从而使得特征$x^3$和$x^4$在模型中的作用减小。</p>
+<p>例如某个模型为$f(x) = w<em>1 x + w_2 x^2 + w_3 x^3 + w_4 x^4$ + b，其对应的目标函数是$argmin</em>{(w, b)} \sum<em>{i=1}^{m} [f(x_i) - y_i]^2$，那么可以<code>对目标函数</code>加入正则化项得：$argmin</em>{(w,b)}\sum_{i=1}^{m}[f(x_i) - y_i]^2 + 1000w_3^3 + 1000w_4^4$，来使训练后的模型中$w_3$和$w_4$尽可能小，从而使得特征$x^3$和$x^4$在模型中的作用减小。</p>
 <p>但在实际操作中，<font color="red">通常不知道需要让哪些参数尽可能小，所以我们让所有的参数都尽可能小。</font></p>
 <p>通常我们使用两种正则化项：L1正则化和L2正则化</p>
-<h3 id="L1正则化"><a href="#L1正则化" class="headerlink" title="L1正则化"></a>L1正则化</h3><p>以线性模型为例，加入L1正则化的损失函数形式为: $\sum_{i=1}^{m} [wx_i+b-y_i]^2 + \lambda\sum_{i=1}^{d}|w_i|$。</p>
+<h3 id="L1正则化"><a href="#L1正则化" class="headerlink" title="L1正则化"></a>L1正则化</h3><p>以线性模型为例，加入L1正则化的损失函数形式为: $\sum<em>{i=1}^{m} [wx_i+b-y_i]^2 + \lambda\sum</em>{i=1}^{d}|w_i|$。</p>
 <font color="orange">使用L1正则化通常会导致模型会将一部分特征的权重值清零，而只保留少部分特征的权重值，这种特性也被叫做特征选择。</font>
 
 
 
-<h3 id="L2正则化"><a href="#L2正则化" class="headerlink" title="L2正则化"></a>L2正则化</h3><p>同样以线性模型为例，加入L2正则化的损失函数形式为：$\sum_{i=1}^{m}[wx_i + b - y_i]^2 + \lambda \sum_{i=1}^{d}w_i^2$。</p>
+<h3 id="L2正则化"><a href="#L2正则化" class="headerlink" title="L2正则化"></a>L2正则化</h3><p>同样以线性模型为例，加入L2正则化的损失函数形式为：$\sum<em>{i=1}^{m}[wx_i + b - y_i]^2 + \lambda \sum</em>{i=1}^{d}w_i^2$。</p>
 <p>如果是使用标准方程法求解的话，其解的形式为：</p>
 <script type="math/tex; mode=display">
 w = (X^TX + \lambda \begin{bmatrix} 
@@ -764,9 +764,9 @@ w = (X^TX + \lambda \begin{bmatrix}
 <p>一般，一棵决策树包含一个根结点、若干个内部结点和若干个叶结点。<code>叶结点对应于决策结果，其他每个结点则对应一个属性测试</code>，每个结点包含的样本集合根据属性测试的结果被划分到子结点中，根结点包含样本全集。</p>
 <p><code>决策树学习的目的是为了产生一棵泛化能力强，即处理未见示例能力强的决策树。</code></p>
 <p><code>构建一棵决策树的伪代码为：</code></p>
-<p>输入：训练集$D=\{(x_i, y_i)\}_{i=1}^{m}$</p>
-<p>​            属性集$A = \{a_i\}_{i=1}^{d}$</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenerateDTree</span><span class="params">(D, A)</span> </span>&#123;</span><br><span class="line">  	生成根结点 root;</span><br><span class="line">	<span class="keyword">if</span> (D中样本全属于同一类别C) &#123;<span class="comment">//当前结点包含的样本全属于同一类别，即yi都相同</span></span><br><span class="line"> 		将root标记为C类叶结点;</span><br><span class="line">   		<span class="keyword">return</span>;</span><br><span class="line">  	&#125;</span><br><span class="line">	<span class="keyword">if</span> (A == <span class="literal">NULL</span> || D中样本在属性A上取值相同) &#123;<span class="comment">//没有属性可以选择或者当前所有样本在剩下的属性上取值相同</span></span><br><span class="line">    		将root标记为叶结点，其类别标记为D中样本最多的类;</span><br><span class="line">    		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">  	从属性集A中选择最优划分属性a*;</span><br><span class="line">  	<span class="keyword">for</span> (对于属性a*每一个可能的属性取值v) &#123;</span><br><span class="line">      		为root生成一个分支；令D_v表示D中在属性a*上取值为v的样本子集;</span><br><span class="line">        	<span class="keyword">if</span> (D_v 为空集) &#123;</span><br><span class="line">           		将分支结点标记为叶结点，其类别标记为D中(注意是D)中样本最多的类;</span><br><span class="line">           		<span class="keyword">return</span>;</span><br><span class="line">        	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           		GenerateDTree(D_v, A - a*);</span><br><span class="line">        	&#125;</span><br><span class="line">    	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>输入：训练集$D={(x<em>i, y_i)}</em>{i=1}^{m}$</p>
+<p>​            属性集$A = {a<em>i}</em>{i=1}^{d}$</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">GenerateDTree</span><span class="params">(D, A)</span> </span>&#123;</span><br><span class="line">  	生成根结点 root;</span><br><span class="line">	<span class="keyword">if</span> (D中样本全属于同一类别C) &#123;<span class="comment">//当前结点包含的样本全属于同一类别，即yi都相同</span></span><br><span class="line"> 		将root标记为C类叶结点;</span><br><span class="line">   		<span class="keyword">return</span>;</span><br><span class="line">  	&#125;</span><br><span class="line">	<span class="keyword">if</span> (A == <span class="literal">NULL</span> || D中样本在属性A上取值相同) &#123;<span class="comment">//没有属性可以选择或者当前所有样本在剩下的属性上取值相同</span></span><br><span class="line">    		将root标记为叶结点，其类别标记为D中样本最多的类;</span><br><span class="line">    		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">  	从属性集A中选择最优划分属性a*;</span><br><span class="line">  	<span class="keyword">for</span> (对于属性a*每一个可能的属性取值v) &#123;</span><br><span class="line">      		为root生成一个分支；令D_v表示D中在属性a*上取值为v的样本子集;</span><br><span class="line">        	<span class="keyword">if</span> (D_v 为空集) &#123;</span><br><span class="line">           		将分支结点标记为叶结点，其类别标记为D中(注意是D)中样本最多的类;</span><br><span class="line">           		<span class="keyword">return</span>;</span><br><span class="line">        	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           		<span class="built_in">GenerateDTree</span>(D_v, A - a*);</span><br><span class="line">        	&#125;</span><br><span class="line">    	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p><code>决策树生成的算法是一个递归算法，注意该递归算法的三个返回条件</code></p>
 <font color="red">疑问:</font><br>
 
@@ -781,7 +781,7 @@ w = (X^TX + \lambda \begin{bmatrix}
 <script type="math/tex; mode=display">
 Ent(D) = -\sum_{k=1}^{|Y|}p_k \log_{2}{p_k} \\
 规定若p_k=0, 则p\log_2 p_k = 0，Ent(D)的最小值为0，最大值为\log_2 |Y|</script><p>$Ent(D)$<code>越小</code>，则数据集合$D$的纯度越高</p>
-<p>有了信息熵的定义之后，再来看信息增益的定义。假设某个离散属性$a$有$V$个可能的取值$\{a_1, a_2, \cdots, a_V\}$，若使用属性a来对样本集D来划分，则会产生$V$个分支结点。其中第$i$个分支结点包含了D中所有在属性$a$上取值为$a_i$的样本，记为$D_i$。这样可以计算出$D_i$的信息熵，<code>在考虑在不同的分支结点包含的样本数不同，给分支结点赋予权重</code>$|\frac{D_i}{D}|$，<code>即样本数多的分支结点的影响越大</code>。最后可以得到使用属性$a$对样本集D进行划分所获得的“信息增益”:</p>
+<p>有了信息熵的定义之后，再来看信息增益的定义。假设某个离散属性$a$有$V$个可能的取值${a_1, a_2, \cdots, a_V}$，若使用属性a来对样本集D来划分，则会产生$V$个分支结点。其中第$i$个分支结点包含了D中所有在属性$a$上取值为$a_i$的样本，记为$D_i$。这样可以计算出$D_i$的信息熵，<code>在考虑在不同的分支结点包含的样本数不同，给分支结点赋予权重</code>$|\frac{D_i}{D}|$，<code>即样本数多的分支结点的影响越大</code>。最后可以得到使用属性$a$对样本集D进行划分所获得的“信息增益”:</p>
 <script type="math/tex; mode=display">
 Gain(D, a) = Ent(D) - \sum_{i=1}^{V}|\frac{D_i}{D}|Ent(D_i)</script><p><code>一般而言，信息增益越大，则意味着使用属性a来进行划分所获得的“纯度提示”越大</code>。若在一次划分中，有多个属性均取得了最大的信息增益，则任选其中之一作为划分属性。</p>
 <h3 id="增益率"><a href="#增益率" class="headerlink" title="增益率"></a>增益率</h3><p><code>信息增益准则的特点是对可取值数目较多的属性性有所偏好</code>，例如某种属性有1000个取值，那么这个属性的信息增益率一般就会很大，但是选择这个属性作为划分属性后，每个划分出来的结点可能会因为已经没有多少剩余的样本而很快地被标记为叶结点。那么使用这个有1000个取值的属性划分得到的决策树泛化能力一般不会太好。而增益率则将每个属性的可能取值个数考虑了进去，其定义为：</p>
@@ -812,7 +812,7 @@ Gini\_index(D, a) = \sum_{i=1}^{V}|\frac{D_i}{D}|Gini(D_i)</script><p>我们在�
 <h3 id="后剪枝"><a href="#后剪枝" class="headerlink" title="后剪枝"></a>后剪枝</h3><p>后剪枝则是<code>先从训练集中生成一棵完整的决策树</code>，然后自底向上地对每个非叶结点进行判断，若将该非叶结点对应的子树替换为叶结点能带来决策树泛化能力的提升(同样也可使用验证集来判定泛化性能是否提升)，则该非叶结点标记叶结点。</p>
 <p>后剪枝决策树通常比预剪枝决策树保留了更多的分支，一般情况下后剪枝决策树的欠拟合风险很小，泛化性能往往优于预剪枝决策树。但后剪枝过程是在生成完全决策树之后进行的，并且要自底向上地对树中的所有非叶结点进行逐一考察，因此其训练时间开销比未剪枝决策树和预剪枝决策树都要大得多。</p>
 <h1 id="连续值处理"><a href="#连续值处理" class="headerlink" title="连续值处理"></a>连续值处理</h1><p>在决策树中，对于某些取值为连续值的属性，不能直接根据连续属性的可取值来对结点进行划分，此时要将连续值转换为离散值，最简单的策略是采用<code>二分法</code>对连续属性进行处理。</p>
-<p>给定样本集$D$和连续属性$a$，假设$a$在$D$上出现了n各不同的取值，将这些值从小到大进行排列，记为$\{a_1, a_2, \cdots, a_n\}$。选定划分点$t$为某两个相邻取值的中点，则数据集可以被划分为两个子集。因此，对于n个不同</p>
+<p>给定样本集$D$和连续属性$a$，假设$a$在$D$上出现了n各不同的取值，将这些值从小到大进行排列，记为${a_1, a_2, \cdots, a_n}$。选定划分点$t$为某两个相邻取值的中点，则数据集可以被划分为两个子集。因此，对于n个不同</p>
 <p>取值，共有$n-1$个候选划分点，这些划分点构成集合：</p>
 <script type="math/tex; mode=display">
 T_a = \{\frac{a_i + a_{i+1}}{2} | 1 \leq i \leq n-1 \}</script><p>然后，可以像离散属性值一样来考察这些划分点，<code>选取最优的划分点进行样本集的划分</code>。例如可用<code>改造后的信息增益</code>来判断划分点的优劣：</p>
@@ -821,7 +821,7 @@ Gain(D, a, t) = Ent(D) - \sum_{\lambda \in \{-, + \}} \frac{|D_t^{\lambda}|}{|D|
 <p>最大化的划分点。</p>
 <p><code>需要注意的是，与离散值属性不同，若当前结点划分属性为连续属性，该属性还可作为其后代结点的划分属性。</code>例如当前结点选择的划分属性为连续属性$a$，并且划分标准为$a \leq 0.5$和$a&gt; 0.5$，则对于使用$a \leq 0.5$划分出来的结点，仍然可以使用属性a最后划分属性，这时可能选择划分标准为$a \leq 0.25$和$0.25 &lt; a \leq 0.5$。</p>
 <h1 id="缺失值处理"><a href="#缺失值处理" class="headerlink" title="缺失值处理"></a>缺失值处理</h1><p>现实任务中常会遇到不完整的样本，尤其是在属性数目较多的情况下，往往会有大量样本出现缺失值，如果简单地放弃不完整样本，仅使用无缺失值的样本来进行学习，显然是对数据信息的极大浪费。所以要想办法处理缺失值的情况。</p>
-<h3 id="如何在属性缺失的情况下进行划分属性选择"><a href="#如何在属性缺失的情况下进行划分属性选择" class="headerlink" title="如何在属性缺失的情况下进行划分属性选择"></a>如何在属性缺失的情况下进行划分属性选择</h3><p>给定数据集$D$和属性$a$，令$\overline{D}$表示D中在属性a上没有缺失值的样本子集，显然我们可根据$\overline{D}$来判断属性a的优劣。假设属性a由$V$个可取值$\{a_1, a_2, \cdots, a_V\}$，令$\overline{D_i}$表示$\overline{D}$中在属性a上取值为$a_i$的样本子集。$\overline{D_k}$表示$\overline{D}$中属于第$k$类$(k = \{1, 2, \cdots, |Y|\}, \space|Y|为\overline{D}中类别总数)$的样本子集。则有：</p>
+<h3 id="如何在属性缺失的情况下进行划分属性选择"><a href="#如何在属性缺失的情况下进行划分属性选择" class="headerlink" title="如何在属性缺失的情况下进行划分属性选择"></a>如何在属性缺失的情况下进行划分属性选择</h3><p>给定数据集$D$和属性$a$，令$\overline{D}$表示D中在属性a上没有缺失值的样本子集，显然我们可根据$\overline{D}$来判断属性a的优劣。假设属性a由$V$个可取值${a_1, a_2, \cdots, a_V}$，令$\overline{D_i}$表示$\overline{D}$中在属性a上取值为$a_i$的样本子集。$\overline{D_k}$表示$\overline{D}$中属于第$k$类$(k = {1, 2, \cdots, |Y|}, \space|Y|为\overline{D}中类别总数)$的样本子集。则有：</p>
 <script type="math/tex; mode=display">
 \overline{D} = \bigcup_{i=1}^{V}\overline{D_i} \\
 \space \\
@@ -833,7 +833,7 @@ Gain(D, a, t) = Ent(D) - \sum_{\lambda \in \{-, + \}} \frac{|D_t^{\lambda}|}{|D|
 \overline{p_k} &= \frac{\sum_{x \in \overline{D_k}} \space w_x}{\sum_{x \in \overline{D}} w_x} \space (1 \leq k \leq |Y|) \\
 \space \\
 \overline{r_i} &= \frac{\sum_{x \in \overline{D_i}} \space w_x}{\sum_{x \in \overline{D}} \space w_x} \space (1 \leq i \leq V)
-\end{align*}</script><p>直观上来看，对属性$a$，$\rho$表示无缺失值样本所占的比例，$\overline{p_k}$表示无缺失值样本中第$k$类样本所占的比例，$\overline{r_i}$则表示无缺失值样本中在属性a上取值为$a_i$的样本占的比例。显然有：$\sum_{k=1}^{|Y|} \overline{p_k} = 1$，$\sum_{i=1}^{V} \overline{r_i} = 1$。</p>
+\end{align*}</script><p>直观上来看，对属性$a$，$\rho$表示无缺失值样本所占的比例，$\overline{p<em>k}$表示无缺失值样本中第$k$类样本所占的比例，$\overline{r_i}$则表示无缺失值样本中在属性a上取值为$a_i$的样本占的比例。显然有：$\sum</em>{k=1}^{|Y|} \overline{p<em>k} = 1$，$\sum</em>{i=1}^{V} \overline{r_i} = 1$。</p>
 <p>基于上述定义，可以将信息增益的计算推广为：</p>
 <script type="math/tex; mode=display">
 \begin{align*}
@@ -938,13 +938,13 @@ Ent(\overline{D}) &= -\sum_{\overline{p_k}}^{|Y|}\overline{p_k} \log_2 \space \o
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="切比雪夫大数定律"><a href="#切比雪夫大数定律" class="headerlink" title="切比雪夫大数定律"></a>切比雪夫大数定律</h1><p>假设$\{X_n\}$是相互<code>独立</code>的随机变量，如果方差$DX_i$存在，且有一致有上界，则</p>
+          <h1 id="切比雪夫大数定律"><a href="#切比雪夫大数定律" class="headerlink" title="切比雪夫大数定律"></a>切比雪夫大数定律</h1><p>假设${X_n}$是相互<code>独立</code>的随机变量，如果方差$DX_i$存在，且有一致有上界，则</p>
 <script type="math/tex; mode=display">
 \frac{1}{n} \sum_{i=1}^{n} X_i \space \space \space \space \underrightarrow{P(概率收敛)} \space \space \space \space \space \frac{1}{n} \sum_{i=1}^{n} EX_i</script><h1 id="伯努利大数定律"><a href="#伯努利大数定律" class="headerlink" title="伯努利大数定律"></a>伯努利大数定律</h1><p>假设$u_n$是n重伯努利实验中事件A发生的次数，在每次实验中事件A发生的概率为$p$，则</p>
 <script type="math/tex; mode=display">
-\frac{u_n}{n} \space \space \space \space \underrightarrow{P(概率收敛)} \space \space \space \space \space p</script><h1 id="辛钦大数定律"><a href="#辛钦大数定律" class="headerlink" title="辛钦大数定律"></a>辛钦大数定律</h1><p>假设$\{X_n\}$是<code>独立同分布的</code>的随机变量序列，如果$EX_i=u$存在，则</p>
+\frac{u_n}{n} \space \space \space \space \underrightarrow{P(概率收敛)} \space \space \space \space \space p</script><h1 id="辛钦大数定律"><a href="#辛钦大数定律" class="headerlink" title="辛钦大数定律"></a>辛钦大数定律</h1><p>假设${X_n}$是<code>独立同分布的</code>的随机变量序列，如果$EX_i=u$存在，则</p>
 <script type="math/tex; mode=display">
-\frac{1}{n} \sum_{i=1}^{n} \space \space \space \space \underrightarrow{P(概率收敛)} \space \space \space \space \space \space u</script><h1 id="中心极限定理"><a href="#中心极限定理" class="headerlink" title="中心极限定理"></a>中心极限定理</h1><p>假设$\{X_n\}$是<code>独立同分布</code>的随机变量序列，如果$EX_i=u$，$DX_i = \sigma^2$存在，则$\{X_n\}$服从中心极限定理，有</p>
+\frac{1}{n} \sum_{i=1}^{n} \space \space \space \space \underrightarrow{P(概率收敛)} \space \space \space \space \space \space u</script><h1 id="中心极限定理"><a href="#中心极限定理" class="headerlink" title="中心极限定理"></a>中心极限定理</h1><p>假设${X_n}$是<code>独立同分布</code>的随机变量序列，如果$EX_i=u$，$DX_i = \sigma^2$存在，则${X_n}$服从中心极限定理，有</p>
 <script type="math/tex; mode=display">
 \sum_{i=1}^{n}X_i 近似服从N(nu,n\sigma^2)</script>
       
@@ -1134,7 +1134,7 @@ Ent(\overline{D}) &= -\sum_{\overline{p_k}}^{|Y|}\overline{p_k} \log_2 \space \o
       
           <h1 id="从二分类到多分类"><a href="#从二分类到多分类" class="headerlink" title="从二分类到多分类"></a>从二分类到多分类</h1><p>在遇到多分类任务时，有些二分类学习方法可直接推广到多分类，例如线性判别分析LDA，但在更多情形下，我们是基于一些基本策略，利用二分类学习器来解决多分类问题。</p>
 <p>一般的，对于N个类别$C_1, c_2, \cdots,C_N$，多分类学习器的基本思想是<code>拆解法</code>，即将多分类任务拆为若干个二分类任务求解。在测试时，对这些二分类器的预测结果进行集成以获得最终的多分类结果，比如说可以选择概率最大的那个结果。</p>
-<h1 id="拆分策略"><a href="#拆分策略" class="headerlink" title="拆分策略"></a>拆分策略</h1><h3 id="OvO策略"><a href="#OvO策略" class="headerlink" title="OvO策略"></a>OvO策略</h3><p>给定数据集$D=\{(x_i y_i)\}_{i=1}^{m}$，$y_i \in \{C_1, C_2, \cdots, C_N \}$，OvO将这N个类别两两配对，从而产生$\frac{N(n-1)}{2}$</p>
+<h1 id="拆分策略"><a href="#拆分策略" class="headerlink" title="拆分策略"></a>拆分策略</h1><h3 id="OvO策略"><a href="#OvO策略" class="headerlink" title="OvO策略"></a>OvO策略</h3><p>给定数据集$D={(x<em>i y_i)}</em>{i=1}^{m}$，$y_i \in {C_1, C_2, \cdots, C_N }$，OvO将这N个类别两两配对，从而产生$\frac{N(n-1)}{2}$</p>
 <p>个二分类任务。在一个二分类任务中，把一种类别当做正例(随便选定两者中的一个)，另一种类别当做负例。</p>
 <p>在测试阶段 ，新样本将同时提交给所有分类器，将会得到$\frac{N(N-1)}{2}$个分类结果，最终结果结果可通过投票产生：即<code>把被预测得最多的类别作为最终结果</code>。</p>
 <h3 id="OvR策略"><a href="#OvR策略" class="headerlink" title="OvR策略"></a>OvR策略</h3><p>对于OvR，则是每次将一个类别的样例作为正例，<code>所有其他类</code>的样例作为反例来训练N个分类器。在测试时，<code>若仅有一个分类器预测为正类</code>，则对应的类别标记作为最终分类结果；<code>若有多个分类器预测为正类</code>，则通常考虑各分类器的预测置信度，选择置信度最大的类别作为分类结果。</p>
@@ -1331,7 +1331,7 @@ Ent(\overline{D}) &= -\sum_{\overline{p_k}}^{|Y|}\overline{p_k} \log_2 \space \o
 
       
           <h1 id="什么是logistic回归"><a href="#什么是logistic回归" class="headerlink" title="什么是logistic回归"></a>什么是logistic回归</h1><p>logistic回归又叫做对数几率回归，它是基于线性模型的一种<code>分类</code>模型。那么如何用线性回归得到的输出进行分类任务呢？只需找一个<code>单调可微</code>的函数将分类任务的真实标记y与线性回归模型的预测值联系起来。单调可微的目的是为了方便模型的求解。</p>
-<p>例如对于二分类任务，其输出标记$y \in \{0, 1\}$，而线性回归模型产生的预测值$z = wx + b$是实值，于是，我们需要将实值转换为0/1值。最理想的是单位阶跃函数：</p>
+<p>例如对于二分类任务，其输出标记$y \in {0, 1}$，而线性回归模型产生的预测值$z = wx + b$是实值，于是，我们需要将实值转换为0/1值。最理想的是单位阶跃函数：</p>
 <script type="math/tex; mode=display">
 y = 
 \begin{cases}
@@ -1347,12 +1347,12 @@ y = \frac{1}{1+e^{-z}}</script><p>阶跃函数和对数几率函数的图像为�
 <p>从上图可以看出，对数几率函数是一种”Sigmoid函数”(即形似S的函数)，对率函数是Sigmoid函数中最重要的代表。</p>
 <p>将线性模型和对数几率函数结合得到最后的logistic回归的模型：</p>
 <script type="math/tex; mode=display">
-y = \frac{1}{1 + e^{-(wx+b)}}</script><h1 id="logistic模型求解"><a href="#logistic模型求解" class="headerlink" title="logistic模型求解"></a>logistic模型求解</h1><p>logistic模型求解就是求出最优的$w$和$b$。<code>然而这里不能直接使用求解线性回归的方法进行求解</code>，即不能定义目标函数为$argmin_{(w,b)}\sum_{i=1}^{m}(wx_i+b - y_i)^2$。因为在这里，数据集中的y只能取0和1(对于二分类来说)，如果仍然使用均方误差来作为损失函数的话，那么在这里均方误差函数将不再是一个凸函数，所以我们要寻求另外的目标函数。</p>
+y = \frac{1}{1 + e^{-(wx+b)}}</script><h1 id="logistic模型求解"><a href="#logistic模型求解" class="headerlink" title="logistic模型求解"></a>logistic模型求解</h1><p>logistic模型求解就是求出最优的$w$和$b$。<code>然而这里不能直接使用求解线性回归的方法进行求解</code>，即不能定义目标函数为$argmin<em>{(w,b)}\sum</em>{i=1}^{m}(wx_i+b - y_i)^2$。因为在这里，数据集中的y只能取0和1(对于二分类来说)，如果仍然使用均方误差来作为损失函数的话，那么在这里均方误差函数将不再是一个凸函数，所以我们要寻求另外的目标函数。</p>
 <p>logistic回归中的对率函数的实际输出其意义为：样本为正例(即$y=1$)的概率。例如对于某个样例$x$，在参数为$w,b$的条件下的输出为0.7，则表示该样例有0.7的概率为正例。相反如果输出为0.3，则表示该样例为正例的概率为0.3，即为反例的概率有0.7。</p>
 <p>则由此即有：</p>
 <script type="math/tex; mode=display">
 p(y=1 | x,w,b) = \frac{1}{1 + e^{-(wx+b)}}</script><script type="math/tex; mode=display">
-p(y=0 | x,w,b) =\frac{e^{-(wx+b)}}{1 + e^{-(wx+b)}}</script><p>于是，可<code>通过极大似然法</code>来估计$w$和$b$。给定数据集$\{(x_i, y_i)\}_{i=1}^{m}$，其中$y_i \in \{0,1\}$，则可得极大似然函数为：</p>
+p(y=0 | x,w,b) =\frac{e^{-(wx+b)}}{1 + e^{-(wx+b)}}</script><p>于是，可<code>通过极大似然法</code>来估计$w$和$b$。给定数据集${(x<em>i, y_i)}</em>{i=1}^{m}$，其中$y_i \in {0,1}$，则可得极大似然函数为：</p>
 <script type="math/tex; mode=display">
 l(w,b) = \sum_{i=1}^{m}ln \space p(y_i |x_i,w,b)</script><p>其中$p(y_i|x_i,w,b)$可改写为$y_ip(y=1|x_i,w,b) + (1-y_i)p(y=0 | x_i,w,b)$，则似然函数可写为：</p>
 <script type="math/tex; mode=display">
@@ -1591,29 +1591,29 @@ f(x) = \frac{1}{\sqrt{2\pi} · \sigma} exp\{-\frac{1}{2}\frac{(x - \mu)^2}{\sigm
 <h1 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h1><p>不同基本操作数进行运算会隐式的将内存占用较少的类型转换成占用较多的操作数类型</p>
 <p>尽量不要使用隐式类型转换，即使是隐式的数据类型转换是安全的，因为隐式类型数据转换降低了程序的可读性。尽量使用强制（显示）类型转换</p>
 <p>将<strong>占用空间大</strong>的数据的指针强制转换成<strong>占用空间小</strong>的数据的指针，会发生内存截断，将<strong>占用空间小</strong>的数据的指针强制转换成<strong>占用空间大</strong>的数据的指针，会发生内存扩张。例如</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">doule d5 = <span class="number">100.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> *pInt = (<span class="keyword">int</span>*)&amp;d5;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> i4 = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> pDbl = (<span class="keyword">double</span>*)&amp;i4;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">doule d5 = <span class="number">100.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> *pInt = (<span class="type">int</span>*)&amp;d5;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> i4 = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">double</span> pDbl = (<span class="type">double</span>*)&amp;i4;</span><br></pre></td></tr></table></figure>
 <p>内存截断：<img src="/2020/02/15/program_language/c++/C++PrimerPlus/%E5%85%B3%E4%BA%8Ec++%E5%9F%BA%E7%A1%80%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/内存截断.png" alt="内存截断.png"></p>
 <p>内存扩张：<img src="/2020/02/15/program_language/c++/C++PrimerPlus/%E5%85%B3%E4%BA%8Ec++%E5%9F%BA%E7%A1%80%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/内存扩张.png" alt="内存扩张.png"></p>
 <p><strong>发生内存扩张时，往扩张的内存写数据会发生运行时错误</strong></p>
 <h1 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h1><font color="orange">标准C语言规定，编译器只取前31个字符作为有效的标示符，而标准C++取前255个字符作为有效的标识符</font>
 
 <h1 id="引用类型"><a href="#引用类型" class="headerlink" title="引用类型"></a>引用类型</h1><p>引用变量在声明时必须被赋值，<font color="red">引用变量和被引用的变量的地址是相同的</font></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> &amp;b = a;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;the address of a is %p and the address of b is %p&quot;</span>, &amp;a, &amp;b);</span><br><span class="line"><span class="comment">//打印的结果地址相同</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> &amp;b = a;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;the address of a is %p and the address of b is %p&quot;</span>, &amp;a, &amp;b);</span><br><span class="line"><span class="comment">//打印的结果地址相同</span></span><br></pre></td></tr></table></figure>
 <h1 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h1><p>对于指针类型和引用类型，将非const值赋值给const变量是合法的，但是反之则是非法的</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;b = a; <span class="comment">//ok</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> &amp;c = b;<span class="comment">//错误，const int &amp;类型，不能直接赋给int &amp;类型</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> *d = &amp;b;<span class="comment">//错误，const int *类型，不能直接赋给int *类型</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;b = a; <span class="comment">//ok</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> &amp;c = b;<span class="comment">//错误，const int &amp;类型，不能直接赋给int &amp;类型</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> *d = &amp;b;<span class="comment">//错误，const int *类型，不能直接赋给int *类型</span></span><br></pre></td></tr></table></figure>
 <h3 id="字面常量"><a href="#字面常量" class="headerlink" title="字面常量"></a>字面常量</h3><p>字面常量：直接出现的数字、字符、字符串等，<font color="orange">只存在基本数据类型的字面常量</font>，字面常量只能引用，不能修改。<font color="orange">除字符串外，你无法取一个字面常量的地址</font>，例如：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = &amp;<span class="number">5</span>;<span class="comment">//语句错误</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *p = &amp;<span class="number">5</span>;<span class="comment">//语句错误</span></span><br></pre></td></tr></table></figure>
 <p>并且当你试图通过常量字符串的地址修改其中的字符时就会报告“只读错误”（此错误为运行时错误）例如：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *pChar = <span class="string">&quot;abcdef&quot;</span>;</span><br><span class="line"></span><br><span class="line">*(pChar + <span class="number">2</span>) = <span class="string">&#x27;k&#x27;</span>;<span class="comment">//错误，不能修改字面常量的内存单元</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> *pChar = <span class="string">&quot;abcdef&quot;</span>;</span><br><span class="line"></span><br><span class="line">*(pChar + <span class="number">2</span>) = <span class="string">&#x27;k&#x27;</span>;<span class="comment">//错误，不能修改字面常量的内存单元</span></span><br></pre></td></tr></table></figure>
 <h3 id="符号常量"><a href="#符号常量" class="headerlink" title="符号常量"></a>符号常量</h3><p>符号常量分为用#define定义的宏常量和用const定义的常量。</p>
 <p>使用#define宏定义的符号常量在进入编译阶段前就已经被替代为所代表的字面常量了，<font color="orange">因此宏常量本质上是字面常量。</font></p>
 <font color="red">取const符号常量的地址或引用时，对于基本数据类型的const常量，编译器会重新在内存中创建一个拷贝，你通过其地址访问到的时这个拷贝而非原始的符号常量</font>，例如：
 
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">long</span> lng = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">long</span> *pl = (<span class="keyword">long</span> *)&amp;lng;</span><br><span class="line"></span><br><span class="line">*pl = <span class="number">11</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;lng&lt;&lt;<span class="string">&quot;-&quot;</span>&lt;&lt;*pl;<span class="comment">//输出为10-11</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">long</span> lng = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">long</span> *pl = (<span class="type">long</span> *)&amp;lng;</span><br><span class="line"></span><br><span class="line">*pl = <span class="number">11</span>;</span><br><span class="line"></span><br><span class="line">std::cout&lt;&lt;lng&lt;&lt;<span class="string">&quot;-&quot;</span>&lt;&lt;*pl;<span class="comment">//输出为10-11</span></span><br></pre></td></tr></table></figure>
 
 对于构造类型的const常量，实际上是编译时不允许修改的变量，因此可以绕过编译器的静态类型安全检查机制，就可以在运行时修改其内存单元，例如：
 
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Integer</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> m_lng</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Integer int_1;</span><br><span class="line"></span><br><span class="line"><span class="comment">//int_1.m_lng = 1000;//编译错误</span></span><br><span class="line"></span><br><span class="line">Integer *pInt = (Integer *)&amp;int_1;</span><br><span class="line"></span><br><span class="line">pInt-&gt;m_lng = <span class="number">1000</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; int_1.m_lng &lt;&lt; <span class="string">&quot;-&quot;</span> &lt;&lt; pInt-&gt;m_lng;<span class="comment">//输出为1000-1000</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Integer</span> &#123;</span><br><span class="line">    <span class="type">int</span> m_lng</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> Integer int_1;</span><br><span class="line"></span><br><span class="line"><span class="comment">//int_1.m_lng = 1000;//编译错误</span></span><br><span class="line"></span><br><span class="line">Integer *pInt = (Integer *)&amp;int_1;</span><br><span class="line"></span><br><span class="line">pInt-&gt;m_lng = <span class="number">1000</span>;</span><br><span class="line"></span><br><span class="line">std::cout &lt;&lt; int_1.m_lng &lt;&lt; <span class="string">&quot;-&quot;</span> &lt;&lt; pInt-&gt;m_lng;<span class="comment">//输出为1000-1000</span></span><br></pre></td></tr></table></figure>
 
 在C++程序中要尽量使用const来定义符号常量，包括字符串常量。
 
@@ -1672,11 +1672,11 @@ assert的宏体全部被条件编译命令\#ifdef _DEBUG和 \#endif所包含，<
 <p>指针加/减一个正整数i，其含义并不是在其值上直接加/减i，还要包含所指对象的字节数信息。</p>
 <p>不能对void*类型指针使用“*”来取所指的变量</p>
 <h1 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h1><p>任何数组，不论是静态声明的还是动态创建的，其所有元素在内存中都是连续字节存放的，也就是说保存在一大块连续的内存区中，std::vector的所有元素对象在内存中也是连续存放的。</p>
-<h3 id="创建动态二维数组的方法"><a href="#创建动态二维数组的方法" class="headerlink" title="创建动态二维数组的方法"></a>创建动态二维数组的方法</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> **p = <span class="keyword">new</span> <span class="keyword">int</span>*[n];</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line"></span><br><span class="line">p[i] = <span class="keyword">new</span> <span class="keyword">int</span>[m];</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="一个很不符合逻辑的表达式"><a href="#一个很不符合逻辑的表达式" class="headerlink" title="一个很不符合逻辑的表达式"></a>一个很不符合逻辑的表达式</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> b = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> c = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">a + b = c;<span class="comment">//这句话会先执行a+b，将a+b的值放在一个临时对象中，然后将c的值赋予该临时对象。</span></span><br></pre></td></tr></table></figure>
+<h3 id="创建动态二维数组的方法"><a href="#创建动态二维数组的方法" class="headerlink" title="创建动态二维数组的方法"></a>创建动态二维数组的方法</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> **p = <span class="keyword">new</span> <span class="type">int</span>*[n];</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line"></span><br><span class="line">p[i] = <span class="keyword">new</span> <span class="type">int</span>[m];</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="一个很不符合逻辑的表达式"><a href="#一个很不符合逻辑的表达式" class="headerlink" title="一个很不符合逻辑的表达式"></a>一个很不符合逻辑的表达式</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> b = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> c = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">a + b = c;<span class="comment">//这句话会先执行a+b，将a+b的值放在一个临时对象中，然后将c的值赋予该临时对象。</span></span><br></pre></td></tr></table></figure>
 <p>最后一个表达式没有任何实际意义，它一般是错误将判断相等表达式“==”错误写成“=”的结果</p>
 <h1 id="endl"><a href="#endl" class="headerlink" title="endl"></a>endl</h1><p>endl是一个函数模板，它实例化之后变成一个模板函数，<code>其作用是插入换行符并刷新输出流</code>。其中刷新输出流指的是将缓冲区的数据全部传递到输出设备并将输出缓冲区清空。</p>
-<h1 id="避免头文件循环引用"><a href="#避免头文件循环引用" class="headerlink" title="避免头文件循环引用"></a>避免头文件循环引用</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> HEADER_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> HEADER_H</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//place include file content and your code here</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<h1 id="避免头文件循环引用"><a href="#避免头文件循环引用" class="headerlink" title="避免头文件循环引用"></a>避免头文件循环引用</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> HEADER_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> HEADER_H</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//place include file content and your code here</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 <h1 id="宏"><a href="#宏" class="headerlink" title="宏"></a>宏</h1><ul>
 <li><p>#ifdef 只判断是否定义了某个宏</p>
 </li>
@@ -1685,9 +1685,9 @@ assert的宏体全部被条件编译命令\#ifdef _DEBUG和 \#endif所包含，<
 <li><p>#undef 用于取消定义的宏</p>
 </li>
 </ul>
-<h2 id="利用宏转字符串"><a href="#利用宏转字符串" class="headerlink" title="利用宏转字符串"></a>利用宏转字符串</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TO_STR(a) #a</span></span><br></pre></td></tr></table></figure>
+<h2 id="利用宏转字符串"><a href="#利用宏转字符串" class="headerlink" title="利用宏转字符串"></a>利用宏转字符串</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> TO_STR(a) #a</span></span><br></pre></td></tr></table></figure>
 <p>在宏定义汇总使用<code>#</code>表示将符号转换为对应的字符串，例如使用上面的宏<code>TO_STR(test)</code>的结果就是<code>&quot;test&quot;</code>。</p>
-<h2 id="利用宏链接符号"><a href="#利用宏链接符号" class="headerlink" title="利用宏链接符号"></a>利用宏链接符号</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Contact(a) a##_1</span></span><br></pre></td></tr></table></figure>
+<h2 id="利用宏链接符号"><a href="#利用宏链接符号" class="headerlink" title="利用宏链接符号"></a>利用宏链接符号</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> Contact(a) a##_1</span></span><br></pre></td></tr></table></figure>
 <p>在宏定义中使用<code>##</code>表示连接，例如使用上面的宏<code>Contact(test)</code>的结果就是<code>test_1</code>。</p>
 
       
@@ -1837,7 +1837,7 @@ assert的宏体全部被条件编译命令\#ifdef _DEBUG和 \#endif所包含，<
       <span class="post-meta-item-text">Reading time total &asymp;</span>
     <span title="Reading time total">8:32</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -259,7 +259,7 @@
 <h1 id="GLSL"><a href="#GLSL" class="headerlink" title="GLSL"></a>GLSL</h1><p>shader程序是有GLSL这种编程语言编写的，shader总是以一个版本声明开始，接下来就是一系列的输入输出变量和uniform，然后就是main函数，每个shader程序都是以main函数作为程序入口，在main函数中处理输入变量并为输出变量赋值。</p>
 <figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#version version_number</span></span><br><span class="line"><span class="keyword">in</span> type in_variable_name;</span><br><span class="line"><span class="keyword">in</span> type in_variable_name;</span><br><span class="line"></span><br><span class="line"><span class="keyword">out</span> type out_variable_name;</span><br><span class="line">  </span><br><span class="line"><span class="keyword">uniform</span> type uniform_name;</span><br><span class="line">  </span><br><span class="line"><span class="type">void</span> main()</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// process input(s) and do some weird graphics stuff</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// output processed stuff to output variable</span></span><br><span class="line">  out_variable_name = weird_stuff_we_processed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>每个shader的输入变量也叫做<strong>vertex attribute</strong>，由于硬件的限制，我们在shader中声明的vertex attribute的数量是有上限的，OpenGL保证至少可以声明16个4维变量，最大数量可以通过查询GL_MAX_VERTEX_ATTRIBS来获取。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> nrAttributes;</span><br><span class="line">glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &amp;nrAttributes);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Maximum nr of vertex attributes supported: &quot;</span> &lt;&lt; nrAttributes &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> nrAttributes;</span><br><span class="line"><span class="built_in">glGetIntegerv</span>(GL_MAX_VERTEX_ATTRIBS, &amp;nrAttributes);</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;Maximum nr of vertex attributes supported: &quot;</span> &lt;&lt; nrAttributes &lt;&lt; std::endl;</span><br></pre></td></tr></table></figure>
 <p>虽然大多数情况下最多值就等于最小值16。</p>
 <h2 id="Types"><a href="#Types" class="headerlink" title="Types"></a>Types</h2><p>GLSL 有和C语言一样的基础类型: <code>int</code>, <code>float</code>, <code>double</code>, <code>uint</code> and <code>bool</code>。另外GLS也有两种container类型:  <code>vectors</code> 和 <code>matrices</code>。</p>
 <h3 id="Vectors"><a href="#Vectors" class="headerlink" title="Vectors"></a>Vectors</h3><p>GLSL中的vector类型是可以容纳1、2、3 或者 4 个<strong>基本类型</strong>元素的container。它们有以下几种声明形式form (<code>n</code> 代表元素的个数):</p>
@@ -284,7 +284,7 @@
 <figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">uniform</span> <span class="type">vec4</span> outColor;</span><br></pre></td></tr></table></figure>
 <p>如果你你定义了uniform变量但是没有在任何地方使用，GLSL编译器或最终会将这个变量移除。</p>
 <p>uniform变量的赋值可以在glsl中赋值，也可以在CPU中赋值，在CPU中赋值时，需要先获取到uniform变量的location，然后才能赋值：</p>
-<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int vertexColorLocation = glGetUniformLocation(shaderProgram, &quot;ourColor&quot;);</span><br><span class="line">glUseProgram(shaderProgram);</span><br><span class="line">glUniform4f(vertexColorLocation, <span class="number">0.0</span>f, <span class="number">1.0</span>, <span class="number">0.0</span>f, <span class="number">1.0</span>f);</span><br></pre></td></tr></table></figure>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> vertexColorLocation = glGetUniformLocation(shaderProgram, &quot;ourColor&quot;);</span><br><span class="line">glUseProgram(shaderProgram);</span><br><span class="line">glUniform4f(vertexColorLocation, <span class="number">0.0</span>f, <span class="number">1.0</span>, <span class="number">0.0</span>f, <span class="number">1.0</span>f);</span><br></pre></td></tr></table></figure>
 <font color="orange">注意，在CPU端获取uniform变量时不需要先调用glUseProgram，但是为uniform变量赋值的之前则必须先调用glUseProgram。</font>
 
 
@@ -451,7 +451,7 @@
       <span class="post-meta-item-text">Reading time total &asymp;</span>
     <span title="Reading time total">8:32</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

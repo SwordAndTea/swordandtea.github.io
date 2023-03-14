@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -260,7 +260,7 @@
 <h1 id="Distribute-Shift类型"><a href="#Distribute-Shift类型" class="headerlink" title="Distribute Shift类型"></a>Distribute Shift类型</h1><h2 id="Covariate-Shift"><a href="#Covariate-Shift" class="headerlink" title="Covariate Shift"></a>Covariate Shift</h2><p>Covariate Shift是由于样本输入特征概率分布变化导致的，但是$P(y | x)$条件概率不变。例如在一个判断图片是猫还是狗的二分类学习任务中，在训练时，输入的样本都是真实世界的图片，但是训练集中的图片却是卡通图片。</p>
 <h2 id="Label-Shift"><a href="#Label-Shift" class="headerlink" title="Label Shift"></a>Label Shift</h2><p>Label Shift和Covariate Shift相反，Label Shift是由于输入样本的标签概率分布导致的，同时$P(x|y)$条件概率不变。Label Shift在输出标签会影响输入特征的情况下是很常见的。例如在根据病人症状来判断病人患病的场景下，患的病是会影响病人症状的。</p>
 <h2 id="Concept-Shift"><a href="#Concept-Shift" class="headerlink" title="Concept Shift"></a>Concept Shift</h2><p>Concept Shift是由于样本标签的定义变化导致的。例如有些标签的定义会随着国家或者地域的变化而不同。</p>
-<h1 id="Distribution-Shift的解决方法"><a href="#Distribution-Shift的解决方法" class="headerlink" title="Distribution Shift的解决方法"></a>Distribution Shift的解决方法</h1><h2 id="经验误差与真实误差"><a href="#经验误差与真实误差" class="headerlink" title="经验误差与真实误差"></a>经验误差与真实误差</h2><p>回顾一下我们训练模型时的步骤，我们在训练集$\{(x_1, \space  y_1)\, \dots, (x_n, \space  y_n)}$上不断迭代，调整模型$f$的参数，为了简化，我们不考虑正则化项，我们的目标是最小化在训练集上的误差：</p>
+<h1 id="Distribution-Shift的解决方法"><a href="#Distribution-Shift的解决方法" class="headerlink" title="Distribution Shift的解决方法"></a>Distribution Shift的解决方法</h1><h2 id="经验误差与真实误差"><a href="#经验误差与真实误差" class="headerlink" title="经验误差与真实误差"></a>经验误差与真实误差</h2><p>回顾一下我们训练模型时的步骤，我们在训练集${(x_1, \space  y_1)\, \dots, (x_n, \space  y_n)}$上不断迭代，调整模型$f$的参数，为了简化，我们不考虑正则化项，我们的目标是最小化在训练集上的误差：</p>
 <script type="math/tex; mode=display">
 minimize \space \frac{1}{n} \sum_{i=1}^{n}l(f(x_i), \space y_i), \space l是loss \space function \tag{1}</script><p>上面的式子可以看作是模型的经验误差。而真实的误差是模型在真实分布为$p(x, \space y)$的<code>所有样本</code>中的损失函数的期望值。</p>
 <script type="math/tex; mode=display">
@@ -279,10 +279,10 @@ P(z = 1 \space | \space x) = \frac{p(x)}{p(x) + q(x)} \\
 then \\
 \frac{P(z=1 \space | \space x)}{P(z=0 \space | \space x)}  = \frac{p(x)}{q(x)}</script><p>其中$P(z = 1 \space | \space x)$表示训练的分类器在输入样本为$x$的情况下，判断样本来自正确分布的概率。如果二分类器使用logistic regression，那么$P(z = 1 \space | \space x) = \frac{1}{1+e^(-h(x))}$($h$为线性回归函数)，那么也有$\frac{p(x)}{q(x)} = e^(h(x))$。</p>
 <p>因此，由上面的推导，我们可以得出解决Covariate Shift的方法：</p>
-<p>假设我们有用于原来机器学习任务的训练集：$\{(x_1, \space y_1), \space \dots , \space (x_n, \space y_n)\}$以及用于测试用的测试$\{(u_1, \space v_1), \space \dots , \space (u_m, \space v_m)\}$</p>
-<p>1、生成用于二分类学习用的训练集：$\{(x_1, \space 0), \space \dots , \space (x_n, \space 0), \space (u_1, \space 1), \space \dots , \space (u_m, \space 1)\}$</p>
+<p>假设我们有用于原来机器学习任务的训练集：${(x_1, \space y_1), \space \dots , \space (x_n, \space y_n)}$以及用于测试用的测试${(u_1, \space v_1), \space \dots , \space (u_m, \space v_m)}$</p>
+<p>1、生成用于二分类学习用的训练集：${(x_1, \space 0), \space \dots , \space (x_n, \space 0), \space (u_1, \space 1), \space \dots , \space (u_m, \space 1)}$</p>
 <p>2、用第一步生成的训练集学习一个logistic regression的二分类器来得到其中的线形回归函数$h$</p>
-<p>3、将$e^(h(x_i))$或者更好的$min(e^(h(x_1)), \space c)$($c$是一个常量)作为权重，用于原始训练集$\{(x_1, \space y_1), \space \dots , \space (x_n, \space y_n)\}$上</p>
+<p>3、将$e^(h(x_i))$或者更好的$min(e^(h(x_1)), \space c)$($c$是一个常量)作为权重，用于原始训练集${(x_1, \space y_1), \space \dots , \space (x_n, \space y_n)}$上</p>
 <p>注意，这个算法依赖于一个前提，那就是$q(x_i)$不能为0。</p>
 <h2 id="Label-Shift-纠正方法"><a href="#Label-Shift-纠正方法" class="headerlink" title="Label Shift 纠正方法"></a>Label Shift 纠正方法</h2><p>//TODO: lable shift 纠正的思路和Covariate Shift一样，只是解决方法有点不好理解。后续再补上</p>
 <h2 id="Consept-Shift纠正方法"><a href="#Consept-Shift纠正方法" class="headerlink" title="Consept Shift纠正方法"></a>Consept Shift纠正方法</h2><p>对于concept shift的纠正方法，我们一般直接在之前训练出来的神经网络的参数上，使用新的训练集进行重新训练即可。</p>
@@ -448,7 +448,7 @@ then \\
       <span class="post-meta-item-text">Reading time total &asymp;</span>
     <span title="Reading time total">8:32</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

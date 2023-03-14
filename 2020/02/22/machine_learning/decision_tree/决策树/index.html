@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -269,9 +269,9 @@
 <p>一般，一棵决策树包含一个根结点、若干个内部结点和若干个叶结点。<code>叶结点对应于决策结果，其他每个结点则对应一个属性测试</code>，每个结点包含的样本集合根据属性测试的结果被划分到子结点中，根结点包含样本全集。</p>
 <p><code>决策树学习的目的是为了产生一棵泛化能力强，即处理未见示例能力强的决策树。</code></p>
 <p><code>构建一棵决策树的伪代码为：</code></p>
-<p>输入：训练集$D=\{(x_i, y_i)\}_{i=1}^{m}$</p>
-<p>​            属性集$A = \{a_i\}_{i=1}^{d}$</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenerateDTree</span><span class="params">(D, A)</span> </span>&#123;</span><br><span class="line">  	生成根结点 root;</span><br><span class="line">	<span class="keyword">if</span> (D中样本全属于同一类别C) &#123;<span class="comment">//当前结点包含的样本全属于同一类别，即yi都相同</span></span><br><span class="line"> 		将root标记为C类叶结点;</span><br><span class="line">   		<span class="keyword">return</span>;</span><br><span class="line">  	&#125;</span><br><span class="line">	<span class="keyword">if</span> (A == <span class="literal">NULL</span> || D中样本在属性A上取值相同) &#123;<span class="comment">//没有属性可以选择或者当前所有样本在剩下的属性上取值相同</span></span><br><span class="line">    		将root标记为叶结点，其类别标记为D中样本最多的类;</span><br><span class="line">    		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">  	从属性集A中选择最优划分属性a*;</span><br><span class="line">  	<span class="keyword">for</span> (对于属性a*每一个可能的属性取值v) &#123;</span><br><span class="line">      		为root生成一个分支；令D_v表示D中在属性a*上取值为v的样本子集;</span><br><span class="line">        	<span class="keyword">if</span> (D_v 为空集) &#123;</span><br><span class="line">           		将分支结点标记为叶结点，其类别标记为D中(注意是D)中样本最多的类;</span><br><span class="line">           		<span class="keyword">return</span>;</span><br><span class="line">        	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           		GenerateDTree(D_v, A - a*);</span><br><span class="line">        	&#125;</span><br><span class="line">    	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>输入：训练集$D={(x<em>i, y_i)}</em>{i=1}^{m}$</p>
+<p>​            属性集$A = {a<em>i}</em>{i=1}^{d}$</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">GenerateDTree</span><span class="params">(D, A)</span> </span>&#123;</span><br><span class="line">  	生成根结点 root;</span><br><span class="line">	<span class="keyword">if</span> (D中样本全属于同一类别C) &#123;<span class="comment">//当前结点包含的样本全属于同一类别，即yi都相同</span></span><br><span class="line"> 		将root标记为C类叶结点;</span><br><span class="line">   		<span class="keyword">return</span>;</span><br><span class="line">  	&#125;</span><br><span class="line">	<span class="keyword">if</span> (A == <span class="literal">NULL</span> || D中样本在属性A上取值相同) &#123;<span class="comment">//没有属性可以选择或者当前所有样本在剩下的属性上取值相同</span></span><br><span class="line">    		将root标记为叶结点，其类别标记为D中样本最多的类;</span><br><span class="line">    		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">  	从属性集A中选择最优划分属性a*;</span><br><span class="line">  	<span class="keyword">for</span> (对于属性a*每一个可能的属性取值v) &#123;</span><br><span class="line">      		为root生成一个分支；令D_v表示D中在属性a*上取值为v的样本子集;</span><br><span class="line">        	<span class="keyword">if</span> (D_v 为空集) &#123;</span><br><span class="line">           		将分支结点标记为叶结点，其类别标记为D中(注意是D)中样本最多的类;</span><br><span class="line">           		<span class="keyword">return</span>;</span><br><span class="line">        	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           		<span class="built_in">GenerateDTree</span>(D_v, A - a*);</span><br><span class="line">        	&#125;</span><br><span class="line">    	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p><code>决策树生成的算法是一个递归算法，注意该递归算法的三个返回条件</code></p>
 <font color="red">疑问:</font><br>
 
@@ -286,7 +286,7 @@
 <script type="math/tex; mode=display">
 Ent(D) = -\sum_{k=1}^{|Y|}p_k \log_{2}{p_k} \\
 规定若p_k=0, 则p\log_2 p_k = 0，Ent(D)的最小值为0，最大值为\log_2 |Y|</script><p>$Ent(D)$<code>越小</code>，则数据集合$D$的纯度越高</p>
-<p>有了信息熵的定义之后，再来看信息增益的定义。假设某个离散属性$a$有$V$个可能的取值$\{a_1, a_2, \cdots, a_V\}$，若使用属性a来对样本集D来划分，则会产生$V$个分支结点。其中第$i$个分支结点包含了D中所有在属性$a$上取值为$a_i$的样本，记为$D_i$。这样可以计算出$D_i$的信息熵，<code>在考虑在不同的分支结点包含的样本数不同，给分支结点赋予权重</code>$|\frac{D_i}{D}|$，<code>即样本数多的分支结点的影响越大</code>。最后可以得到使用属性$a$对样本集D进行划分所获得的“信息增益”:</p>
+<p>有了信息熵的定义之后，再来看信息增益的定义。假设某个离散属性$a$有$V$个可能的取值${a_1, a_2, \cdots, a_V}$，若使用属性a来对样本集D来划分，则会产生$V$个分支结点。其中第$i$个分支结点包含了D中所有在属性$a$上取值为$a_i$的样本，记为$D_i$。这样可以计算出$D_i$的信息熵，<code>在考虑在不同的分支结点包含的样本数不同，给分支结点赋予权重</code>$|\frac{D_i}{D}|$，<code>即样本数多的分支结点的影响越大</code>。最后可以得到使用属性$a$对样本集D进行划分所获得的“信息增益”:</p>
 <script type="math/tex; mode=display">
 Gain(D, a) = Ent(D) - \sum_{i=1}^{V}|\frac{D_i}{D}|Ent(D_i)</script><p><code>一般而言，信息增益越大，则意味着使用属性a来进行划分所获得的“纯度提示”越大</code>。若在一次划分中，有多个属性均取得了最大的信息增益，则任选其中之一作为划分属性。</p>
 <h3 id="增益率"><a href="#增益率" class="headerlink" title="增益率"></a>增益率</h3><p><code>信息增益准则的特点是对可取值数目较多的属性性有所偏好</code>，例如某种属性有1000个取值，那么这个属性的信息增益率一般就会很大，但是选择这个属性作为划分属性后，每个划分出来的结点可能会因为已经没有多少剩余的样本而很快地被标记为叶结点。那么使用这个有1000个取值的属性划分得到的决策树泛化能力一般不会太好。而增益率则将每个属性的可能取值个数考虑了进去，其定义为：</p>
@@ -317,7 +317,7 @@ Gini\_index(D, a) = \sum_{i=1}^{V}|\frac{D_i}{D}|Gini(D_i)</script><p>我们在�
 <h3 id="后剪枝"><a href="#后剪枝" class="headerlink" title="后剪枝"></a>后剪枝</h3><p>后剪枝则是<code>先从训练集中生成一棵完整的决策树</code>，然后自底向上地对每个非叶结点进行判断，若将该非叶结点对应的子树替换为叶结点能带来决策树泛化能力的提升(同样也可使用验证集来判定泛化性能是否提升)，则该非叶结点标记叶结点。</p>
 <p>后剪枝决策树通常比预剪枝决策树保留了更多的分支，一般情况下后剪枝决策树的欠拟合风险很小，泛化性能往往优于预剪枝决策树。但后剪枝过程是在生成完全决策树之后进行的，并且要自底向上地对树中的所有非叶结点进行逐一考察，因此其训练时间开销比未剪枝决策树和预剪枝决策树都要大得多。</p>
 <h1 id="连续值处理"><a href="#连续值处理" class="headerlink" title="连续值处理"></a>连续值处理</h1><p>在决策树中，对于某些取值为连续值的属性，不能直接根据连续属性的可取值来对结点进行划分，此时要将连续值转换为离散值，最简单的策略是采用<code>二分法</code>对连续属性进行处理。</p>
-<p>给定样本集$D$和连续属性$a$，假设$a$在$D$上出现了n各不同的取值，将这些值从小到大进行排列，记为$\{a_1, a_2, \cdots, a_n\}$。选定划分点$t$为某两个相邻取值的中点，则数据集可以被划分为两个子集。因此，对于n个不同</p>
+<p>给定样本集$D$和连续属性$a$，假设$a$在$D$上出现了n各不同的取值，将这些值从小到大进行排列，记为${a_1, a_2, \cdots, a_n}$。选定划分点$t$为某两个相邻取值的中点，则数据集可以被划分为两个子集。因此，对于n个不同</p>
 <p>取值，共有$n-1$个候选划分点，这些划分点构成集合：</p>
 <script type="math/tex; mode=display">
 T_a = \{\frac{a_i + a_{i+1}}{2} | 1 \leq i \leq n-1 \}</script><p>然后，可以像离散属性值一样来考察这些划分点，<code>选取最优的划分点进行样本集的划分</code>。例如可用<code>改造后的信息增益</code>来判断划分点的优劣：</p>
@@ -326,7 +326,7 @@ Gain(D, a, t) = Ent(D) - \sum_{\lambda \in \{-, + \}} \frac{|D_t^{\lambda}|}{|D|
 <p>最大化的划分点。</p>
 <p><code>需要注意的是，与离散值属性不同，若当前结点划分属性为连续属性，该属性还可作为其后代结点的划分属性。</code>例如当前结点选择的划分属性为连续属性$a$，并且划分标准为$a \leq 0.5$和$a&gt; 0.5$，则对于使用$a \leq 0.5$划分出来的结点，仍然可以使用属性a最后划分属性，这时可能选择划分标准为$a \leq 0.25$和$0.25 &lt; a \leq 0.5$。</p>
 <h1 id="缺失值处理"><a href="#缺失值处理" class="headerlink" title="缺失值处理"></a>缺失值处理</h1><p>现实任务中常会遇到不完整的样本，尤其是在属性数目较多的情况下，往往会有大量样本出现缺失值，如果简单地放弃不完整样本，仅使用无缺失值的样本来进行学习，显然是对数据信息的极大浪费。所以要想办法处理缺失值的情况。</p>
-<h3 id="如何在属性缺失的情况下进行划分属性选择"><a href="#如何在属性缺失的情况下进行划分属性选择" class="headerlink" title="如何在属性缺失的情况下进行划分属性选择"></a>如何在属性缺失的情况下进行划分属性选择</h3><p>给定数据集$D$和属性$a$，令$\overline{D}$表示D中在属性a上没有缺失值的样本子集，显然我们可根据$\overline{D}$来判断属性a的优劣。假设属性a由$V$个可取值$\{a_1, a_2, \cdots, a_V\}$，令$\overline{D_i}$表示$\overline{D}$中在属性a上取值为$a_i$的样本子集。$\overline{D_k}$表示$\overline{D}$中属于第$k$类$(k = \{1, 2, \cdots, |Y|\}, \space|Y|为\overline{D}中类别总数)$的样本子集。则有：</p>
+<h3 id="如何在属性缺失的情况下进行划分属性选择"><a href="#如何在属性缺失的情况下进行划分属性选择" class="headerlink" title="如何在属性缺失的情况下进行划分属性选择"></a>如何在属性缺失的情况下进行划分属性选择</h3><p>给定数据集$D$和属性$a$，令$\overline{D}$表示D中在属性a上没有缺失值的样本子集，显然我们可根据$\overline{D}$来判断属性a的优劣。假设属性a由$V$个可取值${a_1, a_2, \cdots, a_V}$，令$\overline{D_i}$表示$\overline{D}$中在属性a上取值为$a_i$的样本子集。$\overline{D_k}$表示$\overline{D}$中属于第$k$类$(k = {1, 2, \cdots, |Y|}, \space|Y|为\overline{D}中类别总数)$的样本子集。则有：</p>
 <script type="math/tex; mode=display">
 \overline{D} = \bigcup_{i=1}^{V}\overline{D_i} \\
 \space \\
@@ -338,7 +338,7 @@ Gain(D, a, t) = Ent(D) - \sum_{\lambda \in \{-, + \}} \frac{|D_t^{\lambda}|}{|D|
 \overline{p_k} &= \frac{\sum_{x \in \overline{D_k}} \space w_x}{\sum_{x \in \overline{D}} w_x} \space (1 \leq k \leq |Y|) \\
 \space \\
 \overline{r_i} &= \frac{\sum_{x \in \overline{D_i}} \space w_x}{\sum_{x \in \overline{D}} \space w_x} \space (1 \leq i \leq V)
-\end{align*}</script><p>直观上来看，对属性$a$，$\rho$表示无缺失值样本所占的比例，$\overline{p_k}$表示无缺失值样本中第$k$类样本所占的比例，$\overline{r_i}$则表示无缺失值样本中在属性a上取值为$a_i$的样本占的比例。显然有：$\sum_{k=1}^{|Y|} \overline{p_k} = 1$，$\sum_{i=1}^{V} \overline{r_i} = 1$。</p>
+\end{align*}</script><p>直观上来看，对属性$a$，$\rho$表示无缺失值样本所占的比例，$\overline{p<em>k}$表示无缺失值样本中第$k$类样本所占的比例，$\overline{r_i}$则表示无缺失值样本中在属性a上取值为$a_i$的样本占的比例。显然有：$\sum</em>{k=1}^{|Y|} \overline{p<em>k} = 1$，$\sum</em>{i=1}^{V} \overline{r_i} = 1$。</p>
 <p>基于上述定义，可以将信息增益的计算推广为：</p>
 <script type="math/tex; mode=display">
 \begin{align*}
@@ -517,7 +517,7 @@ Ent(\overline{D}) &= -\sum_{\overline{p_k}}^{|Y|}\overline{p_k} \log_2 \space \o
       <span class="post-meta-item-text">Reading time total &asymp;</span>
     <span title="Reading time total">8:32</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

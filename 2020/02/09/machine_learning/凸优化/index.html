@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -261,13 +261,13 @@
 <p>凸集和防射集的定义就是$\theta$的取值范围不同。</p>
 <h3 id="常见的凸集"><a href="#常见的凸集" class="headerlink" title="常见的凸集"></a>常见的凸集</h3><h5 id="n维实向量空间-R-n"><a href="#n维实向量空间-R-n" class="headerlink" title="n维实向量空间$R^n$"></a>n维实向量空间$R^n$</h5><p>如果有$x,y \in R^n$，则显然有对于任意$0\leq\theta\leq1$，都有$\theta x + (1-\theta)y \in R^n$。</p>
 <p>由此可见，<code>如果一个优化问题是不带约束的优化，则其变量可行域是一个凸集</code>。</p>
-<h5 id="仿射子空间-x-in-R-n-Ax-b"><a href="#仿射子空间-x-in-R-n-Ax-b" class="headerlink" title="仿射子空间$\{x \in R^n:Ax=b\} $"></a>仿射子空间$\{x \in R^n:Ax=b\} $</h5><p>其中A为$m \times n$的矩阵，b为m维列向量。即非齐次线性方程组的解空间。</p>
+<h5 id="仿射子空间-x-in-R-n-Ax-b"><a href="#仿射子空间-x-in-R-n-Ax-b" class="headerlink" title="仿射子空间${x \in R^n:Ax=b} $"></a>仿射子空间${x \in R^n:Ax=b} $</h5><p>其中A为$m \times n$的矩阵，b为m维列向量。即非齐次线性方程组的解空间。</p>
 <p>证明：</p>
 <p>如果有$x,y \in R^n$且$Ax=b,Ay=b$，</p>
 <p>则对于任意的$0\leq\theta\leq1$，</p>
 <p>都有$A(\theta x+(1-\theta)y) = \theta Ax+(1-\theta)Ay=\theta b + (1-\theta)b=b$。</p>
 <p>由此可见，<code>如果变量的约束是线性等式约束，则该线性等式确定的可行域是一个凸集</code>。</p>
-<h5 id="子空间-x-in-R-n-Ax-leq-b"><a href="#子空间-x-in-R-n-Ax-leq-b" class="headerlink" title="子空间$\{x \in R^n:Ax\leq b\}$"></a>子空间$\{x \in R^n:Ax\leq b\}$</h5><p>其中A为$m \times n$的矩阵，b为m维列向量。</p>
+<h5 id="子空间-x-in-R-n-Ax-leq-b"><a href="#子空间-x-in-R-n-Ax-leq-b" class="headerlink" title="子空间${x \in R^n:Ax\leq b}$"></a>子空间${x \in R^n:Ax\leq b}$</h5><p>其中A为$m \times n$的矩阵，b为m维列向量。</p>
 <p>证明：</p>
 <p>如果有$x,y \in R^n$且$Ax\leq b,Ay\leq b$，</p>
 <p>则对于任意的$0\leq\theta\leq1$，</p>
@@ -275,7 +275,7 @@
 <p>由此可见，<code>如果变量的约束是线性不等式约束，则该线性不等式确定的可行域是一个凸集</code>。</p>
 <h3 id="凸集的性质"><a href="#凸集的性质" class="headerlink" title="凸集的性质"></a>凸集的性质</h3><p>1、多个凸集的交集仍然是凸集</p>
 <p>证明：</p>
-<p>假设$C_1,C_2,…,C_k$为凸集，他们的交集为$C=\bigcap_{i=1}^{k}Ci$，并有$0 \leq \theta \leq 1$,</p>
+<p>假设$C<em>1,C_2,…,C_k$为凸集，他们的交集为$C=\bigcap</em>{i=1}^{k}Ci$，并有$0 \leq \theta \leq 1$,</p>
 <p>因为$C_1,C_2,…,C_k$为凸集，所以对于$x,y \in C$，有$\theta x + (1-\theta)y \in C_i, \forall i=1,…,k$</p>
 <p>即$\theta x + (1-\theta)y \in C$</p>
 <p>2、多个凸集的并集不一定是凸集</p>
@@ -393,7 +393,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%BF%E5%B0%84%E9%9B%86"><span class="nav-number">1.</span> <span class="nav-text">仿射集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%B8%E9%9B%86"><span class="nav-number">2.</span> <span class="nav-text">凸集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">2.0.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%87%B8%E9%9B%86"><span class="nav-number">2.0.2.</span> <span class="nav-text">常见的凸集</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#n%E7%BB%B4%E5%AE%9E%E5%90%91%E9%87%8F%E7%A9%BA%E9%97%B4-R-n"><span class="nav-number">2.0.2.0.1.</span> <span class="nav-text">n维实向量空间$R^n$</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%BF%E5%B0%84%E5%AD%90%E7%A9%BA%E9%97%B4-x-in-R-n-Ax-b"><span class="nav-number">2.0.2.0.2.</span> <span class="nav-text">仿射子空间$\{x \in R^n:Ax&#x3D;b\} $</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AD%90%E7%A9%BA%E9%97%B4-x-in-R-n-Ax-leq-b"><span class="nav-number">2.0.2.0.3.</span> <span class="nav-text">子空间$\{x \in R^n:Ax\leq b\}$</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%B8%E9%9B%86%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-number">2.0.3.</span> <span class="nav-text">凸集的性质</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%B8%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">凸函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-1"><span class="nav-number">3.0.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%B8%E5%87%BD%E6%95%B0%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-number">3.0.2.</span> <span class="nav-text">凸函数的性质</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hessian%E7%9F%A9%E9%98%B5"><span class="nav-number">4.</span> <span class="nav-text">Hessian矩阵</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%BF%E5%B0%84%E9%9B%86"><span class="nav-number">1.</span> <span class="nav-text">仿射集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%B8%E9%9B%86"><span class="nav-number">2.</span> <span class="nav-text">凸集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">2.0.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%87%B8%E9%9B%86"><span class="nav-number">2.0.2.</span> <span class="nav-text">常见的凸集</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#n%E7%BB%B4%E5%AE%9E%E5%90%91%E9%87%8F%E7%A9%BA%E9%97%B4-R-n"><span class="nav-number">2.0.2.0.1.</span> <span class="nav-text">n维实向量空间$R^n$</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%BF%E5%B0%84%E5%AD%90%E7%A9%BA%E9%97%B4-x-in-R-n-Ax-b"><span class="nav-number">2.0.2.0.2.</span> <span class="nav-text">仿射子空间${x \in R^n:Ax&#x3D;b} $</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AD%90%E7%A9%BA%E9%97%B4-x-in-R-n-Ax-leq-b"><span class="nav-number">2.0.2.0.3.</span> <span class="nav-text">子空间${x \in R^n:Ax\leq b}$</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%B8%E9%9B%86%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-number">2.0.3.</span> <span class="nav-text">凸集的性质</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%B8%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">凸函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-1"><span class="nav-number">3.0.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%B8%E5%87%BD%E6%95%B0%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-number">3.0.2.</span> <span class="nav-text">凸函数的性质</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hessian%E7%9F%A9%E9%98%B5"><span class="nav-number">4.</span> <span class="nav-text">Hessian矩阵</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -470,7 +470,7 @@
       <span class="post-meta-item-text">Reading time total &asymp;</span>
     <span title="Reading time total">8:32</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
