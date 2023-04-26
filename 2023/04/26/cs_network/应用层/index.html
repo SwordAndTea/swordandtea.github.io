@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="域名系统域名系统(Domain Name System，DNS)是因特网使用的命令系统，用来把便于人们记忆的具有特定含义的主机名转换为便于机器处理的IP地址。 DNS系统采用C&#x2F;S模型，其协议运行在UDP之上，使用53号端口。 层次域名空间英特网采用层次树状结构的命名方法。采用这种命名方法，任何一个连接到因特网的主机或路由器，都有一个唯一的层次结构名称，即域名。 域名又分为顶级域名、二级域名、三级">
+<meta property="og:type" content="article">
+<meta property="og:title" content="应用层">
+<meta property="og:url" content="http://swordandtea.github.io/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="域名系统域名系统(Domain Name System，DNS)是因特网使用的命令系统，用来把便于人们记忆的具有特定含义的主机名转换为便于机器处理的IP地址。 DNS系统采用C&#x2F;S模型，其协议运行在UDP之上，使用53号端口。 层次域名空间英特网采用层次树状结构的命名方法。采用这种命名方法，任何一个连接到因特网的主机或路由器，都有一个唯一的层次结构名称，即域名。 域名又分为顶级域名、二级域名、三级">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://swordandtea.github.io/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/域名空间结构.jpg">
+<meta property="og:image" content="http://swordandtea.github.io/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/递归查询.jpg">
+<meta property="og:image" content="http://swordandtea.github.io/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/递归与迭代查询.jpg">
+<meta property="og:image" content="http://swordandtea.github.io/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/电子邮件系统结构.jpg">
+<meta property="og:image" content="http://swordandtea.github.io/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/SMTP和MIME.jpg">
+<meta property="article:published_time" content="2023-04-26T11:37:47.000Z">
+<meta property="article:modified_time" content="2023-04-26T12:12:15.023Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="计网">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://swordandtea.github.io/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/域名空间结构.jpg">
+
+<link rel="canonical" href="http://swordandtea.github.io/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>应用层 | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          应用层
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-04-26 19:37:47 / Modified: 20:12:15" itemprop="dateCreated datePublished" datetime="2023-04-26T19:37:47+08:00">2023-04-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%BD%91/" itemprop="url" rel="index">
+                    <span itemprop="name">计网</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>11 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="域名系统"><a href="#域名系统" class="headerlink" title="域名系统"></a>域名系统</h1><p>域名系统(Domain Name System，DNS)是因特网使用的命令系统，用来把便于人们记忆的具有特定含义的主机名转换为便于机器处理的IP地址。</p>
+<p>DNS系统采用C/S模型，其协议运行在<code>UDP</code>之上，使用<code>53</code>号端口。</p>
+<h2 id="层次域名空间"><a href="#层次域名空间" class="headerlink" title="层次域名空间"></a>层次域名空间</h2><p>英特网采用层次树状结构的命名方法。采用这种命名方法，任何一个连接到因特网的主机或路由器，都有一个唯一的层次结构名称，即域名。</p>
+<p>域名又分为顶级域名、二级域名、三级域名等。每个域名都由<code>标号</code>序列组成，每个域名之间使用“.”分隔。</p>
+<p>例如www.google.com，其中com是顶级域名，google是二级域名，www是三级域名</p>
+<p>在域名中有以下几点需要注意：</p>
+<ul>
+<li><p>标号中的英文不区分大小写。</p>
+</li>
+<li><p>标号中除连字符(-)外不能使用其他的标点符号</p>
+</li>
+<li><p>每个标号不超过63个字符，多标号组成的完整域名最长不超过255个字符</p>
+</li>
+<li><p><code>级别最低的域名写在最左边，级别最高的顶级域名写在最右边</code></p>
+</li>
+</ul>
+<p>顶级域名分为以下三大类：</p>
+<ul>
+<li><p>国家顶级域名。国家和某些地区的域名，如“.cn”表示中国，“.us”表示美国，“.uk”代表英国，“.hk”代表中国香港特别行政区。</p>
+</li>
+<li><p>通过顶级域名。常用的有“.com”(公司)、“.net”(网络服务机构)、“.org”(非营利性组织)和“.gov”(美国政府部分)等。</p>
+</li>
+<li><p>基础结构域名。这种顶级域名只有一个，即`arpa，用于反向域名解析，因此又称反向域名</p>
+</li>
+</ul>
+<p><img title src="/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/域名空间结构.jpg" alt="b02501e61f0baf468dcdec51aedfcee0.jpeg" data-align="center" width="486"></p>
+<p>在域名系统中，每个域分别由不同的组织进行管理。每个组织都可以将它的域再分成一定数目的子域，并将这些子域委托给其他组织去管理。</p>
+<h2 id="域名服务器"><a href="#域名服务器" class="headerlink" title="域名服务器"></a>域名服务器</h2><h3 id="根域名服务器"><a href="#根域名服务器" class="headerlink" title="根域名服务器"></a>根域名服务器</h3><p>根域名服务器是最高层次的域名服务器，<code>所有的</code>根域名服务器都知道<code>所有的</code>顶级域名服务器的IP地址。</p>
+<p>根域名服务器是最重要的域名服务器，不管是哪个<code>本地域名服务器服务器</code>，若要对因特网上任何一个域名进行解析，只要自己无法解析，就<code>首先</code>求助于一个根域名服务器。</p>
+<p><code>需要注意的是</code>，根域名服务器用来管辖顶级域(如.com)，通常它并不直接把待查询的域名直接转换成IP地址，而直接告诉本地域名服务器下一步应当找哪个顶级域名服务器进行查询。</p>
+<h3 id="顶级域名服务器"><a href="#顶级域名服务器" class="headerlink" title="顶级域名服务器"></a>顶级域名服务器</h3><p>这些顶级域名服务器<code>负责管理</code>在该顶级域名服务器注册的<code>所有二级域名</code>。收到DNS查询请求时，就给出相应的回答(可能是最后的结果，也可能是下一步应当查找的域名服务器的IP地址)</p>
+<h3 id="授权域名服务器-权限域名服务器"><a href="#授权域名服务器-权限域名服务器" class="headerlink" title="授权域名服务器(权限域名服务器)"></a>授权域名服务器(权限域名服务器)</h3><p>每台主机都必须在授权服务器处登记。实际上，许多域名服务器都同时充当本地域名服务器和授权域名服务器。<code>授权域名服务器总是能将其管辖的主机名转换为该主机的IP地址</code></p>
+<h3 id="本地域名服务器"><a href="#本地域名服务器" class="headerlink" title="本地域名服务器"></a>本地域名服务器</h3><p>当一台主机发出DNS查询请求时，这个查询请求报文就发送给该主机的本地域名服务器。</p>
+<h1 id="域名解析过程"><a href="#域名解析过程" class="headerlink" title="域名解析过程"></a>域名解析过程</h1><p>域名解析是指把域名映射成IP地址或把IP地址映射成域名的过程。前者称为<code>正向解析</code>，后者称为<code>反向解析</code>。</p>
+<p>当一个DNS服务器收到收到DNS查询结果时，它能将该DNS信息缓存在高速缓存中。DNS服务器将在一段时间后丢弃高速缓存中的信息。</p>
+<p>域名解析有两种方式：递归查询和递归与迭代想结合的查询。</p>
+<h3 id="递归查询"><a href="#递归查询" class="headerlink" title="递归查询"></a>递归查询</h3><p><img title src="/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/递归查询.jpg" alt="3d9502fb237133b7bb0d61c018010372.jpeg" data-align="center" width="416"></p>
+<p>如果本地主机所询问的本地域名服务器不知道被查询域名的IP地址，那么本地域名服务器就以DNS客户的身份，向根域名服务器继续发出查询请求报文。然后根域名服务器继续向顶级域名发出查询请求。</p>
+<p>在这种情况下，本地域名服务器只需要向根域名服务器查询一次，后面的几次查询都是递归地在其他几个域名服务器之间进行的。本地域名服务器从根域名服务器得到所需的IP地址。</p>
+<h3 id="迭代查询"><a href="#迭代查询" class="headerlink" title="迭代查询"></a>迭代查询</h3><p><img title src="/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/递归与迭代查询.jpg" alt="50571c98a84e4b3ae3e42922c98484ea.jpeg" data-align="center" width="422"></p>
+<p>当根域名服务器收到本地域名服务器发出的迭代查询请求报文时，要么给出要查询的IP地址，要么告诉本地域名服务器顶级域名服务器的IP地址，然后让本地域名服务器向这个顶级域名服务器进行后续的查询。同样，顶级域名服务器收到查询报文后，要么给出最后的IP地址，要么给出本地域名服务器权限域名服务器的IP地址，然后本地域名服务器向权限域名服务器发出查询然后的到最后结果。</p>
+<h1 id="电子邮件系统"><a href="#电子邮件系统" class="headerlink" title="电子邮件系统"></a>电子邮件系统</h1><h2 id="电子邮件系统的组成结构"><a href="#电子邮件系统的组成结构" class="headerlink" title="电子邮件系统的组成结构"></a>电子邮件系统的组成结构</h2><p>一个电子邮件系统有三个最重要的组成构件：用户代理(User Agent)、邮件服务器和电子邮件使用的协议。</p>
+<p><img src="/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/电子邮件系统结构.jpg" title alt="4e673307b243d2ebdcc974913fa63a9a.jpeg" data-align="center"></p>
+<h3 id="用户代理"><a href="#用户代理" class="headerlink" title="用户代理"></a>用户代理</h3><p>用户与电子邮件系统的接口。用户代理使用户能够通过一个很友好的接口发送和接收邮件，通常情况下，用户代理就是一个运行在PC上的程序。</p>
+<h3 id="邮件服务器"><a href="#邮件服务器" class="headerlink" title="邮件服务器"></a>邮件服务器</h3><p>邮件服务器采用C/S工作方式，但它能够同时充当客户和服务器。当邮件服务器作为邮件的接收方时充当服务器，当邮件服务器作为邮件的发送方时充当客户</p>
+<h3 id="邮件发送协议和读取协议"><a href="#邮件发送协议和读取协议" class="headerlink" title="邮件发送协议和读取协议"></a>邮件发送协议和读取协议</h3><p>邮件发送协议用于用户代理向邮件服务器发送邮件或在邮件服务器之间发送邮件，通常使用的是SMTP；邮件读取协议用于用户代理从邮件服务器读取邮件，如POP3。</p>
+<p>SMTP采用的是Push的通信方式，即在用户代理向邮件服务器发送邮件及在邮件服务器之间发送邮件时，使用SMTP将邮件推送到服务器端。</p>
+<p>POP3采用的是Pull的通信方式，即用户读取邮件时，用户代理向邮件服务器发出请求，拉取用户邮箱中的邮件</p>
+<h2 id="电子邮件格式与MIME"><a href="#电子邮件格式与MIME" class="headerlink" title="电子邮件格式与MIME"></a>电子邮件格式与MIME</h2><h3 id="电子邮件格式"><a href="#电子邮件格式" class="headerlink" title="电子邮件格式"></a>电子邮件格式</h3><p>一个电子邮件分为信封和内容两大部分，邮件内容又分为首部和主体两部分。<code>用户写好首部后，邮件系统自动地将信封所需的信息提取出来并写在信封上</code>，用户不需要亲自填写信封上的信息</p>
+<p>邮件内容的首部包含一些首部行，每个首行由一个关键字后跟冒号再后跟值组成。有些关键字是必需的，有些是可选的。</p>
+<p>To是<code>必需</code>的关键字，后面跟<code>一个或多个</code>收件人的电子邮件地址。电子邮件地址的规定格式为：收件人邮箱名@邮箱所在主机的域名。例如xxxx@xxx.com</p>
+<p>From是<code>必填</code>关键字，但它通常<code>由邮件系统自动填入</code>。</p>
+<p>Subject是<code>可选</code>关键字，是邮件的主题，反映了邮件的主要内容。</p>
+<p>邮件内容的首部与主体之间用一个空行进行分割。</p>
+<h3 id="多用途网络邮件扩充-MIME"><a href="#多用途网络邮件扩充-MIME" class="headerlink" title="多用途网络邮件扩充(MIME)"></a>多用途网络邮件扩充(MIME)</h3><p>由于<code>SMTP只能传送一定长度的ASCII码</code>，许多其他国家的文字和一些视频、二进制文件无法传送，因此提出了多用途网络邮件扩充(Multipurpose Internet Mail Extensions, MIME)</p>
+<p>MIME并未改动SMTP或取代它。MIME继续使用目前的格式，但增加了邮件主体的结构，并定义了传送非ASCII码的编码规则。也就是说，<code>MIME邮件可以在现有的电子邮件程序的协议下传送</code></p>
+<p><img title src="/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/SMTP和MIME.jpg" alt="8eef9850688ce5c36f7286f754c199a0.jpeg" data-align="center" width="462"></p>
+<p>MIME主要包括以下三个内容：</p>
+<p>1、5个新的邮件首部字段，包括MIME版本、内容描述、内容标识、内容传送编码和内容类型</p>
+<p>2、定义了许多邮件内容的格式，对多媒体电子邮件的表示方法进行了标准化</p>
+<p>3、定义了传送编码，可对任何内容格式进行转换，而不会被邮件系统改变</p>
+<h2 id="SMTP和POP3"><a href="#SMTP和POP3" class="headerlink" title="SMTP和POP3"></a>SMTP和POP3</h2><h3 id="SMPT"><a href="#SMPT" class="headerlink" title="SMPT"></a>SMPT</h3><p>简单邮件传输协议(Simple Mial Transfer Protocol, SMTP)是一种提供可靠且有效的电子邮件传输的协议，他控制两个互相通信的SMTP进程交换信息。SMTP<code>使用TCP连接，端口号为25</code></p>
+<h4 id="连接建立"><a href="#连接建立" class="headerlink" title="连接建立"></a>连接建立</h4><p>发件人的邮箱发送到发送方的邮件服务器的邮件缓存后，SMTP客户就每隔一定时间对邮件缓存扫描一次。如发现有邮件，就使用SMTP与接收方邮件服务器建立TCP连接。连接建立后，<code>接收方SMTP服务器</code>就发出220 service ready。然后SMTP发送方向SMTP接收方发出HELO命令，附上发送方的主机名。</p>
+<p>SMTP<code>不使用中间邮件服务器</code>。TCP连接总是在发送方和接收方这两个邮件服务器之间直接建立，而不管他们相隔多远。接收方的邮件服务器因故障暂时不能建立连接时，发送方的邮件服务器只能等待一段时间后再次尝试连接。</p>
+<h4 id="邮件传送"><a href="#邮件传送" class="headerlink" title="邮件传送"></a>邮件传送</h4><p>连接建立后，就可开始传送邮件。邮件的传送从MAIL命令开始，MAIL命令后面有发件人的地址。如MAIL FROM:<a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#120;&#120;&#x78;&#64;&#120;&#x78;&#120;&#46;&#99;&#x6f;&#109;">&#120;&#120;&#x78;&#64;&#120;&#x78;&#120;&#46;&#99;&#x6f;&#109;</a>。若SMTP服务器已准备好接收邮件，则回答250OK。接着SMTP客户端发送一个或多个RCPT(收件人recipient的缩写)，格式为RCPT TO: &lt;收件人地址&gt;。每发送一个RCPT命令，都应有相应的信息从SMTP服务器返回，如250 OK或550 No such user here</p>
+<p>RCPT命令的作用是，先弄清接收方系统是否已做好接收邮件的准备，然后才发送邮件。</p>
+<p>获得OK的回答后，客户端就使用DATA命令，表示要开始传输邮件的内容。正常情况下，SMTP服务器端回复是354 Start mail input; end with <CRLF>.<CRLF>。<CRLF>表示回车换行。此时SMTP客户端就可开始传送邮件内容，并用<CRLF>.<CRLF>(两个回车，中间一个点)表示邮件内容的接收</CRLF></CRLF></CRLF></CRLF></CRLF></p>
+<h4 id="连接释放"><a href="#连接释放" class="headerlink" title="连接释放"></a>连接释放</h4><p>邮件发送完毕后，SMTP客户端发送QUIT命令，SMTP服务器端返回的信息是221(服务关闭)，表示SMTP同意释放连接。邮件传送的全过程就此结束</p>
+<h3 id="POP3"><a href="#POP3" class="headerlink" title="POP3"></a>POP3</h3><p>邮局协议(Post Office Protocol, POP)是一个非常简单但功能有限的邮件读取协议，现在使用的是它的第三个版本POP3。当用户读取邮件时，用户代理向邮件服务器发出请求，拉取用户邮箱中的邮件。</p>
+<p>POP也使用C/S的工作方式，在<code>传输层使用TCP，端口号为110</code>。POP有两种工作方式——下载并保留和下载并删除。在下载并保留方式下，用户从邮件服务器上读取邮件后，邮件依然会保存在邮件服务器上，而使用下载并删除的方式时，邮件一旦被读取，就被从邮件服务上删除</p>
+<p>另一个邮件接收协议是网际报文存取协议(IMAP)，它要比POP复杂得多，但目前还只是因特网的建议标准。</p>
+<p>此外，随着万维网的发展，目前出现了很多基于万维网的电子邮件。这种电子邮件的特点是浏览器与邮件服务器之间邮件<code>发送或接收</code>使用的是HTTP，而仅在不同邮件服务器之间传送邮件时才使用SMTP。</p>
+<h1 id="常用应用层协议端口使用情况"><a href="#常用应用层协议端口使用情况" class="headerlink" title="常用应用层协议端口使用情况"></a>常用应用层协议端口使用情况</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>应用程序</th>
+<th>FTP数据连接</th>
+<th>FTP控制连接</th>
+<th>TELNET</th>
+<th>SMTP</th>
+<th>DNS</th>
+<th>TFTP</th>
+<th>HTTP</th>
+<th>POP3</th>
+<th>SNMP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>使用协议</td>
+<td>TCP</td>
+<td>TCP</td>
+<td>TCP</td>
+<td>TCP</td>
+<td>UDP</td>
+<td>UDP</td>
+<td>TCP</td>
+<td>TCP</td>
+<td>UDP</td>
+</tr>
+<tr>
+<td>端口号</td>
+<td>20</td>
+<td>21</td>
+<td>23</td>
+<td>25</td>
+<td>53</td>
+<td>69</td>
+<td>80</td>
+<td>110</td>
+<td>161</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%BD%91/" rel="tag"># 计网</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/" rel="prev" title="传输层">
+      <i class="fa fa-chevron-left"></i> 传输层
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%9F%E5%90%8D%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">域名系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%82%E6%AC%A1%E5%9F%9F%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="nav-number">1.1.</span> <span class="nav-text">层次域名空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%9F%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">域名服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B9%E5%9F%9F%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">根域名服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B6%E7%BA%A7%E5%9F%9F%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.2.2.</span> <span class="nav-text">顶级域名服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%88%E6%9D%83%E5%9F%9F%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%99%A8-%E6%9D%83%E9%99%90%E5%9F%9F%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.2.3.</span> <span class="nav-text">授权域名服务器(权限域名服务器)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E5%9F%9F%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.2.4.</span> <span class="nav-text">本地域名服务器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">域名解析过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%92%E5%BD%92%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.0.1.</span> <span class="nav-text">递归查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.0.2.</span> <span class="nav-text">迭代查询</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.</span> <span class="nav-text">电子邮件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84"><span class="nav-number">3.1.</span> <span class="nav-text">电子邮件系统的组成结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E4%BB%A3%E7%90%86"><span class="nav-number">3.1.1.</span> <span class="nav-text">用户代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%82%AE%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">3.1.2.</span> <span class="nav-text">邮件服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81%E5%8D%8F%E8%AE%AE%E5%92%8C%E8%AF%BB%E5%8F%96%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.1.3.</span> <span class="nav-text">邮件发送协议和读取协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6%E6%A0%BC%E5%BC%8F%E4%B8%8EMIME"><span class="nav-number">3.2.</span> <span class="nav-text">电子邮件格式与MIME</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="nav-number">3.2.1.</span> <span class="nav-text">电子邮件格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%94%A8%E9%80%94%E7%BD%91%E7%BB%9C%E9%82%AE%E4%BB%B6%E6%89%A9%E5%85%85-MIME"><span class="nav-number">3.2.2.</span> <span class="nav-text">多用途网络邮件扩充(MIME)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SMTP%E5%92%8CPOP3"><span class="nav-number">3.3.</span> <span class="nav-text">SMTP和POP3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SMPT"><span class="nav-number">3.3.1.</span> <span class="nav-text">SMPT</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E5%BB%BA%E7%AB%8B"><span class="nav-number">3.3.1.1.</span> <span class="nav-text">连接建立</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%82%AE%E4%BB%B6%E4%BC%A0%E9%80%81"><span class="nav-number">3.3.1.2.</span> <span class="nav-text">邮件传送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E9%87%8A%E6%94%BE"><span class="nav-number">3.3.1.3.</span> <span class="nav-text">连接释放</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#POP3"><span class="nav-number">3.3.2.</span> <span class="nav-text">POP3</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%BA%94%E7%94%A8%E5%B1%82%E5%8D%8F%E8%AE%AE%E7%AB%AF%E5%8F%A3%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5"><span class="nav-number">4.</span> <span class="nav-text">常用应用层协议端口使用情况</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">183k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">10:11</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

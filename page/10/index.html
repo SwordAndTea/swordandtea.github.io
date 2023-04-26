@@ -181,6 +181,652 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/19/machine_learning/linear_model/%E5%A4%9A%E5%88%86%E7%B1%BB%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/19/machine_learning/linear_model/%E5%A4%9A%E5%88%86%E7%B1%BB%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">多分类学习</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-19 10:00:36" itemprop="dateCreated datePublished" datetime="2020-02-19T10:00:36+08:00">2020-02-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="从二分类到多分类"><a href="#从二分类到多分类" class="headerlink" title="从二分类到多分类"></a>从二分类到多分类</h1><p>在遇到多分类任务时，有些二分类学习方法可直接推广到多分类，例如线性判别分析LDA，但在更多情形下，我们是基于一些基本策略，利用二分类学习器来解决多分类问题。</p>
+<p>一般的，对于N个类别$C_1, c_2, \cdots,C_N$，多分类学习器的基本思想是<code>拆解法</code>，即将多分类任务拆为若干个二分类任务求解。在测试时，对这些二分类器的预测结果进行集成以获得最终的多分类结果，比如说可以选择概率最大的那个结果。</p>
+<h1 id="拆分策略"><a href="#拆分策略" class="headerlink" title="拆分策略"></a>拆分策略</h1><h3 id="OvO策略"><a href="#OvO策略" class="headerlink" title="OvO策略"></a>OvO策略</h3><p>给定数据集$D={(x<em>i y_i)}</em>{i=1}^{m}$，$y_i \in {C_1, C_2, \cdots, C_N }$，OvO将这N个类别两两配对，从而产生$\frac{N(n-1)}{2}$</p>
+<p>个二分类任务。在一个二分类任务中，把一种类别当做正例(随便选定两者中的一个)，另一种类别当做负例。</p>
+<p>在测试阶段 ，新样本将同时提交给所有分类器，将会得到$\frac{N(N-1)}{2}$个分类结果，最终结果结果可通过投票产生：即<code>把被预测得最多的类别作为最终结果</code>。</p>
+<h3 id="OvR策略"><a href="#OvR策略" class="headerlink" title="OvR策略"></a>OvR策略</h3><p>对于OvR，则是每次将一个类别的样例作为正例，<code>所有其他类</code>的样例作为反例来训练N个分类器。在测试时，<code>若仅有一个分类器预测为正类</code>，则对应的类别标记作为最终分类结果；<code>若有多个分类器预测为正类</code>，则通常考虑各分类器的预测置信度，选择置信度最大的类别作为分类结果。</p>
+<h3 id="OvO于OvR策略比较"><a href="#OvO于OvR策略比较" class="headerlink" title="OvO于OvR策略比较"></a>OvO于OvR策略比较</h3><p>OvR相比于OvO只需要训练N个分类器，而OvO需训练$\frac{N(N-1)}{2}$个分类器，因此，OvO的存储开销和测试时间开销通常比OvR更大。但在训练时，OvR的每个分类器均使用全部训练样例，而OvO的每个分类器仅用两个类的样例，因此，<code>在类别很多时</code>，OvO的训练时间开销通常比OvR更小。<code>至于预测性能</code>，则取决于具体的数据分布，在多数情况下两种策略差不多</p>
+<h3 id="MvM"><a href="#MvM" class="headerlink" title="MvM"></a>MvM</h3><p>MvM是每次将<code>若干个</code>类作为正类，<code>若干个</code>其他类作为反类。<code>MvM的正、反类构造必须有特殊的设计，不能随意选取</code>。有一种常用的MvM技术：<code>纠错输出码(Error Correcting Output Codes, ECOC)</code>。</p>
+<h5 id="纠错输出码ECOC"><a href="#纠错输出码ECOC" class="headerlink" title="纠错输出码ECOC"></a>纠错输出码ECOC</h5><p>ECOC工作过程主要分为两步：</p>
+<ul>
+<li>编码：对N个类别分别做M次划分，每次划分将一部分类别划分为正类，一部分划分为反类，从而形成一个二分类训练集；这样一共产生M个训练集，可以训练出M个分类器。</li>
+<li>解码：M个分类器分别对测试样本进行预测，这些预测标记组成一个编码。将这个编码与每个类别各自的编码进行比较，返回其中距离(海明距离或者欧式距离)最小的类别作为最终预测结果</li>
+</ul>
+<p>类别划分通过<code>编码矩阵</code>指定，编码矩阵有多种形式，常见的主要有<code>二元码</code>和<code>三元码</code>。二元码将每个类别分别指定正类和反类；三元码在正、反类之外，还可指定停用类。</p>
+<p><img src="/2020/02/19/machine_learning/linear_model/%E5%A4%9A%E5%88%86%E7%B1%BB%E5%AD%A6%E4%B9%A0/ECOC.jpeg" alt="ECOC" style="zoom:50%;"></p>
+<p>在编码矩阵中，使用“+1”、“-1”分别表示正、反例，0表示不使用该类样本即停用类。在上图的例子中，(a)图中的测试用例最后分类结果应归为$C_3$类，(b)图中的测试用例最后分类结果应归为$C_2$类。</p>
+<p>为什么叫做“纠错输出码”呢？原因是<code>在测试阶段</code>，<code>ECOC编码对分类器的错误有一定的容错和纠正能力</code>。例如，图(a)中对测试用例的正确预测编码是$(-1,+1,+1,-1,+1)$，假设在预测时某个分类器出错了，假设$f_2$分类器出错了，从而导致了错误的编码$(-1,-1,+1,-1,+1)$，但基于这个编码仍能产生正确的最终分类结果$C_3$。<code>一般来说，对同一个学习任务，ECOC编码越长，纠错能力越强</code>。然而，<code>编码越长意味着所需训练的分类器越多</code>，计算、存储开销都会增大；另一方面，对有限类别数，可能的<code>组合</code>数目是有限的，码长超过一定范围后就失去了意义。</p>
+<p>对于等长度的编码，理论上来说，任意<code>两个类别之间的</code>编码距离越远，则纠错能力越强。因此，在码长较小时可根据这个原则计算出理论最优编码。然而一般很难求的最优的编码，选择一个较优的编码就足够了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/16/machine_learning/linear_model/%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/16/machine_learning/linear_model/%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">线性判别分析</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-16 20:07:44" itemprop="dateCreated datePublished" datetime="2020-02-16T20:07:44+08:00">2020-02-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>158</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>线性判别分析(Linear Discriminant Analysis, LDA)是一种经典的<code>线性分类学习方法</code>。LDA的思想非常朴素：<code>给定训练集样例，设法将样例投影到一条直线上，使得同类样例的投影点尽可能接近，异类样例的投影点尽可能远离</code>；在对新样本进行分类时，将其投影到同样的这条直线上，再根据投影点的位置来确定新样本的类别。</p>
+<p><img src="/2020/02/16/machine_learning/linear_model/%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90/LDA.jpeg" alt="线性判别分析" style="zoom:30%;"></p>
+<h1 id="模型求解"><a href="#模型求解" class="headerlink" title="模型求解"></a>模型求解</h1><h1 id="模型推广到多分类任务"><a href="#模型推广到多分类任务" class="headerlink" title="模型推广到多分类任务"></a>模型推广到多分类任务</h1><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/16/machine_learning/linear_model/logistic%E5%9B%9E%E5%BD%92/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/16/machine_learning/linear_model/logistic%E5%9B%9E%E5%BD%92/" class="post-title-link" itemprop="url">logistic回归</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-16 20:07:11" itemprop="dateCreated datePublished" datetime="2020-02-16T20:07:11+08:00">2020-02-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-11-20 18:26:48" itemprop="dateModified" datetime="2020-11-20T18:26:48+08:00">2020-11-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="什么是logistic回归"><a href="#什么是logistic回归" class="headerlink" title="什么是logistic回归"></a>什么是logistic回归</h1><p>logistic回归又叫做对数几率回归，它是基于线性模型的一种<code>分类</code>模型。那么如何用线性回归得到的输出进行分类任务呢？只需找一个<code>单调可微</code>的函数将分类任务的真实标记y与线性回归模型的预测值联系起来。单调可微的目的是为了方便模型的求解。</p>
+<p>例如对于二分类任务，其输出标记$y \in {0, 1}$，而线性回归模型产生的预测值$z = wx + b$是实值，于是，我们需要将实值转换为0/1值。最理想的是单位阶跃函数：</p>
+<script type="math/tex; mode=display">
+y = 
+\begin{cases}
+    0, & z < 0 \\
+    0.5, & z = 0 \\
+    1, & z > 0
+\end{cases}</script><p>即若预测值$z$大于0就判为正例，小于0则判为反例，<code>预测值为临界值0则可任意判别</code>。</p>
+<p>但是，单位阶跃函数不连续，所以直接使用单位阶跃函数的话，该分类模型则将很难求解。</p>
+<p>由于不能使用阶跃函数，所有我们希望找到能在一定程度上近似单位阶跃函数的“替代函数”，并希望它单调可微。<code>对数几率函数(logistic function)</code>正是这样一个常用的替代函数：</p>
+<script type="math/tex; mode=display">
+y = \frac{1}{1+e^{-z}}</script><p>阶跃函数和对数几率函数的图像为：</p>
+<p><img src="/2020/02/16/machine_learning/linear_model/logistic%E5%9B%9E%E5%BD%92/logistic.jpeg" alt="logistic" style="zoom:30%;"></p>
+<p>从上图可以看出，对数几率函数是一种”Sigmoid函数”(即形似S的函数)，对率函数是Sigmoid函数中最重要的代表。</p>
+<p>将线性模型和对数几率函数结合得到最后的logistic回归的模型：</p>
+<script type="math/tex; mode=display">
+y = \frac{1}{1 + e^{-(wx+b)}}</script><h1 id="logistic模型求解"><a href="#logistic模型求解" class="headerlink" title="logistic模型求解"></a>logistic模型求解</h1><p>logistic模型求解就是求出最优的$w$和$b$。<code>然而这里不能直接使用求解线性回归的方法进行求解</code>，即不能定义目标函数为$argmin<em>{(w,b)}\sum</em>{i=1}^{m}(wx_i+b - y_i)^2$。因为在这里，数据集中的y只能取0和1(对于二分类来说)，如果仍然使用均方误差来作为损失函数的话，那么在这里均方误差函数将不再是一个凸函数，所以我们要寻求另外的目标函数。</p>
+<p>logistic回归中的对率函数的实际输出其意义为：样本为正例(即$y=1$)的概率。例如对于某个样例$x$，在参数为$w,b$的条件下的输出为0.7，则表示该样例有0.7的概率为正例。相反如果输出为0.3，则表示该样例为正例的概率为0.3，即为反例的概率有0.7。</p>
+<p>则由此即有：</p>
+<script type="math/tex; mode=display">
+p(y=1 | x,w,b) = \frac{1}{1 + e^{-(wx+b)}}</script><script type="math/tex; mode=display">
+p(y=0 | x,w,b) =\frac{e^{-(wx+b)}}{1 + e^{-(wx+b)}}</script><p>于是，可<code>通过极大似然法</code>来估计$w$和$b$。给定数据集${(x<em>i, y_i)}</em>{i=1}^{m}$，其中$y_i \in {0,1}$，则可得极大似然函数为：</p>
+<script type="math/tex; mode=display">
+l(w,b) = \sum_{i=1}^{m}ln \space p(y_i |x_i,w,b)</script><p>其中$p(y_i|x_i,w,b)$可改写为$y_ip(y=1|x_i,w,b) + (1-y_i)p(y=0 | x_i,w,b)$，则似然函数可写为：</p>
+<script type="math/tex; mode=display">
+l(w,b) = \sum_{i=1}^{m}ln [y_ip(y=1|x_i,w,b) + (1-y_i)p(y=0 | x_i,w,b)]</script><p>由于<code>似然函数法的思想就是求出使得得出当前结果的概率最大的参数</code>，$l(w,b)$的意义其实就是在参数为$w$和$b$的条件下，取值为当前数据集的y的概率再取对数。由于对数函数和原函数具有相同的单调性，当对数函数取最大值时，原函数也去最大值。所以最后我们的目标函数即为：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+&argmax_{(w,b)}\sum_{i=1}^{m}ln [y_ip(y=1|x_i,w,b) + (1-y_i)p(y=0 | x_i,w,b)] \\
+=& argmax_{(a,b)}\sum_{i=1}^{m}ln [y_i\frac{1}{1 + e^{-(wx_i+b)}} + (1-y_i)\frac{e^{-(wx_i+b)}}{1 + e^{-(wx_i+b)}}] \tag{1}
+\end{align*}</script><p><code>注意是argmax</code>。</p>
+<p>最大化(1)式，等价于：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+&argmin_{(a,b)}\sum_{i=1}^{m} -y_i ln\frac{1}{1 + e^{-(wx+b)}} - (1-y_i)ln\frac{e^{-(wx_i+b)}}{1 + e^{-(wx_i+b)}} \\
+=& argmin_{(a,b)}\sum_{i=1}^{m} -y_i ln\frac{1}{1 + e^{-(wx+b)}} - (1-y_i)ln[1-\frac{1}{1 + e^{-(wx_i+b)}}] \tag{2}
+\end{align*}</script><p>公式(2)是最常用的形式。这个公式相当于在说当$y_i = 1$时，损失函数为$ln\frac{1}{1 + e^{-(wx+b)}}$，当$y_i = 0$时，损失函数为$1-ln\frac{1}{1 + e^{-(wx+b)}}$。接下里就是利用梯度下降法或者其他方法求解最优解即可了。</p>
+<p><code>利用极大似然估计法寻找目标函数也是常用的一种方法</code>。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><code>logistic回归虽然它的名字是“回归”，但实际上却是一个分类学习方法</code>。这种方法有很多特点，它是基于线性回归模型的，具有很好的解释性。同时它是直接对分类可能性进行建模，无需要事先假设数据分布，这样就避免了假设分布不准确所带来的问题。</p>
+<p>它不仅是预测出类别，而是可得到近似概率预测。此外，对率函数是任意阶可导的凸函数。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/15/math/probability_theory/%E5%B8%B8%E7%94%A8%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/15/math/probability_theory/%E5%B8%B8%E7%94%A8%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83/" class="post-title-link" itemprop="url">常用概率分布</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-15 22:02:54" itemprop="dateCreated datePublished" datetime="2020-02-15T22:02:54+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-11 20:26:41" itemprop="dateModified" datetime="2020-07-11T20:26:41+08:00">2020-07-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/math/" itemprop="url" rel="index">
+                    <span itemprop="name">math</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>324</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="离散型"><a href="#离散型" class="headerlink" title="离散型"></a>离散型</h1><h3 id="0-1-分布B-1-p"><a href="#0-1-分布B-1-p" class="headerlink" title="0-1 分布B(1, p)"></a>0-1 分布B(1, p)</h3><script type="math/tex; mode=display">
+x ～ \begin{pmatrix}    1 & 0 \\    p & 1-p\end{pmatrix}</script><p>$E(x) = p$，$D(x) = p(1-p)$</p>
+<h3 id="二项分布B-n-p"><a href="#二项分布B-n-p" class="headerlink" title="二项分布B(n, p)"></a>二项分布B(n, p)</h3><script type="math/tex; mode=display">
+P\{x = k\} = C_n^k p^k(1-k)^{n-k}，k = 0, 1, 2, \cdots, n</script><p>$E(x) = np$，$D(x) = np(1-p)$</p>
+<h3 id="泊松分布-P-lambda"><a href="#泊松分布-P-lambda" class="headerlink" title="泊松分布$P(\lambda)$"></a>泊松分布$P(\lambda)$</h3><script type="math/tex; mode=display">
+P\{x = k \} = \frac{\lambda ^k}{k!} e^{-\lambda}，k = 0, 1, 2, \cdots, n</script><p>$E(x) = \lambda$，$D(x) = \lambda$</p>
+<h3 id="几何分布a-p"><a href="#几何分布a-p" class="headerlink" title="几何分布a(p)"></a>几何分布a(p)</h3><script type="math/tex; mode=display">
+P\{x = k\} = (1 - p)^{k-1}p</script><p>$E(x) = \frac{1}{p}$，$D(x) = \frac{1 - p}{p^2}$</p>
+<p>几何分布的意义表示一个事件首次发生所需要的实验次数</p>
+<h3 id="超几何分布H-n-N-M"><a href="#超几何分布H-n-N-M" class="headerlink" title="超几何分布H(n, N, M)"></a>超几何分布H(n, N, M)</h3><script type="math/tex; mode=display">
+P\{x = k\} = \frac{C_M^k C_{N-M}^{n-k}}{C_N^n} \\ max\{0, n-N+M\} \leq k \leq min\{M, n\}</script><p>$E(x) = \frac{nM}{N}$，超几何分布的意义为：在N件产品中有M件不合格，在产品中随机取出n件检查，发现有k件不合格的概率。</p>
+<h1 id="连续型"><a href="#连续型" class="headerlink" title="连续型"></a>连续型</h1><h3 id="均匀分布U-a-b"><a href="#均匀分布U-a-b" class="headerlink" title="均匀分布U(a,b)"></a>均匀分布U(a,b)</h3><script type="math/tex; mode=display">
+f(x) = 
+\begin{cases}
+    \frac{1}{b-a}, & a < x < b \\
+    0, & 其他
+\end{cases}</script><p>$E(x) = \frac{a+b}{2}$，$D(x) = \frac{(b-a)^2}{12}$</p>
+<h3 id="指数分布-E-lambda"><a href="#指数分布-E-lambda" class="headerlink" title="指数分布$E(\lambda)$"></a>指数分布$E(\lambda)$</h3><script type="math/tex; mode=display">
+f(x) = 
+\begin{cases}
+    \lambda e^{-\lambda x}, & x > 0 \\
+    0, & 其他
+\end{cases}</script><p>$E(x) = \frac{1}{\lambda}$，$D(x) = \frac{1}{\lambda^2}$</p>
+<h3 id="正态分布-N-mu-sigma-2"><a href="#正态分布-N-mu-sigma-2" class="headerlink" title="正态分布$N(\mu, \sigma^2)$"></a>正态分布$N(\mu, \sigma^2)$</h3><script type="math/tex; mode=display">
+f(x) = \frac{1}{\sqrt{2\pi} · \sigma} exp\{-\frac{1}{2}\frac{(x - \mu)^2}{\sigma^2}\}</script><p>$E(x) = \mu$，$D(x) = \sigma^2$</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/15/program_language/c++/C++PrimerPlus/%E5%85%B3%E4%BA%8Ec++%E5%9F%BA%E7%A1%80%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/15/program_language/c++/C++PrimerPlus/%E5%85%B3%E4%BA%8Ec++%E5%9F%BA%E7%A1%80%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" class="post-title-link" itemprop="url">关于c++基础的一些注意事项</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-15 10:31:20" itemprop="dateCreated datePublished" datetime="2020-02-15T10:31:20+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-09 16:44:32" itemprop="dateModified" datetime="2022-02-09T16:44:32+08:00">2022-02-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-primer-plus/" itemprop="url" rel="index">
+                    <span itemprop="name">c++ primer plus</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.7k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>9 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="C-编译链接过程"><a href="#C-编译链接过程" class="headerlink" title="C++ 编译链接过程"></a>C++ 编译链接过程</h1><p>1、预处理器：将.c 文件转化成 .i文件，使用的gcc命令是：gcc –E，对应于预处理命令cpp；</p>
+<p>2、编译器：将.c/.h文件转换成.s文件，使用的gcc命令是：gcc –S，对应于编译命令 cc –S；</p>
+<p>3、汇编器：将.s 文件转化成 .o文件，使用的gcc 命令是：gcc –c，对应于汇编命令是 as；</p>
+<p>4、链接器：将.o文件转化成可执行程序，使用的gcc 命令是： gcc，对应于链接命令是 ld；</p>
+<p>5、加载器：将可执行程序加载到内存并进行执行，loader和ld-linux.so。</p>
+<p><code>由不同编译器创建的二进制模块很可能无法正确链接，在链接编译模块时，请确保所有对象文件或库都是由同一个编译器生成的（或同一标准的编译器）</code></p>
+<h1 id="编译器前端和后端"><a href="#编译器前端和后端" class="headerlink" title="编译器前端和后端"></a>编译器前端和后端</h1><p>编译器粗略分为<strong>词法分析</strong>，<strong>语法分析</strong>，<strong>类型检查</strong>，<strong>中间代码生成</strong>，<strong>代码优化</strong>，<strong>目标代码生成</strong>，<strong>目标代码优化</strong>。</p>
+<p><code>把中间代码生成及之前阶段划分问编译器的前端，那么后端与前端是独立的</code>。后端只需要一种中间代码表示，可以是三地址代码或四元式等，而这些都与前端生成的方式无关。</p>
+<p>编译器的前端将不同的高级编程语言经过词法分析、语法分析转化为与前端语言无关的中间表示。有了与前端语言无关的中间表示，一个编译器就可以支持编译多种高级语言。</p>
+<p>按照这个分类，自己动手编写编译器，可以不必从头开始了。使用LLVM，我们可以做一个前端，然后和LLVM后端对接。</p>
+<h1 id="大端（Big-Endian-Big-Endiayin）"><a href="#大端（Big-Endian-Big-Endiayin）" class="headerlink" title="大端（Big Endian/Big Endiayin）"></a>大端（Big Endian/Big Endiayin）</h1><p>数据的<strong>高字节部分</strong>放在内存中的<strong>低字节地址</strong>，数据的<strong>低字节部分</strong>放在内存中的<strong>高字节地址</strong></p>
+<p>例如：<img src="/2020/02/15/program_language/c++/C++PrimerPlus/%E5%85%B3%E4%BA%8Ec++%E5%9F%BA%E7%A1%80%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/大端.png" alt="大端.png"></p>
+<h1 id="小端（Little-Endian）"><a href="#小端（Little-Endian）" class="headerlink" title="小端（Little Endian）"></a>小端（Little Endian）</h1><p>数据的<strong>高字节部分</strong>放在内存中的<strong>高字节地址</strong>，数据的<strong>低字节部分</strong>放在内存中的<strong>低字节地址</strong></p>
+<p>例如：<img src="/2020/02/15/program_language/c++/C++PrimerPlus/%E5%85%B3%E4%BA%8Ec++%E5%9F%BA%E7%A1%80%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/小端.png" alt="小端.png"></p>
+<h1 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h1><p>不同基本操作数进行运算会隐式的将内存占用较少的类型转换成占用较多的操作数类型</p>
+<p>尽量不要使用隐式类型转换，即使是隐式的数据类型转换是安全的，因为隐式类型数据转换降低了程序的可读性。尽量使用强制（显示）类型转换</p>
+<p>将<strong>占用空间大</strong>的数据的指针强制转换成<strong>占用空间小</strong>的数据的指针，会发生内存截断，将<strong>占用空间小</strong>的数据的指针强制转换成<strong>占用空间大</strong>的数据的指针，会发生内存扩张。例如</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">doule d5 = <span class="number">100.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> *pInt = (<span class="type">int</span>*)&amp;d5;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> i4 = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">double</span> pDbl = (<span class="type">double</span>*)&amp;i4;</span><br></pre></td></tr></table></figure>
+<p>内存截断：<img src="/2020/02/15/program_language/c++/C++PrimerPlus/%E5%85%B3%E4%BA%8Ec++%E5%9F%BA%E7%A1%80%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/内存截断.png" alt="内存截断.png"></p>
+<p>内存扩张：<img src="/2020/02/15/program_language/c++/C++PrimerPlus/%E5%85%B3%E4%BA%8Ec++%E5%9F%BA%E7%A1%80%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/内存扩张.png" alt="内存扩张.png"></p>
+<p><strong>发生内存扩张时，往扩张的内存写数据会发生运行时错误</strong></p>
+<h1 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h1><font color="orange">标准C语言规定，编译器只取前31个字符作为有效的标示符，而标准C++取前255个字符作为有效的标识符</font>
+
+<h1 id="引用类型"><a href="#引用类型" class="headerlink" title="引用类型"></a>引用类型</h1><p>引用变量在声明时必须被赋值，<font color="red">引用变量和被引用的变量的地址是相同的</font></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> &amp;b = a;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;the address of a is %p and the address of b is %p&quot;</span>, &amp;a, &amp;b);</span><br><span class="line"><span class="comment">//打印的结果地址相同</span></span><br></pre></td></tr></table></figure>
+<h1 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h1><p>对于指针类型和引用类型，将非const值赋值给const变量是合法的，但是反之则是非法的</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;b = a; <span class="comment">//ok</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> &amp;c = b;<span class="comment">//错误，const int &amp;类型，不能直接赋给int &amp;类型</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> *d = &amp;b;<span class="comment">//错误，const int *类型，不能直接赋给int *类型</span></span><br></pre></td></tr></table></figure>
+<h3 id="字面常量"><a href="#字面常量" class="headerlink" title="字面常量"></a>字面常量</h3><p>字面常量：直接出现的数字、字符、字符串等，<font color="orange">只存在基本数据类型的字面常量</font>，字面常量只能引用，不能修改。<font color="orange">除字符串外，你无法取一个字面常量的地址</font>，例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *p = &amp;<span class="number">5</span>;<span class="comment">//语句错误</span></span><br></pre></td></tr></table></figure>
+<p>并且当你试图通过常量字符串的地址修改其中的字符时就会报告“只读错误”（此错误为运行时错误）例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> *pChar = <span class="string">&quot;abcdef&quot;</span>;</span><br><span class="line"></span><br><span class="line">*(pChar + <span class="number">2</span>) = <span class="string">&#x27;k&#x27;</span>;<span class="comment">//错误，不能修改字面常量的内存单元</span></span><br></pre></td></tr></table></figure>
+<h3 id="符号常量"><a href="#符号常量" class="headerlink" title="符号常量"></a>符号常量</h3><p>符号常量分为用#define定义的宏常量和用const定义的常量。</p>
+<p>使用#define宏定义的符号常量在进入编译阶段前就已经被替代为所代表的字面常量了，<font color="orange">因此宏常量本质上是字面常量。</font></p>
+<font color="red">取const符号常量的地址或引用时，对于基本数据类型的const常量，编译器会重新在内存中创建一个拷贝，你通过其地址访问到的时这个拷贝而非原始的符号常量</font>，例如：
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">long</span> lng = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">long</span> *pl = (<span class="type">long</span> *)&amp;lng;</span><br><span class="line"></span><br><span class="line">*pl = <span class="number">11</span>;</span><br><span class="line"></span><br><span class="line">std::cout&lt;&lt;lng&lt;&lt;<span class="string">&quot;-&quot;</span>&lt;&lt;*pl;<span class="comment">//输出为10-11</span></span><br></pre></td></tr></table></figure>
+
+对于构造类型的const常量，实际上是编译时不允许修改的变量，因此可以绕过编译器的静态类型安全检查机制，就可以在运行时修改其内存单元，例如：
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Integer</span> &#123;</span><br><span class="line">    <span class="type">int</span> m_lng</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> Integer int_1;</span><br><span class="line"></span><br><span class="line"><span class="comment">//int_1.m_lng = 1000;//编译错误</span></span><br><span class="line"></span><br><span class="line">Integer *pInt = (Integer *)&amp;int_1;</span><br><span class="line"></span><br><span class="line">pInt-&gt;m_lng = <span class="number">1000</span>;</span><br><span class="line"></span><br><span class="line">std::cout &lt;&lt; int_1.m_lng &lt;&lt; <span class="string">&quot;-&quot;</span> &lt;&lt; pInt-&gt;m_lng;<span class="comment">//输出为1000-1000</span></span><br></pre></td></tr></table></figure>
+
+在C++程序中要尽量使用const来定义符号常量，包括字符串常量。
+
+### const char* p 和 char* const p, const char* const p
+
+这三个的记忆方法为从右到左读：
+
+1. const char* p读作：p is a pointer to const char(`const char* p等同于char const* p`)。对于const char* p，不能使用指针改变指针指向的内容，但是可以改变指针自身的值。
+
+2. char* const p读作：p is a const pointer to char。对于char* const p，可以使用指针改变指针指向的内容，但是不能改变指针自身的值。
+
+3. const char* const p 读作：p is a const pointer to const char。对于const char* const p，既不能使用指针改变指针指向的
+
+# 函数
+
+## 函数参数传递规则
+
+* 一般的，输出参数放在参数列表的前面，输入参数放在后面，并且不要交叉出现输入输出参数。
+
+* 如果参数是指针，且仅做输入用，则应在类型前加const，以防止该指针指向的内存单元在函数体内无意中被修改。如果输入参数以值传递的方式传递对象，则宜改用"const &"方式来传递，因为引用的创建和销毁不会调用对象的构造和析构函数，从而可提高效率。
+
+## 返回值的规则
+
+* 不要将正常值和错误标志混在一起返回。建议正常值用输出参数获得，而错误标志用return语句返回。
+
+## 函数内部实现的规则
+
+* return语句不可返回指向“栈内存”的指针或者引用，因为该内存单元在函数体结束时会被自动释放。
+
+## 使用const提高函数的健壮性
+
+如果参数用于输出，不论参数是什么数据类型，也不论是采用“指针传递”还是“引用传递”，都不能加const参数，否则该参数将失去输出功能。const只能修饰输入参数。
+
+我个人认为不要将函数的返回值用const修饰，因为函数的作用应该和其他代码是弱耦合的，而且函数返回值应该怎么使用应该由函数外部的代码来决定。
+
+`函数需要返回一个数组时，最好不要返回指向数组的指针，因为如果这么做的话，这个数组要么必须是new出来的，要么必须是static 类型的。最好将需要返回的数组作为函数参数传入。`
+
+不管指针变量是全局的还是局部的、静态的还是非静态的，应当在声明它的同时初始化它，要么赋予它一个有效的地址，要么赋予它NULL。
+
+# assert
+
+assert的宏体全部被条件编译命令\#ifdef _DEBUG和 \#endif所包含，<font color="orange">因此assert只有在Debug版本才有效</font>
+
+<h1 id="指针运算"><a href="#指针运算" class="headerlink" title="指针运算"></a>指针运算</h1><ul>
+<li><p>指针自增（++），表示它指向了序列中的后一个元素</p>
+</li>
+<li><p>指针自减（—），表示它指向了序列中的前一个元素</p>
+</li>
+<li><p>指针加一个正整数i，表示它向后递进i个元素</p>
+</li>
+<li><p>指针减一个正整数i，表示它向前递进i个元素</p>
+</li>
+<li><p>两个同类型指针相减，表示计算它们之间的元素个数</p>
+</li>
+</ul>
+<p>指针加/减一个正整数i，其含义并不是在其值上直接加/减i，还要包含所指对象的字节数信息。</p>
+<p>不能对void*类型指针使用“*”来取所指的变量</p>
+<h1 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h1><p>任何数组，不论是静态声明的还是动态创建的，其所有元素在内存中都是连续字节存放的，也就是说保存在一大块连续的内存区中，std::vector的所有元素对象在内存中也是连续存放的。</p>
+<h3 id="创建动态二维数组的方法"><a href="#创建动态二维数组的方法" class="headerlink" title="创建动态二维数组的方法"></a>创建动态二维数组的方法</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> **p = <span class="keyword">new</span> <span class="type">int</span>*[n];</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line"></span><br><span class="line">p[i] = <span class="keyword">new</span> <span class="type">int</span>[m];</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="一个很不符合逻辑的表达式"><a href="#一个很不符合逻辑的表达式" class="headerlink" title="一个很不符合逻辑的表达式"></a>一个很不符合逻辑的表达式</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> b = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> c = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">a + b = c;<span class="comment">//这句话会先执行a+b，将a+b的值放在一个临时对象中，然后将c的值赋予该临时对象。</span></span><br></pre></td></tr></table></figure>
+<p>最后一个表达式没有任何实际意义，它一般是错误将判断相等表达式“==”错误写成“=”的结果</p>
+<h1 id="endl"><a href="#endl" class="headerlink" title="endl"></a>endl</h1><p>endl是一个函数模板，它实例化之后变成一个模板函数，<code>其作用是插入换行符并刷新输出流</code>。其中刷新输出流指的是将缓冲区的数据全部传递到输出设备并将输出缓冲区清空。</p>
+<h1 id="避免头文件循环引用"><a href="#避免头文件循环引用" class="headerlink" title="避免头文件循环引用"></a>避免头文件循环引用</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> HEADER_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> HEADER_H</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//place include file content and your code here</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<h1 id="宏"><a href="#宏" class="headerlink" title="宏"></a>宏</h1><ul>
+<li><p>#ifdef 只判断是否定义了某个宏</p>
+</li>
+<li><p>#if 不仅判断是否定义了宏，而且还判断宏是否为真</p>
+</li>
+<li><p>#undef 用于取消定义的宏</p>
+</li>
+</ul>
+<h2 id="利用宏转字符串"><a href="#利用宏转字符串" class="headerlink" title="利用宏转字符串"></a>利用宏转字符串</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> TO_STR(a) #a</span></span><br></pre></td></tr></table></figure>
+<p>在宏定义汇总使用<code>#</code>表示将符号转换为对应的字符串，例如使用上面的宏<code>TO_STR(test)</code>的结果就是<code>&quot;test&quot;</code>。</p>
+<h2 id="利用宏链接符号"><a href="#利用宏链接符号" class="headerlink" title="利用宏链接符号"></a>利用宏链接符号</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> Contact(a) a##_1</span></span><br></pre></td></tr></table></figure>
+<p>在宏定义中使用<code>##</code>表示连接，例如使用上面的宏<code>Contact(test)</code>的结果就是<code>test_1</code>。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/14/math/calculus/%E5%B8%B8%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E7%9A%84%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1363,800 +2009,6 @@ A^{*} =
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/10/math/calculus/%E7%BA%A7%E6%95%B0%E5%88%A4%E6%95%9B%E6%B3%95%E5%88%99/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/10/math/calculus/%E7%BA%A7%E6%95%B0%E5%88%A4%E6%95%9B%E6%B3%95%E5%88%99/" class="post-title-link" itemprop="url">级数判敛法则</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-10 21:42:20" itemprop="dateCreated datePublished" datetime="2020-02-10T21:42:20+08:00">2020-02-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/math/" itemprop="url" rel="index">
-                    <span itemprop="name">math</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.1k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>4 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="级数收敛最基础判定"><a href="#级数收敛最基础判定" class="headerlink" title="级数收敛最基础判定"></a>级数收敛最基础判定</h1><h3 id="充分必要条件"><a href="#充分必要条件" class="headerlink" title="充分必要条件"></a>充分必要条件</h3><p>一个级数$a<em>n$收敛的充分必要条件是级数的前n项和数列$S_n=\sum</em>{i=1}^{n}ai$收敛，而一般这个判定方法只对于那些能够求出前n项和数列通项公式的级数有很好的判定，然而大多数的级数都无法求出前n项和数列。所以对于一些常见的特殊数列有特别的判定方式</p>
-<h3 id="必要条件"><a href="#必要条件" class="headerlink" title="必要条件"></a>必要条件</h3><p>级数收敛的必要条件是:</p>
-<script type="math/tex; mode=display">
-\lim_{n \to \infty} a_n = 0</script><h3 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h3><p>1、如果一个级数收敛，则去掉<code>有限项</code>后的级数仍然收敛。</p>
-<h1 id="正项级数的判敛法"><a href="#正项级数的判敛法" class="headerlink" title="正项级数的判敛法"></a>正项级数的判敛法</h1><h3 id="充分必要条件-1"><a href="#充分必要条件-1" class="headerlink" title="充分必要条件"></a>充分必要条件</h3><p>正项级数收敛的充分必要条件是级数的前n项和数列$S_n$有界。</p>
-<p>证明：</p>
-<p>因为为正项级数，则前n项和$S_n$单调递增，</p>
-<p>又因为$S_n$有界，则根据单调有界性原则，数列$S_n$收敛，证毕。</p>
-<h3 id="充分条件"><a href="#充分条件" class="headerlink" title="充分条件"></a>充分条件</h3><h5 id="比较判敛法"><a href="#比较判敛法" class="headerlink" title="比较判敛法"></a>比较判敛法</h5><p>如果有正项级数$\sum u_n$和正项级数$\sum v_n$，如果存在N，当$n&gt;N$时，有$u_n &lt; v_n$，则有：</p>
-<p>1、若$v_n$收敛，则$u_n$收敛</p>
-<p>2、若$u_n$收敛、则$v_n$收敛</p>
-<h5 id="比较判敛法的极限形式"><a href="#比较判敛法的极限形式" class="headerlink" title="比较判敛法的极限形式"></a>比较判敛法的极限形式</h5><p>如果有正项级数$\sum u<em>n$和正项级数$\sum v_n$，且$\lim</em>{n \to \infty} \frac{u_n}{v_n} = \rho$，则有：</p>
-<p>1、若$\rho=0$，则说明存在N，当$n &gt; N$时，有$u_n &lt; v_n$，所以当$v_n$收敛，$u_n$收敛，$u_n$发散，$v_n$发散。</p>
-<p>2、若$\rho = \infty$，则说明存在N，当$n &gt; N$时，有$u_n &gt; v_n$，所以当$v_n$发散，$u_n$发散，$u_n$收敛，$v_n$收敛。</p>
-<p>3、若$0 &lt; \rho &lt; \infty$，则$u_n$与$v_n$有相同的敛散性。</p>
-<h5 id="比值判别法"><a href="#比值判别法" class="headerlink" title="比值判别法"></a>比值判别法</h5><p>对于正项级数$\sum a<em>n$，有$\lim</em>{n \to \infty} \frac{a_{n+1}}{a_n} = \rho$，则有：</p>
-<p>1、若$\rho &lt; 1$，级数收敛</p>
-<p>2、若$\rho = 1$，无法判定敛散性</p>
-<p>3、若$p &gt; 1$，级数发散</p>
-<h5 id="根值判敛法"><a href="#根值判敛法" class="headerlink" title="根值判敛法"></a>根值判敛法</h5><p>对于正项级数$\sum a_n$，有$\sqrt[n]{a_n} = \rho$，则有：</p>
-<p>1、若$\rho &lt; 1$，级数收敛</p>
-<p>2、若$\rho = 1$，无法判定敛散性</p>
-<p>3、若$p &gt; 1$，级数发散</p>
-<h1 id="交错级数"><a href="#交错级数" class="headerlink" title="交错级数"></a>交错级数</h1><p>形如$1+(-\frac{1}{2})+\frac{1}{3}+(-\frac{1}{4})、\cdots = \sum(-1)^{n-1}\frac{1}{n}$的，正负号一直交替出现的级数称为交错级数。</p>
-<h3 id="充分条件-1"><a href="#充分条件-1" class="headerlink" title="充分条件"></a>充分条件</h3><p>对于交错级数$\sum (-1)^n a<em>n$，如果$a_n$单调不增(<code>注意这里是</code>$a_n$，不是$(-1)^n a_n$，$a_n$符号是一致的，即要么$a_n$都为正，要没都为负)，且$\lim</em>{n \to \infty} a_n = 0$，则该交错级数收敛。</p>
-<h1 id="绝对收敛与条件收敛"><a href="#绝对收敛与条件收敛" class="headerlink" title="绝对收敛与条件收敛"></a>绝对收敛与条件收敛</h1><h3 id="绝对值级数"><a href="#绝对值级数" class="headerlink" title="绝对值级数"></a>绝对值级数</h3><p>对于级数$\sum a_n$，每一项加上绝对值后的级数$\sum | a_n |$，称为绝对值级数。</p>
-<h3 id="绝对收敛"><a href="#绝对收敛" class="headerlink" title="绝对收敛"></a>绝对收敛</h3><p>对于级数$\sum a_n$，如果其绝对值级数$\sum |a_n|$收敛，则称级数$a_n$绝对收敛。</p>
-<p><code>如果一个级数绝对收敛，则原级数必定收敛</code></p>
-<h3 id="条件收敛"><a href="#条件收敛" class="headerlink" title="条件收敛"></a>条件收敛</h3><p>对于级数$\sum a_n$，如果$a_n$收敛，但是其绝对值级数$\sum |a_n|$不收敛，则称$a_n$条件收敛。</p>
-<p><code>绝对收敛的级数满足级数的交换律，收敛的级数满足级数结合律</code></p>
-<h1 id="幂级数"><a href="#幂级数" class="headerlink" title="幂级数"></a>幂级数</h1><p>形如$\sum a_n(x-x_0)^n$，其中$a_n、x_0$为常数的级数称为幂级数。</p>
-<p>最常用的幂级数为: $\sum a_n x^n$。</p>
-<h3 id="阿贝尔定理"><a href="#阿贝尔定理" class="headerlink" title="阿贝尔定理"></a>阿贝尔定理</h3><p>对于幂级数$\sum a_n x^n$，如果该级数在$x_0$处收敛，则对于任意$|x| &lt; |x_0|$，级数<code>绝对收敛</code>；如果该级数在$x_0$处发散，则对于任意$|x| &gt; |x_0|$，级数发散。</p>
-<h3 id="收敛半径"><a href="#收敛半径" class="headerlink" title="收敛半径"></a>收敛半径</h3><p>对于幂级数$\sum a<em>n x^n$，如果$\lim</em>{n \to \infty} |\frac{a_{n+1}}{a_n}| = \rho$，则收敛半径</p>
-<script type="math/tex; mode=display">
-R=\begin{cases} 
-0, & \rho=+\infty \\
-+\infty, & \rho=0 \\
-\frac{1}{\rho}, & 0< \rho < +\infty
-\end{cases}</script><p>则，对于任意$|x| &lt; |R|$，都有级数绝对收敛；对于任意$|x| &gt; |R|$，都有级数发散。对于 $x=R$和$x=-R$，级数的敛散性需要带入后进一步判断。</p>
-<p>如果要求幂级数$\sum a_n(x-x_0)^n$，的收敛半径也是一样的方法，他和级数$\sum a_n x^n$的收敛半径相同，只是相当于x的收敛区间的取值左右平移了而已。</p>
-<h3 id="幂级数的性质"><a href="#幂级数的性质" class="headerlink" title="幂级数的性质"></a>幂级数的性质</h3><p>1、对幂级数$\sum a_n(x-x_0)^n$逐项积分后或者逐项求导后，级数的收敛半径不变，收敛区间的端点值的敛散性可能发生变化</p>
-<p>2、如果级数$\sum a_n(x-x_0)^n$在$x_1$处<code>条件收敛</code>，则该级数的收敛半径为$｜x_1-x_o｜$</p>
-<h1 id="一些特殊级数的敛散性"><a href="#一些特殊级数的敛散性" class="headerlink" title="一些特殊级数的敛散性"></a>一些特殊级数的敛散性</h1><h3 id="调和级数"><a href="#调和级数" class="headerlink" title="调和级数"></a>调和级数</h3><p>//TODO: finish this part</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/10/machine_learning/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/10/machine_learning/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" class="post-title-link" itemprop="url">梯度下降</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-10 21:27:18" itemprop="dateCreated datePublished" datetime="2020-02-10T21:27:18+08:00">2020-02-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-17 10:14:59" itemprop="dateModified" datetime="2020-11-17T10:14:59+08:00">2020-11-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">machine learning</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.2k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>4 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="什么是梯度"><a href="#什么是梯度" class="headerlink" title="什么是梯度"></a>什么是梯度</h1><p>梯度本质上来说就是一个向量，这个向量的各个分量是多元函数在某点的各个一阶偏导数。既然是一个向量，那么就可以表示方向。进而由方向导数的定义可以知道，沿梯度方向，函数值<code>增大</code>的速度就越快，相反沿梯度的反方向，函数值<code>减小</code>的速度就越大</p>
-<h1 id="为什么要使用梯度下降法"><a href="#为什么要使用梯度下降法" class="headerlink" title="为什么要使用梯度下降法"></a>为什么要使用梯度下降法</h1><p>对于一些优化问题时，我们一般需要求解问题的局部最优解，而表现在函数上，局部最优解就是函数的极值点。根据费马定理，如果一个函数一阶可偏导，那么极值点处的一阶偏导数都为0。而一般绝大多数的函数都是一阶可偏导的。</p>
-<p>但是直接求出函数的偏导数，然后令偏导数等于0求解方程的这种方法一般很难求出方程的解。所以只有通过数值计算的方法来求解近似解。</p>
-<h1 id="梯度下降法的一般形式"><a href="#梯度下降法的一般形式" class="headerlink" title="梯度下降法的一般形式"></a>梯度下降法的一般形式</h1><p>首先确定一个初始点$W<em>0$，然后使用迭代公式: $w</em>{n+1}^i = w<em>n^i - \alpha f’</em>{w^i}(W_n)$，$w^i$表示点$W$的第$i$个分量，$\alpha$为学习率，一般为一个接近0的常数，例如0.001。</p>
-<p>迭代，直到达到一定的迭代步数或者是目标函数的变化或参数的变化小于某一阈值时停止迭代。</p>
-<h1 id="实现细节问题"><a href="#实现细节问题" class="headerlink" title="实现细节问题"></a>实现细节问题</h1><h4 id="初始值的设定"><a href="#初始值的设定" class="headerlink" title="初始值的设定"></a>初始值的设定</h4><p>一般的，对于不带约束条件的优化问题，可以将初始值设置为0，或者设置为随机数。初始值的设定对算法的收敛很重要，不同的初始值最后可能收敛到不同的极值点。</p>
-<h4 id="学习率的设定"><a href="#学习率的设定" class="headerlink" title="学习率的设定"></a>学习率的设定</h4><p>一般可以令学习率为一个很小的正数例如0.001，并且在接下来的迭代过程中不再改变学习率。或者可以在迭代的过程中动态的调整学习率的值，例如前10000步迭代时学习率为0.001，然后10000步学习率减半。如果梯地下降算法运行异常的话，可能也是学习率设置得不太合理。</p>
-<h4 id="特征缩放"><a href="#特征缩放" class="headerlink" title="特征缩放"></a>特征缩放</h4><p>有时候，一个特征的可能取值范围可能很大，这对于梯度下降法来说就可能需要很多次迭代才能最后收敛。所以为了减少迭代次数，可以使用特征缩放的方法。</p>
-<p>例如有特征$x_1$，其取值范围为$(0, 2000)$，特征$x_2$，其取值$(0, 100)$，那么就可以对这两个特征进行缩放为$\frac{x_1}{2000}$和$\frac{x_2}{100}$。</p>
-<p>一般的，特征缩放后的读取范围一般为$[-1,1]$之间。为此，可以使用均值归一化方法，如果一个特征$x$的均值为$\mu$，其取值区间长度为$n$，则归一化方法缩放方式为$\frac{x-\mu}{n}$。</p>
-<h4 id="判断梯度下降法是否收敛"><a href="#判断梯度下降法是否收敛" class="headerlink" title="判断梯度下降法是否收敛"></a>判断梯度下降法是否收敛</h4><p>一种方法是设置收敛阈值，即当目标函数的变化值小于某个阈值时表明梯度下降收敛。</p>
-<p>令一种方法是画出目标函数值随着迭代步数变化的图形，例如每迭代100次就画出当时的目标函数的函数值。最后根据图像来判断是否收敛。</p>
-<p>第一种方法有可能不好设置阈值，两种方法可以配合着使用。</p>
-<h1 id="梯度下降法的问题"><a href="#梯度下降法的问题" class="headerlink" title="梯度下降法的问题"></a>梯度下降法的问题</h1><p>在大多数非凸优化问题中，极值点不一定就是局部最优解的点，而且，即使某个极值点是局部最优解的点但是局部最优解不一定就是全局最优解。</p>
-<h1 id="随机梯度下降"><a href="#随机梯度下降" class="headerlink" title="随机梯度下降"></a>随机梯度下降</h1><p>对于某些机器学习问题，我们的目标函数是关于样本的损失函数，例如对于线性规划问题，假设训练集中有N个样本，并且N很大，在进行训练时我们使用均方误差来作为损失函数。即$L(W) = \frac{1}{N} \sum_{k=1}^{N} (Y-WX)^2$，$Y,X$都是N维向量，$W$是我们的自变量。则一次迭代下来，要计算全部样本的话计算量就太大了。</p>
-<p>作为改进，可以在一次迭代时，<code>随机选择部分样本</code>来进行近似损失函数，即$L(W) = \frac{1}{M} \sum_{k=1}^{M} (Y-WX)^2, M \ll N$。这就是随机梯度下降法。已经证明，随机梯度下降法产生的梯度的期望值等于全部样本最为产生的梯度。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/09/machine_learning/%E5%87%B8%E4%BC%98%E5%8C%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/09/machine_learning/%E5%87%B8%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">凸优化</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-09 18:46:57" itemprop="dateCreated datePublished" datetime="2020-02-09T18:46:57+08:00">2020-02-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-18 00:37:29" itemprop="dateModified" datetime="2020-11-18T00:37:29+08:00">2020-11-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">machine learning</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.1k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>4 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="仿射集"><a href="#仿射集" class="headerlink" title="仿射集"></a>仿射集</h1><p>在n维空间中，对于点的集合C，如果集合中的任意两点x，y，对于任意$\theta$，都有$\theta x + (1-\theta)y \in C$，则集合C是一个仿射集合。即在集合中任意两点连线的<strong>直线</strong>上的点都在集合中。</p>
-<h1 id="凸集"><a href="#凸集" class="headerlink" title="凸集"></a>凸集</h1><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>在n维空间中，对于点的集合C，如果集合中的任意两点x，y，对于任意$0\leq\theta\leq1$，都有$\theta x + (1-\theta)y \in C$，则集合C为一个凸集。即在集合中任意两点，其连线<strong>线段</strong>上的点也都在集合中。</p>
-<p>凸集和防射集的定义就是$\theta$的取值范围不同。</p>
-<h3 id="常见的凸集"><a href="#常见的凸集" class="headerlink" title="常见的凸集"></a>常见的凸集</h3><h5 id="n维实向量空间-R-n"><a href="#n维实向量空间-R-n" class="headerlink" title="n维实向量空间$R^n$"></a>n维实向量空间$R^n$</h5><p>如果有$x,y \in R^n$，则显然有对于任意$0\leq\theta\leq1$，都有$\theta x + (1-\theta)y \in R^n$。</p>
-<p>由此可见，<code>如果一个优化问题是不带约束的优化，则其变量可行域是一个凸集</code>。</p>
-<h5 id="仿射子空间-x-in-R-n-Ax-b"><a href="#仿射子空间-x-in-R-n-Ax-b" class="headerlink" title="仿射子空间${x \in R^n:Ax=b} $"></a>仿射子空间${x \in R^n:Ax=b} $</h5><p>其中A为$m \times n$的矩阵，b为m维列向量。即非齐次线性方程组的解空间。</p>
-<p>证明：</p>
-<p>如果有$x,y \in R^n$且$Ax=b,Ay=b$，</p>
-<p>则对于任意的$0\leq\theta\leq1$，</p>
-<p>都有$A(\theta x+(1-\theta)y) = \theta Ax+(1-\theta)Ay=\theta b + (1-\theta)b=b$。</p>
-<p>由此可见，<code>如果变量的约束是线性等式约束，则该线性等式确定的可行域是一个凸集</code>。</p>
-<h5 id="子空间-x-in-R-n-Ax-leq-b"><a href="#子空间-x-in-R-n-Ax-leq-b" class="headerlink" title="子空间${x \in R^n:Ax\leq b}$"></a>子空间${x \in R^n:Ax\leq b}$</h5><p>其中A为$m \times n$的矩阵，b为m维列向量。</p>
-<p>证明：</p>
-<p>如果有$x,y \in R^n$且$Ax\leq b,Ay\leq b$，</p>
-<p>则对于任意的$0\leq\theta\leq1$，</p>
-<p>都有$A(\theta x+(1-\theta)y) = \theta Ax+(1-\theta)Ay\leq\theta b + (1-\theta)b=b$</p>
-<p>由此可见，<code>如果变量的约束是线性不等式约束，则该线性不等式确定的可行域是一个凸集</code>。</p>
-<h3 id="凸集的性质"><a href="#凸集的性质" class="headerlink" title="凸集的性质"></a>凸集的性质</h3><p>1、多个凸集的交集仍然是凸集</p>
-<p>证明：</p>
-<p>假设$C<em>1,C_2,…,C_k$为凸集，他们的交集为$C=\bigcap</em>{i=1}^{k}Ci$，并有$0 \leq \theta \leq 1$,</p>
-<p>因为$C_1,C_2,…,C_k$为凸集，所以对于$x,y \in C$，有$\theta x + (1-\theta)y \in C_i, \forall i=1,…,k$</p>
-<p>即$\theta x + (1-\theta)y \in C$</p>
-<p>2、多个凸集的并集不一定是凸集</p>
-<h1 id="凸函数"><a href="#凸函数" class="headerlink" title="凸函数"></a>凸函数</h1><h3 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h3><p>在函数定义域内，如果对于任意的x和y，以及实数$0 \leq \theta \leq 1$，都满足$f(\theta x + (1-\theta)y) \leq \theta f(x) + (1-\theta)f(y)$，则函数为凸函数。<code>可见，凸函数的定义和函数曲线的凹凸性的定义是相反的。</code></p>
-<p>从几何意义上讲，在凸函数上的任意两点的连线线段上的点都在函数的上方。</p>
-<p>如果把定义中的$\leq$改为$&lt;$，则称函数是<code>严格凸函数</code>。</p>
-<p><code>对于一元函数</code>，凸函数的二阶判定式为$f’’(x) \geq 0$，严格凸函数的二阶判定式为$f’’(x) &gt; 0$。由此也可见凸函数的定义和函数曲线的凹凸性的定义是相反的。</p>
-<p><code>对于多元函数</code>，如果它是凸函数，则其Hessian矩阵为半正定矩阵。如果是严格凸函数，则其Hessian矩阵为正定矩阵。</p>
-<h3 id="凸函数的性质"><a href="#凸函数的性质" class="headerlink" title="凸函数的性质"></a>凸函数的性质</h3><p>1、凸函数的<code>非负线性组合</code>仍然是凸函数。</p>
-<h1 id="Hessian矩阵"><a href="#Hessian矩阵" class="headerlink" title="Hessian矩阵"></a>Hessian矩阵</h1><p>Hessian矩阵是有多元函数的二阶偏导数组成的矩阵。如果一个函数二阶可导，其Hessian矩阵定义为：</p>
-<script type="math/tex; mode=display">
-\begin{bmatrix}
-\frac{\partial^2f}{\partial {x_1}^2} &
-\frac{\partial^2f}{\partial x_1x_2} &
-\cdots &
-\frac{\partial^2f}{\partial x_1x_n} \\
-\frac{\partial^2f}{\partial x_2x_1} &
-\frac{\partial^2f}{\partial {x_2}^2} &
-\cdots &
-\frac{\partial^2f}{\partial x_2x_n} \\
-
-\vdots & \vdots & & \vdots \\
-
-\frac{\partial^2f}{\partial x_nx_1} &
-\frac{\partial^2f}{\partial x_nx_2} &
-\cdots &
-\frac{\partial^2f}{\partial {x_n}^2}
-\end{bmatrix}</script><p>如果多元函数的混合二阶偏导数连续，则其混合二阶偏导数结果与求导次序无关。大多数多元函数的混合二阶偏导数是连续的，所以Hessian矩阵大多是对称矩阵。</p>
-<p>根据多元函数的极值判别法，假设多元函数在点M的<code>梯度为0</code>，则M是函数的驻点，如果：</p>
-<p>1、Hessian矩阵正定，函数在该点有极小值</p>
-<p>2、Hessian矩阵负定，函数在该点有极大值</p>
-<p>3、Hessian矩阵既不正定也不负定，则不能确定是否取得极值</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/09/others/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/09/others/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="post-title-link" itemprop="url">正则表达式</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-09 15:20:41" itemprop="dateCreated datePublished" datetime="2020-02-09T15:20:41+08:00">2020-02-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-09 13:04:54" itemprop="dateModified" datetime="2021-02-09T13:04:54+08:00">2021-02-09</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/regular-expression/" itemprop="url" rel="index">
-                    <span itemprop="name">regular expression</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.8k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>6 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><code>正则表达式是由普通字符以及特殊字符(称为&quot;元字符&quot;)组成的文本模式</code></p>
-<p>正则表达式是一个匹配连续串的规则，即匹配会在每个连续的字符串中进行</p>
-<h2 id="普通字符"><a href="#普通字符" class="headerlink" title="普通字符"></a>普通字符</h2><p>普通字符包括没有显示指定为元字符的所有可打印和不可打印字符。这<code>包括所有的大写和小写字母、所有数字、所有标点符号和一些其他符号</code></p>
-<h4 id="非打印字符"><a href="#非打印字符" class="headerlink" title="非打印字符"></a>非打印字符</h4><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>字符</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>\cx</td>
-<td>匹配由x指明的控制字符。例如，\cM匹配一个control-M或回车符。<code>x的值必须为A-Z或a-z之一。否则，将c视为一个原意的&#39;c&#39;字符</code></td>
-</tr>
-<tr>
-<td>\t</td>
-<td>匹配一个制表符。等价于\x09和\cl</td>
-</tr>
-<tr>
-<td>\n</td>
-<td>匹配一个换行符。等价于\x0a和\cJ</td>
-</tr>
-<tr>
-<td>\v</td>
-<td>匹配一个垂直制表符。等价于\x0b和\cK</td>
-</tr>
-<tr>
-<td>\f</td>
-<td>匹配一个换页符。等价于\x0c和\cL</td>
-</tr>
-<tr>
-<td>\r</td>
-<td>匹配一个回车符。等价于\x0d和\cM</td>
-</tr>
-<tr>
-<td>\s</td>
-<td>匹配任何空白字符，包括空格、制表符、换页符等等。等价于[\f\n\r\t\v]。注意unicode正则表达式会匹配全角空格符</td>
-</tr>
-<tr>
-<td>\S</td>
-<td>匹配任何非空白字符。等价于<sup><a href="#fn_\f\n\r\t\v" id="reffn_\f\n\r\t\v">\f\n\r\t\v</a></sup></td>
-</tr>
-<tr>
-<td>\d</td>
-<td>匹配数字</td>
-</tr>
-<tr>
-<td>\w</td>
-<td>匹配word(数字、字母)</td>
-</tr>
-<tr>
-<td>\W</td>
-<td>匹配非word(数字、字母)</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="特殊字符-元字符"><a href="#特殊字符-元字符" class="headerlink" title="特殊字符(元字符)"></a>特殊字符(元字符)</h2><p>所谓特殊字符，就是有一些特殊含义的字符，例如”?”，<code>如果要匹配特殊字符，就需要对特殊字符进行转义，例如&quot;\?&quot;</code></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>字符</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$</td>
-<td>匹配输入字符串的结尾位置。如果设置了RegExp对象的Multiline属性，则$也匹配’\n’或’\r’</td>
-</tr>
-<tr>
-<td>()</td>
-<td>标记一个子表达式的开始和结束位置，子表达式可以提供以后使用</td>
-</tr>
-<tr>
-<td>*</td>
-<td>匹配前面的子表达式<code>零次</code>或多次</td>
-</tr>
-<tr>
-<td>+</td>
-<td>匹配前面的子表达式<code>一次</code>或多次</td>
-</tr>
-<tr>
-<td>.</td>
-<td>匹配除换行符\n之外的任何单字符</td>
-</tr>
-<tr>
-<td>[</td>
-<td>标记一个中括号表达式的开始</td>
-</tr>
-<tr>
-<td>?</td>
-<td>匹配前面的子表达式零次或一次，或指明一个<a href>非贪婪限定符</a>)</td>
-</tr>
-<tr>
-<td>\</td>
-<td>将下一个字符标记为特殊字符或原意字符，或想活引用，或八进制转义符</td>
-</tr>
-<tr>
-<td>^</td>
-<td>匹配输入字符串的开始位置，除非在方括号表达式中使用。当该符号在方括号表达式中使用时，表示不接受方括号表达式中的字符集合</td>
-</tr>
-<tr>
-<td>{</td>
-<td>标记限定符表达式的开始</td>
-</tr>
-<tr>
-<td>｜</td>
-<td>指明两项之间的一个选择</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>举几个🌰：</p>
-<ul>
-<li><p>“?” : 例如colou?r可以匹配color和colour</p>
-</li>
-<li><p>“*“ : 例如runoo*b可以匹配runob、runoob、runooooob等</p>
-</li>
-<li><p>“+” : 例如runoo+b可以匹配runoob、runooooob等</p>
-</li>
-<li><p>(abc|bcd|cde)：abc、bcd、cde三者之一均可</p>
-</li>
-</ul>
-<h4 id="限定符"><a href="#限定符" class="headerlink" title="限定符"></a>限定符</h4><p><code>限定符是用来制定正则表达式的一个给定组件必须出现多少次才能满足匹配</code></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>字符</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>*</td>
-<td>匹配前面的子表达式<code>零次</code>或多次</td>
-</tr>
-<tr>
-<td>+</td>
-<td>匹配前面的子表达式<code>一次</code>或多次</td>
-</tr>
-<tr>
-<td>?</td>
-<td>匹配前面的子表达式零次或一次</td>
-</tr>
-<tr>
-<td>{n}</td>
-<td>n是一个<code>非负整数</code>，匹配确定的n次</td>
-</tr>
-<tr>
-<td>{n,}</td>
-<td>n是一个<code>非负整数</code>，至少匹配n次</td>
-</tr>
-<tr>
-<td>{n,m}</td>
-<td>m和n均为非负整数，其中n&lt;=m，最少匹配n次且最多匹配m次，<code>注意在逗号和两个数之间不能有空格</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-<h4 id="贪婪限定符和非贪婪限定符"><a href="#贪婪限定符和非贪婪限定符" class="headerlink" title="贪婪限定符和非贪婪限定符"></a>贪婪限定符和非贪婪限定符</h4><p>贪婪模式：*、+ 和 ? 限定符都被称为“贪心的”，因为它们匹配尽可能多的文本。<br>非贪婪模式：通过在 *、+ 或 ? 限定符之后放置 ?，该表达式从“贪心”表达式转换为“非贪心”表达式或者<code>最小匹配</code>（<font color="red">即找到第一个满足匹配的就停止</font>）</p>
-<h4 id="定位符"><a href="#定位符" class="headerlink" title="定位符"></a>定位符</h4><p>定位符能够将正则表达式固定到行首或行尾</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>符号</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>^</td>
-<td>匹配输入<code>字符串</code>开始的位置。如果设置了RegExp对象的Multiline属性，^还会和\n或\r之后的位置匹配</td>
-</tr>
-<tr>
-<td>$</td>
-<td>匹配输入<code>字符串</code>的结尾位置，如果设置了RegExp对象的Multiline属性，$会与\n或\r之前的位置匹配</td>
-</tr>
-<tr>
-<td>\b</td>
-<td>匹配一个<code>单词</code>边界，即字与空格间的位置</td>
-</tr>
-<tr>
-<td>\B</td>
-<td>非<code>单词</code>边界匹配</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><code>不能讲限定符与定位符一起使用，由于在紧靠换行或者单词边界的前面或者后面不能有一个以上位置</code>，因此不允许诸如<code>^*</code>之类的表达式</p>
-<p>如果要匹配一行文本开始处的文本，要在正则表达式的开始使用^字符。如果要匹配一行文本结束处的文本，要在正则表达式的结束处使用$字符。<br><code>^和$可以在一个正则表达式中同时使用</code>，例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^Chapter$</span><br></pre></td></tr></table></figure>
-<p>表示从文本开始匹配时和从末尾匹配时都是Chapter，说明该行只有Chapter这几个字符</p>
-<p>单词边界是单词和空格之间的位置，非单词边界是任何其他位置。</p>
-<p>\b字符位于要匹配的字符串的开始，它在单词的开始处查找匹配项，如果它位于字符串的结尾，他在单词的结尾处查找匹配项。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\bCha</span><br><span class="line">ter\b</span><br></pre></td></tr></table></figure>
-<h2 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h2><p>AAA | BBB<br>匹配 AAA 或者 BBB</p>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><h4 id="引用分组和反向引用"><a href="#引用分组和反向引用" class="headerlink" title="引用分组和反向引用"></a>引用分组和反向引用</h4><p>对一个正则表达式或部分模式两边添加圆括号将导致相关匹配到一个临时缓冲区中，所捕获的每个子匹配都按照正则表达式模式中从左到右出现的顺序存储。<font color="red">缓冲区的编号从1开始</font>，最多可以存储99个捕获的子表达式。每个缓冲区都可以使用\n访问，其中n为一个标识特定缓冲区的一位或两位十进制数。<br>例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\b([a-z]+)\1\b</span><br></pre></td></tr></table></figure>
-<p>反向引用只能用于之前出现的分组。</p>
-<p>反向引用的一个例子：要用正则表达式匹配日期，日期的格式为yyyy-mm-dd、yyyy/mm/dd和yyyy.mm.dd都是合理的，注意后面的分隔符和前面的分隔符要相等。则正则表达式可以写作：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\d&#123;4&#125;(-|/|.)\d&#123;2&#125;\1\d&#123;2&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="引用分组中对于括号嵌套的解释"><a href="#引用分组中对于括号嵌套的解释" class="headerlink" title="引用分组中对于括号嵌套的解释"></a>引用分组中对于括号嵌套的解释</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((\d)(\d(\d)))\1\2\3\4</span><br></pre></td></tr></table></figure>
-<p>假如利用上述表达式去匹配如下字符串：“123”<br>则\1指代的是123<br>\2指代的是1<br>\3指代的是23<br>\4指代的是3</p>
-<p>即<code>以左括号出现的顺序为作为编号的顺序</code>。</p>
-<p>注意对于\10的解释是编号为10的分组，而不是编号为1的分组然后再跟一个0</p>
-<h4 id="引用不存在的分组"><a href="#引用不存在的分组" class="headerlink" title="引用不存在的分组"></a>引用不存在的分组</h4><p>因为反向引用是引用前面的分组，但我们在正则表达式里引用了不存在的分组时，此时正则不会报错，只是匹配反向引用的字符本身。例如\2，就匹配”\2”，注意”\2”表示对2进行了转意。</p>
-<h4 id="非捕获分组"><a href="#非捕获分组" class="headerlink" title="非捕获分组"></a>非捕获分组</h4><p>如果只是想要括号最原始的功能，而不想保存捕获的分组，后续不会进行引用，可以使用非捕获分组(?:)<br>例如：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(?:ab)+     //用于匹配ababab...</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/08/machine_learning/%E7%BB%AA%E8%AE%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/08/machine_learning/%E7%BB%AA%E8%AE%BA/" class="post-title-link" itemprop="url">绪论</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-08 23:03:15" itemprop="dateCreated datePublished" datetime="2020-02-08T23:03:15+08:00">2020-02-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">machine learning</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>518</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>2 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h1><ul>
-<li>学习(训练) —— 从数据中学得模型的过程</li>
-<li>分类 —— 使用学习的模型<code>预测的结果为离散值</code>，此类学习任务称为“分类(classification)”</li>
-<li>回归 —— 使用学习的模型<code>预测的结果为连续值</code>，此类学习任务称为“回归(regression)”</li>
-<li>根据训练数据是否拥有标记信息，学习任务可大致划分为两大类：“监督学习(supervised learning)”和“无监督学习(unsupervised learning)”，分类和回归是前者的代表，而聚类是后者的代表</li>
-<li>学得模型适用于新样本的能力，称为“泛化(generalization)”能力</li>
-</ul>
-<h1 id="将离散值转换为连续值"><a href="#将离散值转换为连续值" class="headerlink" title="将离散值转换为连续值"></a>将离散值转换为连续值</h1><p>对于离散属性，如果某个属性的取值之间存在“序”的关系，可通过连续化将其转化为连续值，例如对于身高这个属性，它的取值可以为“高”和“矮”，那么可以转化为${1.0, 0.0}$；若取值是“高”，“中”，“低”，则可转化为${1.0,0.5,0.0}$。</p>
-<p>若某个属性的取值之间不存在序关系，假定有这个属性有k个取值，则通常转化为k维向量，例如属性“瓜类”的取值“西瓜”，“南瓜”，“黄瓜”可转换为(1，0，0)，(0，1，0)，(1，0，0)</p>
-<h1 id="假设空间"><a href="#假设空间" class="headerlink" title="假设空间"></a>假设空间</h1><ul>
-<li><p>归纳(induction)和演绎(deducation)是科学推理的两大基本手段，前者是从特殊到一般的“泛化”过程，即从具体的事实归结出一般性规律；后者则是从一般到“特殊”的特化过程，即从基本原理推演出具体状况。</p>
-</li>
-<li><p>模型属于由输入空间到输出空间的映射的集合，这个集合就是假设空间(hypothesis space)</p>
-</li>
-<li><p>与训练集一致的“假设集合”称之为“版本空间(version space)”</p>
-</li>
-</ul>
-<h1 id="归纳偏好"><a href="#归纳偏好" class="headerlink" title="归纳偏好"></a>归纳偏好</h1><ul>
-<li><p>归纳偏好可看作学习算法自身在一个可能很庞大的假设空间中对假设进行选择的启发式或“价值观”</p>
-</li>
-<li><p>NFL(没有免费的午餐)定理 —— 脱离具体问题，空泛的谈论“什么学习算法更好”毫无意义。</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -2229,7 +2081,7 @@ R=\begin{cases}
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -2282,13 +2134,13 @@ R=\begin{cases}
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">155k</span>
+    <span title="Symbols count total">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">8:36</span>
+    <span title="Reading time total">10:11</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>

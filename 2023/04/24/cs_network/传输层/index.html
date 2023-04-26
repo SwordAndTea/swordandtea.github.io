@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="传送层的功能传输层属于面向通信部分的最高层，同时也是用户功能中的最底层。(注意通信子网没有传输层) 复用和分用复用是指发送方不同的应用进程都可使用同一个传输层协议传送数据：分用是指接收方的传输层在剥去报文的首部后能够把这些数据正确交付到目的应用进程。 传输层的寻址和端口端口的作用端口是传输层服务访问点，端口标识的是主机中的应用进程。 数据链路层的服务访问点(SAP)是MAC，网络层的SAP是IP地">
+<meta property="og:type" content="article">
+<meta property="og:title" content="传输层">
+<meta property="og:url" content="http://swordandtea.github.io/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="传送层的功能传输层属于面向通信部分的最高层，同时也是用户功能中的最底层。(注意通信子网没有传输层) 复用和分用复用是指发送方不同的应用进程都可使用同一个传输层协议传送数据：分用是指接收方的传输层在剥去报文的首部后能够把这些数据正确交付到目的应用进程。 传输层的寻址和端口端口的作用端口是传输层服务访问点，端口标识的是主机中的应用进程。 数据链路层的服务访问点(SAP)是MAC，网络层的SAP是IP地">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://swordandtea.github.io/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/udp.jpg">
+<meta property="og:image" content="http://swordandtea.github.io/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/udp校验.jpg">
+<meta property="og:image" content="http://swordandtea.github.io/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/tcp.jpg">
+<meta property="og:image" content="http://swordandtea.github.io/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/tcp三次握手.jpg">
+<meta property="og:image" content="http://swordandtea.github.io/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/tcp四次挥手.jpg">
+<meta property="og:image" content="http://swordandtea.github.io/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/慢开始和拥塞控制.jpg">
+<meta property="og:image" content="http://swordandtea.github.io/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/快恢复.jpg">
+<meta property="article:published_time" content="2023-04-24T02:55:25.000Z">
+<meta property="article:modified_time" content="2023-04-24T12:00:38.826Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="计网">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://swordandtea.github.io/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/udp.jpg">
+
+<link rel="canonical" href="http://swordandtea.github.io/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>传输层 | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          传输层
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-04-24 10:55:25 / Modified: 20:00:38" itemprop="dateCreated datePublished" datetime="2023-04-24T10:55:25+08:00">2023-04-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%BD%91/" itemprop="url" rel="index">
+                    <span itemprop="name">计网</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>5k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>17 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="传送层的功能"><a href="#传送层的功能" class="headerlink" title="传送层的功能"></a>传送层的功能</h1><p>传输层属于面向通信部分的最高层，同时也是用户功能中的最底层。(<code>注意通信子网没有传输层</code>)</p>
+<h2 id="复用和分用"><a href="#复用和分用" class="headerlink" title="复用和分用"></a>复用和分用</h2><p>复用是指发送方不同的应用进程都可使用同一个传输层协议传送数据：分用是指接收方的传输层在剥去报文的首部后能够把这些数据正确交付到目的应用进程。</p>
+<h1 id="传输层的寻址和端口"><a href="#传输层的寻址和端口" class="headerlink" title="传输层的寻址和端口"></a>传输层的寻址和端口</h1><h2 id="端口的作用"><a href="#端口的作用" class="headerlink" title="端口的作用"></a>端口的作用</h2><p>端口是传输层服务访问点，<code>端口标识的是主机中的应用进程</code>。</p>
+<p>数据链路层的服务访问点(SAP)是MAC，网络层的SAP是IP地址，传输层的SAP是端口。</p>
+<h2 id="端口号"><a href="#端口号" class="headerlink" title="端口号"></a>端口号</h2><p>端口号长度为16bit，能够表示65536(0~65535)个不同的端口号。端口号只有本地意义，即端口号只表示本计算机应用层中的各进程，在因特网中不同计算机的相同端口号是没有联系的。根据端口号范围可将端口分为两类：</p>
+<p>1、服务端使用的端口号。这里又分为两类，最重要的一类是熟知端口号，数值为0～1023，IANA(互联网地址指派机构)把这些端口指派给了TCP/IP最重要的一些应用程序，让所有的用户都知道。另一类称为登记端口号，数值为1024～49151。它是供没有熟知端口号的应用程序使用的。使用这类端口号必须在IANA登记。</p>
+<p>2、客户端使用的端口号，数值为49152～65535。这类端口号仅在客户进程运行时才动态选择，因此又称短暂端口号(也称临时端口)。通信结束后，刚用过的客户端口号就不复存在，从而这个端口号就可提供其他客户进程使用。</p>
+<h2 id="套接字"><a href="#套接字" class="headerlink" title="套接字"></a>套接字</h2><p>在网络中采用发送发和接收方的套接字(socket)组合来识别端点。<code>套接字实际上是一个通信端点</code>，套接字=(主机IP地址，端口号)。它唯一地标识网络中的一台主机和其上的一个应用(进程)</p>
+<h1 id="无连接服务与面向连接服务。"><a href="#无连接服务与面向连接服务。" class="headerlink" title="无连接服务与面向连接服务。"></a>无连接服务与面向连接服务。</h1><p>TCP/IP协议族在IP层之上使用了两个传输协议：一个是面向连接的传输控制协议(TCP)，采用TCP时，传输层向上提供的是一条<code>全双工</code>的可靠逻辑信道；另一个是无连接的用户数据报协议(UDP)，采用UDP时，传输层向上提供的是一条不可靠的逻辑信道。<code>TCP不提供广播和组播服务</code></p>
+<h1 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h1><p>UDP只是做了传输协议能够做的最少工作，它仅在IP和数据报服务之上增加了两个最基本的服务：复用和分用以及差错检查。</p>
+<p>UDP具有以下优点：</p>
+<p>1、UDP<code>无须建立连接</code>，因此UDP不会引入建立连接的时延。</p>
+<p>2、<code>无连接状态</code>。UDP不维护连接状态。</p>
+<p>3、分组首部开销小，TCP有20B的首部开销，而UDP只有8B的开销。</p>
+<p>4、应用层能更好地控制要发送的数据和发送时间。UDP<code>没有拥塞控制</code>，因此网络中的拥塞不会影响主机的发送效率。某些实时应用要求以更稳定的速度发送，能容忍一些数据的丢失，但不允许有较大的时延，而UDP正好满足这些应用的需求。</p>
+<p>UDP是面向报文的。发送发UDP对应用层交下来的报文，在添加首部后就向下交付给IP层，既不合并，也不拆分，而是保留这些报文的边界；接收方UDP对IP层交上来UDP用户数据报在去除首部后就原封不动地交给上层应用程序，<code>一次交付一个完整的报文</code>。因此报文不可分割，是UDP数据报处理的最小单位。</p>
+<h2 id="UDP的首部格式"><a href="#UDP的首部格式" class="headerlink" title="UDP的首部格式"></a>UDP的首部格式</h2><p><img src="/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/udp.jpg" title alt="2b8fed7f7a91118fbcbef80137bcebc8.jpeg" data-align="center"></p>
+<p>UDP首部有8B，由4个字段组成，每个字段的长度都是2B。</p>
+<p>1、源端口。源端口号，在需要对方回信时选用，不需要时可用0.</p>
+<p>2、目的端口。目的端口号，这在终点交付报文时必须使用到。</p>
+<p>3、长度。UDP数据报的长度(<code>包括首部和数据</code>)，其最小值为8(仅有首部)</p>
+<p>4、校验和。校验首部和数据部分，检测UDP数据报在传输中是否有错。有错就丢弃。该字段是可选的，当源主机不想计算校验和，则直接令该字段为0。</p>
+<p>如果接收方UDP发现收到的报文中的目的端口号不正确(即不存在对应端口号的应用程序)，那么就丢弃该报文，并由ICMP发送“端口不可达”差错报文给发送方。</p>
+<h2 id="UDP校验"><a href="#UDP校验" class="headerlink" title="UDP校验"></a>UDP校验</h2><p>在计算校验和的时，要在UDP数据报之前增加12B的伪首部，得到临时的UDP数据报。校验和就是按照这个临时的UDP数据报计算的。<code>伪首部既不向下传送也不向上传递</code>。<img src="/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/udp校验.jpg" title alt="c557e6b203553e314753972f16d00b78.jpeg" data-align="center"></p>
+<p>发送方首先把全0放入校验和字段并添加伪首部，然后把UDP数据报视为许多16位的字连接起来。<code>若UDP数据报的数据部分不是偶数字节，则要在数据部分末尾添加一个全0字节</code>(次字节最后不会发送，仅在计算校验和时使用)。计算校验和时，采用二进制反码计算再求反码，最后结果作为校验和。</p>
+<p>接收方把收到的UDP数据报加上伪首部(如果不是偶数个字节，那么还需要补上全0字节)，按二进制反码计算出校验和。当无差错时结果应全为1，否则表明有差错出现。</p>
+<h1 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h1><h2 id="TCP协议的特点"><a href="#TCP协议的特点" class="headerlink" title="TCP协议的特点"></a>TCP协议的特点</h2><p>1、TCP是面向连接的传输层协议</p>
+<p>2、每条TCP连接只能是点对点的(一对一)</p>
+<p>3、TCP提供可靠的交付服务，保证传送数据的无差错、不丢失、不重复且有序</p>
+<p>4、TCP<code>提供全双工通信</code>，为此TCP连接的两端都设有发送缓存和接受缓存，用来临时存放双向通信的数据</p>
+<p>5、TCP是面向字节流的，TCP把应用程序交下来的数据仅视为一连串的无结构的字节流</p>
+<h2 id="TCP数据报"><a href="#TCP数据报" class="headerlink" title="TCP数据报"></a>TCP数据报</h2><p>TCP传送的数据单元称为报文段，其首部的前20B是固定的。TCP报文段的首部最短为20B，后面有4N字节是根据需要而增加的选项，通常为长度的整数倍。</p>
+<p><img src="/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/tcp.jpg" title alt="536fcd6dbc7d56f295a5364e1186693e.jpeg" data-align="center"></p>
+<ul>
+<li><p>源端口和目的端口字段。各占2B。</p>
+</li>
+<li><p>序号字段。占4B。TCP连接传送的数据流中的每个字节都编上一个序号。<code>序号字段的值指的是本报文段所发送的数据的第一个字节的序号</code></p>
+</li>
+<li><p>确认号字段。占4B，是期望收到对方的下一个报文段的数据的第一个字节的序号。若确认号为N，则表明到序号N-1为止的所有数据都已正确收到</p>
+</li>
+<li><p>数据偏移(即首部长度)。占4位，数据偏移的单位为4B。因此当字段的值为15时，达到TCP首部的最大长度60B</p>
+</li>
+<li><p>保留字段。占6位，保留为今后使用，但目前应置值为0，该字段可以忽略不计。</p>
+</li>
+<li><p>紧急位URG。URG=1时，表明紧急指针字段有效。它告诉系统报文段中有紧急数据，应尽快传送，但URG需要和紧急指针配套使用，即数据<code>从第一个字节</code>到紧急指针所指字节就是紧急数据。</p>
+</li>
+<li><p>确认位ACK。只有当ACK=1时确认号字段才有效。<code>在建立连接后所有传送的报文都必须把ACK置为1</code></p>
+</li>
+<li><p>推送位PSH(Push)。接收TCP收到PSH=1的报文段，就尽快交付给接收应用程序，而不再等到整个缓存都填满后再向上交付。</p>
+</li>
+<li><p>复位位RST(Reset)。RST=1时，表明TCP连接中出现严重的差错，必须释放连接，然后再重新建立传输连接。</p>
+</li>
+<li><p>同步位SYN，SYN=1时表示这是一个连接请求或连接接收报文</p>
+</li>
+<li><p>终止位FIN(Finish)。用来释放一个连接。FIN=1表明此报文段的发送方的数据已发送完毕，并要求释放传输连接。</p>
+</li>
+<li><p>窗口字段。占2B。它指出现在允许对方发送的数据量，窗口值作为接收方让发送方设置其发送窗口的依据，单位为字节。</p>
+</li>
+<li><p>校验和。占2B。校验和字段检验的范围包括<code>首部和数据两部分</code>。在计算校验和时，和UDP一样，要在TCP报文段的前面加上12B的伪首部(只需要将UDP伪首部的第4个字段，即协议字段的17改成6，其他的和UDP一样)</p>
+</li>
+<li><p>紧急指针字段。占16位，指出在本报文段中紧急数据共有多少字节(紧急数据放在本报文段数据的最前面)</p>
+</li>
+<li><p>选项字段。长度可变。TCP最初之规定了一种选项，即最大报文段长度(Maximum Segment Size, MSS)。MSS是TCP报文段中的数据字段的最大长度。</p>
+</li>
+<li><p>填充字段，填充字段。这是为了整个首部长度是4B的整数倍。</p>
+</li>
+</ul>
+<h2 id="TCP连接管理"><a href="#TCP连接管理" class="headerlink" title="TCP连接管理"></a>TCP连接管理</h2><p>TCP是面向连接的协议，因此每个TCP连接都有三个阶段：连接建立、数据传送和连接释放。在TCP连接建立的过程中，要解决以下三个问题：</p>
+<p>1、要使每一方都能够确知对方的存在。</p>
+<p>2、要允许双方协商一些参数(如最大窗口值，是否使用窗口扩大哦选项、时间戳选项及服务质量等)</p>
+<p>3、能够对运算实体资源(如缓存大小、连接表中的项目等)进行分配</p>
+<p>TCP连接的端口称为套接字(socket)。每条TCP连接唯一地被通信两端的两个套接字确定。TCP连接中，主动发起连接建立的应用进程称为客户机(Client)，而被动等待建立的应用程序称为服务器(Server)</p>
+<h3 id="连接的建立"><a href="#连接的建立" class="headerlink" title="连接的建立"></a>连接的建立</h3><p>TCP连接的建立要经历以下3个步骤，通常称为三次握手。</p>
+<p><img src="/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/tcp三次握手.jpg" title alt="47d7cdc1abe00d8c2c24b70a4187972b.jpeg" data-align="center"></p>
+<p>第一步：客户机TCP首先向服务器的TCP发送一个连接请求报文段。这个特殊的报文段中不含有应用层数据，其首部中的ACK=0，SYN=1。<code>另外，客户机会随机选择一个起始序号seq=x</code>(连接请求报文不携带数据，但要消耗一个序号)</p>
+<p>第二步：<code>为该TCP连接分配TCP缓存和变量</code>。在确认报文段中，<code>SYN和ACK位都被置为1</code>，确认号字段的值为x+1，<code>并且服务器随机产生起始序号seq=y</code>(确认报文不携带数据，但也要消耗一个序号)</p>
+<p>第三部：当客户机收到确认报文段，还要向服务器给出确认，<code>并且也要给连接分配缓存和变量</code>。这个报文段的ACK=1，seq=x+1。<code>该报文段可以携带数据</code></p>
+<p><code>由于服务器端的资源是在完成第二次握手时分配的，所以服务器易收到SYN洪泛攻击。</code></p>
+<h3 id="TCP连接的释放"><a href="#TCP连接的释放" class="headerlink" title="TCP连接的释放"></a>TCP连接的释放</h3><p>TCP连接释放的过程通常称为四次挥手</p>
+<p><img src="/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/tcp四次挥手.jpg" title alt="6b05fd7b1e103d89e8b7f3c89c52319e.jpeg" data-align="center"></p>
+<p>第一步：客户机打算关闭连接时，向其TCP发送一个连接释放报文段，并停止发送数据。该报文段的ACK=1，FIN=1，seq=u，<code>它等于前面已经发送过的数据的最后一个字节的序号+1</code>(FIN报文段即使不携带数据，也要消耗一个序号)。<code>发送FIN报文时，发送FIN的一端不能再发送数据，即关闭了其中一条数据通路，但对方还可以发送数据</code></p>
+<p>第二步：服务器收到连接释放报文段后发出确认，确认号是ack=u+1，<code>而这个报文段的自己的序号v，等于它前面已传送过来的数据的最后一个字节的序号+1</code>。此时，从客户机到服务器这个方向的连接就释放了，<code>TCP连接处于半关闭状态</code>。但服务器若发送数据，客户机仍要接收，即从服务器到客户机这个方向的连接并未关闭。</p>
+<p>第三步：若服务器已经没有要向客户机发送的数据，就通知TCP释放连接，此时其发出FIN=1的连接释放报文段。</p>
+<p>第四步：客户机收到释放连接报文段后，必须发出确认。在确认报文段中，ACK=1。<code>此时TCP连接还未释放，必须经过时间等待计时器设置的时间2MSL(Maximum Segment Lifetime,最大分节生命期后，这是一个IP数据包在网络上生存的最长时期)，客户端才进入连接关闭状态</code></p>
+<h2 id="TCP可靠传输"><a href="#TCP可靠传输" class="headerlink" title="TCP可靠传输"></a>TCP可靠传输</h2><p>TCP提供的可靠传输服务保证接收方进程从缓冲区读出的字节流与发送方发出的字节流完全一样。TCP使用了校验、序号、确认和重传等机制来达到这一目的。</p>
+<h3 id="序号"><a href="#序号" class="headerlink" title="序号"></a>序号</h3><p>TCP首部的序号字段用来保证数据能有序提交给应用层，TCP把数据视为一个无结构但有序的字节流，序号建立在传送的字节流之上，而不建立在报文段之上。</p>
+<h3 id="确认"><a href="#确认" class="headerlink" title="确认"></a>确认</h3><p><code>TCP默认使用累计确认，即TCP只确认数据流中至第一个丢失字节为止的字节</code>，例如，接收方收到了发送方字节的0～2字节和6～7字节。由于某种原因，接收方还未收到字节3～5的报文段，此时B仍在等待字节3(和其后面的字节)，因此接收方到发送方的下一个报文段将确认号字段置为3。</p>
+<h3 id="重传"><a href="#重传" class="headerlink" title="重传"></a>重传</h3><p>有两种事件会导致TCP对报文段进行重传</p>
+<h4 id="超时"><a href="#超时" class="headerlink" title="超时"></a>超时</h4><p>TCP每发送一个报文段，就对这个报文段设置一次计时器。计时器设置的重传时间到期但还未收到确认时，就要重传这一报文段。</p>
+<h4 id="冗余ACK-冗余确认"><a href="#冗余ACK-冗余确认" class="headerlink" title="冗余ACK(冗余确认)"></a>冗余ACK(冗余确认)</h4><p>超时触发重传存在的一个问题时超时周期往往太长，冗余ACK可以解决这一问题。冗余ACK就是再次确认某个报文段的ACK。TCP规定每当比期望序号大的失序报文段到达时，就发送一个冗余ACK。TCP规定当发送方收到对同一个报文段的3个冗余ACK时(<code>总共接收4个ACK</code>)，就可以认为跟在这个被报文段已经丢失。这种技术通常称为快速重传。</p>
+<h2 id="TCP流量控制"><a href="#TCP流量控制" class="headerlink" title="TCP流量控制"></a>TCP流量控制</h2><p>在通信过程中，接收方根据自己接收缓存的大小，动态地<code>调整发送方的</code>发送窗口大小，这称为<code>接收窗口rwnd</code>，即调整TCP报文段首部中的“窗口”字段值，来限制发送方向网络注入报文的速率。同时，<code>发送方</code>根据其对当前网络拥塞程序的估计而确定的窗口值，这称为<code>拥塞窗口cwnd</code>。<code>发送方的发送窗口的实际大小取决于rwnd和cwnd的最小值。</code></p>
+<p>数据链路层的滑动窗口协议的窗口大小不能动态变化，传输层的则可以动态变化</p>
+<h2 id="TCP拥塞控制"><a href="#TCP拥塞控制" class="headerlink" title="TCP拥塞控制"></a>TCP拥塞控制</h2><p>出现拥塞时，端点并不了解到拥塞发生的细节，对通信连接的端点来说，拥塞往往表现为通信时延的增加。</p>
+<p><code>拥塞控制与流量控制的区别</code>：拥塞控制是让网络能够成熟现有的网络负荷，是一个全局性的过程，设计所有的主机、所有的路由器。流程控制往往是指点对点的通信量的控制，它所要做的是抑制发送端发送数据的速率，以便使接收端来得及接收。</p>
+<h3 id="慢开始和拥塞控制"><a href="#慢开始和拥塞控制" class="headerlink" title="慢开始和拥塞控制"></a>慢开始和拥塞控制</h3><h4 id="慢开始算法"><a href="#慢开始算法" class="headerlink" title="慢开始算法"></a>慢开始算法</h4><p>在TCP刚刚连接好并开始发送TCP报文段时，<code>先令拥塞窗口cwnd=1，即一个最大报文段长度MSS</code>。每<code>收到一个对新报文段的确认后</code>，将cwnd加1，即一个最大报文段长度MSS。在经过一个RTT后(也称一个传输轮次)，拥塞窗口的大小变为一个轮次前的两倍(一个传输轮次中包含多次发送和确认的过程)。</p>
+<p>使用慢开始算法后，每经过一个传输轮次(即往返时延RTT)，拥塞窗口cwnd就会加倍。这样，慢开始一直把拥塞窗口cwnd增大到一个规定的慢开始门限ssthread(域值)，然后改用拥塞避免算法。</p>
+<h4 id="拥塞避免算法"><a href="#拥塞避免算法" class="headerlink" title="拥塞避免算法"></a>拥塞避免算法</h4><p>发送端的拥塞窗口cwnd每<code>经过一个往返时延RTT</code>就增加一个MSS的大小，而每当出现一次超时(网络拥塞)时，令慢开始门限ssthread等于当前cwnd的一半。</p>
+<p>当拥塞窗口等于阈值时，既可以使用慢开始算法，又可以使用拥塞避免算法(<code>通常做法</code>)。</p>
+<h4 id="网络拥塞的处理"><a href="#网络拥塞的处理" class="headerlink" title="网络拥塞的处理"></a>网络拥塞的处理</h4><p>网络出现拥塞时，无论是在慢开始阶段还是在拥塞避免阶段，只要发送发检测到超时事件的发生，就要把慢开始门限ssthread设置为出现拥塞时的发送方的cwnd值的一半(但不能小于2)。然后把拥塞窗口cwnd重新设置为1，执行慢开始算法。</p>
+<p>注意在慢开始阶段cwnd不能跃过ssthread值，也就是说当cwnd * 2 &gt; ssthread时，cwnd = ssthread。</p>
+<p>一个例子：</p>
+<p><img src="/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/慢开始和拥塞控制.jpg" title alt="6e8a9b01fa8b423a25e3b7715cd528b7.jpeg" data-align="center"></p>
+<h3 id="快重传和快恢复"><a href="#快重传和快恢复" class="headerlink" title="快重传和快恢复"></a>快重传和快恢复</h3><h4 id="快重传"><a href="#快重传" class="headerlink" title="快重传"></a>快重传</h4><p>当发送方连续收到三个重复的ACK报文时，直接重传对方尚未收到的报文段，而不必等待那个报文段设置的重传计时器超时。</p>
+<h4 id="快恢复"><a href="#快恢复" class="headerlink" title="快恢复"></a>快恢复</h4><p>发送端收到连续三个冗余ACK(即重复确认)时，把慢开始门限ssthread设置为出现拥塞时发送方cwnd的一半，<code>把cwnd的值设置为慢开始门限ssthread改变后的数值(不是变为1)</code>，然后开始执行拥塞避免算法(每过一个RTT，cwnd值加1)，使拥塞窗口缓慢地线性增大。</p>
+<p>由于跳过了cwnd从1开始的慢开始过程，所以被称为快恢复。</p>
+<p>一个例子：</p>
+<p><img src="/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/快恢复.jpg" title alt="176defecda15addb2938ae91681fc889.jpeg" data-align="center"></p>
+<p>虚线为慢开始的处理过程</p>
+<p>在流量控制中，发送方发送数据的量由接收方决定，而在拥塞用控制中，则由发送方自己通过检测网络状况决定。</p>
+<p>实际上，慢开始、拥塞避免、快重传和快恢复几种算法应是同时应用在拥塞控制机制中，<code>当发送方检测到超时，就采用慢开始和拥塞避免，当发送方接收到冗余ACK时，就采用快重传和快恢复</code></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%BD%91/" rel="tag"># 计网</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/04/23/cs_network/%E7%BD%91%E7%BB%9C%E5%B1%82/" rel="prev" title="网络层">
+      <i class="fa fa-chevron-left"></i> 网络层
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/" rel="next" title="应用层">
+      应用层 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%A0%E9%80%81%E5%B1%82%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="nav-number">1.</span> <span class="nav-text">传送层的功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E7%94%A8%E5%92%8C%E5%88%86%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">复用和分用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82%E7%9A%84%E5%AF%BB%E5%9D%80%E5%92%8C%E7%AB%AF%E5%8F%A3"><span class="nav-number">2.</span> <span class="nav-text">传输层的寻址和端口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text">端口的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E5%8F%B7"><span class="nav-number">2.2.</span> <span class="nav-text">端口号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%97%E6%8E%A5%E5%AD%97"><span class="nav-number">2.3.</span> <span class="nav-text">套接字</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A0%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E3%80%82"><span class="nav-number">3.</span> <span class="nav-text">无连接服务与面向连接服务。</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#UDP"><span class="nav-number">4.</span> <span class="nav-text">UDP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#UDP%E7%9A%84%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F"><span class="nav-number">4.1.</span> <span class="nav-text">UDP的首部格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UDP%E6%A0%A1%E9%AA%8C"><span class="nav-number">4.2.</span> <span class="nav-text">UDP校验</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP"><span class="nav-number">5.</span> <span class="nav-text">TCP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-number">5.1.</span> <span class="nav-text">TCP协议的特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP%E6%95%B0%E6%8D%AE%E6%8A%A5"><span class="nav-number">5.2.</span> <span class="nav-text">TCP数据报</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86"><span class="nav-number">5.3.</span> <span class="nav-text">TCP连接管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%BB%BA%E7%AB%8B"><span class="nav-number">5.3.1.</span> <span class="nav-text">连接的建立</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP%E8%BF%9E%E6%8E%A5%E7%9A%84%E9%87%8A%E6%94%BE"><span class="nav-number">5.3.2.</span> <span class="nav-text">TCP连接的释放</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93"><span class="nav-number">5.4.</span> <span class="nav-text">TCP可靠传输</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%8F%E5%8F%B7"><span class="nav-number">5.4.1.</span> <span class="nav-text">序号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AE%E8%AE%A4"><span class="nav-number">5.4.2.</span> <span class="nav-text">确认</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E4%BC%A0"><span class="nav-number">5.4.3.</span> <span class="nav-text">重传</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B6%85%E6%97%B6"><span class="nav-number">5.4.3.1.</span> <span class="nav-text">超时</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%97%E4%BD%99ACK-%E5%86%97%E4%BD%99%E7%A1%AE%E8%AE%A4"><span class="nav-number">5.4.3.2.</span> <span class="nav-text">冗余ACK(冗余确认)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6"><span class="nav-number">5.5.</span> <span class="nav-text">TCP流量控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="nav-number">5.6.</span> <span class="nav-text">TCP拥塞控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%85%A2%E5%BC%80%E5%A7%8B%E5%92%8C%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="nav-number">5.6.1.</span> <span class="nav-text">慢开始和拥塞控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%85%A2%E5%BC%80%E5%A7%8B%E7%AE%97%E6%B3%95"><span class="nav-number">5.6.1.1.</span> <span class="nav-text">慢开始算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%A5%E5%A1%9E%E9%81%BF%E5%85%8D%E7%AE%97%E6%B3%95"><span class="nav-number">5.6.1.2.</span> <span class="nav-text">拥塞避免算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%8B%A5%E5%A1%9E%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-number">5.6.1.3.</span> <span class="nav-text">网络拥塞的处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E9%87%8D%E4%BC%A0%E5%92%8C%E5%BF%AB%E6%81%A2%E5%A4%8D"><span class="nav-number">5.6.2.</span> <span class="nav-text">快重传和快恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BF%AB%E9%87%8D%E4%BC%A0"><span class="nav-number">5.6.2.1.</span> <span class="nav-text">快重传</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BF%AB%E6%81%A2%E5%A4%8D"><span class="nav-number">5.6.2.2.</span> <span class="nav-text">快恢复</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">183k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">10:11</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

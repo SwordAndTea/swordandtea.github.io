@@ -181,6 +181,745 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/11/19/others/pytest%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/19/others/pytest%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">pytest学习笔记</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-11-19 14:55:29" itemprop="dateCreated datePublished" datetime="2020-11-19T14:55:29+08:00">2020-11-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-04-23 11:01:38" itemprop="dateModified" datetime="2023-04-23T11:01:38+08:00">2023-04-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/pytest/" itemprop="url" rel="index">
+                    <span itemprop="name">pytest</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>安装pytest时，直接使用pip安装就可以了:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pytest</span><br></pre></td></tr></table></figure>
+<h1 id="pytest辨认测试文件和测试函数"><a href="#pytest辨认测试文件和测试函数" class="headerlink" title="pytest辨认测试文件和测试函数"></a>pytest辨认测试文件和测试函数</h1><p>如果运行pytest没有指定文件的话，pytest会将所有形式为”test_*.py”或者”*_test.py”的文件运行。</p>
+<p>另外，pytest要求测试函数必须以”test”开头，并且不能通过其他方式在代码中显示指定哪些函数是需要被pytest测试的测试函数。</p>
+<h1 id="第一个测试程序"><a href="#第一个测试程序" class="headerlink" title="第一个测试程序"></a>第一个测试程序</h1><p>在项目目录下新建一个叫做”test_first.py”的文件，文件的内容如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_sqrt</span>():</span><br><span class="line">    num = <span class="number">25</span></span><br><span class="line">    <span class="keyword">assert</span> math.sqrt(num) == <span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">testsqure</span>():</span><br><span class="line">    num = <span class="number">7</span></span><br><span class="line">    <span class="keyword">assert</span> num * num == <span class="number">40</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">tesequlity</span>():</span><br><span class="line">    <span class="keyword">assert</span> <span class="number">10</span> == <span class="number">11</span></span><br></pre></td></tr></table></figure>
+<p>之后，<strong>在命令行中</strong>执行命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest</span><br></pre></td></tr></table></figure>
+<p>之后pytest就会开始运行单元测试，并产生测试报告。注意到，第三个函数不是以test开头的函数，所以pytest将不会对第三个函数进行测试。</p>
+<p>使用”-v”（verbose）参数可以打印更多的信息。</p>
+<h1 id="pytest选择执行文件"><a href="#pytest选择执行文件" class="headerlink" title="pytest选择执行文件"></a>pytest选择执行文件</h1><p>在上例的基础上，再创建一个名叫”test_second.py”的文件，文件的内容如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test_greater</span>():</span><br><span class="line">   num = <span class="number">100</span></span><br><span class="line">   <span class="keyword">assert</span> num &gt; <span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_greater_equal</span>():</span><br><span class="line">   num = <span class="number">100</span></span><br><span class="line">   <span class="keyword">assert</span> num &gt;= <span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_less</span>():</span><br><span class="line">   num = <span class="number">100</span></span><br><span class="line">   <span class="keyword">assert</span> num &lt; <span class="number">200</span></span><br></pre></td></tr></table></figure>
+<p>此时，如果执行执行”pytest”命令，pytest将对test_first.py和test_second.py中的函数都进行测试。</p>
+<p>如果只想对”test_scond.py”文件进行测试，可以执行下面的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest test_second.py</span><br></pre></td></tr></table></figure>
+<h1 id="指定测试函数搜索名称"><a href="#指定测试函数搜索名称" class="headerlink" title="指定测试函数搜索名称"></a>指定测试函数搜索名称</h1><p>在pytest命令中，可以使用”-k”参数指定关键字过滤，pytest只会测试那些含有关键字的函数。<font color="red">注意，即使指定了关键字，仍然要求函数以test开头</font>，否则即使有关键字也不会对该函数进行测试。例如在文件中有函数的名称为”keyword”，即使使用命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest -k keyword</span><br></pre></td></tr></table></figure>
+<p>pytest也不会对”keyword”这个函数进行测试。</p>
+<h1 id="将测试函数分组"><a href="#将测试函数分组" class="headerlink" title="将测试函数分组"></a>将测试函数分组</h1><p>pytest运行用户对测试函数使用”marker”，”marker”可以给测试函数添加多种特性，mark本质上是一个函数装饰器。pytest自身提供了一些内建的”marker”，另外用户也可以自定义”marker”。marker在代码中的使用方法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="meta">@pytest.mark.&lt;markname&gt;</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_xxxx</span>():</span><br><span class="line">  <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>在测试时，可以对pytest命令添加”-m”参数来指定marker，pytest将只会运行有相同marker标记的测试函数。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest -m &lt;markname&gt;</span><br></pre></td></tr></table></figure>
+<font color="red">注意函数名仍然需要以test起始。</font>
+
+<h1 id="Fixture"><a href="#Fixture" class="headerlink" title="Fixture"></a>Fixture</h1><p>Fixture是一个自定义的函数，这个函数在每个测试函数被执行前，都会执行一遍这个fixture函数。fixture函数通常可以用来给测试函数提供数据源，例如从数据库获取数据等。</p>
+<p>声明一个Fixture函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="meta">@pytest.fixture</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">input_value</span>():</span><br><span class="line">  <span class="keyword">return</span> <span class="number">30</span></span><br></pre></td></tr></table></figure>
+<p>使用Fixture函数：在测试函数中使用fixture函数，需要将fixture函数的函数名作为输入参数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test_input</span>(<span class="params">input_value</span>):</span><br><span class="line">  <span class="keyword">assert</span> input_value % <span class="number">3</span> == <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h1 id="conftest-py"><a href="#conftest-py" class="headerlink" title="conftest.py"></a>conftest.py</h1><p>conftest.py在使用了pytest的项目中是一个特殊的文件，我们可以在这个文件中定义fixture函数，而在其他所有测试函数中使用定义的fixture函数，并且不必在代码中显示地import这个文件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#in conftest.py</span></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="meta">@pytest.fixture</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">input_value</span>():</span><br><span class="line">  <span class="keyword">return</span> <span class="number">30</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#in other test file</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_input</span>(<span class="params">input_value</span>):</span><br><span class="line">  <span class="keyword">assert</span> input_value % <span class="number">3</span> == <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h1 id="Parameterizing-Tests"><a href="#Parameterizing-Tests" class="headerlink" title="Parameterizing Tests"></a>Parameterizing Tests</h1><p>Parameterizing Tests可以给测试函数指定多个输入参数的值，直接看例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.mark.parametrize(<span class="params"><span class="string">&quot;num&quot;</span>, <span class="string">&quot;output&quot;</span>, [(<span class="params"><span class="number">1</span>, <span class="number">11</span></span>), (<span class="params"><span class="number">2</span>, <span class="number">22</span></span>), (<span class="params"><span class="number">3</span>,<span class="number">35</span></span>), (<span class="params"><span class="number">4</span>, <span class="number">44</span></span>)]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_multiplication_11</span>(<span class="params">num, output</span>):</span><br><span class="line">  <span class="keyword">assert</span> num * <span class="number">11</span> == output</span><br></pre></td></tr></table></figure>
+<h1 id="Xfail-Skip-Tests"><a href="#Xfail-Skip-Tests" class="headerlink" title="Xfail/Skip Tests"></a>Xfail/Skip Tests</h1><p>使用xfail “marker”标记的测试函数，会被pytest执行，但是不会进入pytest的统计，即使测试函数失败了也不会被打印出来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="meta">@pytest.mark.xfail</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_something</span>():</span><br><span class="line">  <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>使用skip “marker”标记的测试函数，不会被pytest执行。</p>
+<h1 id="指定N个测试失败后结束测试"><a href="#指定N个测试失败后结束测试" class="headerlink" title="指定N个测试失败后结束测试"></a>指定N个测试失败后结束测试</h1><p>可以在pytest命令中使用”—maxfail”参数来指定测试多少个函数失败后就停止测试。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest --maxfail=3</span><br></pre></td></tr></table></figure>
+<p>一般在测试用例较多，测试时间较长时使用。</p>
+<h1 id="并行测试"><a href="#并行测试" class="headerlink" title="并行测试"></a>并行测试</h1><p>默认情况下，pytest是串行运行测试函数的，当测试函数数量较多时，可能需要并行运行测试函数。要并行运行测试函数，需要下载pytest-xdist插件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pytest-xdist</span><br></pre></td></tr></table></figure>
+<p>现在可以使用 pytest -n \<num\>来指定并行度</num\></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest -n 3</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/11/11/hight_performance_linux_coding/IO%E5%A4%8D%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/11/hight_performance_linux_coding/IO%E5%A4%8D%E7%94%A8/" class="post-title-link" itemprop="url">IO复用</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-11-11 10:07:54" itemprop="dateCreated datePublished" datetime="2020-11-11T10:07:54+08:00">2020-11-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-09 12:58:58" itemprop="dateModified" datetime="2021-02-09T12:58:58+08:00">2021-02-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux高性能服务器编程笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>5.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>18 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Select系统调用"><a href="#Select系统调用" class="headerlink" title="Select系统调用"></a>Select系统调用</h1><p>select系统调用的用途是：在一段指定时间内，监听用户感兴趣的文件描述符上的可读、可写和异常等事件。</p>
+<p>select系统调用的原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/select.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">select</span><span class="params">(<span class="type">int</span> nfds, fd_set* readfds, fd_set* writefds, fd_set* exceptfds, <span class="keyword">struct</span> timeval* timeout)</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>nfds参数指定被监听的文件描述符的总数。<font color="red">它通常被设置为select监听的所有文件描述符中的最大值加1</font>因为文件描述符是从0开始计数的。</li>
+<li>readfds、writefds和exceptfds参数分别指向可读、可写和异常等事件对应的文件描述符集合。应用程序调用select函数时，通过这三个参数传入自己感兴趣的文件描述符。select调用返回时，内核将修改它们来通知应用程序哪些文件描述符已经就绪。fd_set结构体仅包含一个整型数组，该数组的<font color="red">每个</font>元素的<font color="red">每一位bit</font>标记一个文件描述符。</li>
+<li>timeout参数用来设置select函数的超时时间。它是一个timeval结构类型的指针，<font color="red">采用指针参数是因为内核将修改它以告诉应用程序select等待了多久</font>。不过我们不能完全信任select调用返回后的timeout值，比如调用失败时timeout值是不确定的。<font color="red">如果给timeout参数传递NULL，则select将一直阻塞，直到某个文件描述符就绪</font>。</li>
+</ul>
+<p>select成功时返回就绪(可读、可写和异常)文件描述符的总数。如果在超时时间内没有任何文件描述符就绪，select将返回0。select失败时返回-1并设置errno为EINTR。</p>
+<p>如果觉得自己手动使用位操作去处理fd_set，可以使用下面的一系列宏和函数来访问fd_set结构体中的位：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/select.h&gt;</span></span></span><br><span class="line">FD_ZERO(fd_set *fdset);	<span class="comment">/*清零fdset的所有位*/</span></span><br><span class="line">FD_SET(<span class="type">int</span> fd, fd_set *fdset);	<span class="comment">/*设置fdset的位fd*/</span></span><br><span class="line">FD_CLR(<span class="type">int</span> fd, fd_set *fdset);	<span class="comment">/*清除fdset的位fd*/</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">FD_ISSET</span><span class="params">(<span class="type">int</span> fd, fd_set *fdset)</span>;	<span class="comment">/*测试fdset的位fd是否被设置*/</span></span><br></pre></td></tr></table></figure>
+<h2 id="文件描述符就绪条件"><a href="#文件描述符就绪条件" class="headerlink" title="文件描述符就绪条件"></a>文件描述符就绪条件</h2><p>哪些情况下文件描述符可以被认为是可读、可写或者出现异常，对于select的使用非常关键。在网络编程中，下列情况可认为socket可读：</p>
+<ul>
+<li>socket内核接受缓冲区中的字节数大于或等于其低水位标记SO_RCVLOWAT。此时我们可以无阻塞地读该socket，并且读操作返回的字节数大于0。</li>
+<li>socket通信的对方关闭连接。此时对该socket的读操作将返回0。</li>
+<li>监听scoket上有新的连接请求。</li>
+<li>socket上有未处理的错误，此时我们可以使用getsockopt来读取和清除错误。</li>
+</ul>
+<p>下列情况下socket可写：</p>
+<ul>
+<li>socket内核发送缓存区中的可用字节数小于或等于其低水位标记SO_SNDLOWAT。此时我们可以无阻塞地写该socket，并且写操作返回的字节数大于0。</li>
+<li>socket的写操作被关闭。对写操作被关闭的socket执行写操作将触发一个SIGPIPE信号。</li>
+<li>socket使用非阻塞connect连接成功或者失败（超时）之后。</li>
+<li>socket上有未处理的错误。此时我们可以使用getsocketopt来读取和清除该错误。</li>
+</ul>
+<p>网络程序中，select能处理的异常情况只有一种：socket上接受到带外数据。</p>
+<p>下面是使用select函数处理socket带外数据的例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/select.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    sockaddr_in sockAddress&#123;&#125;;</span><br><span class="line">    sockAddress.sin_family = AF_INET;</span><br><span class="line">    <span class="built_in">inet_pton</span>(AF_INET, <span class="string">&quot;localhost&quot;</span>, &amp;sockAddress.sin_addr);</span><br><span class="line">    sockAddress.sin_port = <span class="built_in">htons</span>(<span class="number">9000</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> sockFD = <span class="built_in">socket</span>(PF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (sockFD &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        std::cerr &lt;&lt; <span class="string">&quot;create socket fail&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">        <span class="keyword">return</span> sockFD;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> ret = <span class="built_in">bind</span>(sockFD, (sockaddr *)&amp;sockAddress, <span class="built_in">sizeof</span>(sockAddress));</span><br><span class="line">    <span class="keyword">if</span> (ret &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        std::cerr &lt;&lt; <span class="string">&quot;socket bind fail&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ret = <span class="built_in">listen</span>(sockFD, <span class="number">5</span>);</span><br><span class="line">    <span class="keyword">if</span> (ret &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        std::cerr &lt;&lt; <span class="string">&quot;socket listen fail&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sockaddr_in clientSock&#123;&#125;;</span><br><span class="line">    <span class="type">socklen_t</span> clientSockLen;</span><br><span class="line">    <span class="type">int</span> clientSockFD = <span class="built_in">accept</span>(sockFD, (sockaddr *)&amp;clientSock, &amp;clientSockLen);</span><br><span class="line">    <span class="keyword">if</span> (clientSockFD &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        std::cerr &lt;&lt; <span class="string">&quot;socket accept fail&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">        <span class="keyword">return</span> clientSockFD;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">char</span> buffer[<span class="number">1024</span>];</span><br><span class="line">    fd_set  read_fds;</span><br><span class="line">    fd_set exception_fds;</span><br><span class="line">    <span class="built_in">FD_ZERO</span>(&amp;read_fds);</span><br><span class="line">    <span class="built_in">FD_ZERO</span>(&amp;exception_fds);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="built_in">memset</span>(buffer, <span class="number">0</span>, <span class="built_in">sizeof</span>(buffer));</span><br><span class="line">        <span class="comment">/*每次调用select 前都要重新在read_fds和exception_fds中设置文件描述符clientSockFD，因为事件发生之后，文件描述符集合将被内核修改*/</span></span><br><span class="line">        <span class="built_in">FD_SET</span>(clientSockFD, &amp;read_fds);</span><br><span class="line">        <span class="built_in">FD_SET</span>(clientSockFD, &amp;exception_fds);</span><br><span class="line">        ret = <span class="built_in">select</span>(clientSockFD + <span class="number">1</span>, &amp;read_fds, <span class="literal">nullptr</span>, &amp;exception_fds, <span class="literal">nullptr</span>);</span><br><span class="line">        <span class="keyword">if</span> (ret &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            std::cerr &lt;&lt; <span class="string">&quot;select fail &quot;</span> &lt;&lt; std::endl;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">/*对于可读事件，采用普通的recv函数读取数据*/</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">FD_ISSET</span>(clientSockFD, &amp;read_fds)) &#123;</span><br><span class="line">            ret = <span class="built_in">recv</span>(clientSockFD, buffer, <span class="built_in">sizeof</span>(buffer) - <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">            <span class="keyword">if</span> (ret &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            std::cout &lt;&lt; <span class="string">&quot;get &quot;</span> &lt;&lt; ret &lt;&lt; <span class="string">&quot; bytes of normal data: &quot;</span> &lt;&lt; buffer &lt;&lt; std::endl;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">FD_ISSET</span>(clientSockFD, &amp;exception_fds)) &#123;</span><br><span class="line">            <span class="comment">/*对于异常事件，采用带MSG_OOB标志的recv函数读取带外数据*/</span></span><br><span class="line">            ret = <span class="built_in">recv</span>(clientSockFD, buffer, <span class="built_in">sizeof</span>(buffer) - <span class="number">1</span>, MSG_OOB);</span><br><span class="line">            <span class="keyword">if</span> (ret &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            std::cout &lt;&lt; <span class="string">&quot;get &quot;</span> &lt;&lt; ret &lt;&lt; <span class="string">&quot; bytes of oob data: &quot;</span> &lt;&lt; buffer &lt;&lt; std::endl;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">close</span>(clientSockFD);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="poll-系统调用"><a href="#poll-系统调用" class="headerlink" title="poll 系统调用"></a>poll 系统调用</h1><p>poll系统调用和select类似，也是在指定时间内轮训一定数量的文件描述符，以测试其中是否有就绪者。poll的原型如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;poll.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">poll</span><span class="params">(<span class="keyword">struct</span> pollfd *fds, <span class="type">nfds_t</span> nfds, <span class="type">int</span> timeout)</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>fds参数是一个pollfd结构类型的数组，它指定所有我们感兴趣的文件描述符上发生的可读、可写和异常等事件。</li>
+<li>nfds指定被监听事件的fds的数量。它本质是一个整数。</li>
+<li>timeout参数指定poll的超时值，单位是毫秒。当timeout为-1时，poll调用将永远阻塞，直到某个事件发生；当timeout为0时，poll调用将立即返回。</li>
+</ul>
+<p>poll调用的返回值的含义与select相同。</p>
+<p>poll函数的第一个参数使用的pollfd结构体的定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">pollfd</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="type">int</span> fd;					<span class="comment">/*文件描述符*/</span></span><br><span class="line">  <span class="type">short</span> events;		<span class="comment">/*注册的事件*/</span></span><br><span class="line">  <span class="type">short</span> revents;	<span class="comment">/*实际发生的事件，由内核补充*/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>fd指定文件描述符</li>
+<li>events告诉poll监听fd上的那些事件，他是一系列事件的<font color="red">按位或</font></li>
+<li>revents成员则由内核修改，以通知应用程序fd上实际发生了哪些事件</li>
+</ul>
+<p>poll 支持的事件类型如下表所示：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">事件</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">是否可作为输入</th>
+<th style="text-align:center">是否可作为输出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">POLLIN</td>
+<td style="text-align:center">数据可读（包括普通数据和优先数据）</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+</tr>
+<tr>
+<td style="text-align:center">POLLRDNORM</td>
+<td style="text-align:center">普通数据可读</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+</tr>
+<tr>
+<td style="text-align:center">POLLRDBAND</td>
+<td style="text-align:center">优先级带数据可读（Linux不支持）</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+</tr>
+<tr>
+<td style="text-align:center">POLLPRI</td>
+<td style="text-align:center">高优先级数据可读，比如TCP带外数据</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+</tr>
+<tr>
+<td style="text-align:center">POLLOUT</td>
+<td style="text-align:center">数据（包括普通数据和优先数据）可写</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+</tr>
+<tr>
+<td style="text-align:center">POLLWRNORM</td>
+<td style="text-align:center">普通数据可写</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+</tr>
+<tr>
+<td style="text-align:center">POLLWRBAND</td>
+<td style="text-align:center">优先级带数据可写</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+</tr>
+<tr>
+<td style="text-align:center">POLLRDHUP</td>
+<td style="text-align:center">TCP连接被对方关闭，或者对方关闭了写操作，它由GNU引入</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+</tr>
+<tr>
+<td style="text-align:center">POLLERR</td>
+<td style="text-align:center">错误</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">Y</td>
+</tr>
+<tr>
+<td style="text-align:center">POLLHUP</td>
+<td style="text-align:center">挂起。比如管道的写端被关闭后，读端描述符上将收到POLLHUP事件</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">Y</td>
+</tr>
+<tr>
+<td style="text-align:center">POLLNVAL</td>
+<td style="text-align:center">文件描述符没有打开</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">Y</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="epoll系统调用"><a href="#epoll系统调用" class="headerlink" title="epoll系统调用"></a>epoll系统调用</h1><h2 id="内核事件表"><a href="#内核事件表" class="headerlink" title="内核事件表"></a>内核事件表</h2><font color="red">epoll是Linux特有的I/O复用函数。</font>它在实现和使用上与select、poll有很大差异。首先，epoll使用一组函数来完成任务，而不是单个函数。其次，epoll把用户关心的文件描述符上的事件放在内核里的一个事件表中。从而无须像select和poll那样每次调用都要重复传入文件描述符集或事件集。<font color="red">但epoll需要使用一个额外的文件描述符，来唯一标识内核中的这个事件表。这个文件描述符使用epoll_create函数来创建：</font>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/epoll.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">epoll_create</span><span class="params">(<span class="type">int</span> size)</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>size<font color="red">参数现在并不起作用</font>，只是给内核一个提示。告诉它事件表需要多大。该函数返回的文件描述符将用作其他所有epoll系统调用的第一个参数，以指要访问的内核事件表。</li>
+</ul>
+<p>下面的函数可以用来操作epoll的内核事件表：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/epoll.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">epoll_ctl</span><span class="params">(<span class="type">int</span> epfd, <span class="type">int</span> op, <span class="type">int</span> fd, <span class="keyword">struct</span> epoll_event *event)</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>epfd为epoll_create返回的事件表文件描述符</li>
+<li>fd为要操作的文件描述符</li>
+<li>op指定操作类型，操作类型有如下3种<ul>
+<li>EPOLL_CTL_ADD 往事件表中注册fd上的事件</li>
+<li>EPOLL_CTL_MOD 修改fd上的注册事件</li>
+<li>EPOLL_CTL_DEL 删除fd上对的注册事件</li>
+</ul>
+</li>
+<li>event 参数指定事件，它是epoll_event结构体指针类型。</li>
+</ul>
+<p>epoll_event结构体的定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">__uint32_t</span> events;	<span class="comment">/* epoll事件 */</span></span><br><span class="line">  <span class="type">epoll_data_t</span> data;	<span class="comment">/* 用户数据 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>event 成员描述事件类型。epoll支持的事件类型和poll基本相同，表示epoll事件类型的宏是在poll对应的宏前加上”E”。但epoll有<font color="red">两个额外的</font>事件类型——EPOLLET和EPOLLONESHOT，它们对于epoll的高效运作非常关键，这两个事件将在后面讨论。</p>
+</li>
+<li><p>data成员用于存储用户数据，其类型epoll_data_t的定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">union</span> <span class="title">epoll_data</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">void</span> *ptr;</span><br><span class="line">  <span class="type">int</span> fd;</span><br><span class="line">  <span class="type">uint32_t</span> u32;</span><br><span class="line">  <span class="type">uint64_t</span> u64;</span><br><span class="line">&#125;<span class="type">epoll_data_t</span>;</span><br></pre></td></tr></table></figure>
+<p>epoll_data_t是一个union，其四个成员中使用最多的是fd，它指定事件所从属的目标文件描述符。ptr成员可用来指定与fd相关的用户数据。<font color="orange">但由于epoll_data_t是一个union，我们不能同时使用ptr和fd成员</font>，因此如果要将文件描述符和用户数据关联起来，只能使用其他手段，<font color="orange">比如放弃使用epoll_data_t的fd成员，而在ptr指向的用户数据中包含fd。</font></p>
+</li>
+</ul>
+<p>epoll_ctl成功时返回0，失败时返回-1并设置errno。</p>
+<h2 id="epoll-wait函数"><a href="#epoll-wait函数" class="headerlink" title="epoll_wait函数"></a>epoll_wait函数</h2><p>epoll的一系列系统调用的主要接口时epoll_wait函数。它在一段超时时间内等待一组文件描述符上的事件，其原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/epoll.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">epoll_wait</span><span class="params">(<span class="type">int</span> epfd, <span class="keyword">struct</span> epoll_event *events, <span class="type">int</span> maxevents, <span class="type">int</span> timeout)</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>timeout参数指定超时时间，单位为毫秒</li>
+<li>maxevents参数指定最多监听多少个事件，它必须大于0</li>
+<li>events参数，如果epoll_wait函数检测到事件，就将所有就绪的事件从内核事件表中复制到它events指向的数组中。这个数组<font color="red">只用于输出</font>epoll_wait检测到的就绪事件，而不像select和poll的数组参数那样既用于传入用户注册的事件，又用于输出内核检查到的就绪事件。</li>
+<li>epfd参数指定内核事件表的文件描述符</li>
+</ul>
+<h2 id="LT和ET模式"><a href="#LT和ET模式" class="headerlink" title="LT和ET模式"></a>LT和ET模式</h2><p>epoll对文件描述符的操作有两种模式：LT（Level Trigger，电平触发）模式和ET（Edge Trigger，边沿触发）模式。<font color="red">LT模式是默认的工作模式，</font>这种模式下epoll相对于一个效率较高的poll。当往epoll内核事件表中注册一个文件描述符上的EPOLLET事件时，epoll将以ET模式来操作该文件描述符。<font color="red">ET模式时epoll的高效工作模式。</font></p>
+<p>对于采用<code>LT</code>工作模式的文件描述符，当epoll_wait检测到其上有事件发生并将此事件通知应用程序后，应用程序可以不立即处理事件。<font color="orange">这样当应用程序下一次调用epoll_wait时，epoll_wait还会再次向应用程序通告此事件，直到该事件被处理。</font></p>
+<p>而对于采用<code>ET</code>工作模式的文件描述符，当epoll_wait检测到其上有事件发生并将此事件通知应用程序后，<font color="orange">应用程序必须立即处理该事件，因为后续epoll_wait调用将不再向应用程序通知这一事件。</font>可见，ET模式在很大程度上降低了epoll事件被重复触发的次数，因此<font color="red">效率要比LT模式高。</font></p>
+<h3 id="LT和ET模式下对事件的不同处理方式"><a href="#LT和ET模式下对事件的不同处理方式" class="headerlink" title="LT和ET模式下对事件的不同处理方式"></a>LT和ET模式下对事件的不同处理方式</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Created by Bytedance-Wall Flower on 2021/1/10.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/epoll.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cerrno&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_EVENT_NUM 64</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BUFFER_SIZE 512</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">setNonblocking</span><span class="params">(<span class="type">int</span> fd)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> old_option = <span class="built_in">fcntl</span>(fd, F_GETFL);</span><br><span class="line">    <span class="type">int</span> new_option = old_option | O_NONBLOCK;</span><br><span class="line">    <span class="built_in">fcntl</span>(fd, F_SETFL, new_option);</span><br><span class="line">    <span class="keyword">return</span> old_option;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">monitorEventForFd</span><span class="params">(<span class="type">int</span> epoll_fd, <span class="type">int</span> fd, <span class="type">bool</span> enable_et)</span> </span>&#123;</span><br><span class="line">    epoll_event event;</span><br><span class="line">    event.data.fd = fd;</span><br><span class="line">    event.events = EPOLLIN;</span><br><span class="line">    <span class="keyword">if</span> (enable_et) &#123;</span><br><span class="line">        event.events |= EPOLLET;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">epoll_ctl</span>(epoll_fd, EPOLL_CTL_ADD, fd, &amp;event);</span><br><span class="line">    <span class="built_in">setNonblocking</span>(fd);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">lt_mode</span><span class="params">(epoll_event *events, <span class="type">int</span> number, <span class="type">int</span> epoll_fd, <span class="type">int</span> listen_fd)</span> </span>&#123;</span><br><span class="line">    <span class="type">char</span> buf[<span class="number">512</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; number; ++i) &#123;</span><br><span class="line">        <span class="type">int</span> sock_fd = events[i].data.fd;</span><br><span class="line">        <span class="keyword">if</span> (sock_fd == listen_fd) &#123;</span><br><span class="line">            sockaddr_in client_socket_addr&#123;&#125;;</span><br><span class="line">            <span class="type">socklen_t</span> sock_len;</span><br><span class="line">            <span class="type">int</span> conn_fd = <span class="built_in">accept</span>(listen_fd, (sockaddr *)&amp;client_socket_addr, &amp;sock_len);</span><br><span class="line">            <span class="built_in">monitorEventForFd</span>(epoll_fd, conn_fd, <span class="literal">false</span>); <span class="comment">//使用ET模式监听客户端socket fd</span></span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (events[i].events &amp; EPOLLIN) &#123;<span class="comment">//客户端socket fd有数据可读</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;client socket fd %d is readable\n&quot;</span>, sock_fd);</span><br><span class="line">            <span class="built_in">memset</span>(buf, <span class="number">0</span>, BUFFER_SIZE);</span><br><span class="line">            <span class="type">int</span> ret = <span class="built_in">recv</span>(sock_fd, buf, BUFFER_SIZE<span class="number">-1</span>, <span class="number">0</span>);</span><br><span class="line">            <span class="keyword">if</span> (ret &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="built_in">close</span>(sock_fd);</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;sock fd %d get %d bytes of content: %s\n&quot;</span>, sock_fd, ret, buf);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;other event happen in le mode\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">et_mode</span><span class="params">(epoll_event *events, <span class="type">int</span> number, <span class="type">int</span> epoll_fd, <span class="type">int</span> listen_fd)</span> </span>&#123;</span><br><span class="line">    <span class="type">char</span> buf[BUFFER_SIZE];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; number; ++i) &#123;</span><br><span class="line">        <span class="type">int</span> sock_fd = events[i].data.fd;</span><br><span class="line">        <span class="keyword">if</span> (sock_fd == listen_fd) &#123;</span><br><span class="line">            sockaddr_in client_socket_addr&#123;&#125;;</span><br><span class="line">            <span class="type">socklen_t</span> sock_len;</span><br><span class="line">            <span class="type">int</span> conn_fd = <span class="built_in">accept</span>(listen_fd, (sockaddr *)&amp;client_socket_addr, &amp;sock_len);</span><br><span class="line">            <span class="built_in">monitorEventForFd</span>(epoll_fd, conn_fd, <span class="literal">true</span>); <span class="comment">//使用ET模式监听客户端socket fd</span></span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (events[i].events &amp; EPOLLIN) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;client socket fd %d is readable\n&quot;</span>, sock_fd);</span><br><span class="line">            <span class="keyword">while</span> (<span class="literal">true</span>) &#123; <span class="comment">//循环读，直到无数据可读</span></span><br><span class="line">                <span class="built_in">memset</span>(buf, <span class="number">0</span>, BUFFER_SIZE);</span><br><span class="line">                <span class="type">int</span> ret = <span class="built_in">recv</span>(sock_fd, buf, BUFFER_SIZE<span class="number">-1</span>, <span class="number">0</span>);</span><br><span class="line">                <span class="keyword">if</span> (ret &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (errno == EAGAIN || errno == EWOULDBLOCK) &#123;</span><br><span class="line">                        <span class="comment">//对于非阻塞io，下面的条件成立表示数据已经全部读取完毕，</span></span><br><span class="line">                        <span class="comment">//此后epoll 就能再次触发该sock fd上的EPOLLIN事件，以驱动下一次读操作</span></span><br><span class="line">                        <span class="built_in">printf</span>(<span class="string">&quot;read later\n&quot;</span>);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="built_in">close</span>(sock_fd);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ret == <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="built_in">close</span>(sock_fd);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="built_in">printf</span>(<span class="string">&quot;sock fd %d get %d bytes of content: %s\n&quot;</span>, sock_fd, ret, buf);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;other event happen in et mode\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    sockaddr_in server_sock_addr&#123;&#125;;</span><br><span class="line">    server_sock_addr.sin_family = AF_INET;</span><br><span class="line">    <span class="built_in">inet_pton</span>(AF_INET, <span class="string">&quot;localhost&quot;</span>, &amp;server_sock_addr.sin_addr);</span><br><span class="line">    server_sock_addr.sin_port = <span class="built_in">htons</span>(<span class="number">9000</span>);</span><br><span class="line">    <span class="type">int</span> server_fd = <span class="built_in">socket</span>(PF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">bind</span>(server_fd, (sockaddr *)&amp;server_sock_addr, <span class="built_in">sizeof</span>(server_sock_addr));</span><br><span class="line">    <span class="built_in">listen</span>(server_fd, <span class="number">5</span>);</span><br><span class="line">    epoll_event events[MAX_EVENT_NUM];</span><br><span class="line">    <span class="type">int</span> epoll_fd = <span class="built_in">epoll_create</span>(<span class="number">5</span>);</span><br><span class="line">    <span class="built_in">monitorEventForFd</span>(epoll_fd, server_fd, <span class="literal">true</span>);<span class="comment">//monitor server socket fd use et mode</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="type">int</span> ret = <span class="built_in">epoll_wait</span>(epoll_fd, events, MAX_EVENT_NUM, <span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">if</span> (ret &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;epoll wait fail\n&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">lt_mode</span>(events, ret, epoll_fd, server_fd); <span class="comment">//LT mode to process client connection</span></span><br><span class="line"><span class="comment">//        et_mode(events, ret, epoll_fd, server_fd);//ET mode to process client connection</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">close</span>(server_fd);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<font color="orange">注意在ET模式下，当客户端socket有数据可读的时候，需要使用循环一次性把所有数据读完。</font>
+
+
+
+<h2 id="EPOLLONESHOT事件"><a href="#EPOLLONESHOT事件" class="headerlink" title="EPOLLONESHOT事件"></a>EPOLLONESHOT事件</h2><p>即使使用ET模式，一个socket上的某个事件还是可能被触发多次。这在并发程序中就会引起一个问题。比如一个线程在读取完某个socket上的数据后开始处理这些数据，而在数据的处理过程中该socket上又有数据可读(EPOLLIN再次被触发)，此时另外一个线程被唤醒来读取这些新的数据。于是就出现了两个线程同时操作一个socket的局面。这当然不是我们期望的。<font color="orange">我们期望的时一个socket连接在任一时刻都只被一个线程处理。</font>这一点可以使用epoll的EPOLLONESHOT事件实现。</p>
+<p>对于注册了EPOLLONESHOT事件的文件描述符，操作系统最多触发其上注册的一个可读、可写或者异常事件，且只触发一次，<font color="orange">除非我们使用epoll_ctl函数重置该文件描述符上注册的EPOLLONESHOT事件</font>。这样，当一个线程在处理某个socket时，其他线程是不可能有机会操作该socket的。<font color="red">但是，反过来，注册了EPOLLONESHOT事件的socket一旦被某个线程处理完毕，该线程就应该立即重置这个socket上的EPOLLONESHOT事件</font>，以确保这个socket下一次可读时，其他EPOLLIN事件能被触发。</p>
+<h3 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/epoll.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cerrno&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BUFFER_SIZE 512</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_EVENT_NUM 64</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">FDPair</span> &#123;</span><br><span class="line">    <span class="type">int</span> epoll_fd;</span><br><span class="line">    <span class="type">int</span> sock_fd;</span><br><span class="line">&#125; FDPair;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">setNonBlocking</span><span class="params">(<span class="type">int</span> fd)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> old_option = <span class="built_in">fcntl</span>(fd, F_GETFL);</span><br><span class="line">    <span class="type">int</span> new_option = old_option | O_NONBLOCK;</span><br><span class="line">    <span class="built_in">fcntl</span>(fd, F_SETFL, new_option);</span><br><span class="line">    <span class="keyword">return</span> old_option;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">monitorEventForFd</span><span class="params">(<span class="type">int</span> epoll_fd, <span class="type">int</span> target_fd, <span class="type">bool</span> enable_one_shot)</span> </span>&#123;</span><br><span class="line">    epoll_event event&#123;&#125;;</span><br><span class="line">    event.data.fd = target_fd;</span><br><span class="line">    event.events = EPOLLIN | EPOLLET;</span><br><span class="line">    <span class="keyword">if</span> (enable_one_shot) &#123;</span><br><span class="line">        event.events |= EPOLLONESHOT;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">epoll_ctl</span>(epoll_fd, EPOLL_CTL_ADD, target_fd, &amp;event);</span><br><span class="line">    <span class="built_in">setNonBlocking</span>(target_fd);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">resetOneShot</span><span class="params">(<span class="type">int</span> epoll_fd, <span class="type">int</span> target_fd)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//重置target fd上的事件，这样操作之后，</span></span><br><span class="line">    <span class="comment">//尽管target fd上的EPOLLONESHOT事件被注册，但是操作系统仍然会触发target fd上的EPOLLIN事件，且只触发一次</span></span><br><span class="line">    epoll_event event&#123;&#125;;</span><br><span class="line">    event.data.fd = target_fd;</span><br><span class="line">    event.events = EPOLLIN | EPOLLET | EPOLLONESHOT;</span><br><span class="line">    <span class="built_in">epoll_ctl</span>(epoll_fd, EPOLL_CTL_MOD, target_fd, &amp;event);<span class="comment">//注意这里的操作是modify</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//处理客户端socket的工作线程</span></span><br><span class="line"><span class="function"><span class="type">void</span>* <span class="title">worker</span><span class="params">(<span class="type">void</span> *arg)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> *pair = (FDPair *)arg;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;start new thread to receive data on fd: %d\n&quot;</span>, pair-&gt;sock_fd);</span><br><span class="line">    <span class="type">char</span> buf[BUFFER_SIZE];</span><br><span class="line">    <span class="built_in">memset</span>(buf, <span class="number">0</span>, BUFFER_SIZE);</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="type">int</span> ret = <span class="built_in">recv</span>(pair-&gt;sock_fd, buf, BUFFER_SIZE - <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (ret == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">close</span>(pair-&gt;sock_fd);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;foreigner closed the connection\n&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ret &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">//errno是线程安全的，不用担心</span></span><br><span class="line">            <span class="keyword">if</span> (errno == EAGAIN) &#123;</span><br><span class="line">                <span class="built_in">resetOneShot</span>(pair-&gt;epoll_fd, pair-&gt;sock_fd);</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;read later\n&quot;</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;get content: %s\n&quot;</span>, buf);</span><br><span class="line">            <span class="comment">//休眠3s，模拟数据处理过程</span></span><br><span class="line">            <span class="built_in">sleep</span>(<span class="number">3</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;end thread receiving data on socket fd: %d\n&quot;</span>, pair-&gt;sock_fd);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    sockaddr_in server_sock_addr&#123;&#125;;</span><br><span class="line">    server_sock_addr.sin_family = AF_INET;</span><br><span class="line">    <span class="built_in">inet_pton</span>(AF_INET, <span class="string">&quot;localhost&quot;</span>, &amp;server_sock_addr.sin_addr);</span><br><span class="line">    server_sock_addr.sin_port = <span class="built_in">htons</span>(<span class="number">9000</span>);</span><br><span class="line">    <span class="type">int</span> server_fd = <span class="built_in">socket</span>(PF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">bind</span>(server_fd, (sockaddr *)&amp;server_sock_addr, <span class="built_in">sizeof</span>(server_sock_addr));</span><br><span class="line">    <span class="built_in">listen</span>(server_fd, <span class="number">5</span>);</span><br><span class="line">    epoll_event events[MAX_EVENT_NUM];</span><br><span class="line">    <span class="type">int</span> epoll_fd = <span class="built_in">epoll_create</span>(<span class="number">5</span>);</span><br><span class="line">    <span class="comment">//注意，监听server fd是不能注册EPOLLONESHOT事件的，</span></span><br><span class="line">    <span class="comment">//否则应用程序只能处理一个客户连接，因为后续的客户连接请求将不再触发server_fd上的EPOLLIN事件</span></span><br><span class="line">    <span class="built_in">monitorEventForFd</span>(epoll_fd, server_fd, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="type">int</span> event_count = <span class="built_in">epoll_wait</span>(epoll_fd, events, MAX_EVENT_NUM, <span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">if</span> (event_count &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;epoll wait fail\n&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; event_count; ++i) &#123;</span><br><span class="line">            <span class="type">int</span> sock_fd = events[i].data.fd;</span><br><span class="line">            <span class="keyword">if</span> (sock_fd == server_fd) &#123;</span><br><span class="line">                sockaddr_in client_sock_addr&#123;&#125;;</span><br><span class="line">                <span class="type">socklen_t</span> sock_len;</span><br><span class="line">                <span class="type">int</span> client_sock_fd = <span class="built_in">accept</span>(server_fd, (sockaddr *)&amp;client_sock_addr, &amp;sock_len);</span><br><span class="line">                <span class="built_in">monitorEventForFd</span>(epoll_fd, client_sock_fd, <span class="literal">true</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (events[i].events &amp; EPOLLIN)&#123;</span><br><span class="line">                <span class="type">pthread_t</span> thread_handler;</span><br><span class="line">                FDPair pair&#123;&#125;;</span><br><span class="line">                pair.epoll_fd = epoll_fd;</span><br><span class="line">                pair.sock_fd = sock_fd;</span><br><span class="line">                <span class="built_in">pthread_create</span>(&amp;thread_handler, <span class="literal">nullptr</span>, worker, &amp;pair);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;other event happen\n&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">close</span>(server_fd);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<font color="orange">注意在工作线程中，处理完一次client socket fd上的数据后，需要重置该client socket fd</font>
+
+
+
+<h1 id="三个I-O复用函数的比较"><a href="#三个I-O复用函数的比较" class="headerlink" title="三个I/O复用函数的比较"></a>三个I/O复用函数的比较</h1><ul>
+<li>每次select和poll调用都返回整个用户注册的事件集合（所有注册的fd，不论是就绪的还是未就绪的），所以应用程序检索就绪文件描述符的时间复杂度为O(n)。而epoll_wait返回的events参数仅用来返回就绪事件，这使得应用程序索引就绪文件描述符的事件复杂度减少到O(1)。</li>
+<li>poll和epoll_wait分别使用nfds和maxevents参数指定最多监听多少个文件描述符和事件。这两个数值都能到达系统允许打开的最大文件描述符数目。而select允许监听的最大文件描述符数量通常有限制。虽然用户可以修改这个限制，但这可能导致不可预期的后果。</li>
+<li>从实现原理上来说，select和poll采用的都是轮询的方式，即每次调用都要扫描整个注册文件描述符集合，并将其中就绪的文件描述符返回给用户程序，因此它们检测就绪事件的算法时间复杂度为O(n)。而epoll_wait采用的是回调的方式。内核检测到就绪的文件描述符时，将触发回调函数，回调函数就将该文件描述符上对应的事件插入内核就绪事件队列。内核最后在适当的时机将就绪事件队列中的内容拷贝到用户空间。因此epoll_wati的算法时间复杂度为O(1)。<font color="red">但是，当活动连接比较多的时候，epoll_wati的效率未必比select和poll高</font>，因为此时回调函数被触发得过于频繁。<font color="red">所以epoll_wait适用于连接数量多，但是活动连接较少的情况</font></li>
+</ul>
+<h1 id="I-O复用的高级应用一：非阻塞connect"><a href="#I-O复用的高级应用一：非阻塞connect" class="headerlink" title="I/O复用的高级应用一：非阻塞connect"></a>I/O复用的高级应用一：非阻塞connect</h1><p>对于非阻塞的socket调用connect，而连接又没有立即建立时，这个时候，connect会设置errno值为EINPROGRESS。这个时候对于非阻塞的socket，我们可以调用select、poll等函数来监听这个连接失败的socket上的可写事件。当select、poll函数返回后，再利用getsockopt来读取错误码并清除该socket上的错误。如果错误码为0，表示连接成功建立，否则连接失败。<font color="red">非阻塞connect的应用：可以同时发起多个连接并一起等待。</font></p>
+<p>代码示例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Created by Bytedance-Wall Flower on 2021/1/15.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/select.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cerrno&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BUFFER_SIZE 512</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">setNonBlocking</span><span class="params">(<span class="type">int</span> fd)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> old_option = <span class="built_in">fcntl</span>(fd, F_GETFL);</span><br><span class="line">    <span class="type">int</span> new_option = old_option | O_NONBLOCK;</span><br><span class="line">    <span class="built_in">fcntl</span>(fd, F_SETFL, new_option);</span><br><span class="line">    <span class="keyword">return</span> old_option;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">nonblock_connect</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *ip, <span class="type">int</span> port, <span class="type">int</span> timeout)</span> </span>&#123;</span><br><span class="line">    sockaddr_in server_sock_addr&#123;&#125;;</span><br><span class="line">    server_sock_addr.sin_family = AF_INET;</span><br><span class="line">    <span class="built_in">inet_pton</span>(AF_INET, ip, &amp;server_sock_addr.sin_addr);</span><br><span class="line">    server_sock_addr.sin_port = <span class="built_in">htons</span>(port);</span><br><span class="line">    <span class="type">int</span> sock_fd = <span class="built_in">socket</span>(PF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line">    <span class="type">int</span> old_option =  <span class="built_in">setNonBlocking</span>(sock_fd);</span><br><span class="line">    <span class="type">int</span> ret = <span class="built_in">connect</span>(sock_fd, (sockaddr *)&amp;server_sock_addr, <span class="built_in">sizeof</span>(server_sock_addr));</span><br><span class="line">    <span class="keyword">if</span> (ret == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">//如果连接成功，则恢复sock fd的属性</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;connect with server immediately\n&quot;</span>);</span><br><span class="line">        <span class="built_in">fcntl</span>(sock_fd, F_SETFL, old_option);</span><br><span class="line">        <span class="keyword">return</span> sock_fd;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (errno == EINPROGRESS) &#123;</span><br><span class="line">        <span class="comment">//只有当errno是EINPROGRESS时才表示连接还在进行，</span></span><br><span class="line">        fd_set write_fds;</span><br><span class="line">        timeval select_timeout&#123;&#125;;</span><br><span class="line">        <span class="built_in">FD_ZERO</span>(&amp;write_fds);</span><br><span class="line">        <span class="built_in">FD_SET</span>(sock_fd, &amp;write_fds);</span><br><span class="line">        select_timeout.tv_sec = timeout;</span><br><span class="line">        ret = <span class="built_in">select</span>(sock_fd + <span class="number">1</span>, <span class="literal">nullptr</span>, &amp;write_fds, <span class="literal">nullptr</span>, &amp;select_timeout);</span><br><span class="line">        <span class="keyword">if</span> (ret &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;select timeout\n&quot;</span>);</span><br><span class="line">            <span class="built_in">close</span>(sock_fd);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">FD_ISSET</span>(sock_fd, &amp;write_fds)) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;no write events on sock fd: %d\n&quot;</span>, sock_fd);</span><br><span class="line">            <span class="built_in">close</span>(sock_fd);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> error_in_sock_fd = <span class="number">0</span>;</span><br><span class="line">        <span class="type">socklen_t</span> error_len = <span class="built_in">sizeof</span>(<span class="type">int</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">getsockopt</span>(sock_fd, SOL_SOCKET, SO_ERROR, &amp;error_in_sock_fd, &amp;error_len) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;get socket option failed\n&quot;</span>);</span><br><span class="line">            <span class="built_in">close</span>(sock_fd);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (error_in_sock_fd != <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">//错误不为0，表示连接出错</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;connection failed after select with the error: %d\n&quot;</span>, error_in_sock_fd);</span><br><span class="line">            <span class="built_in">close</span>(sock_fd);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//连接成功</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;connection ready after select with the socket: %d\n&quot;</span>, sock_fd);</span><br><span class="line">            <span class="built_in">fcntl</span>(sock_fd, F_SETFL, old_option);<span class="comment">//重置为原来的属性</span></span><br><span class="line">            <span class="keyword">return</span> sock_fd;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//如果连接没有立即建立，连接又不还在进行，出错返回</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;non-block connect unsupported\n&quot;</span>);</span><br><span class="line">        <span class="built_in">close</span>(sock_fd);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> sock_fd = <span class="built_in">nonblock_connect</span>(<span class="string">&quot;localhost&quot;</span>, <span class="number">9000</span>, <span class="number">10</span>);</span><br><span class="line">    <span class="keyword">if</span> (sock_fd &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *data = <span class="string">&quot;data from client !!!&quot;</span>;</span><br><span class="line">    <span class="built_in">send</span>(sock_fd, data, <span class="built_in">strlen</span>(data), <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">close</span>(sock_fd);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<font color="red">注意，上面的代码有平台移植的问题：</font>
+
+<ul>
+<li>首先，非阻塞的socket可能导致connect始终失败。</li>
+<li>其次，select对处于EINPROGRESS状态下的socket可能不起作用</li>
+<li>对于出错的socket，getsockopt在有些系统（比如Linux）上返回-1，而在有些系统（比如BSD）上则返回0。</li>
+</ul>
+<p>这些问题没有一个统一的解决方法，可能需要针对不同的平台使用宏来分别判断。</p>
+<h1 id="I-O复用高级应用二：简单聊天室程序"><a href="#I-O复用高级应用二：简单聊天室程序" class="headerlink" title="I/O复用高级应用二：简单聊天室程序"></a>I/O复用高级应用二：简单聊天室程序</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/11/08/kafka_preliminary/kafka%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/08/kafka_preliminary/kafka%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">kafka基本操作</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-11-08 14:27:32 / Modified: 16:31:48" itemprop="dateCreated datePublished" datetime="2020-11-08T14:27:32+08:00">2020-11-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kafka/" itemprop="url" rel="index">
+                    <span itemprop="name">kafka</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>676</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>2 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="启动kafka"><a href="#启动kafka" class="headerlink" title="启动kafka"></a>启动kafka</h1><p>kafka的运行需要java环境和zookeeper，所以需要先下载好jdk和zookeeper，然后启动zookeeper server。详细操作可以参考<a target="_blank" rel="noopener" href="https://www.w3cschool.cn/apache_kafka/apache_kafka_installation_steps.html">这里</a></p>
+<p>启动一个kafka server(broker)的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-server-start.sh config/server.properties</span><br></pre></td></tr></table></figure>
+<p>该命令需要传递一个kafka server配置文件的路径，使用默认的配置即可。</p>
+<h1 id="创建topic"><a href="#创建topic" class="headerlink" title="创建topic"></a>创建topic</h1><p>kafka提供了一个名为”kafka-topics.sh”的脚本，用于在kafka server上创建topic，在命令行输入命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 </span><br><span class="line">--partitions 1 --topic hello-kafka</span><br></pre></td></tr></table></figure>
+<p>该命令创建了一个叫做hello-kafka的topic。</p>
+<p>创建topic后，也可以使用这个脚本获取服务器中的主题列表：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --list --zookeeper localhost:2181</span><br></pre></td></tr></table></figure>
+<h1 id="启动生产者以发送消息"><a href="#启动生产者以发送消息" class="headerlink" title="启动生产者以发送消息"></a>启动生产者以发送消息</h1><p>kafka提供一个kafka-console-producer.sh的脚步用于启动一个producer</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-console-producer.sh --broker-list localhost:9092 --topic topic-name</span><br></pre></td></tr></table></figure>
+<p>这个脚步需要两个参数，一个是kafka server(broker)的ip和端口，另外一个参数就是主题的名称。</p>
+<p>启动producer后，脚本会从stdin获取输入，然后发送到kafka集群中。默认情况下，每个新行都作为新消息发布，可以在config/producer.properties文件中配置producer的一些属性。</p>
+<h1 id="启动消费者以接收消息"><a href="#启动消费者以接收消息" class="headerlink" title="启动消费者以接收消息"></a>启动消费者以接收消息</h1><p>kafka也提供了一个Kafka-console-consumer.sh脚本来启动一个消费者</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic topic-name</span><br></pre></td></tr></table></figure>
+<h1 id="单节点多代理配置"><a href="#单节点多代理配置" class="headerlink" title="单节点多代理配置"></a>单节点多代理配置</h1><p>之前的基本操作的说明都是在单节点(一台物理机器)-单代理(一个kafka broker)下的场景下的，现在说明如何在一台物理机上启动多个Kafka server(broker)。</p>
+<p>首先需要启动zookeeper服务器，然后由于需要启动多个kafka broker，需要为每个broker创建一个配置文件，可以将config/server.properties文件复制多份，并重新命令为config/server-one.properties，config/server-two.properties，注意需要修改配置文件中的port字段，让broker监听不同的端口。broker默认监听的端口是9092。</p>
+<p>在多代理下可以对一个partition创建副本，可以使用Kafka-topics.sh脚本的”—describe”参数来检查哪个broker是partition的leader：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic topic-name</span><br></pre></td></tr></table></figure>
+<p><code>在单节点多代理下创建生产者和消费者的方式和在单节点单代理的场景下相同</code>。</p>
+<h1 id="修改已有主题的配置"><a href="#修改已有主题的配置" class="headerlink" title="修改已有主题的配置"></a>修改已有主题的配置</h1><p>修改主题使用Kafka-topics.sh脚本来完成</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh —zookeeper localhost:2181 --alter --topic topic-name </span><br><span class="line">--partitions count</span><br></pre></td></tr></table></figure>
+<p>这个命令可以修改topic-name的分区数量和备份数量。</p>
+<h1 id="删除主题"><a href="#删除主题" class="headerlink" title="删除主题"></a>删除主题</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --zookeeper localhost:2181 --delete --topic topic-name</span><br></pre></td></tr></table></figure>
+<p>注意，如果配置delete.topic.enable为false，则delete操作不会生效。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/11/08/kafka_preliminary/kafka%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/08/kafka_preliminary/kafka%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">kafka基础</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-11-08 10:33:19" itemprop="dateCreated datePublished" datetime="2020-11-08T10:33:19+08:00">2020-11-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-11-09 10:54:22" itemprop="dateModified" datetime="2020-11-09T10:54:22+08:00">2020-11-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kafka/" itemprop="url" rel="index">
+                    <span itemprop="name">kafka</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>7 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="kafka简介"><a href="#kafka简介" class="headerlink" title="kafka简介"></a>kafka简介</h1><p>Apache Kafka 是一个分布式发布 - 订阅消息系统和一个强大的消息队列中间件，可以处理大量的数据。 <code>Kafka使用文件存储消息并且会将消息保留在磁盘上</code>，同时在群集内复制以防止数据丢失。 Kafka 构建在 ZooKeeper 同步服务之上。 它与 Apache Storm 和 Spark 非常好地集成，用于实时流式数据分析。</p>
+<p>kafka内相关术语：</p>
+<ul>
+<li>生产者和消费者：消息的发送者叫producer，消息的使用者和接受者叫consumer，生产者将数据保存到kafka集群中，消费者从中获取消息进行业务的处理。</li>
+<li>broker：kafka集群中有很多台服务器，其中每一台服务器都可以存储消息，将每台服务器称为一个kafka实例，也叫做broker。</li>
+<li>主题（topic）：一个topic表示同一类消息，相当于对消息进行分类，每个producer将消息发送到kafka中，都需要指定消息的topic是哪个，也就是指明这个消息属于哪一类。</li>
+<li>分区（partition）：每个topic都可以分成多个partition，每个partition在kafka中其实就是一个文件，任何发布到此partition的消息都会被直接追加到log文件的尾部。<code>为什么对topic进行分区呢</code>：最根本的原因就是kafka基于文件进行存储，当文件内容大到一定程度时，很容易达到单个磁盘的上线，因此，采用分区的办法，一个分区对应一个文件，这样就可以将数据分别存储到不同的服务器上，另外这样可以做负载均衡，容纳更多的消费者。<code>生产者将消息发送到kafka中时，可以不指定partition，由kafka来决定的分配到那个partition，也可以自己指定partition</code>。</li>
+<li>偏移量（offset）：一个分区对应一个磁盘上的文件，而消息在文件中的位置就称为offset，offset是一个long型数字，它可以唯一标记一条消息。由于kafka并没有提供其他额外的索引机制来存储offset，<code>kafka中文件只能顺序地读写，所以在kafka中几乎不允许对消息进行随机读写</code>。</li>
+</ul>
+<p>综上，总结一下kafka有几个要点：</p>
+<ul>
+<li>kafka 是一个基于发布-订阅的<code>分布式</code>消息系统（消息队列）</li>
+<li>kafak 的消息数据保存在磁盘，每个 partition 对应磁盘上的一个文件，消息写入就是简单的文件追加，文件可以在集群内复制备份以防丢失</li>
+<li><code>即使消息被消费，kafka 也不会立即删除该消息</code>，可以通过配置使得过一段时间后自动删除以释放磁盘空间</li>
+<li>kafka依赖分布式协调服务Zookeeper，适合离线/在线信息的消费，与storm和saprk等实时流式数据分析常常结合使用</li>
+</ul>
+<h1 id="kafka基本原理"><a href="#kafka基本原理" class="headerlink" title="kafka基本原理"></a>kafka基本原理</h1><h2 id="分布式和分区"><a href="#分布式和分区" class="headerlink" title="分布式和分区"></a>分布式和分区</h2><p>kafka的分布式和分区总结来说就是：一个topic对应的多个partition分散地存储在集群中的多个broker上，存储的方式是一个partition对应一个文件，每个broker负责存储在自己机器上的partition中的消息读写。</p>
+<h2 id="副本"><a href="#副本" class="headerlink" title="副本"></a>副本</h2><p>kafka可以配置partition需要备份的个数（replicas），每个partition会被备份到多台机器上，以提高可用性，备份的数量可以通过配置文件指定。 </p>
+<p>kakfa对同一partition的多个备份的管理和调度策略是：在每个partition的所有备份中选举一个最为“leader”，由leader负责处理消息的读写，其他partition作为follower只需要简单地与leader进行同步数据即可。如果原来的leader失效，会重新选举其他的folloer来成为新的leader。</p>
+<p>至于如果选取leader，这正是Zookeeper所擅长的，kafka使用ZK在broker中选出一个Controller，用于partition分配和Leader选举。</p>
+<p>另外，作为leader的服务器承担了该分区所有的读写请求，因此其压力是比较大的，而且，有多少个partition就意味着会有多少个leader，，kafka会将leader分散到不同的broker上，确保整体的负载均衡。</p>
+<h3 id="ISR"><a href="#ISR" class="headerlink" title="ISR"></a>ISR</h3><p>ISR的全称是in-sync replica，翻译过来就是与leader保持同步的replica集合。虽然kafka可以为一个partition配置N个replica，但是这不意味着该partition可以容忍N-1个replica失效而不丢失数据。</p>
+<p>Kafka为partition动态维护一个replica集合。该集合中的所有replica保存的消息日志都与leader replica保持同步状态。只有这个集合中的replica才能被选举为leader，也只有该集合中所有replica都接收到了同一条消息，kafka才会将该消息置于“已提交”状态，即认为这条消息发送成功。</p>
+<p>正常情况下，partition的所有replica（含leader replica）都应该与leader replica保持同步，即所有replica都在ISR中。因为各种各样的原因，一小部分replica开始落后于leader replica的进度。当滞后到一定程度时，Kafka会将这些replica“踢”出ISR。相反地，当这些replica重新“追上”了leader的进度时，那么Kafka会将它们加回到ISR中。<code>这一切都是自动维护的，不需要用户进行人工干预</code>，因而在保证了消息交付语义的同时还简化了用户的操作成本。</p>
+<h1 id="数据生产流程"><a href="#数据生产流程" class="headerlink" title="数据生产流程"></a>数据生产流程</h1><p>对于生产者要写入一条记录，可以指定四个参数，分别是topic，partition， key和value，其中topic和value是必须指定的，而key和partition是可选的。</p>
+<p>对于一条记录，<code>先对其进行序列化</code>，然后按照topic和partition，放进对应的发送队列中，如果partition没有指定，那么会根据以下情况来决定发送到哪个partition：</p>
+<ul>
+<li>key有指定，按照key进行hash，相同的key去同一个partition。</li>
+<li>key没有指定，Round-Robin来选partition。</li>
+</ul>
+<p><code>producer将会和topic下所有partition leader保持socket连接，消息由producer直接通过socket发送到broker。其中partition leader的位置（ip : port）注册在zookeeper中，producer作为zookeeper client，以及注册了watch用来监听partition leader的变更事件，因此，可以准确的知道谁是当前的leader</code>。</p>
+<p>另外，producer端采用异步发送：<code>将多条消息暂且在客户端中buffer起来</code>，并将它们批量的发送到broker，小数据IO太多，会拖慢整体的网络延迟，批量延迟发送提升了网络效率。</p>
+<h1 id="数据消费过程"><a href="#数据消费过程" class="headerlink" title="数据消费过程"></a>数据消费过程</h1><p>对于消费者，不是以单独的形式存在的，<code>每一个消费者都属于一个consumer group</code>，可为每个Consumer指定group name，若不指定group name则属于默认的group，一个consumer group包含多个consumer。特别需要注意的是：<code>订阅Topic是以一个消费组来订阅的</code>，发送到topic的消息，只会被订阅了此topic的每个group中的<code>一个</code>consumer消费。一个topic可以被多个组订阅。</p>
+<p>具体来说，是根据partition来分的，一个partition，只能被消费组里的一个消费者消费，但是可以同时被多个消费组消费，消费组里的每个消费者是关联到一个partition的，因此有这样的说法，对于同一个topic，同一个group中不能有多于partition个数的consumer，否则将会存在一些consumer无法得到消息。</p>
+<p><code>在kafka，consumer采用pull方式获取消息</code>，即consumer在和broker建立连接后，主动去pull消息，这样consumer可以根据自己的消费能去适当的获取消息并处理，且可以控制消费消息的进度。</p>
+<p>另外partition中不存在消息状态的控制，也没有消息确认机制。当消息被consumer接收之后，需要保存Offset记录消费到哪，以前保存在ZK中，由于ZK的写性能不好，在0.10版本后，kafka把这个offset的保存从ZK中剥离，保存在一个名叫”consumeroffsets topic”的topic中。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/11/06/hight_performance_linux_coding/%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/06/hight_performance_linux_coding/%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6/" class="post-title-link" itemprop="url">高性能服务器程序框架</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-11-06 17:22:12" itemprop="dateCreated datePublished" datetime="2020-11-06T17:22:12+08:00">2020-11-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-01-11 11:20:04" itemprop="dateModified" datetime="2023-01-11T11:20:04+08:00">2023-01-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux高性能服务器编程笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>236</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="服务器模型"><a href="#服务器模型" class="headerlink" title="服务器模型"></a>服务器模型</h1><h2 id="C-S模型"><a href="#C-S模型" class="headerlink" title="C/S模型"></a>C/S模型</h2><h2 id="P2P模型"><a href="#P2P模型" class="headerlink" title="P2P模型"></a>P2P模型</h2><h1 id="服务器编程框架"><a href="#服务器编程框架" class="headerlink" title="服务器编程框架"></a>服务器编程框架</h1><h1 id="I-O模型"><a href="#I-O模型" class="headerlink" title="I/O模型"></a>I/O模型</h1><p>I/O模型分为两种，阻塞和非阻塞，阻塞I/O执行的系统调用可能因为无法立即完成而被挂起，直到等待的事件发生为止。而非阻塞I/O执行的系统调用则总是立即返回，而不管事件是否已经发生。</p>
+<h1 id="两种高效的事件处理模式"><a href="#两种高效的事件处理模式" class="headerlink" title="两种高效的事件处理模式"></a>两种高效的事件处理模式</h1><h2 id="Reactor模式"><a href="#Reactor模式" class="headerlink" title="Reactor模式"></a>Reactor模式</h2><p>Reactor模型下，主线程只负责监听是否有事件发生，有的话就立即将该事件通知工作线程，除此之外，主线程不做任何其他实质性的工作。读写数据，以及处理客户请求均在工作线程中完成。</p>
+<h2 id="Proactor模式"><a href="#Proactor模式" class="headerlink" title="Proactor模式"></a>Proactor模式</h2><p>与Reactor模式不同，Proactor模式将所有I/O操作都交给主线程和内核来处理，工作线程仅仅负责业务逻辑。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/11/06/hight_performance_linux_coding/Linux%E6%9C%8D%E5%8A%A1%E7%A8%8B%E5%BA%8F%E8%A7%84%E8%8C%83/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1487,715 +2226,6 @@ splice函数用于在两个文件描述符之间移动数据，也是零拷贝�
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/09/04/redis/redis%E9%85%8D%E7%BD%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/04/redis/redis%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">redis配置</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-09-04 20:47:41" itemprop="dateCreated datePublished" datetime="2020-09-04T20:47:41+08:00">2020-09-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-05 09:36:29" itemprop="dateModified" datetime="2020-09-05T09:36:29+08:00">2020-09-05</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>96</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><p>redis的配置文件位于Redis的安装目录下，文件名为redis.conf，windows下为redis.windows.conf，这个文件是一个文本文件。</p>
-<h1 id="配置命名"><a href="#配置命名" class="headerlink" title="配置命名"></a>配置命名</h1><p>在redis命令行下，你可以使用CONFIG命令获取或者设置相关配置</p>
-<p>例如：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFIG GET loglevel</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFIG GET * # 用于获取所有配置</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFIG SET loglevel &quot;notice&quot;</span><br></pre></td></tr></table></figure>
-<h1 id="Redis参数说明"><a href="#Redis参数说明" class="headerlink" title="Redis参数说明"></a>Redis参数说明</h1><p><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/redis-conf.html">详见</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/08/07/devops/docker/Docker%20%E5%88%9D%E5%AD%A6%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/07/devops/docker/Docker%20%E5%88%9D%E5%AD%A6%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">docker 初学笔记</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-08-07 15:20:41" itemprop="dateCreated datePublished" datetime="2020-08-07T15:20:41+08:00">2020-08-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-02 22:51:00" itemprop="dateModified" datetime="2022-05-02T22:51:00+08:00">2022-05-02</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/docker/" itemprop="url" rel="index">
-                    <span itemprop="name">docker</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.4k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>5 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Docker-镜像与容器"><a href="#Docker-镜像与容器" class="headerlink" title="Docker 镜像与容器"></a>Docker 镜像与容器</h1><h1 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h1><p>Dockerfile 是一个用来构建镜像的文本文件，文本内容包含了一系列构建镜像所需的指令和说明。</p>
-<p>Dockerfile字段介绍:</p>
-<ul>
-<li><p>FROM: 定制的镜像所基于的基础的镜像，后续的操作都将基于这个基础镜像。</p>
-<ul>
-<li>FROM的基础镜像是必须指定的，如果确实没有基于的其他镜像，可以指定为一个特殊的空镜像叫scratch。</li>
-</ul>
-</li>
-<li><p>RUN: 后面接命令行命令，它有两种形式:</p>
-<ul>
-<li>RUN 直接跟要执行的命令行命令</li>
-<li>RUN [“可执行文件”, “参数1”, “参数2”, …]</li>
-</ul>
-<p>Dockerfile 的指令每执行一次都会在 docker 上新建一层。所以过多无意义的层，会造成镜像膨胀过大。如果命令太多，可以使用&amp;&amp;符号连接命令，例如</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RUN yum install wget \</span><br><span class="line">  &amp;&amp; wget -O redis.tar.gz &quot;http://download.redis.io/releases/redis-5.0.3.tar.gz&quot; \</span><br><span class="line">  &amp;&amp; tar -xvf redis.tar.gz</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>COPY: 复制指令，从<a href="#使用Dockerfile构建镜像">上下文目录中</a>复制文件或者目录到容器里指定路径：</p>
-<ul>
-<li>```shell<br>COPY [—chown=<user>:<group>] &lt;源路径1&gt;…  &lt;目标路径&gt;<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line">  * 源文件或者源目录，这里可以是通配符表达式，其通配符规则要满足 Go 的 filepath.Match 规则，如COPY hom* /mydir/</span><br><span class="line">  </span><br><span class="line">  * 目标路径: 容器内的指定路径</span><br><span class="line"></span><br><span class="line">* CMD: 类似于RUN指令，但是CMD的命令是在容器开始运行时会被运行，RUN命令是在构建镜像时被运行。CMD命令为启动的容器指定默认要运行的程序，程序运行结束，容器也就结束。CMD 指令指定的程序可被 docker run 命令行参数中指定要运行的程序所覆盖。**如果Dockerfile有多个CMD命令，仅最后一个生效**</span><br><span class="line"></span><br><span class="line">* EVN: 设置环境变量，定义了环境变量，那么在后续的指令中，就可以使用这个环境变量。EVN命令使用格式如下：</span><br><span class="line">  </span><br><span class="line">  * ```shell</span><br><span class="line">    ENV &lt;key&gt; &lt;value&gt;</span><br><span class="line">    ENV &lt;key1&gt;=&lt;value1&gt; &lt;key2&gt;=&lt;value2&gt;...</span><br></pre></td></tr></table></figure>
-</group></user></li>
-</ul>
-</li>
-<li><p>WORKDIR: 指定工作目录。用 WORKDIR 指定的工作目录，会在构建镜像的每一层中都存在。(WORKDIR 指定的工作目录，必须是提前创建好的)。docker build 构建镜像过程中的，每一个 RUN 命令都是新建的一层。只有通过 WORKDIR 创建的目录才会一直存在。</p>
-</li>
-<li><p>其他更多命令见<a target="_blank" rel="noopener" href="https://www.runoob.com/docker/docker-dockerfile.html">这里</a></p>
-</li>
-</ul>
-<h1 id="Docker-常用命令及介绍"><a href="#Docker-常用命令及介绍" class="headerlink" title="Docker 常用命令及介绍"></a>Docker 常用命令及介绍</h1><h1 id="Registry相关"><a href="#Registry相关" class="headerlink" title="Registry相关"></a>Registry相关</h1><p>1、切换Registry</p>
-<h2 id="镜像相关"><a href="#镜像相关" class="headerlink" title="镜像相关"></a>镜像相关</h2><h5 id="获取镜像"><a href="#获取镜像" class="headerlink" title="获取镜像"></a>获取镜像</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull &lt;image-name&gt;</span><br></pre></td></tr></table></figure>
-<h5 id="查找镜像"><a href="#查找镜像" class="headerlink" title="查找镜像"></a>查找镜像</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search &lt;image-name&gt;</span><br></pre></td></tr></table></figure>
-<h5 id="列出本地镜像"><a href="#列出本地镜像" class="headerlink" title="列出本地镜像"></a>列出本地镜像</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br><span class="line">or</span><br><span class="line">docker image ls</span><br></pre></td></tr></table></figure>
-<p>列出来表格有以下几个字端</p>
-<ul>
-<li>REPOSITORY: 镜像名称</li>
-<li>TAG: 镜像的标签</li>
-<li>IMAGE ID: 镜像ID</li>
-<li>CREATED: 镜像创建时间</li>
-<li>SIZE: 镜像大小</li>
-</ul>
-<p>同一仓库源可以有多个 TAG，代表这个仓库源的不同个版本，如 ubuntu 仓库源里，有 15.10、14.04 等多个不同的版本，我们使用 REPOSITORY:TAG 来定义不同的镜像。如果不指定TAG，默认会使用为TAG被标记为latest的那个。</p>
-<h5 id="删除镜像"><a href="#删除镜像" class="headerlink" title="删除镜像"></a>删除镜像</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi [-f] &lt;image-id&gt;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>-f 表示force</li>
-</ul>
-<h5 id="使用Dockerfile构建镜像"><a href="#使用Dockerfile构建镜像" class="headerlink" title="使用Dockerfile构建镜像"></a>使用Dockerfile构建镜像</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t &lt;image name&gt;:&lt;tag name&gt; .</span><br></pre></td></tr></table></figure>
-<p>-t 参数是标签，如果不给tag name，会自动将tag name设置为latest，<code>如果该镜像之前已经有被标记为latest tag 的镜像，那个这个之前的镜像的tag会被标记为none</code>。所以最好为每个镜像给一个tag。</p>
-<p>“.”表示上下文路径，是指 docker 在构建镜像，有时候想要使用到本机的文件（比如复制），docker build 命令得知这个路径后，会将路径下的所有内容打包。可以类比cmake命令的”cmake .”</p>
-<p><strong>解析</strong>：由于 docker 的运行模式是 C/S。我们本机是 C，docker 引擎是 S。实际的构建过程是在 docker 引擎下完成的，所以这个时候无法用到我们本机的文件。这就需要把我们本机的指定目录下的文件一起打包提供给 docker 引擎使用。</p>
-<p><strong>注意</strong>：上下文路径下不要放无用的文件，因为会一起打包发送给 docker 引擎，如果文件过多会造成过程缓慢。</p>
-<h2 id="容器相关"><a href="#容器相关" class="headerlink" title="容器相关"></a>容器相关</h2><ul>
-<li><code>docker ps -a</code><ul>
-<li>查看目前创建的所有容器的状态</li>
-</ul>
-</li>
-<li><code>docker stop &lt;container id&gt;</code><ul>
-<li>暂停运行某个容器</li>
-<li>Cotainer id 可以通过docker ps命令查看</li>
-</ul>
-</li>
-<li><code>docker restart &lt;container id&gt;</code><ul>
-<li>重启某个容器</li>
-</ul>
-</li>
-<li><code>docker rm &lt;container id&gt;</code><ul>
-<li>删除某个容器</li>
-</ul>
-</li>
-<li><code>docker rm $(docker ps -aq)</code><ul>
-<li>删除所有容器</li>
-</ul>
-</li>
-<li><code>docker run -it &lt;image_name&gt;:&lt;image_tag&gt; /bin/bash</code><ul>
-<li>使用某个镜像启动某个容器，并以<font color="orange">命令行形式</font>进入该容器</li>
-<li>-i 参数：交互式操作</li>
-<li>-t参数: 为容器重新分配一个伪输入终端</li>
-<li>-i、-t一般同时使用</li>
-<li>/bin/bash：使用的shell</li>
-<li><font color="orange">通过该命令如果在shell中执行exit命令后，容器将会停止运行</font></li>
-</ul>
-</li>
-<li><code>docker run -d &lt;image_name&gt;:&lt;image_tag&gt; [--name &lt;custom_container_name&gt;] [-p &lt;outter_port&gt;:&lt;inner_port&gt;]</code><ul>
-<li>以守护进程模式在后台启动一个容器</li>
-<li>-d参数：表示以守护进程形式在后台启动</li>
-<li>—name参数：容器的名称，如果不定义则会是一个随机的名称</li>
-<li>-p参数：端口映射，docker容器内部默认是不开放端口的，需要手动指定哪些端口开放，并且外部从哪些端口访问对应容器内的端口</li>
-</ul>
-</li>
-<li><code>docker exec -it &lt;container id&gt; /bin/bash</code><ul>
-<li>以命令行的形式进入某个容器</li>
-<li>docker exec 用于在一个运行的container中运行一个命令，更多docker exec的使用可以用docker exec —help查看</li>
-</ul>
-</li>
-<li><code>docker export &lt;container id&gt; &gt; &lt;filename&gt;</code> <ul>
-<li>创建容器快照</li>
-<li>示例：<code>docker export 1e560fca3906 &gt; ubuntu.tar</code></li>
-</ul>
-</li>
-<li><code>docker import &lt;filePath | url&gt; &lt;imageName:tag&gt;</code><ul>
-<li>将容器快照文件再导入为镜像</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/27/program_language/c++/C++PrimerPlus/%E5%87%BD%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/27/program_language/c++/C++PrimerPlus/%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">函数</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-07-27 16:35:04" itemprop="dateCreated datePublished" datetime="2020-07-27T16:35:04+08:00">2020-07-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-09 16:43:45" itemprop="dateModified" datetime="2022-02-09T16:43:45+08:00">2022-02-09</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/c-primer-plus/" itemprop="url" rel="index">
-                    <span itemprop="name">c++ primer plus</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.2k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>4 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h1><p>inline function在编译后实质上是函数代码块的替换，编译器不一定会实现inline function，如果编译器认为inline function太复杂或者有递归调用。<font color="orange">inline function的链接性为内部链接，所以inline function的定义和声明不能放在不同的文件中。</font></p>
-<h1 id="引用类型作函数参数"><a href="#引用类型作函数参数" class="headerlink" title="引用类型作函数参数"></a>引用类型作函数参数</h1><p>如果函数的参数为引用类型，如果传递的参数类型正确但不是左值或者传递的参数类型不正确，在其可以转换为正确的类型的情况下，<strong>编译将会创建一个临时变量，而将引用参数引用到该临时变量上</strong>。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">double</span> <span class="title">refcube</span><span class="params">(<span class="type">const</span> <span class="type">double</span> &amp;ra)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> re * ra * ra;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">double</span> side = <span class="number">3.0</span>;</span><br><span class="line"><span class="type">double</span> *pd = &amp;side;</span><br><span class="line"><span class="type">double</span> &amp;rd = side;</span><br><span class="line"></span><br><span class="line"><span class="type">long</span> edge = <span class="number">5</span>;</span><br><span class="line"><span class="type">double</span> lens[<span class="number">4</span>] = &#123;<span class="number">2.0</span>, <span class="number">5.0</span>, <span class="number">10.0</span>, <span class="number">12.0</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">double</span> c1 = <span class="built_in">refcube</span>(side);<span class="comment">//won&#x27;t create temporary variable</span></span><br><span class="line"><span class="type">double</span> c2 = <span class="built_in">refcube</span>(lens[<span class="number">2</span>]);<span class="comment">//won&#x27;t create temporary variable</span></span><br><span class="line"><span class="type">double</span> c3 = <span class="built_in">refcube</span>(rd);<span class="comment">//won&#x27;t create temporary variable</span></span><br><span class="line"><span class="type">double</span> c4 = <span class="built_in">refcube</span>(*pd);<span class="comment">//won&#x27;t create temporary variable</span></span><br><span class="line"><span class="type">double</span> c5 = <span class="built_in">refcube</span>(edge);<span class="comment">//will create temporary variable</span></span><br><span class="line"><span class="type">double</span> c6 = <span class="built_in">refcube</span>(<span class="number">7.0</span>);<span class="comment">//will create temporary variable</span></span><br><span class="line"><span class="type">double</span> c7 = <span class="built_in">refcube</span>(side + <span class="number">10.0</span>);<span class="comment">//will create temporary variable</span></span><br></pre></td></tr></table></figure>
-<h1 id="带默认参数的函数"><a href="#带默认参数的函数" class="headerlink" title="带默认参数的函数"></a>带默认参数的函数</h1><ul>
-<li>如果要用为某个参数设置默认值，则必须为<code>它右边的所有参数提供默认值</code>。</li>
-<li>函数定义中有默认参数，在函数实现中的函数头中可以不再写默认参数的值。</li>
-</ul>
-<h1 id="可变参数函数"><a href="#可变参数函数" class="headerlink" title="可变参数函数"></a>可变参数函数</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">sum</span><span class="params">(<span class="type">int</span> n, ...)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><code>...</code>代表可以接受<font color="orange">任意类型</font>的数据任意多个。</p>
-<p>获取到可变参数列表的方法</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">sum</span><span class="params">(<span class="type">int</span> n, ...)</span> </span>&#123;</span><br><span class="line">    va_list    ap;</span><br><span class="line">    <span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">va_start</span>(ap, n);</span><br><span class="line">    <span class="keyword">while</span> (n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="type">int</span> temp = <span class="built_in">va_arg</span>(ap, <span class="type">int</span>);</span><br><span class="line">        sum += temp;</span><br><span class="line">        --n;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">va_end</span>(ap);</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">sum</span>(<span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>、va_list args;            <span class="comment">//定义一个可变参数列表</span></span><br><span class="line"><span class="number">2</span>、<span class="built_in">va_start</span>(args,n);    <span class="comment">//初始化args指向强制参数n的`下一个参数`</span></span><br><span class="line"><span class="number">3</span>、<span class="built_in">va_arg</span>(args,type);    <span class="comment">//`获取当前参数内容`并将args指向下一个参数</span></span><br><span class="line"><span class="number">4</span>、<span class="built_in">va_end</span>(args);            <span class="comment">//释放args</span></span><br></pre></td></tr></table></figure>
-<p>在使用va_arg宏时，<code>要求type是POD(Plain Old Data)类型</code>，能用 C 的 memcpy() 等函数进行操作的类、结构体就是 POD 类型的数据，所有基本数据类型都是POD。并且如果type和对应的参数不对的话会产生强制类型转换。如果类型转换失败就会将数据设置为0或者其他初始化的值。</p>
-<h1 id="函数重载"><a href="#函数重载" class="headerlink" title="函数重载"></a>函数重载</h1><ul>
-<li><p>函数的参数列表也称为函数特征标</p>
-</li>
-<li><p>函数重载要求函数的参数数目或参数类型<code>或参数的顺序</code>不同，而参数名是无关紧要，且编译器在检查时<code>不一定</code>会将引用类型和本身类型视为同一特征标，但是如果调用重载函数存在二义性则编译器会报错。</p>
-</li>
-<li><p><code>对于非引用传参，形参是否const是等价的</code>。但是<code>当使用引用传参时，有无const是不同的</code>。使用指针传参时，<code>指向const对象的指针和指向非const对象的指针做形参的函数是不同的</code></p>
-</li>
-<li><p>只是函数返回值不同不能构成函数重载</p>
-</li>
-<li><p><code>在类中，C++将区分常量和非常量函数(即函数本身是否为const)的特征标</code></p>
-</li>
-<li><p>函数重载匹配原则</p>
-<ul>
-<li>最匹配原则</li>
-<li>如果没有匹配的将会进行类型强转后进行匹配，但是进行类型强转后进行匹配后有多个匹配的会产生报错；</li>
-</ul>
-</li>
-</ul>
-<h1 id="函数模版"><a href="#函数模版" class="headerlink" title="函数模版"></a>函数模版</h1><font color="orange">函数模版并没有创建一个函数，它只是告诉编译器如何创建如何创建一个函数，编译器在遇到使用模版函数的地方会将模版函数展开成具体的函数。</font>
-
-<p>模版函数匹配原则：越具体越适配原则</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(T t)</span></span>;<span class="comment">//函数1</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(T *t)</span></span>;<span class="comment">//函数2</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="built_in">func</span>(&amp;a);<span class="comment">//函数2更适配</span></span><br></pre></td></tr></table></figure>
-<h2 id="decltype-x-y"><a href="#decltype-x-y" class="headerlink" title="decltype(x) y"></a>decltype(x) y</h2><p>decltype(x) y，用于说明y的类型和x的类型一样，decltype的运用场景大多是模版</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">gt</span><span class="params">(T1 x, T2 y)</span> -&gt; <span class="title">decltype</span><span class="params">(x + y)</span></span>;</span><br></pre></td></tr></table></figure>
-<h1 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h1><p>函数指针的声明方式：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">return_type</span> (*pointer_name)(parameter);</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p><code>*</code>和pointer_name要用括号括起来，否则就变成了返回指针的函数。</p>
-</li>
-<li><p>不能声明一个指向模版函数的指针，因为模版函数并没有实现真的函数，而只是说明如何声明函数</p>
-</li>
-</ul>
-<h1 id="宏定义形式的函数"><a href="#宏定义形式的函数" class="headerlink" title="宏定义形式的函数"></a>宏定义形式的函数</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX(a, b) (a) &gt; (b) ? (a) : (b)</span></span><br></pre></td></tr></table></figure>
-<font color="orange">注意要将参数用括号扩起来</font>
-
-<p>有些时候用宏定义的代码被do { } while(0);包含了起来，例如：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX(a, b) do &#123;    \</span></span><br><span class="line"><span class="meta">    (a) &gt; (b) ? (a) : (b); \</span></span><br><span class="line"><span class="meta">&#125; while(0)</span></span><br></pre></td></tr></table></figure>
-<p>这是因为宏的处理是文本替换，有时候将宏用文本替换后代码就产生了语法错误，而使用do {} while(0)是为了避免由于文本替换后带来的语法错误，并保证宏函数无论如何都会执行一次。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/27/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE04-%E7%A1%AE%E5%AE%9A%E5%AF%B9%E8%B1%A1%E8%A2%AB%E4%BD%BF%E7%94%A8%E5%89%8D%E5%B7%B2%E8%A2%AB%E5%88%9D%E5%A7%8B%E5%8C%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/27/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE04-%E7%A1%AE%E5%AE%9A%E5%AF%B9%E8%B1%A1%E8%A2%AB%E4%BD%BF%E7%94%A8%E5%89%8D%E5%B7%B2%E8%A2%AB%E5%88%9D%E5%A7%8B%E5%8C%96/" class="post-title-link" itemprop="url">条款04-确定对象被使用前已被初始化</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-07-27 11:30:17 / Modified: 10:03:08" itemprop="dateCreated datePublished" datetime="2020-07-27T11:30:17+08:00">2020-07-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/effective-c/" itemprop="url" rel="index">
-                    <span itemprop="name">effective c++</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>799</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>3 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="确定对象被使用前已被初始化"><a href="#确定对象被使用前已被初始化" class="headerlink" title="确定对象被使用前已被初始化"></a>确定对象被使用前已被初始化</h1><ul>
-<li>对内置型数据(char, int, float, char * 等)进行手工初始化，因为C++不保证初始化它们</li>
-<li><strong>C++规定，对象的成员变量的初始化动作发生在进入构造函数本体之前</strong></li>
-<li>对象成员变量的初始化使用成员初始化列表的方式(<strong>如果成员变量是const或者reference就一定要使用初始化列表的方式</strong>)</li>
-<li>如果class内存在许多成员变量或者是从多个基类继承来的，而且这个class有多个构造方法，导致成员初始化列表存在许多重复，这种情况下可以合理地在初始列中挑出那些“赋值操作的性能和初始化一样好”的成员变量，改用它们的赋值操作，并将那些赋值操作移往某个函数(通常为private)，供所有的构造函数调用</li>
-<li>C++有十分固定的成员初始化次序，base class总是早于derived class被初始化，<strong>class的成员变量总是以其声明次序被初始化</strong>，即使它们在成员初始化列表中以不同的次序出现，所以<strong>当你在成员初始值列中列出各个成员时，最好总是与其声明次序一致</strong></li>
-</ul>
-<h1 id="不同编译单元内定义的non-local-static对象的初始化次序"><a href="#不同编译单元内定义的non-local-static对象的初始化次序" class="headerlink" title="不同编译单元内定义的non-local static对象的初始化次序"></a>不同编译单元内定义的non-local static对象的初始化次序</h1><p>函数内的static对象称为local static对象，其他static对象成为non-local static对象。</p>
-<p>所谓编译单元是指产出单一目标文件(single object file)的那些源码，基本上它是单一源码文件加上其所含入的头文件。</p>
-<p>现在问题涉及至少两个源码文件，每一个内含至少一个non-local static对象，如果某个编译单元内的某个non-local static对象的初始化动作使用了另一编译单元内的某个non-local static对象，它所用到的这个对象可能尚未被初始化，因为C++对“定义于不同编译单元内的non-local static对象”的初始化次序并无明确定义。</p>
-<p>例子:</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//in a.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FileSystem</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="function">std::<span class="type">size_t</span> <span class="title">numDisks</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> FileSystem tfs;<span class="comment">//a non-local static object</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//in b.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Directory</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">Directory</span>( params );</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//in b.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;b.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;a.h&quot;</span></span></span><br><span class="line">Directory::<span class="built_in">Directory</span>( params ) &#123;</span><br><span class="line">  std::<span class="type">size_t</span> disks = tfs.<span class="built_in">numDisks</span>();<span class="comment">//use tfs</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//in main.cpp</span></span><br><span class="line"><span class="function">Directory <span class="title">tmpDirectory</span><span class="params">( params )</span></span>;<span class="comment">//tempDirectory is also a non-local static object</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ...;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在初始化tmpDirectory时需要用到tfs，这时候tfs可能还没有被初始化，这就会出现问题。</p>
-<p>解决办法：将每个non-local static对象放到一个属于它自己的专属函数内，成为一个local static对象，这些函数返回一个reference指向它所含的对象。</p>
-<p>接上例：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//in a.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FileSystem</span>&#123; ... &#125;;</span><br><span class="line"><span class="function">FileSystem&amp; <span class="title">tfs</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="type">static</span> FileSystem fs;</span><br><span class="line">  <span class="keyword">return</span> fs;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//in b.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Directory</span>&#123; ... &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//in b.cpp</span></span><br><span class="line">Directory::<span class="built_in">Directory</span>( params ) &#123;</span><br><span class="line">  std::<span class="type">size_t</span> disks = <span class="built_in">tfs</span>().<span class="built_in">numDisks</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//main.cpp</span></span><br><span class="line"><span class="function">Directory&amp; <span class="title">tmpDir</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="type">static</span> Directory <span class="title">td</span><span class="params">( params )</span></span>;</span><br><span class="line">  <span class="keyword">return</span> td;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ...;</span><br><span class="line">  <span class="built_in">temDir</span>().<span class="built_in">doSomething</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这种方法的基础在于：C++保证，函数内的local static对象会在“该函数被调用期间”“首次遇上该对象的定义式”时被初始化。<strong>这种方式也是Singleton模式的一个常见实现方法。</strong></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/27/program_language/c++/C++PrimerPlus/%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/27/program_language/c++/C++PrimerPlus/%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/" class="post-title-link" itemprop="url">内存模型与命名空间</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-07-27 10:39:13" itemprop="dateCreated datePublished" datetime="2020-07-27T10:39:13+08:00">2020-07-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-01-29 16:26:09" itemprop="dateModified" datetime="2022-01-29T16:26:09+08:00">2022-01-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/c-primer-plus/" itemprop="url" rel="index">
-                    <span itemprop="name">c++ primer plus</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>2.1k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>7 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="变量作用范围"><a href="#变量作用范围" class="headerlink" title="变量作用范围"></a>变量作用范围</h1><h2 id="存储持续性"><a href="#存储持续性" class="headerlink" title="存储持续性"></a>存储持续性</h2><ul>
-<li>自动存储持续性：在程序开始执行其所属的函数或者代码块（花括号括起来的部分）时被创建，执行完函数或者代码块后，其内存空间被释放。</li>
-<li>静态存储持续性：<code>在程序的整个运行过程中都存在</code></li>
-<li>线程存储持续性（c++11）使用thread_local声明，其生命周期与所属线程一样长</li>
-<li>动态存储持续性：使用new和delete来动态管理</li>
-</ul>
-<h2 id="连接性"><a href="#连接性" class="headerlink" title="连接性"></a>连接性</h2><ul>
-<li>外部连接性：可在其他文件中访问</li>
-<li>内部链接性：只能在当前文件中访问</li>
-<li>无链接性：只能在当前函数或代码块中访问</li>
-</ul>
-<h2 id="静态初始化和动态初始化"><a href="#静态初始化和动态初始化" class="headerlink" title="静态初始化和动态初始化"></a>静态初始化和动态初始化</h2><ul>
-<li><p>静态初始化：在编译器处理文件时对变量进行初始化</p>
-</li>
-<li><p>动态初始化：编译后初始化</p>
-</li>
-</ul>
-<h2 id="静态持续变量"><a href="#静态持续变量" class="headerlink" title="静态持续变量"></a>静态持续变量</h2><p>编译器将<code>分配固定的内存块来存储所有的静态变量</code>，这些变量在整个程序执行期间一直存在。并且，<code>如果没有显示地初始化静态变量，编译器将把它设置为0</code>。在默认情况下，静态数组和结构将每个元素或成员的所有<code>位(bit)</code>都设置为0。</p>
-<p>声明三种链接性的静态持续变量的方法：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> global = <span class="number">1000</span>;<span class="comment">//静态持续，外部链接</span></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> one_file = <span class="number">50</span>;<span class="comment">//静态持续，内部链接</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    ...;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> count = <span class="number">0</span>;<span class="comment">//静态持续，无链接</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="静态外部变量"><a href="#静态外部变量" class="headerlink" title="静态外部变量"></a>静态外部变量</h3><p><code>静态持续性</code>，<code>外部链接性</code>的变量，<code>定义</code>有两种方式：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">double</span> up = <span class="number">0.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="type">double</span> up = <span class="number">0.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//即定义静态外部变量的时候可以省略extern关键字</span></span><br></pre></td></tr></table></figure>
-<p><code>声明</code>外部变量的方式：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="type">double</span> up;<span class="comment">//up 在其他文件定义</span></span><br></pre></td></tr></table></figure>
-<h3 id="静态内部变量"><a href="#静态内部变量" class="headerlink" title="静态内部变量"></a>静态内部变量</h3><p>使用static定义并同时初始化声明的变量就是静态内部变量</p>
-<p>static声明的静态内部变量将会隐藏常规同名外部变量</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//in file1</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> errors = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//in file2</span></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> errors = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; errors;<span class="comment">//使用在file2中定义的errors</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> <code>同名变量覆盖规则：外部可见变量被本文件可见变量覆盖，局部变量覆盖全局变量</code></p>
-<h1 id="const定义的全局变量"><a href="#const定义的全局变量" class="headerlink" title="const定义的全局变量"></a>const定义的全局变量</h1><p>默认情况下<code>全局变量</code>的链接性为外部的，<code>但</code>const<code>全局变量</code>的链接性为内部的。也就是全局const定义就像使用了static说明符一样。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> value = <span class="number">10</span>;<span class="comment">//same as static const int value = 10;</span></span><br></pre></td></tr></table></figure>
-<p>但是const可以和extern连用，声明链接性为外部的常量：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="type">const</span> <span class="type">int</span> value = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
-<h1 id="函数的持续性和链接性"><a href="#函数的持续性和链接性" class="headerlink" title="函数的持续性和链接性"></a>函数的持续性和链接性</h1><ul>
-<li><p>函数默认情况下是静态的，即在整个程序执行期间都一直存在，<code>默认情况下，函数的链接性为外部的</code>，即多个文件可见</p>
-</li>
-<li><p>可以使用static关键字将函数的链接性设置为内部，<code>且静态定义将覆盖外部定义</code>，且必须在函数的<code>定义和实现中都使用static关键字</code></p>
-</li>
-<li><p>内联函数不受这项规则的约束，内联函数的链接性为内部的，但是<code>c++要求同一个函数的所有内联定义都必须相同</code></p>
-</li>
-</ul>
-<p><code>如果定义了一个与库函数同名的函数，编译器将使用程序员定义的版本</code></p>
-<h1 id="语言链接性"><a href="#语言链接性" class="headerlink" title="语言链接性"></a>语言链接性</h1><p>链接程序要求每个不同的函数都有不同的符号名，在C语言中，一个名称只对应一个函数。例如c编译器可能将spiff这样的函数翻译为_spiff。</p>
-<p>但在c++中，由于函数重载，一个名称可能对应多个函数，必须将这些函数翻译为不同的符号名称。例如可能将spiff(int)翻译为spiff_i，将spiff(double, double)翻译成spiff_d_d。</p>
-<p>如果要在c++程序中使用c库中预编译的函数，由于有c编译器预编译的函数符号和c++要寻找的函数符号不相同，所有可能c++编译器会找不到这些函数。为了解决这个问题，可以用函数原型来指出要使用的约定：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function"><span class="type">void</span> <span class="title">spiff</span><span class="params">(<span class="type">int</span>)</span></span>;<span class="comment">//use C protocol for name look-up</span></span><br><span class="line"><span class="function"><span class="keyword">extern</span> <span class="type">void</span> <span class="title">spoff</span><span class="params">(<span class="type">int</span>)</span></span>;<span class="comment">//use C++ protocol for name look-up</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C++&quot;</span> <span class="function"><span class="type">void</span> <span class="title">spaff</span><span class="params">(<span class="type">int</span>)</span></span>;<span class="comment">//use C++ protocol for name look-up</span></span><br></pre></td></tr></table></figure>
-<p>另外的形式：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> __cplusplus</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> &#123;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">some_func</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> __cplusplus</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-<p><code>注意由于extern &quot;C&quot;之后将按照C的方式翻译函数的名称，所以此时将不能在extern &quot;C&quot; 中进行函数重载</code>。</p>
-<h1 id="new、new-和定位new"><a href="#new、new-和定位new" class="headerlink" title="new、new[]和定位new"></a>new、new[]和定位new</h1><p>new、new[]的调用实质上是分别调用：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> * <span class="keyword">operator</span> <span class="title">new</span><span class="params">(std::<span class="type">size_t</span>)</span></span>;</span><br><span class="line"><span class="type">void</span> * <span class="keyword">operator</span> <span class="keyword">new</span>[](std::<span class="type">size_t</span>);</span><br></pre></td></tr></table></figure>
-<p>要使用定位new特性，首先需要包含头文件new。定位new的用法：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">chaff</span> &#123;</span><br><span class="line">    <span class="type">char</span> *dross;</span><br><span class="line">    <span class="type">int</span> slag;</span><br><span class="line">    <span class="built_in">chaff</span>(<span class="type">const</span> <span class="type">char</span> *str = <span class="string">&quot;&quot;</span>, <span class="type">int</span> slag = <span class="number">0</span>) : <span class="built_in">slag</span>(slag) &#123;</span><br><span class="line">        dross = <span class="keyword">new</span> <span class="type">char</span>[<span class="built_in">strlen</span>(str) + <span class="number">1</span>];</span><br><span class="line">        <span class="built_in">strcpy</span>(dross, str, <span class="built_in">strlen</span>(str));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> buffer1[<span class="number">50</span>];</span><br><span class="line"><span class="type">char</span> buffer2[<span class="number">500</span>];</span><br><span class="line"></span><br><span class="line">chaff *p1 = <span class="built_in">new</span> (buffer1) <span class="built_in">chaff</span>(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">chaff *p2 = <span class="built_in">new</span> (buffer2) <span class="type">int</span>[<span class="number">20</span>];</span><br><span class="line">chaff *p3 = <span class="built_in">new</span> (buffer1) <span class="built_in">chaff</span>(<span class="string">&quot;2&quot;</span>);<span class="comment">//将会覆盖p1中的内容</span></span><br><span class="line">chaff *p4 = <span class="built_in">new</span> (buffer1 + <span class="built_in">sizeof</span>(chaff)) <span class="built_in">chaff</span>(<span class="string">&quot;3&quot;</span>);<span class="comment">//不会覆盖p3指向的内容</span></span><br></pre></td></tr></table></figure>
-<p><code>delete和delete[]只能用于指向常规new运算符分配的堆内存，所以delete不一定能作用于定位new运算符所指向的区域，所以最好不要delete定位new运算符返回的指针</code></p>
-<p>new 和 delete、new[] 和 delete[]要配套使用，delete和delete[]可以作用于空指针，delete和delete[]不能同时释放同一内存空间两次，除非是空指针，否则将会出现runtime error。</p>
-<h1 id="说明符和限定符"><a href="#说明符和限定符" class="headerlink" title="说明符和限定符"></a>说明符和限定符</h1><h2 id="cv-限定符"><a href="#cv-限定符" class="headerlink" title="cv-限定符"></a>cv-限定符</h2><ul>
-<li>const</li>
-<li>volatile</li>
-</ul>
-<p>假设编译器发现，程序在几条语句中两次使用了某个变量的值，则编译器可能不是让程序查找这个值两次，而是将这个值缓存到寄存器中。这种优化假设变量的值在这两次使用之间不会发生变化。如果不将变量声明为volatile，则编译器讲进行这种优化；将变量声明为volatile则相当于告诉编译器，不要进行这种优化。<code>volatile的使用一般在多进程或多线程的情况下，可能其他进程或线程或改变某个内存空间的值，如果不两次获取的话，程序就会出错。</code></p>
-<h2 id="mutable限定符"><a href="#mutable限定符" class="headerlink" title="mutable限定符"></a>mutable限定符</h2><p>mutable用来指出即使结构或类变量为const，其某个成员也可以被修改。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">data</span> &#123;</span><br><span class="line">    <span class="type">char</span> name[<span class="number">30</span>];</span><br><span class="line">    <span class="keyword">mutable</span> <span class="type">int</span> access;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> data veep&#123;<span class="string">&quot;tom&quot;</span>, <span class="number">0</span>&#125;;</span><br><span class="line">veep.access++;<span class="comment">//allowed</span></span><br></pre></td></tr></table></figure>
-<h1 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h1><p>“::”放在变量前面，该运算符表示使用变量的全局版本</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cout &lt;&lt; ::value &lt;&lt; <span class="string">&quot;\n&quot;</span></span><br></pre></td></tr></table></figure>
-<p>使用namespace创建名称空间</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> Tom &#123;</span><br><span class="line">    <span class="type">int</span> pal;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> Jack &#123;</span><br><span class="line">    <span class="type">int</span> pal;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>名称空间可以是全局的，也可以位于另一个名称空间中，但<code>不能位于代码块中。</code></p>
-<p>名称空间是开放的，即可以把名称加入到已有的名称空间中：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> Tom &#123;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将会扩展上面的Tom命名空间</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="using声明和using编译指令"><a href="#using声明和using编译指令" class="headerlink" title="using声明和using编译指令"></a>using声明和using编译指令</h2><p>using声明使特定的标示符可用，using编译指令使整个名称空间可用</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Tom::func;<span class="comment">//using声明</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> Tom;<span class="comment">//using 编译指令</span></span><br></pre></td></tr></table></figure>
-<h3 id="using编译指令和using声明的区别"><a href="#using编译指令和using声明的区别" class="headerlink" title="using编译指令和using声明的区别"></a>using编译指令和using声明的区别</h3><p>如果某个名称已经在函数中声明了，则不能用using声明导入相同的名称。然而，使用了using编译指令(using namespace)时，将进行名称解析。如果使用using编译指令导入一个已经在函数中声明的名称，则局部名称将隐藏名称空间名。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> Jill&#123;</span><br><span class="line">    <span class="function"><span class="type">double</span> <span class="title">bucket</span><span class="params">(<span class="type">double</span> n)</span></span>&#123; ... &#125;</span><br><span class="line">    <span class="type">double</span> fetch;</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Hill</span>&#123; ... &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">char</span> fetch;<span class="comment">//全局fetch</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">using</span> <span class="keyword">namespace</span> Jill;</span><br><span class="line">    Hill Thrill;</span><br><span class="line">    <span class="type">double</span> water = <span class="built_in">bucket</span>(<span class="number">2</span>);</span><br><span class="line">    <span class="type">double</span> fetch;<span class="comment">//将会隐藏Jill::fetch</span></span><br><span class="line">    cin &gt;&gt; fetch;<span class="comment">//写局部fetch</span></span><br><span class="line">    cin &gt;&gt; ::fectch;<span class="comment">//写全局的fetch</span></span><br><span class="line">    cin &gt;&gt; Jill::fetch;<span class="comment">//写Jill::fetch</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">foom</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> fetch;<span class="comment">//将会隐藏全局fetch</span></span><br><span class="line">    <span class="keyword">using</span> Jill::fetch;<span class="comment">//错误</span></span><br><span class="line">    Hill top;<span class="comment">//错误</span></span><br><span class="line">    Jill::Hill hill;<span class="comment">//正确</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="关于命名空间的一些小tip"><a href="#关于命名空间的一些小tip" class="headerlink" title="关于命名空间的一些小tip"></a>关于命名空间的一些小tip</h3><ul>
-<li><p>可以在名称空间中使用using编译指令和using声明：</p>
-<ul>
-<li>```cpp<br>namespace myth{<pre><code>using Jill::fetch;
-using namespace std;
-</code></pre>}<br>//这时候访问fetch的两种方式:<br>cout &lt;&lt; myth::fetch;<br>cout &lt;&lt; Jill::fetch<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">* 可以为名称空间创建别名:</span><br><span class="line">  </span><br><span class="line">  * ```cpp</span><br><span class="line">    namespace my_very_favorite_things&#123; ... &#125;;</span><br><span class="line">    namespace mvft = my_very_favorite_things;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>未命名的名称空间：</p>
-<ul>
-<li><pre><code class="lang-cpp">namespace &#123;
-    int ice;
-    int bandycoot;
-&#125;
-</code></pre>
-</li>
-<li><p><code>不能在未命名的名称空间所属文件之外的其他文件中，使用该未命名名称空间中的名称</code>。未命名的名称空间中的变量相当于声明了链接性为内部的静态变量。</p>
-</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -2268,7 +2298,7 @@ using namespace std;
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -2321,13 +2351,13 @@ using namespace std;
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">155k</span>
+    <span title="Symbols count total">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">8:36</span>
+    <span title="Reading time total">10:11</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>

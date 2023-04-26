@@ -181,6 +181,1435 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/" class="post-title-link" itemprop="url">应用层</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-04-26 19:37:47 / Modified: 20:12:15" itemprop="dateCreated datePublished" datetime="2023-04-26T19:37:47+08:00">2023-04-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%BD%91/" itemprop="url" rel="index">
+                    <span itemprop="name">计网</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>11 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="域名系统"><a href="#域名系统" class="headerlink" title="域名系统"></a>域名系统</h1><p>域名系统(Domain Name System，DNS)是因特网使用的命令系统，用来把便于人们记忆的具有特定含义的主机名转换为便于机器处理的IP地址。</p>
+<p>DNS系统采用C/S模型，其协议运行在<code>UDP</code>之上，使用<code>53</code>号端口。</p>
+<h2 id="层次域名空间"><a href="#层次域名空间" class="headerlink" title="层次域名空间"></a>层次域名空间</h2><p>英特网采用层次树状结构的命名方法。采用这种命名方法，任何一个连接到因特网的主机或路由器，都有一个唯一的层次结构名称，即域名。</p>
+<p>域名又分为顶级域名、二级域名、三级域名等。每个域名都由<code>标号</code>序列组成，每个域名之间使用“.”分隔。</p>
+<p>例如www.google.com，其中com是顶级域名，google是二级域名，www是三级域名</p>
+<p>在域名中有以下几点需要注意：</p>
+<ul>
+<li><p>标号中的英文不区分大小写。</p>
+</li>
+<li><p>标号中除连字符(-)外不能使用其他的标点符号</p>
+</li>
+<li><p>每个标号不超过63个字符，多标号组成的完整域名最长不超过255个字符</p>
+</li>
+<li><p><code>级别最低的域名写在最左边，级别最高的顶级域名写在最右边</code></p>
+</li>
+</ul>
+<p>顶级域名分为以下三大类：</p>
+<ul>
+<li><p>国家顶级域名。国家和某些地区的域名，如“.cn”表示中国，“.us”表示美国，“.uk”代表英国，“.hk”代表中国香港特别行政区。</p>
+</li>
+<li><p>通过顶级域名。常用的有“.com”(公司)、“.net”(网络服务机构)、“.org”(非营利性组织)和“.gov”(美国政府部分)等。</p>
+</li>
+<li><p>基础结构域名。这种顶级域名只有一个，即`arpa，用于反向域名解析，因此又称反向域名</p>
+</li>
+</ul>
+<p><img title src="/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/域名空间结构.jpg" alt="b02501e61f0baf468dcdec51aedfcee0.jpeg" data-align="center" width="486"></p>
+<p>在域名系统中，每个域分别由不同的组织进行管理。每个组织都可以将它的域再分成一定数目的子域，并将这些子域委托给其他组织去管理。</p>
+<h2 id="域名服务器"><a href="#域名服务器" class="headerlink" title="域名服务器"></a>域名服务器</h2><h3 id="根域名服务器"><a href="#根域名服务器" class="headerlink" title="根域名服务器"></a>根域名服务器</h3><p>根域名服务器是最高层次的域名服务器，<code>所有的</code>根域名服务器都知道<code>所有的</code>顶级域名服务器的IP地址。</p>
+<p>根域名服务器是最重要的域名服务器，不管是哪个<code>本地域名服务器服务器</code>，若要对因特网上任何一个域名进行解析，只要自己无法解析，就<code>首先</code>求助于一个根域名服务器。</p>
+<p><code>需要注意的是</code>，根域名服务器用来管辖顶级域(如.com)，通常它并不直接把待查询的域名直接转换成IP地址，而直接告诉本地域名服务器下一步应当找哪个顶级域名服务器进行查询。</p>
+<h3 id="顶级域名服务器"><a href="#顶级域名服务器" class="headerlink" title="顶级域名服务器"></a>顶级域名服务器</h3><p>这些顶级域名服务器<code>负责管理</code>在该顶级域名服务器注册的<code>所有二级域名</code>。收到DNS查询请求时，就给出相应的回答(可能是最后的结果，也可能是下一步应当查找的域名服务器的IP地址)</p>
+<h3 id="授权域名服务器-权限域名服务器"><a href="#授权域名服务器-权限域名服务器" class="headerlink" title="授权域名服务器(权限域名服务器)"></a>授权域名服务器(权限域名服务器)</h3><p>每台主机都必须在授权服务器处登记。实际上，许多域名服务器都同时充当本地域名服务器和授权域名服务器。<code>授权域名服务器总是能将其管辖的主机名转换为该主机的IP地址</code></p>
+<h3 id="本地域名服务器"><a href="#本地域名服务器" class="headerlink" title="本地域名服务器"></a>本地域名服务器</h3><p>当一台主机发出DNS查询请求时，这个查询请求报文就发送给该主机的本地域名服务器。</p>
+<h1 id="域名解析过程"><a href="#域名解析过程" class="headerlink" title="域名解析过程"></a>域名解析过程</h1><p>域名解析是指把域名映射成IP地址或把IP地址映射成域名的过程。前者称为<code>正向解析</code>，后者称为<code>反向解析</code>。</p>
+<p>当一个DNS服务器收到收到DNS查询结果时，它能将该DNS信息缓存在高速缓存中。DNS服务器将在一段时间后丢弃高速缓存中的信息。</p>
+<p>域名解析有两种方式：递归查询和递归与迭代想结合的查询。</p>
+<h3 id="递归查询"><a href="#递归查询" class="headerlink" title="递归查询"></a>递归查询</h3><p><img title src="/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/递归查询.jpg" alt="3d9502fb237133b7bb0d61c018010372.jpeg" data-align="center" width="416"></p>
+<p>如果本地主机所询问的本地域名服务器不知道被查询域名的IP地址，那么本地域名服务器就以DNS客户的身份，向根域名服务器继续发出查询请求报文。然后根域名服务器继续向顶级域名发出查询请求。</p>
+<p>在这种情况下，本地域名服务器只需要向根域名服务器查询一次，后面的几次查询都是递归地在其他几个域名服务器之间进行的。本地域名服务器从根域名服务器得到所需的IP地址。</p>
+<h3 id="迭代查询"><a href="#迭代查询" class="headerlink" title="迭代查询"></a>迭代查询</h3><p><img title src="/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/递归与迭代查询.jpg" alt="50571c98a84e4b3ae3e42922c98484ea.jpeg" data-align="center" width="422"></p>
+<p>当根域名服务器收到本地域名服务器发出的迭代查询请求报文时，要么给出要查询的IP地址，要么告诉本地域名服务器顶级域名服务器的IP地址，然后让本地域名服务器向这个顶级域名服务器进行后续的查询。同样，顶级域名服务器收到查询报文后，要么给出最后的IP地址，要么给出本地域名服务器权限域名服务器的IP地址，然后本地域名服务器向权限域名服务器发出查询然后的到最后结果。</p>
+<h1 id="电子邮件系统"><a href="#电子邮件系统" class="headerlink" title="电子邮件系统"></a>电子邮件系统</h1><h2 id="电子邮件系统的组成结构"><a href="#电子邮件系统的组成结构" class="headerlink" title="电子邮件系统的组成结构"></a>电子邮件系统的组成结构</h2><p>一个电子邮件系统有三个最重要的组成构件：用户代理(User Agent)、邮件服务器和电子邮件使用的协议。</p>
+<p><img src="/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/电子邮件系统结构.jpg" title alt="4e673307b243d2ebdcc974913fa63a9a.jpeg" data-align="center"></p>
+<h3 id="用户代理"><a href="#用户代理" class="headerlink" title="用户代理"></a>用户代理</h3><p>用户与电子邮件系统的接口。用户代理使用户能够通过一个很友好的接口发送和接收邮件，通常情况下，用户代理就是一个运行在PC上的程序。</p>
+<h3 id="邮件服务器"><a href="#邮件服务器" class="headerlink" title="邮件服务器"></a>邮件服务器</h3><p>邮件服务器采用C/S工作方式，但它能够同时充当客户和服务器。当邮件服务器作为邮件的接收方时充当服务器，当邮件服务器作为邮件的发送方时充当客户</p>
+<h3 id="邮件发送协议和读取协议"><a href="#邮件发送协议和读取协议" class="headerlink" title="邮件发送协议和读取协议"></a>邮件发送协议和读取协议</h3><p>邮件发送协议用于用户代理向邮件服务器发送邮件或在邮件服务器之间发送邮件，通常使用的是SMTP；邮件读取协议用于用户代理从邮件服务器读取邮件，如POP3。</p>
+<p>SMTP采用的是Push的通信方式，即在用户代理向邮件服务器发送邮件及在邮件服务器之间发送邮件时，使用SMTP将邮件推送到服务器端。</p>
+<p>POP3采用的是Pull的通信方式，即用户读取邮件时，用户代理向邮件服务器发出请求，拉取用户邮箱中的邮件</p>
+<h2 id="电子邮件格式与MIME"><a href="#电子邮件格式与MIME" class="headerlink" title="电子邮件格式与MIME"></a>电子邮件格式与MIME</h2><h3 id="电子邮件格式"><a href="#电子邮件格式" class="headerlink" title="电子邮件格式"></a>电子邮件格式</h3><p>一个电子邮件分为信封和内容两大部分，邮件内容又分为首部和主体两部分。<code>用户写好首部后，邮件系统自动地将信封所需的信息提取出来并写在信封上</code>，用户不需要亲自填写信封上的信息</p>
+<p>邮件内容的首部包含一些首部行，每个首行由一个关键字后跟冒号再后跟值组成。有些关键字是必需的，有些是可选的。</p>
+<p>To是<code>必需</code>的关键字，后面跟<code>一个或多个</code>收件人的电子邮件地址。电子邮件地址的规定格式为：收件人邮箱名@邮箱所在主机的域名。例如xxxx@xxx.com</p>
+<p>From是<code>必填</code>关键字，但它通常<code>由邮件系统自动填入</code>。</p>
+<p>Subject是<code>可选</code>关键字，是邮件的主题，反映了邮件的主要内容。</p>
+<p>邮件内容的首部与主体之间用一个空行进行分割。</p>
+<h3 id="多用途网络邮件扩充-MIME"><a href="#多用途网络邮件扩充-MIME" class="headerlink" title="多用途网络邮件扩充(MIME)"></a>多用途网络邮件扩充(MIME)</h3><p>由于<code>SMTP只能传送一定长度的ASCII码</code>，许多其他国家的文字和一些视频、二进制文件无法传送，因此提出了多用途网络邮件扩充(Multipurpose Internet Mail Extensions, MIME)</p>
+<p>MIME并未改动SMTP或取代它。MIME继续使用目前的格式，但增加了邮件主体的结构，并定义了传送非ASCII码的编码规则。也就是说，<code>MIME邮件可以在现有的电子邮件程序的协议下传送</code></p>
+<p><img title src="/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/SMTP和MIME.jpg" alt="8eef9850688ce5c36f7286f754c199a0.jpeg" data-align="center" width="462"></p>
+<p>MIME主要包括以下三个内容：</p>
+<p>1、5个新的邮件首部字段，包括MIME版本、内容描述、内容标识、内容传送编码和内容类型</p>
+<p>2、定义了许多邮件内容的格式，对多媒体电子邮件的表示方法进行了标准化</p>
+<p>3、定义了传送编码，可对任何内容格式进行转换，而不会被邮件系统改变</p>
+<h2 id="SMTP和POP3"><a href="#SMTP和POP3" class="headerlink" title="SMTP和POP3"></a>SMTP和POP3</h2><h3 id="SMPT"><a href="#SMPT" class="headerlink" title="SMPT"></a>SMPT</h3><p>简单邮件传输协议(Simple Mial Transfer Protocol, SMTP)是一种提供可靠且有效的电子邮件传输的协议，他控制两个互相通信的SMTP进程交换信息。SMTP<code>使用TCP连接，端口号为25</code></p>
+<h4 id="连接建立"><a href="#连接建立" class="headerlink" title="连接建立"></a>连接建立</h4><p>发件人的邮箱发送到发送方的邮件服务器的邮件缓存后，SMTP客户就每隔一定时间对邮件缓存扫描一次。如发现有邮件，就使用SMTP与接收方邮件服务器建立TCP连接。连接建立后，<code>接收方SMTP服务器</code>就发出220 service ready。然后SMTP发送方向SMTP接收方发出HELO命令，附上发送方的主机名。</p>
+<p>SMTP<code>不使用中间邮件服务器</code>。TCP连接总是在发送方和接收方这两个邮件服务器之间直接建立，而不管他们相隔多远。接收方的邮件服务器因故障暂时不能建立连接时，发送方的邮件服务器只能等待一段时间后再次尝试连接。</p>
+<h4 id="邮件传送"><a href="#邮件传送" class="headerlink" title="邮件传送"></a>邮件传送</h4><p>连接建立后，就可开始传送邮件。邮件的传送从MAIL命令开始，MAIL命令后面有发件人的地址。如MAIL FROM:<a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#120;&#120;&#x78;&#64;&#120;&#x78;&#120;&#46;&#99;&#x6f;&#109;">&#120;&#120;&#x78;&#64;&#120;&#x78;&#120;&#46;&#99;&#x6f;&#109;</a>。若SMTP服务器已准备好接收邮件，则回答250OK。接着SMTP客户端发送一个或多个RCPT(收件人recipient的缩写)，格式为RCPT TO: &lt;收件人地址&gt;。每发送一个RCPT命令，都应有相应的信息从SMTP服务器返回，如250 OK或550 No such user here</p>
+<p>RCPT命令的作用是，先弄清接收方系统是否已做好接收邮件的准备，然后才发送邮件。</p>
+<p>获得OK的回答后，客户端就使用DATA命令，表示要开始传输邮件的内容。正常情况下，SMTP服务器端回复是354 Start mail input; end with <CRLF>.<CRLF>。<CRLF>表示回车换行。此时SMTP客户端就可开始传送邮件内容，并用<CRLF>.<CRLF>(两个回车，中间一个点)表示邮件内容的接收</CRLF></CRLF></CRLF></CRLF></CRLF></p>
+<h4 id="连接释放"><a href="#连接释放" class="headerlink" title="连接释放"></a>连接释放</h4><p>邮件发送完毕后，SMTP客户端发送QUIT命令，SMTP服务器端返回的信息是221(服务关闭)，表示SMTP同意释放连接。邮件传送的全过程就此结束</p>
+<h3 id="POP3"><a href="#POP3" class="headerlink" title="POP3"></a>POP3</h3><p>邮局协议(Post Office Protocol, POP)是一个非常简单但功能有限的邮件读取协议，现在使用的是它的第三个版本POP3。当用户读取邮件时，用户代理向邮件服务器发出请求，拉取用户邮箱中的邮件。</p>
+<p>POP也使用C/S的工作方式，在<code>传输层使用TCP，端口号为110</code>。POP有两种工作方式——下载并保留和下载并删除。在下载并保留方式下，用户从邮件服务器上读取邮件后，邮件依然会保存在邮件服务器上，而使用下载并删除的方式时，邮件一旦被读取，就被从邮件服务上删除</p>
+<p>另一个邮件接收协议是网际报文存取协议(IMAP)，它要比POP复杂得多，但目前还只是因特网的建议标准。</p>
+<p>此外，随着万维网的发展，目前出现了很多基于万维网的电子邮件。这种电子邮件的特点是浏览器与邮件服务器之间邮件<code>发送或接收</code>使用的是HTTP，而仅在不同邮件服务器之间传送邮件时才使用SMTP。</p>
+<h1 id="常用应用层协议端口使用情况"><a href="#常用应用层协议端口使用情况" class="headerlink" title="常用应用层协议端口使用情况"></a>常用应用层协议端口使用情况</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>应用程序</th>
+<th>FTP数据连接</th>
+<th>FTP控制连接</th>
+<th>TELNET</th>
+<th>SMTP</th>
+<th>DNS</th>
+<th>TFTP</th>
+<th>HTTP</th>
+<th>POP3</th>
+<th>SNMP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>使用协议</td>
+<td>TCP</td>
+<td>TCP</td>
+<td>TCP</td>
+<td>TCP</td>
+<td>UDP</td>
+<td>UDP</td>
+<td>TCP</td>
+<td>TCP</td>
+<td>UDP</td>
+</tr>
+<tr>
+<td>端口号</td>
+<td>20</td>
+<td>21</td>
+<td>23</td>
+<td>25</td>
+<td>53</td>
+<td>69</td>
+<td>80</td>
+<td>110</td>
+<td>161</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/" class="post-title-link" itemprop="url">传输层</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-04-24 10:55:25 / Modified: 20:00:38" itemprop="dateCreated datePublished" datetime="2023-04-24T10:55:25+08:00">2023-04-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%BD%91/" itemprop="url" rel="index">
+                    <span itemprop="name">计网</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>5k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>17 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="传送层的功能"><a href="#传送层的功能" class="headerlink" title="传送层的功能"></a>传送层的功能</h1><p>传输层属于面向通信部分的最高层，同时也是用户功能中的最底层。(<code>注意通信子网没有传输层</code>)</p>
+<h2 id="复用和分用"><a href="#复用和分用" class="headerlink" title="复用和分用"></a>复用和分用</h2><p>复用是指发送方不同的应用进程都可使用同一个传输层协议传送数据：分用是指接收方的传输层在剥去报文的首部后能够把这些数据正确交付到目的应用进程。</p>
+<h1 id="传输层的寻址和端口"><a href="#传输层的寻址和端口" class="headerlink" title="传输层的寻址和端口"></a>传输层的寻址和端口</h1><h2 id="端口的作用"><a href="#端口的作用" class="headerlink" title="端口的作用"></a>端口的作用</h2><p>端口是传输层服务访问点，<code>端口标识的是主机中的应用进程</code>。</p>
+<p>数据链路层的服务访问点(SAP)是MAC，网络层的SAP是IP地址，传输层的SAP是端口。</p>
+<h2 id="端口号"><a href="#端口号" class="headerlink" title="端口号"></a>端口号</h2><p>端口号长度为16bit，能够表示65536(0~65535)个不同的端口号。端口号只有本地意义，即端口号只表示本计算机应用层中的各进程，在因特网中不同计算机的相同端口号是没有联系的。根据端口号范围可将端口分为两类：</p>
+<p>1、服务端使用的端口号。这里又分为两类，最重要的一类是熟知端口号，数值为0～1023，IANA(互联网地址指派机构)把这些端口指派给了TCP/IP最重要的一些应用程序，让所有的用户都知道。另一类称为登记端口号，数值为1024～49151。它是供没有熟知端口号的应用程序使用的。使用这类端口号必须在IANA登记。</p>
+<p>2、客户端使用的端口号，数值为49152～65535。这类端口号仅在客户进程运行时才动态选择，因此又称短暂端口号(也称临时端口)。通信结束后，刚用过的客户端口号就不复存在，从而这个端口号就可提供其他客户进程使用。</p>
+<h2 id="套接字"><a href="#套接字" class="headerlink" title="套接字"></a>套接字</h2><p>在网络中采用发送发和接收方的套接字(socket)组合来识别端点。<code>套接字实际上是一个通信端点</code>，套接字=(主机IP地址，端口号)。它唯一地标识网络中的一台主机和其上的一个应用(进程)</p>
+<h1 id="无连接服务与面向连接服务。"><a href="#无连接服务与面向连接服务。" class="headerlink" title="无连接服务与面向连接服务。"></a>无连接服务与面向连接服务。</h1><p>TCP/IP协议族在IP层之上使用了两个传输协议：一个是面向连接的传输控制协议(TCP)，采用TCP时，传输层向上提供的是一条<code>全双工</code>的可靠逻辑信道；另一个是无连接的用户数据报协议(UDP)，采用UDP时，传输层向上提供的是一条不可靠的逻辑信道。<code>TCP不提供广播和组播服务</code></p>
+<h1 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h1><p>UDP只是做了传输协议能够做的最少工作，它仅在IP和数据报服务之上增加了两个最基本的服务：复用和分用以及差错检查。</p>
+<p>UDP具有以下优点：</p>
+<p>1、UDP<code>无须建立连接</code>，因此UDP不会引入建立连接的时延。</p>
+<p>2、<code>无连接状态</code>。UDP不维护连接状态。</p>
+<p>3、分组首部开销小，TCP有20B的首部开销，而UDP只有8B的开销。</p>
+<p>4、应用层能更好地控制要发送的数据和发送时间。UDP<code>没有拥塞控制</code>，因此网络中的拥塞不会影响主机的发送效率。某些实时应用要求以更稳定的速度发送，能容忍一些数据的丢失，但不允许有较大的时延，而UDP正好满足这些应用的需求。</p>
+<p>UDP是面向报文的。发送发UDP对应用层交下来的报文，在添加首部后就向下交付给IP层，既不合并，也不拆分，而是保留这些报文的边界；接收方UDP对IP层交上来UDP用户数据报在去除首部后就原封不动地交给上层应用程序，<code>一次交付一个完整的报文</code>。因此报文不可分割，是UDP数据报处理的最小单位。</p>
+<h2 id="UDP的首部格式"><a href="#UDP的首部格式" class="headerlink" title="UDP的首部格式"></a>UDP的首部格式</h2><p><img src="/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/udp.jpg" title alt="2b8fed7f7a91118fbcbef80137bcebc8.jpeg" data-align="center"></p>
+<p>UDP首部有8B，由4个字段组成，每个字段的长度都是2B。</p>
+<p>1、源端口。源端口号，在需要对方回信时选用，不需要时可用0.</p>
+<p>2、目的端口。目的端口号，这在终点交付报文时必须使用到。</p>
+<p>3、长度。UDP数据报的长度(<code>包括首部和数据</code>)，其最小值为8(仅有首部)</p>
+<p>4、校验和。校验首部和数据部分，检测UDP数据报在传输中是否有错。有错就丢弃。该字段是可选的，当源主机不想计算校验和，则直接令该字段为0。</p>
+<p>如果接收方UDP发现收到的报文中的目的端口号不正确(即不存在对应端口号的应用程序)，那么就丢弃该报文，并由ICMP发送“端口不可达”差错报文给发送方。</p>
+<h2 id="UDP校验"><a href="#UDP校验" class="headerlink" title="UDP校验"></a>UDP校验</h2><p>在计算校验和的时，要在UDP数据报之前增加12B的伪首部，得到临时的UDP数据报。校验和就是按照这个临时的UDP数据报计算的。<code>伪首部既不向下传送也不向上传递</code>。<img src="/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/udp校验.jpg" title alt="c557e6b203553e314753972f16d00b78.jpeg" data-align="center"></p>
+<p>发送方首先把全0放入校验和字段并添加伪首部，然后把UDP数据报视为许多16位的字连接起来。<code>若UDP数据报的数据部分不是偶数字节，则要在数据部分末尾添加一个全0字节</code>(次字节最后不会发送，仅在计算校验和时使用)。计算校验和时，采用二进制反码计算再求反码，最后结果作为校验和。</p>
+<p>接收方把收到的UDP数据报加上伪首部(如果不是偶数个字节，那么还需要补上全0字节)，按二进制反码计算出校验和。当无差错时结果应全为1，否则表明有差错出现。</p>
+<h1 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h1><h2 id="TCP协议的特点"><a href="#TCP协议的特点" class="headerlink" title="TCP协议的特点"></a>TCP协议的特点</h2><p>1、TCP是面向连接的传输层协议</p>
+<p>2、每条TCP连接只能是点对点的(一对一)</p>
+<p>3、TCP提供可靠的交付服务，保证传送数据的无差错、不丢失、不重复且有序</p>
+<p>4、TCP<code>提供全双工通信</code>，为此TCP连接的两端都设有发送缓存和接受缓存，用来临时存放双向通信的数据</p>
+<p>5、TCP是面向字节流的，TCP把应用程序交下来的数据仅视为一连串的无结构的字节流</p>
+<h2 id="TCP数据报"><a href="#TCP数据报" class="headerlink" title="TCP数据报"></a>TCP数据报</h2><p>TCP传送的数据单元称为报文段，其首部的前20B是固定的。TCP报文段的首部最短为20B，后面有4N字节是根据需要而增加的选项，通常为长度的整数倍。</p>
+<p><img src="/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/tcp.jpg" title alt="536fcd6dbc7d56f295a5364e1186693e.jpeg" data-align="center"></p>
+<ul>
+<li><p>源端口和目的端口字段。各占2B。</p>
+</li>
+<li><p>序号字段。占4B。TCP连接传送的数据流中的每个字节都编上一个序号。<code>序号字段的值指的是本报文段所发送的数据的第一个字节的序号</code></p>
+</li>
+<li><p>确认号字段。占4B，是期望收到对方的下一个报文段的数据的第一个字节的序号。若确认号为N，则表明到序号N-1为止的所有数据都已正确收到</p>
+</li>
+<li><p>数据偏移(即首部长度)。占4位，数据偏移的单位为4B。因此当字段的值为15时，达到TCP首部的最大长度60B</p>
+</li>
+<li><p>保留字段。占6位，保留为今后使用，但目前应置值为0，该字段可以忽略不计。</p>
+</li>
+<li><p>紧急位URG。URG=1时，表明紧急指针字段有效。它告诉系统报文段中有紧急数据，应尽快传送，但URG需要和紧急指针配套使用，即数据<code>从第一个字节</code>到紧急指针所指字节就是紧急数据。</p>
+</li>
+<li><p>确认位ACK。只有当ACK=1时确认号字段才有效。<code>在建立连接后所有传送的报文都必须把ACK置为1</code></p>
+</li>
+<li><p>推送位PSH(Push)。接收TCP收到PSH=1的报文段，就尽快交付给接收应用程序，而不再等到整个缓存都填满后再向上交付。</p>
+</li>
+<li><p>复位位RST(Reset)。RST=1时，表明TCP连接中出现严重的差错，必须释放连接，然后再重新建立传输连接。</p>
+</li>
+<li><p>同步位SYN，SYN=1时表示这是一个连接请求或连接接收报文</p>
+</li>
+<li><p>终止位FIN(Finish)。用来释放一个连接。FIN=1表明此报文段的发送方的数据已发送完毕，并要求释放传输连接。</p>
+</li>
+<li><p>窗口字段。占2B。它指出现在允许对方发送的数据量，窗口值作为接收方让发送方设置其发送窗口的依据，单位为字节。</p>
+</li>
+<li><p>校验和。占2B。校验和字段检验的范围包括<code>首部和数据两部分</code>。在计算校验和时，和UDP一样，要在TCP报文段的前面加上12B的伪首部(只需要将UDP伪首部的第4个字段，即协议字段的17改成6，其他的和UDP一样)</p>
+</li>
+<li><p>紧急指针字段。占16位，指出在本报文段中紧急数据共有多少字节(紧急数据放在本报文段数据的最前面)</p>
+</li>
+<li><p>选项字段。长度可变。TCP最初之规定了一种选项，即最大报文段长度(Maximum Segment Size, MSS)。MSS是TCP报文段中的数据字段的最大长度。</p>
+</li>
+<li><p>填充字段，填充字段。这是为了整个首部长度是4B的整数倍。</p>
+</li>
+</ul>
+<h2 id="TCP连接管理"><a href="#TCP连接管理" class="headerlink" title="TCP连接管理"></a>TCP连接管理</h2><p>TCP是面向连接的协议，因此每个TCP连接都有三个阶段：连接建立、数据传送和连接释放。在TCP连接建立的过程中，要解决以下三个问题：</p>
+<p>1、要使每一方都能够确知对方的存在。</p>
+<p>2、要允许双方协商一些参数(如最大窗口值，是否使用窗口扩大哦选项、时间戳选项及服务质量等)</p>
+<p>3、能够对运算实体资源(如缓存大小、连接表中的项目等)进行分配</p>
+<p>TCP连接的端口称为套接字(socket)。每条TCP连接唯一地被通信两端的两个套接字确定。TCP连接中，主动发起连接建立的应用进程称为客户机(Client)，而被动等待建立的应用程序称为服务器(Server)</p>
+<h3 id="连接的建立"><a href="#连接的建立" class="headerlink" title="连接的建立"></a>连接的建立</h3><p>TCP连接的建立要经历以下3个步骤，通常称为三次握手。</p>
+<p><img src="/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/tcp三次握手.jpg" title alt="47d7cdc1abe00d8c2c24b70a4187972b.jpeg" data-align="center"></p>
+<p>第一步：客户机TCP首先向服务器的TCP发送一个连接请求报文段。这个特殊的报文段中不含有应用层数据，其首部中的ACK=0，SYN=1。<code>另外，客户机会随机选择一个起始序号seq=x</code>(连接请求报文不携带数据，但要消耗一个序号)</p>
+<p>第二步：<code>为该TCP连接分配TCP缓存和变量</code>。在确认报文段中，<code>SYN和ACK位都被置为1</code>，确认号字段的值为x+1，<code>并且服务器随机产生起始序号seq=y</code>(确认报文不携带数据，但也要消耗一个序号)</p>
+<p>第三部：当客户机收到确认报文段，还要向服务器给出确认，<code>并且也要给连接分配缓存和变量</code>。这个报文段的ACK=1，seq=x+1。<code>该报文段可以携带数据</code></p>
+<p><code>由于服务器端的资源是在完成第二次握手时分配的，所以服务器易收到SYN洪泛攻击。</code></p>
+<h3 id="TCP连接的释放"><a href="#TCP连接的释放" class="headerlink" title="TCP连接的释放"></a>TCP连接的释放</h3><p>TCP连接释放的过程通常称为四次挥手</p>
+<p><img src="/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/tcp四次挥手.jpg" title alt="6b05fd7b1e103d89e8b7f3c89c52319e.jpeg" data-align="center"></p>
+<p>第一步：客户机打算关闭连接时，向其TCP发送一个连接释放报文段，并停止发送数据。该报文段的ACK=1，FIN=1，seq=u，<code>它等于前面已经发送过的数据的最后一个字节的序号+1</code>(FIN报文段即使不携带数据，也要消耗一个序号)。<code>发送FIN报文时，发送FIN的一端不能再发送数据，即关闭了其中一条数据通路，但对方还可以发送数据</code></p>
+<p>第二步：服务器收到连接释放报文段后发出确认，确认号是ack=u+1，<code>而这个报文段的自己的序号v，等于它前面已传送过来的数据的最后一个字节的序号+1</code>。此时，从客户机到服务器这个方向的连接就释放了，<code>TCP连接处于半关闭状态</code>。但服务器若发送数据，客户机仍要接收，即从服务器到客户机这个方向的连接并未关闭。</p>
+<p>第三步：若服务器已经没有要向客户机发送的数据，就通知TCP释放连接，此时其发出FIN=1的连接释放报文段。</p>
+<p>第四步：客户机收到释放连接报文段后，必须发出确认。在确认报文段中，ACK=1。<code>此时TCP连接还未释放，必须经过时间等待计时器设置的时间2MSL(Maximum Segment Lifetime,最大分节生命期后，这是一个IP数据包在网络上生存的最长时期)，客户端才进入连接关闭状态</code></p>
+<h2 id="TCP可靠传输"><a href="#TCP可靠传输" class="headerlink" title="TCP可靠传输"></a>TCP可靠传输</h2><p>TCP提供的可靠传输服务保证接收方进程从缓冲区读出的字节流与发送方发出的字节流完全一样。TCP使用了校验、序号、确认和重传等机制来达到这一目的。</p>
+<h3 id="序号"><a href="#序号" class="headerlink" title="序号"></a>序号</h3><p>TCP首部的序号字段用来保证数据能有序提交给应用层，TCP把数据视为一个无结构但有序的字节流，序号建立在传送的字节流之上，而不建立在报文段之上。</p>
+<h3 id="确认"><a href="#确认" class="headerlink" title="确认"></a>确认</h3><p><code>TCP默认使用累计确认，即TCP只确认数据流中至第一个丢失字节为止的字节</code>，例如，接收方收到了发送方字节的0～2字节和6～7字节。由于某种原因，接收方还未收到字节3～5的报文段，此时B仍在等待字节3(和其后面的字节)，因此接收方到发送方的下一个报文段将确认号字段置为3。</p>
+<h3 id="重传"><a href="#重传" class="headerlink" title="重传"></a>重传</h3><p>有两种事件会导致TCP对报文段进行重传</p>
+<h4 id="超时"><a href="#超时" class="headerlink" title="超时"></a>超时</h4><p>TCP每发送一个报文段，就对这个报文段设置一次计时器。计时器设置的重传时间到期但还未收到确认时，就要重传这一报文段。</p>
+<h4 id="冗余ACK-冗余确认"><a href="#冗余ACK-冗余确认" class="headerlink" title="冗余ACK(冗余确认)"></a>冗余ACK(冗余确认)</h4><p>超时触发重传存在的一个问题时超时周期往往太长，冗余ACK可以解决这一问题。冗余ACK就是再次确认某个报文段的ACK。TCP规定每当比期望序号大的失序报文段到达时，就发送一个冗余ACK。TCP规定当发送方收到对同一个报文段的3个冗余ACK时(<code>总共接收4个ACK</code>)，就可以认为跟在这个被报文段已经丢失。这种技术通常称为快速重传。</p>
+<h2 id="TCP流量控制"><a href="#TCP流量控制" class="headerlink" title="TCP流量控制"></a>TCP流量控制</h2><p>在通信过程中，接收方根据自己接收缓存的大小，动态地<code>调整发送方的</code>发送窗口大小，这称为<code>接收窗口rwnd</code>，即调整TCP报文段首部中的“窗口”字段值，来限制发送方向网络注入报文的速率。同时，<code>发送方</code>根据其对当前网络拥塞程序的估计而确定的窗口值，这称为<code>拥塞窗口cwnd</code>。<code>发送方的发送窗口的实际大小取决于rwnd和cwnd的最小值。</code></p>
+<p>数据链路层的滑动窗口协议的窗口大小不能动态变化，传输层的则可以动态变化</p>
+<h2 id="TCP拥塞控制"><a href="#TCP拥塞控制" class="headerlink" title="TCP拥塞控制"></a>TCP拥塞控制</h2><p>出现拥塞时，端点并不了解到拥塞发生的细节，对通信连接的端点来说，拥塞往往表现为通信时延的增加。</p>
+<p><code>拥塞控制与流量控制的区别</code>：拥塞控制是让网络能够成熟现有的网络负荷，是一个全局性的过程，设计所有的主机、所有的路由器。流程控制往往是指点对点的通信量的控制，它所要做的是抑制发送端发送数据的速率，以便使接收端来得及接收。</p>
+<h3 id="慢开始和拥塞控制"><a href="#慢开始和拥塞控制" class="headerlink" title="慢开始和拥塞控制"></a>慢开始和拥塞控制</h3><h4 id="慢开始算法"><a href="#慢开始算法" class="headerlink" title="慢开始算法"></a>慢开始算法</h4><p>在TCP刚刚连接好并开始发送TCP报文段时，<code>先令拥塞窗口cwnd=1，即一个最大报文段长度MSS</code>。每<code>收到一个对新报文段的确认后</code>，将cwnd加1，即一个最大报文段长度MSS。在经过一个RTT后(也称一个传输轮次)，拥塞窗口的大小变为一个轮次前的两倍(一个传输轮次中包含多次发送和确认的过程)。</p>
+<p>使用慢开始算法后，每经过一个传输轮次(即往返时延RTT)，拥塞窗口cwnd就会加倍。这样，慢开始一直把拥塞窗口cwnd增大到一个规定的慢开始门限ssthread(域值)，然后改用拥塞避免算法。</p>
+<h4 id="拥塞避免算法"><a href="#拥塞避免算法" class="headerlink" title="拥塞避免算法"></a>拥塞避免算法</h4><p>发送端的拥塞窗口cwnd每<code>经过一个往返时延RTT</code>就增加一个MSS的大小，而每当出现一次超时(网络拥塞)时，令慢开始门限ssthread等于当前cwnd的一半。</p>
+<p>当拥塞窗口等于阈值时，既可以使用慢开始算法，又可以使用拥塞避免算法(<code>通常做法</code>)。</p>
+<h4 id="网络拥塞的处理"><a href="#网络拥塞的处理" class="headerlink" title="网络拥塞的处理"></a>网络拥塞的处理</h4><p>网络出现拥塞时，无论是在慢开始阶段还是在拥塞避免阶段，只要发送发检测到超时事件的发生，就要把慢开始门限ssthread设置为出现拥塞时的发送方的cwnd值的一半(但不能小于2)。然后把拥塞窗口cwnd重新设置为1，执行慢开始算法。</p>
+<p>注意在慢开始阶段cwnd不能跃过ssthread值，也就是说当cwnd * 2 &gt; ssthread时，cwnd = ssthread。</p>
+<p>一个例子：</p>
+<p><img src="/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/慢开始和拥塞控制.jpg" title alt="6e8a9b01fa8b423a25e3b7715cd528b7.jpeg" data-align="center"></p>
+<h3 id="快重传和快恢复"><a href="#快重传和快恢复" class="headerlink" title="快重传和快恢复"></a>快重传和快恢复</h3><h4 id="快重传"><a href="#快重传" class="headerlink" title="快重传"></a>快重传</h4><p>当发送方连续收到三个重复的ACK报文时，直接重传对方尚未收到的报文段，而不必等待那个报文段设置的重传计时器超时。</p>
+<h4 id="快恢复"><a href="#快恢复" class="headerlink" title="快恢复"></a>快恢复</h4><p>发送端收到连续三个冗余ACK(即重复确认)时，把慢开始门限ssthread设置为出现拥塞时发送方cwnd的一半，<code>把cwnd的值设置为慢开始门限ssthread改变后的数值(不是变为1)</code>，然后开始执行拥塞避免算法(每过一个RTT，cwnd值加1)，使拥塞窗口缓慢地线性增大。</p>
+<p>由于跳过了cwnd从1开始的慢开始过程，所以被称为快恢复。</p>
+<p>一个例子：</p>
+<p><img src="/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/快恢复.jpg" title alt="176defecda15addb2938ae91681fc889.jpeg" data-align="center"></p>
+<p>虚线为慢开始的处理过程</p>
+<p>在流量控制中，发送方发送数据的量由接收方决定，而在拥塞用控制中，则由发送方自己通过检测网络状况决定。</p>
+<p>实际上，慢开始、拥塞避免、快重传和快恢复几种算法应是同时应用在拥塞控制机制中，<code>当发送方检测到超时，就采用慢开始和拥塞避免，当发送方接收到冗余ACK时，就采用快重传和快恢复</code></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2023/04/23/cs_network/%E7%BD%91%E7%BB%9C%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/04/23/cs_network/%E7%BD%91%E7%BB%9C%E5%B1%82/" class="post-title-link" itemprop="url">网络层</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-04-23 11:44:20" itemprop="dateCreated datePublished" datetime="2023-04-23T11:44:20+08:00">2023-04-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-04-24 19:46:22" itemprop="dateModified" datetime="2023-04-24T19:46:22+08:00">2023-04-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%BD%91/" itemprop="url" rel="index">
+                    <span itemprop="name">计网</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>8.5k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>28 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="网络层的功能"><a href="#网络层的功能" class="headerlink" title="网络层的功能"></a>网络层的功能</h1><h2 id="异构网络互联"><a href="#异构网络互联" class="headerlink" title="异构网络互联"></a>异构网络互联</h2><p>网络层所要完成的任务之一就是使异构网络实现互联，所谓网络互联，是指将两个以上的计算机网络使用中间设备相互连接起来，中间设备又称为中间系统或中继系统</p>
+<h2 id="路由与转发"><a href="#路由与转发" class="headerlink" title="路由与转发"></a>路由与转发</h2><p>路由器主要完成两个功能：一是路由选择（确定哪一条路径），二是分组转发（当一个分组到达时所采取的动作）。前者是根据特定的路由选择协议构造出路由表，同时经常或定期地和相邻路由器交换路由信息而不断地更新和维护路由表。后者处理通过路由器的数据流，关键操作是转发表查询、转发及相关的队列管理和任务调度等。</p>
+<p>路由表根据路由选择算法得到，而转发表是从路由表得出的。转发表的结构应当使查找过程最优化，路由表则需要对网络拓扑变化的计算最优化。</p>
+<h2 id="拥塞控制"><a href="#拥塞控制" class="headerlink" title="拥塞控制"></a>拥塞控制</h2><p>在通信子网中，因出现过量的分组而引起网络性能下降的现象称为拥塞。单一地增加资源并不能解决拥塞。</p>
+<p>拥塞控制不同于流量控制，流量控制所要做的是抑制发送端发送数据的速率，而拥塞控制必须确保通信子网能够传送待传送的数据，是一个全局性的问题</p>
+<p>拥塞控制的方法有两种：</p>
+<ul>
+<li><p>开环控制(对手工操作开)。在设计网络时事先将有关发生拥塞的因素考虑周到，力求网络在工作时不产生拥塞。这是一种静态的预防方法，一旦整个系统启动并运行，中途就不再修改。开环控制的手段包括确定何时可接收新流量、何时可丢弃分组及丢弃那些分组，确定何种调度决策等。所有这些手段的共性是，<code>在做决定时不考虑当前网络的状态。</code></p>
+</li>
+<li><p>闭环控制(对手工操作闭)。事先不考虑有关发生拥塞的各种因素，采用监测网络系统去监视，及时监测哪里发生了拥塞，然后调整网络系统的运行。闭环控制基于反馈环路的概念，是一种动态的方法。</p>
+</li>
+</ul>
+<h1 id="IPv4"><a href="#IPv4" class="headerlink" title="IPv4"></a>IPv4</h1><p>一个IP分组由首部和数据两部分组成。首部前一部分的长度固定，共20B，是所有IP分组必须具有的。后面是一些可选字段，其长度可变。</p>
+<p><code>IP数据报的格式如下：</code></p>
+<p><img src="/2023/04/23/cs_network/%E7%BD%91%E7%BB%9C%E5%B1%82/ipv4.jpg" title alt="cc66143dbe9f2a4a0d3f775a66233312.png" data-align="center"></p>
+<ul>
+<li><p>版本：指IP的版本，目前广泛使用的版本号为4</p>
+</li>
+<li><p>首部长度：占4位，以32位（4B）为单位，最大值为60B（15*4B）。最常用的首部长度为20B。</p>
+</li>
+<li><p>区分服务：说明数据报的优先级，值越大优先级越高</p>
+</li>
+<li><p>总长度：占16位，<code>指首部和数据之和的长度</code>，单位为1B，因此数据报的最大长度为$2^{16}-1=65535B$。以太网帧的最大传输单元（MTU）为1500B，因此当一个IP数据报封装成帧时，数据报的总长度（首部加数据）一定不能超过下面数据链路层的MTU值。</p>
+</li>
+<li><p>标识：占16位，它是一个计数器，每产生一个数据报就加1，并赋值给标识字段。但它并不是“序号”（IP是无连接服务）。当一个数据报的长度超过网络的MTU时，必须分片，<code>此时每个数据报片都复制一次标识号，以便能正确重装成原来的数据报</code></p>
+</li>
+<li><p>标志：占3位，标志字段的最低位（第二行第18位）为MF（More Fragment），MF=1表示后面还有分片，MF=0表示最后一个分片，标志字段中间一位为DF（Don’t Fragment），<code>只有当DF=0（Don&#39;t Fragment=false）时才允许分片</code></p>
+</li>
+<li><p>片偏移：占13位，它指出较长的分组在分片后，某片在原分组中的相对位置。<code>片偏移以8B为单位，即每个分片的长度一定时8B的整数倍（数据部分，不算头部，除却最后一个分片）</code></p>
+</li>
+<li><p>首部校验和：占16位，<code>只校验分组的首部，而不校验数据部分</code></p>
+</li>
+<li><p>生存时间（TTL，Time To Live）：占8位，数据报在网络中可通过的路由器的最大值，以确保分组不会永远在网络中循环。路由器在转发分组<code>前</code>，先把TTL减1。若TTL被减为0，则该分组必须丢弃</p>
+</li>
+<li><p>协议：占8位，指出此分组应交给哪个传输层协议。其中值6表示TCP，值为17表示UDP。</p>
+</li>
+<li><p>源地址字段：占4B，标识发送方的IP地址</p>
+</li>
+<li><p>目的地址地段：占4B，标识接收方的IP地址</p>
+</li>
+<li><p>填充：使首部长度为4B的整数倍</p>
+</li>
+</ul>
+<h2 id="IP数据报分片"><a href="#IP数据报分片" class="headerlink" title="IP数据报分片"></a>IP数据报分片</h2><p>一个链路层数据报能承载的最大数据称为最大传送单元（MTU）。当IP数据报的总长度大于链路MTU时，就需要将IP数据报中的数据分在两个或多个较小的IP数据报中，这些较小的数据报称为片。片在目的地的网络层被重新组装。由于偏移值的单位是8B，所以<code>除最后一个片外</code>，其他所有片中的<code>有效数据</code>载荷都是8的倍数。</p>
+<h2 id="网络层转发分组"><a href="#网络层转发分组" class="headerlink" title="网络层转发分组"></a>网络层转发分组</h2><p>从数据报的首部提取目的主机的IP地址D，得出目的网络地址N。若网络N与此路由器直接相连，则把数据报直接交付给目的主机D，这称为路由器的<code>直接交付</code>；否则是<code>间接交付</code></p>
+<p><code>在不同网络中传送时，MAC帧中的源地址和目的地址都要发生变化，但在网桥和交换机转发帧时，不改变帧的源地址</code></p>
+<h1 id="IPv4地址与NAT"><a href="#IPv4地址与NAT" class="headerlink" title="IPv4地址与NAT"></a>IPv4地址与NAT</h1><h2 id="IPv4地址"><a href="#IPv4地址" class="headerlink" title="IPv4地址"></a>IPv4地址</h2><p>传统的IPv4地址是分类地址，分为A、B、C、D、E五类，无论哪类IP地址，都由网络号和主机号两部分组成。网络号标识主机(或路由器)所连接到的网络。一个网络号在整个因特网范围内必须是唯一的。一台主机号在它前面的网络号所指明的网络范围内必须是唯一的。</p>
+<p>分类的IP地址：</p>
+<p><img src="/2023/04/23/cs_network/%E7%BD%91%E7%BB%9C%E5%B1%82/分类ipv4地址.jpg" title alt="5acdc63b4eb39e9d31a4762feb423baf.png" data-align="center"></p>
+<p>每个IP地址最前面的数字这样设计的原因是为了构成前缀码，否则将会有解释歧义</p>
+<p><code>在各类IP地址中，有些IP地址具有特殊用途，不用做主机的IP地址：</code></p>
+<ul>
+<li><p>主机号全为0表示网络本身，不用做IP地址</p>
+</li>
+<li><p>主机号全为1表示本网络的广播地址，又称<code>直接广播地址</code></p>
+</li>
+<li><p>网络号为127的IP地址是环回测试地址，127.0.0.0地址表示主机本身</p>
+</li>
+<li><p>32位全为0，即0.0.0.0表示本网络上的主机</p>
+</li>
+<li><p>32位全为1，即255.255.255.255表示整个TCP/IP网络的广播地址，又称<code>受限广播地址</code></p>
+</li>
+</ul>
+<h4 id="常见的三种类别IP地址的使用范围"><a href="#常见的三种类别IP地址的使用范围" class="headerlink" title="常见的三种类别IP地址的使用范围"></a>常见的三种类别IP地址的使用范围</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>网络类别</th>
+<th>最大可用网络数</th>
+<th>第一个可用的网络号</th>
+<th>最后一个可用的网络号</th>
+<th>每个网络的最大主机数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>$2^7-2$</td>
+<td>1</td>
+<td>126</td>
+<td>$2^{24}-2$</td>
+</tr>
+<tr>
+<td>B</td>
+<td>$2^{14}-1$</td>
+<td>128.1</td>
+<td>191.255</td>
+<td>$2^{16}-2$</td>
+</tr>
+<tr>
+<td>C</td>
+<td>$2^{21}-1$</td>
+<td>192.0.1</td>
+<td>223.255.255</td>
+<td>$2^8-2$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>IP地址是标志一台主机(或路由器)和一条链路的接口，<code>当一台主机同时连接到两个网络中时，该主机就必须同时具有两个相应的IP地址</code>。因此IP网络上的路由器必须至少应具有两个IP地址(路由器每个端口必须至少分配一个IP地址)</p>
+<h2 id="网络地址转换NAT-Network-Address-Translation"><a href="#网络地址转换NAT-Network-Address-Translation" class="headerlink" title="网络地址转换NAT(Network Address Translation)"></a>网络地址转换NAT(Network Address Translation)</h2><p>NAT指通过将专用网络地址转换为公用地址，从而对外隐藏内部管理的IP地址。</p>
+<p>私有地址划分：</p>
+<p>A类：1个A类网段，即<strong>10</strong>.0.0.0～<strong>10</strong>.255.255.255</p>
+<p>B类：16个B类网段，即<strong>172.16</strong>.0.0～<strong>172.31</strong>.255.255</p>
+<p>C类：256个C类网段，即<strong>192.168.0</strong>.0～<strong>192.168.255</strong>.255</p>
+<h3 id="NAT路由转发"><a href="#NAT路由转发" class="headerlink" title="NAT路由转发"></a>NAT路由转发</h3><p>NAT路由器至少有一个有效的外部全球地址，NAT表中存放着{本地IP地址：端口}到{全球IP地址：端口}的映射。通过{IP地址：端口}这样的映射方式，可让多个私有IP地址映射到同一个全球IP地址。</p>
+<p>一个典型的NAT转换表：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>WAN端</th>
+<th>LAN端</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>138.76.29.7:5001</td>
+<td>192.168.0.2:2233</td>
+</tr>
+<tr>
+<td>138.76.29.7:5060</td>
+<td>192.168.0.3:1234</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>普通路由器在转发IP数据报时，不改变其源IP地址和目的IP地址。<code>而NAT路由器在转发IP数据报时，一定要更换其IP地址(转换源IP地址或目的IP地址)</code>。普通路由器仅工作在网络层，而NAT路由器转发数据报时需要查看和转换传输层的端口号，故NAT路由器工作在传输层</p>
+<h1 id="子网划分与子网掩码、CIDR"><a href="#子网划分与子网掩码、CIDR" class="headerlink" title="子网划分与子网掩码、CIDR"></a>子网划分与子网掩码、CIDR</h1><h2 id="子网划分"><a href="#子网划分" class="headerlink" title="子网划分"></a>子网划分</h2><p>子网划分属于一个网络内部的事情，网络对外仍表现为没有划分子网的网络。</p>
+<p>从主机号借用若干比特作为子网号，当然主机号也就相应减少了相同的比特。三级IP地址的结构如下：IP地址={&lt;网络号&gt;、&lt;子网号&gt;、&lt;主机号&gt;}</p>
+<p>RFC950规定，对分类的IPv4地址进行子网划分时，子网号不能全为1或全0。但随着CIDR的广泛使用，现在全1和全0的子网号也可以使用</p>
+<p>不论是分类的IPv4还是CIDR，其子网中的主机号全0和全1的地址都不能被指派</p>
+<h2 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h2><p>子网掩码是一个与IP地址相对应的、长32bit的二进制串，他由一串1和跟随的一串0组成。1对应于IP地址中的网络号及子网号，而0对应于主机号。计算机只需将IP地址和其对应的子网掩码逐位“与”，就可以得出相应子网的网络地址。</p>
+<p>现在的因特网标准规定，所有的网络都必须使用子网掩码。如果一个网络未划分子网，那么就采用默认的子网掩码。A、B、C类地址默认的的子网掩码为：255.0.0.0、255.255.0.0、255.255.255.0</p>
+<h2 id="无分类域间路由选择-CIDR，Classless-Inter-Domain-Routing"><a href="#无分类域间路由选择-CIDR，Classless-Inter-Domain-Routing" class="headerlink" title="无分类域间路由选择(CIDR，Classless Inter-Domain Routing)"></a>无分类域间路由选择(CIDR，Classless Inter-Domain Routing)</h2><p>CIDR消除了传统A、B、C类(<code>只消除了ABC类</code>)地址及划分子网的概念，因而可以更加有效分配IPv4的地址空间。CIDR使用“网络前缀”的概念代替子网络的概念。因此，IP地址的无分类两级编址为：IP={&lt;网络前缀&gt;、&lt;主机号&gt;}。CIDR使用“斜线记法”，即IP地址/网络前缀所占比特数。其中网络前缀所占的比特数对应于网络号的部分，等效于子网掩码中连续1的部分。</p>
+<p>CIDR虽然不使用子网，但仍使用”掩码“一词。CIDR不使用子网是指CIDR并没有在32位地址中指明若干位作为子网字段。分配到一个CIDR地址块的组织，仍可以在本组织内根据需要划分一些子网。</p>
+<p>将网络前缀都相同的连续IP地址组成“CIDR”地址块。这种地址的聚合称为路由聚合，或称构成超网。</p>
+<p>CIDR的优点在于网络前缀长度的灵活性。使用CIDR时，路由表中的每个项目由“网络前缀”和“下一路由地址”组成。在查找路由表时，可能会得到不止一个匹配结果。此时，<code>应该从匹配结果中选择具有最长网络前缀的路由</code>，因为网络前缀越长，其地址块就越小，因而路由就越具体。</p>
+<h1 id="ARP、DHCP、ICMP"><a href="#ARP、DHCP、ICMP" class="headerlink" title="ARP、DHCP、ICMP"></a>ARP、DHCP、ICMP</h1><h2 id="IP地址与硬件地址"><a href="#IP地址与硬件地址" class="headerlink" title="IP地址与硬件地址"></a>IP地址与硬件地址</h2><p>由于路由器的隔离，IP网络中无法通过广播方式依靠MAC地址来完成跨网络的寻址。因此在IP网络的网络层只使用IP地址来完成寻址。IP分组通过多次路由转发到达目标网络后，改为在目标LAN中通过数据链路层的MAC地址以广播方式寻址。这样可以提高路由选择的效率</p>
+<p><code>路由器由于互联多个网络，因此它不仅有多个IP地址，也有多个硬件地址</code></p>
+<h2 id="地址解析协议-ARP，Address-Resolution-Protocol"><a href="#地址解析协议-ARP，Address-Resolution-Protocol" class="headerlink" title="地址解析协议(ARP，Address Resolution Protocol)"></a>地址解析协议(ARP，Address Resolution Protocol)</h2><p>无论在网络层使用什么协议，在实际网络的链路上传送数据帧时，最终必须使用硬件地址。所以需要一种方法来完成<code>IP地址到MAC地址的映射</code>，这就是地址解析协议。每台主机都设有一个ARP高速缓存，用来存放局域网上各主机和路由器的IP地址到MAC地址的映射表，称ARP表。</p>
+<p><code>ARP工作在网络层</code>，其工作原理如下：</p>
+<p>1、主机A欲向本局域网上的某台主机B发送IP数据报，先在其ARP高速缓存中查看有无主机B的IP地址。如有，就可查出其对应的硬件地址，再将此硬件地址写入MAC帧，然后通过局域网将该MAC帧发往此硬件地址。<code>如果没有</code>，那么就通过使用目的MAC地址为FF-FF-FF-FF-FF-FF的帧来封装并广播ARP请求分组，使同一个局域网里的所欲主机收到ARP请求。</p>
+<p>2、主机B收到该ARP请求后，向主机A发送响应ARP分组，分组中包含主机B的IP与MAC地址的映射关系，主机A在收到后将此映射写入ARP缓存，然后按查询到的硬件地址发送MAC帧。</p>
+<p><code>ARP用于解决同一个局域网上的主机或路由器的IP地址和硬件地址的映射问题。</code>如果所要找的主机和源主机不再同一局域网上，那么就要通过ARP找到一个位于本局域网上的某个路由器的硬件地址，然后将分组发送给这个路由器，让这个路由器把分组转发给下一个网络，剩下的工作就由下一个网络来做。</p>
+<p><code>尽管ARP请求分组是广播发送的，但ARP响应分组是普通的单播。</code></p>
+<h2 id="动态主机配置协议-DHCP，Dynamic-Host-Configuration-Protocol"><a href="#动态主机配置协议-DHCP，Dynamic-Host-Configuration-Protocol" class="headerlink" title="动态主机配置协议(DHCP，Dynamic Host Configuration Protocol)"></a>动态主机配置协议(DHCP，Dynamic Host Configuration Protocol)</h2><p>DHCP常用于给主机动态地分配IP地址，它提供了即插即用联网的机制，这种机制允许一台计算机加入新的网络和获取IP地址不用手工参与。<code>DHCP是应用层协议，它是基于UDP的</code></p>
+<p>其工作流程如下：</p>
+<p>1、DHCP客户机<code>广播</code>“DHCP发现”消息，试图找到网络中的DHCP服务器。</p>
+<p>2、DHCP服务器收到“DHCP发现”消息后，向网络中<code>广播</code>“DHCP提供”信息，其中包括提供DHCP客户机的IP地址和相关配置信息</p>
+<p>3、DHCP客户机收到“DHCP提供”消息，如果接收DHCP服务器所提供的相关参数，那么通过<code>广播</code>“DHCP请求”消息向DHCP服务器请求提供IP地址</p>
+<p>4、DHCP服务器<code>广播</code>“DHCP确认”消息，将IP地址分配给DHCP客户机</p>
+<p>DHCP允许网络上配置多台DHCP服务器，当DHCP客户机发出DHCP请求时，有可能收到多个应答消息。这是，<code>DHCP客户机只会挑选其中的一个，通常挑选最先到达的</code></p>
+<h2 id="网际控制报文协议-ICMP，Internet-Control-Message-Protocol"><a href="#网际控制报文协议-ICMP，Internet-Control-Message-Protocol" class="headerlink" title="网际控制报文协议(ICMP，Internet Control Message Protocol)"></a>网际控制报文协议(ICMP，Internet Control Message Protocol)</h2><p>ICMP让主机或路由器报告差错和异常情况。<code>ICMP报文作为IP层数据报文的数据，加上数据报的首部，组成IP数据报发送出去。ICMP是IP层协议</code></p>
+<p>ICMP报文的种类有两种，即ICMP差错报告报文和ICMP询问报文</p>
+<h3 id="ICMP差错报告报文"><a href="#ICMP差错报告报文" class="headerlink" title="ICMP差错报告报文"></a>ICMP差错报告报文</h3><p>ICMP差错报告报文用于目标主机或目标主机路径上的路由器向源主机报告差错和异常情况。共有5种类型：</p>
+<ul>
+<li><p>终点不可达：当路由器或主机不能交付数据报时，就向源点发送终点不可达报文。</p>
+</li>
+<li><p>源点抑制：当路由器或主机由于拥塞而丢弃数据报时，就向源点发送源点抑制报文，使源点知道应当把数据报的发送速率放慢。</p>
+</li>
+<li><p>时间超过：当路由器收到生存时间(TTL)为0的数据报时，丢弃该数据报外，还要向源点发送时间超过报文。当终点在预先规定的时间内不能收到一个数据报的全部数据报片时，就把已收到的数据报片都丢弃，并向源点发送参数问题报文</p>
+</li>
+<li><p>改变路由(重定向)。路由器把改变路由报文发送给主机，让主机知道下次应将数据报发送给另外的路由器(可通过更好的路由)</p>
+</li>
+</ul>
+<p><code>不应当发送ICMP差错报告报文的几种情况：</code></p>
+<p>1、对ICMP差错报告报文不再发送ICMP差错报告报文</p>
+<p>2、对第一个分片的数据报片的所有后续数据报片都不发送ICMP差错报告报文</p>
+<p>3、对具有组播地址的数据报都不发送ICMP差错报告报文</p>
+<p>4、对具有特殊地址(如127.0.0.0和0.0.0.0)的数据报不发送ICMP差错报告报文</p>
+<h3 id="ICMP询问报文"><a href="#ICMP询问报文" class="headerlink" title="ICMP询问报文"></a>ICMP询问报文</h3><p>ICMP询问报文有四种类型：回答请求和回答报文，时间戳请求和回答报文，掩码地址请求和回答报答，路由器询问和通告报文，最常用的是前两类。</p>
+<p>PING使用了ICMP回答请求和回答报文。</p>
+<p>PING工作在应用层，它直接使用网络层的ICMP，而未使用传输层的TCP或UDP。</p>
+<h1 id="IPv6"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</h1><h2 id="IPv6的特点"><a href="#IPv6的特点" class="headerlink" title="IPv6的特点"></a>IPv6的特点</h2><p>1、更大的地址空间，IPv6使用128位(16B)的IP地址。</p>
+<p>2、扩展的层次结果</p>
+<p>3、灵活的首部格式</p>
+<p>4、改进的选项</p>
+<p>5、允许协议继续扩充</p>
+<p>6、支持即插即用</p>
+<p>7、支持资源的预分配</p>
+<p>8、IPv6只有在包的源节点才能分片，是<code>端到端</code>的，传输路径中的路由器不能分片，所以从一般意义上说，IPv6不允许分片(不允许类似IPv4在路由分片)</p>
+<p>9、IPv6首部长度必须是8B的整数倍，而IPv4首部是4B的整数倍</p>
+<p>10、增大了安全性。身份验证和保密功能是IPv6的关键特征</p>
+<p>IPv6本身与IPv4不兼容</p>
+<p>IPv6简化了IP分组头，它包含8个域(IPv4是12个域)</p>
+<h2 id="IPv6地址"><a href="#IPv6地址" class="headerlink" title="IPv6地址"></a>IPv6地址</h2><p>IPv6在IPv4单播和多播的基础上又增加了一种类型——任播。任播的目的站是一组计算机，但数据报在交付时只交付给其中的一台计算机，通常是距离最近的一台计算机</p>
+<p>IPv6标准中指定了一种比较紧凑的表示法，即把地址中的每4位用一个十六进制数表示，并用冒号分隔每16位，如4BF5:AA12:0216:FEBC:BA5F:039A:BE9A:2170</p>
+<p>通常可以把IPv6地址缩写成更紧凑的形式。当每16位域的开头有一些0时，可以采用一种缩写表示法，但是域中必须至少有一个数字。例如，可以把地址4BF5:0000:0000:0000:BA5F:039A:000A:2176缩写成4BF5:0:0:0:BA5F:39A:A:2176</p>
+<p>当有相继的0值域出现时，可以进步一缩写，这些域可以用双冒号缩写，<code>但是双冒号表示法在一个地址中仅能出现一次</code>。这样前面的地址就可以进一步缩写为4BF5::BA5F:39A:A:2176</p>
+<p>IPv6拓展了IPv4地址的分级概念，它使用一下3个等级：第一级（顶级）指明全球都知道的公有拓扑；第二级（场点级）指明单个场点；第三级指明单个网络接口。IPv6地址采用多级体系主要是为了使路由器能够更快地查找路由</p>
+<p>目前IPv4向IPv6过渡采用双协议栈和隧道技术两种策略：双协议栈是指在完全过渡到IPv6之前，使一部分主机（路由器）装有两个协议栈，即一个IPv4和IPv6，通过双协议栈进行转换；隧道技术是将整个IPv6数据报封装到IPv4数据报的数据部分</p>
+<h1 id="路由算法"><a href="#路由算法" class="headerlink" title="路由算法"></a>路由算法</h1><h2 id="静态路由与动态路由"><a href="#静态路由与动态路由" class="headerlink" title="静态路由与动态路由"></a>静态路由与动态路由</h2><p>静态路由算法(又称非自适应路由算法)。指由网络管理员手工配置的路由器信息，当网络的拓扑结构或链路的状态发生变化时，网络管理员需要手工去修改路由表中相关的静态路由信息。</p>
+<p>动态路由算法(又称自适应性路由算法)。指路由器上的路由表项是通过相互连接的路由器之间彼此交换信息，然后按照一定的算法优化出来的。而这些路由信息会在一定时间间隙里不断更新，以适应不断变化的网络，以随时获得最优的寻路效果。</p>
+<h2 id="距离-向量路由算法"><a href="#距离-向量路由算法" class="headerlink" title="距离-向量路由算法"></a>距离-向量路由算法</h2><p>所有节点都定期地将它们的整个路由选择表传送给所有<code>与之直接相邻的节点</code>。这种路由选择表包含：</p>
+<ul>
+<li><p>每条路径的目的地(另一结点)</p>
+</li>
+<li><p>路径的代价(也称距离)</p>
+</li>
+</ul>
+<p>这里的距离是一个抽象的概念，不一定是真正物理上的距离，可能是通过的路由器数。</p>
+<h3 id="RIP路由信息协议"><a href="#RIP路由信息协议" class="headerlink" title="RIP路由信息协议"></a>RIP路由信息协议</h3><p>RIP(Routing Information Protocol)路由信息协议是内部网关协议，是一种分布式的基于距离向量的路由选择协议。<code>RIP是应用层协议，它使用UDP传送数据(端口520)</code></p>
+<h4 id="RIP规定"><a href="#RIP规定" class="headerlink" title="RIP规定"></a>RIP规定</h4><p>1、网络中的每个路由器都要维护从它自身到其他每个目的网络的距离记录</p>
+<p>2、距离也称跳数(Hop Count)，规定从一个路由器到直接连接网络的距离(跳数)为1。而每经过一个路由器，距离(跳数)增加1。</p>
+<p>3、RIP认为好的路由就是它通过的路由器的数目少</p>
+<p>4、RIP允许一条路径最多只能包含15个路由器。因此<code>当距离等于16时，它表示网络不可达</code>。距离向量路由可能出现环路的情况，规定最高跳数目的是为了防止数据报在环路上不断循环。</p>
+<p>5、在任意两个使用RIP的路由器之间每30秒广播一次RIP路由更新信息。</p>
+<p>6、在RIP中不支持子网掩码的RIP广播，所有RIP中每个网络的子网掩码必须相同。在新的RIP2中，支持变长子网掩码和CIDR。</p>
+<h4 id="RIP的特点"><a href="#RIP的特点" class="headerlink" title="RIP的特点"></a>RIP的特点</h4><p>1、仅和相邻路由器交换信息</p>
+<p>2、路由器交换的信息是当前路由器所知道的全部信息，即自己的路由表</p>
+<p>3、按固定的时间间隔交换路由信息</p>
+<p>4、如果180秒(RIP默认超时时间为180秒)还没有收到相邻路由器的更新路由表，那么把此相邻路由器记为不可达路由器，即把距离设置为16。</p>
+<h4 id="RIP的优缺点"><a href="#RIP的优缺点" class="headerlink" title="RIP的优缺点"></a>RIP的优缺点</h4><p>RIP最大的优点是实现简单，开销小，收敛过程快。RIP的缺点如下：</p>
+<p>1、RIP限制了网络的规模，它能使用的最大距离为15</p>
+<p>2、路由器之间交换的是路由器中的完整路由表，因此网络规模越大，开销也越大。</p>
+<p>3、网络出现故障时，会出现慢收敛的现象，即需要很长时间才能将此信息传送到所有路由器。俗称“坏消息传得慢”</p>
+<h2 id="链路状态路由算法"><a href="#链路状态路由算法" class="headerlink" title="链路状态路由算法"></a>链路状态路由算法</h2><p>使用该算法的路由结点需要执行以下两项任务。第一，主动测试所有邻接结点的状态。第二，定期地将链路状态传播给<code>所有其他结点</code>，典型的链路状态算法是OSPF算法。</p>
+<p>链路状态路由算法主要有三个特征：</p>
+<p>1、向本自治系统中所有路由器发送信息，这里使用的方法是洪泛法，即路由器通过所有的端口向所有相邻的路由器发送消息。而每个相邻路由器又将此信息发往其所有相邻路由器(但不发送给刚刚发来信息的那个路由器)</p>
+<p>2、发送的信息是与路由器相邻的所有路由器的链路状态，但这只是路由器所知道的部分信息</p>
+<p>3、只有当链路状态发生变化时，路由器才向所有路由器发送此消息</p>
+<p>链路状态报文的大小与网络中的路由结点数目无关，因此链路状态算法比距离-向量算法有更好的规模可扩展性</p>
+<h3 id="开放最短路径优先-OSPF-协议"><a href="#开放最短路径优先-OSPF-协议" class="headerlink" title="开放最短路径优先(OSPF)协议"></a>开放最短路径优先(OSPF)协议</h3><p>开放最短路径优先协议是使用分布式链路状态路由算法的典型代表，也是内部网关协议(IGP)的一种。<code>OSPF是网络层协议，它不使用UDP或TCP，而直接用IP数据报传送</code></p>
+<h4 id="OSPF特点"><a href="#OSPF特点" class="headerlink" title="OSPF特点"></a>OSPF特点</h4><p>1、OSPF对不同的链路可根据IP分组的不同服务类型(TOS)而设置成不同的代价。</p>
+<p>2、如果到同一个目的网络有多条相同代价的路径，那么可以将通信分配到这几条路径。这称为多路径间的负载均衡。</p>
+<p>3、所有在OSPF路由器之间交换的分组都具有鉴别功能，因而保证了仅在可信赖的路由器之间交换链路状态信息。</p>
+<p>4、支持可变长度的子网划分和CIDR</p>
+<p>5、每个链路状态都带上一个32位的序号，序号越大，状态就越新。</p>
+<h4 id="OSPF的基本工作原理"><a href="#OSPF的基本工作原理" class="headerlink" title="OSPF的基本工作原理"></a>OSPF的基本工作原理</h4><p>各路由器之间频繁的交换链路状态信息，因此所有路由器最终都能建立一个全网的拓扑结构图。然后每个路由器根据这个全网拓扑结构图，使用Dijkstra算法计算从自己到各目的网络的最优路径。</p>
+<p>为了使OSPF能够用于规模更大的网络，OSPF将一个自治系统再划分若干更小的范围，称为区域。划分区域的好处是将利用洪泛法交换链路状态信息的范围局限于每个区域而非整个自治系统。在一个区域内部的路由器只知道本区域的完整网络拓扑。这些区域也有层次之分，处在上层的域称为主干区域，负责连通其他下层的区域，并且还连接其他自治域。</p>
+<h4 id="OSPF的五种分组类型"><a href="#OSPF的五种分组类型" class="headerlink" title="OSPF的五种分组类型"></a>OSPF的五种分组类型</h4><p>1、问候分组，用来发现和维持临站的可达性</p>
+<p>2、数据库描述分组，向临站给出自己的链路状态项目的摘要信息</p>
+<p>3、链路状态请求分组，向对方请求发送某些链路状态项目</p>
+<p>4、链路状态更新分组，用洪泛法对全网更新链路状态</p>
+<p>5、链路状态确认分组，对链路更新分组的确认</p>
+<p>通常每隔10秒，每两个相邻路由器要交换一次问候分组。</p>
+<p>为了确保自己保存的链路状态与全网的状态保持一致，OSPF还规定每隔一段时间(如30分钟)就刷新一次数据库中的链路状态。</p>
+<p>OSFP没有“坏消息传得慢”的问题</p>
+<h2 id="边界网关协议-BGP"><a href="#边界网关协议-BGP" class="headerlink" title="边界网关协议(BGP)"></a>边界网关协议(BGP)</h2><p>边界网关协议(Border Gateway Protocol，BGP)是不同自治系统的路由器之间交换路由信息的协议，是一种外部网关协议。</p>
+<p>由于BGP使用的环境，BGP要选择最佳路由是不现实的。由于因特网的规模太大，使得自治系统之间路由选择非常困难。</p>
+<p>BGP只能力求寻找一条能够到达目的网络且比较好的路由，而并非寻找一条最佳路由。BGP采用的是<code>路径</code>向量路由选择协议，<code>BGP是应用层协议，它是基于TCP的</code>。</p>
+<p>每个自治系统的管理员要选择至少一个路由器(可以有多个)作为该自治系统的“BGP发言人”。一个BGP发言人要与其他自治系统中BGP发言人要交换路由信息。每个BGP发言人除必须允许BGP外，还必须运行该AS所用的内部网关协议，如OSPF或RIP。</p>
+<p>BGP所交换的网络可达性信息就是要到达某个网络(用网络前缀表示)所要经过的一系列AS。</p>
+<h4 id="BGP的特点"><a href="#BGP的特点" class="headerlink" title="BGP的特点"></a>BGP的特点</h4><p>1、BGP交换的路由信息的结点数量级是自治系统的数量级，要比这些自治系统中的网络数少很多。</p>
+<p>2、每个自治系统中BGP发言人(或边界路由器)的数目是很少的。这样就使得自治系统之间的路由选择不至于过分复杂。</p>
+<p>3、BGP支持CIDR</p>
+<p>4、在BGP刚运行时，BGP的邻站交换整个BGP路由表，但以后只需在发生变化时更新有变化的部分。</p>
+<h4 id="BGP-4使用的四种报文"><a href="#BGP-4使用的四种报文" class="headerlink" title="BGP-4使用的四种报文"></a>BGP-4使用的四种报文</h4><p>1、打开(Open)报文。用来与相邻的另一个BGP发言人建立关系。</p>
+<p>2、更新(Update)报文。用来发送某一路由的信息，以及列出要撤销的多条路由。</p>
+<p>3、保活(Keepalive)报文。用来确认到开报文并周期性地证实邻站关系。</p>
+<p>5、通知(Notification)报文。用来发送监测到的差错。</p>
+<h1 id="移动IP"><a href="#移动IP" class="headerlink" title="移动IP"></a>移动IP</h1><p>移动IP技术是指移动结点<code>以固定的网络IP地址</code>实现跨越不同网段的漫游功能。并保证基于网络IP的网络权限在漫游过程中不发生任何改变。移动IP的目标是把分组自动地投递给移动结点。一个移动结点是把其连接点从一个网络或子网改变到另一个网络或子网的主机。</p>
+<p>基于IPv4的移动IP定义三种功能实体：移动结点、归属代理(也称本地代理)和外部代理。归属代理和外地代理统称为移动代理。</p>
+<ul>
+<li><p>移动结点：具有固定网络IP地址的移动主机</p>
+</li>
+<li><p>本地代理：一个移动结点的IP所属的网络被称为归属网络，在归属网络中代表移动结点执行移动管理功能的实体称为为本地代理。</p>
+</li>
+<li><p>外部代理：在外部网络中帮助移动结点完成移动管理功能的实体成为外部代理。</p>
+</li>
+</ul>
+<p><code>注意移动IP和移动自组网络的区别</code>，移动IP的核心网络功能仍然是基于固定互联网中一直使用的各种路由选择协议，移动自组网络是将移动性功能拓展到无线领域中的自治系统，它具有自己的独特的路由选择协议，并且可以不和因特网相联。</p>
+<p><code>移动IP和动态IP的区别</code>，动态IP指的是局域网中的计算机可以通过网络中的DHCP服务器动态地获得一个IP地址，而不需要用户在计算机的网络设置指定IP地址。</p>
+<h2 id="移动IP通信过程。"><a href="#移动IP通信过程。" class="headerlink" title="移动IP通信过程。"></a>移动IP通信过程。</h2><p>在移动IP中，每个移动结点都有一个唯一的本地地址。<code>当移动结点移动时，它的本地地址是不变</code>，在本地网络链路上每个本地结点还必须有一个本地代理来为它维护当前的位置信息。这就需要引入<code>转交地址</code>。当移动结点连接到外地网络链路上时，<code>转交地址就用来标识移动结点现在所处的位置</code>，以便进行路由选择。移动结点的本地地址与当前转交地址的联合成为<code>移动绑定</code>或简称绑定。</p>
+<p>移动IP技术的基本通信流程如下：</p>
+<ul>
+<li><p>移动结点在本地网络时，按传统的TCP/IP方式进行通信</p>
+</li>
+<li><p>移动结点漫游到一个外地网络中时，仍然使用固定的IP地址进行通信。为了能够收到通信对端发给它的IP分组，<code>移动结点需要向本地代理注册当前的位置地址，这个地址就是转交地址</code>(它可以是外部代理的地址或动态配置的一个地址)</p>
+</li>
+<li><p>本地代理接收到来自转交地址的注册后，会构建一条通向转交地址的隧道，将截获的发送给移动结点的IP分组通过隧道送给转交地址处。</p>
+</li>
+<li><p>在转交地址处解除隧道封装，恢复原始的IP分组，最后送到移动结点，这样移动结点在外网就能够收到这些发送给它的IP分组。</p>
+</li>
+<li><p>移动结点在外网通过外网的路由器或外部代理向通信对端发送IP数据包</p>
+</li>
+<li><p>移动结点来到另一个网络是，只需要向本地代理更新注册的转交地址</p>
+</li>
+<li><p>移动结点回到本地网时，移动结点向本地代理注销转交地址</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2023/04/23/cs_network/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/04/23/cs_network/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/" class="post-title-link" itemprop="url">数据链路层</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-04-23 11:27:45" itemprop="dateCreated datePublished" datetime="2023-04-23T11:27:45+08:00">2023-04-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-04-24 10:21:22" itemprop="dateModified" datetime="2023-04-24T10:21:22+08:00">2023-04-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%BD%91/" itemprop="url" rel="index">
+                    <span itemprop="name">计网</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>6.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>21 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="数据链路层的功能"><a href="#数据链路层的功能" class="headerlink" title="数据链路层的功能"></a>数据链路层的功能</h1><p>数据链路层的主要作用是加强物理层传输的原始比特流的功能，将物理层提供的可能出错的物理连接改造为逻辑上无差错的数据链路</p>
+<ul>
+<li>为网络层提供服务<ul>
+<li>无确认的无连接的服务，<code>不需建立链路连接，不发回确认，不重发丢失帧</code>而交由上层处理。适用于实时通讯或误码率较低的网络，如以太网。</li>
+<li>有确认的无连接服务，<code>不需建立链路连接，发回确认，重发丢失帧</code></li>
+<li>有确认的面向连接的服务，<code>建立连接，发回确认，重发丢失帧</code></li>
+<li><code>有连接就一定要确认，即不存在无确认的面向连接的服务</code></li>
+</ul>
+</li>
+<li>链路管理<ul>
+<li>数据链路层连接的建立、维持和释放过程称为链路管理</li>
+</ul>
+</li>
+<li>帧定界、帧同步、透明传输<ul>
+<li>将一段数据的前后分别加上首部和尾部，就构成了帧。首部和尾部中含有很多控制信息，它们的一个重要作用就是确定帧的界限，即帧定界</li>
+<li>帧同步指的是接收方应能从接收到的二进制比特流中区分出帧的起始和结尾</li>
+<li>透明传输指不管传输的数据是什么样的比特组合，都应能在链路上传送</li>
+</ul>
+</li>
+<li>流量控制<ul>
+<li>限制<code>发送方</code>的数据流量，使其发送速率不超过接收方的接收能力</li>
+</ul>
+</li>
+<li>差错控制<ul>
+<li>位错指帧中的某些位出现了错误，通常采用校验位发现位错，通过自动重传请求（Automatic Repeat reQuest，ARQ）方式来重传出错的帧</li>
+</ul>
+</li>
+</ul>
+<h1 id="组帧"><a href="#组帧" class="headerlink" title="组帧"></a>组帧</h1><p>组帧是为了在出错时只重发出错的帧，而不必重发全部数据</p>
+<h2 id="字符计数法"><a href="#字符计数法" class="headerlink" title="字符计数法"></a>字符计数法</h2><p>在帧头部使用一个计数字段来标明帧内字符数。目的结点的数据链路层收到字节数值时，就知道后面跟随的字节数，从而可以确定帧结束的位置（<code>计数字段提供的字节数包含自身所占的一个字节</code>）</p>
+<h2 id="字符填充的首位定界符法"><a href="#字符填充的首位定界符法" class="headerlink" title="字符填充的首位定界符法"></a>字符填充的首位定界符法</h2><p>字符填充法使用一些特定的字符来定界一帧的开始（DLE STX）与结束（DLE ETX）。为了使信息位中出现的特殊字符不被误判为帧的首尾定界符，可以在特殊字符前面填充一个转义字符（DLE）来加以区分（转义字符是ASCII码中的控制字符，<code>是一个字符</code>，<code>而不是</code>“D”“L”“E”三个字符的组合）</p>
+<h2 id="比特填充的首位标志法"><a href="#比特填充的首位标志法" class="headerlink" title="比特填充的首位标志法"></a>比特填充的首位标志法</h2><p>比特填充法允许数据帧包含任意个数的比特，也允许每个字符的编码包含任意个数的比特。它使用一个特定的比特模式，即01111110来标志一帧的开始和结束。为了不使信息位中出现的比特流01111110被误判为帧的首位标志，发送方的数据链路层在<code>信息位中</code>遇到5个连续的”1“时，将自动在其后插入一个“0”；而接收方每收到5个连续的”1“时，自动删除后面紧跟的”0“以恢复信息</p>
+<h2 id="违规编码法"><a href="#违规编码法" class="headerlink" title="违规编码法"></a>违规编码法</h2><p>在物理层进行比特编码时，通常采用违规编码。例如，曼切斯特编码中“高-高”电平对和“低-低”电平对在数据比特中是违规的（即没有采用），可以借用这些违规编码序列来定界帧的起始和终止。<code>违规编码法不采用任何填充技术</code></p>
+<p><code>目前较常用的组帧方法是比特填充法和违规编码法</code></p>
+<h1 id="差错控制"><a href="#差错控制" class="headerlink" title="差错控制"></a>差错控制</h1><p>传输中的差错都是由噪声造成的，一类是信道所固定的、持续存在的随机热噪声；另一类是由外界特定的短暂原因所造成的冲击噪声，前者可以通过提高信噪比来减少或避免干扰，而后者不可能靠提高信号幅度来避免干扰造成的差错，是产生差错的重要原因。前者也叫随机差错，后者也叫突发差错。</p>
+<p>差错控制主要有两类：自动重传请求（ARQ）和前向纠错（Forward Error Correction，FEC）。</p>
+<p>在ARQ中，接收端检测出差错时，设法通知发送端重发，直到接收到正确的码字为止。</p>
+<p>在FEC中，接收端不但能发现差错，而且能确定二进制数码的错误位置。</p>
+<p>因此，差错控制可分为检错编码（Error-Detecting Code）和纠错编码（Error-Correcing Code）</p>
+<h2 id="纠错编码"><a href="#纠错编码" class="headerlink" title="纠错编码"></a>纠错编码</h2><p>对于<code>码距大于等于2</code>的数据校验码，开始具有纠错的能力。码距越大，检错、纠错的能力就越强，而且检错能力总是<code>大于等于</code>纠错能力</p>
+<h3 id="奇偶校验码"><a href="#奇偶校验码" class="headerlink" title="奇偶校验码"></a>奇偶校验码</h3><p>它的码距为2，可以检测出技术位错误，但不能确定出错的位置，也不能够检测出偶数位错误。</p>
+<p>一位校验位，校验位取0或1使这个码字中“1”的个数为奇数（奇校验）或偶数（偶检验）</p>
+<h3 id="循环冗余校验（Cyclic-Redundancy-Check，CRC）"><a href="#循环冗余校验（Cyclic-Redundancy-Check，CRC）" class="headerlink" title="循环冗余校验（Cyclic Redundancy Check，CRC）"></a>循环冗余校验（Cyclic Redundancy Check，CRC）</h3><p>使用二进制多项式作为除数（<code>多项式表示为二进制数时最高位和最低位必须为1</code>）</p>
+<ol>
+<li><p>用除数对被除数最高位做模2减法（异或），不借位</p>
+</li>
+<li><p>除数右移一位，若余数最高位为1，商1，若余数最高位为0，商0，除数继续右移一位。</p>
+</li>
+<li><p>循环直到余数位数小于除数时，该余数为最终余数</p>
+</li>
+</ol>
+<p>循环冗余校验可以<code>发现和纠正</code>一位或<code>多位</code>错（与多项式的选取有关）</p>
+<h3 id="海明（汉明）码"><a href="#海明（汉明）码" class="headerlink" title="海明（汉明）码"></a>海明（汉明）码</h3><p>设n为有效信息的位数，k为校验位的位数，n位和校验位k应满足${n + k \leqslant 2^k - 1}$</p>
+<p>若要<code>检测</code>两位错误，则需要再增加1位校验位，即k+1位</p>
+<p><code>它能发现双比特错，但只能纠正单比特错误</code></p>
+<p>海明码<code>纠错</code>d位，需要码距为2d+1的编码方案；<code>检错</code>d位，则只需码距为d+1</p>
+<h1 id="流量控制与可靠传输机制"><a href="#流量控制与可靠传输机制" class="headerlink" title="流量控制与可靠传输机制"></a>流量控制与可靠传输机制</h1><h2 id="流量控制、可靠传输与滑动窗口协议"><a href="#流量控制、可靠传输与滑动窗口协议" class="headerlink" title="流量控制、可靠传输与滑动窗口协议"></a>流量控制、可靠传输与滑动窗口协议</h2><h3 id="停止-等待流量控制基本原理"><a href="#停止-等待流量控制基本原理" class="headerlink" title="停止-等待流量控制基本原理"></a>停止-等待流量控制基本原理</h3><p>发送方每发送一帧，都要等待接收方的应答信号，之后才能发送下一帧</p>
+<h3 id="滑动窗口流量控制基本原理"><a href="#滑动窗口流量控制基本原理" class="headerlink" title="滑动窗口流量控制基本原理"></a>滑动窗口流量控制基本原理</h3><p>发送窗口的大小$W_T$表示在<code>还未收到</code>对方确认信息的情况下发送方最多还可以发送多少个数据帧。</p>
+<ol>
+<li><p>接收端收到数据帧之后，将窗口向前移一个位置，并发回确认帧，若收到的数据帧落在接收窗口之外，则一律丢弃。</p>
+</li>
+<li><p>发送端每收到一个确认帧，发送窗口就向前滑动一个帧的位置。</p>
+</li>
+</ol>
+<p><code>滑动窗口的重要特性</code>：</p>
+<ol>
+<li><p>只有接收窗口向前移动（同时接收方发送了确认帧）时，发送窗口<code>才有可能</code>（只有发送方收到确认帧后<code>才一定</code>）向前滑动</p>
+</li>
+<li><p>接收窗口的大小为1时，才保证帧的<code>有序接收</code></p>
+</li>
+<li><p>数据链路层的滑动窗口协议中，窗口的大小在传输过程中是固定的</p>
+</li>
+<li><p>发送窗口中的帧编号和接收窗口中的接收帧编号是一一对应的</p>
+</li>
+<li><p>窗口帧的编号是重复使用的，例如在2比特对帧编号的情况下，第一传输用了0、1、2这三个编号，下一次发送就使用3、0、1这几个编号。</p>
+</li>
+</ol>
+<h3 id="可靠传输机制"><a href="#可靠传输机制" class="headerlink" title="可靠传输机制"></a>可靠传输机制</h3><p>数据链路层的可靠传输通常使用确认和超时重传两种机制来完成。</p>
+<p>有些情况为了提高传输效率，将确认捎带在一个回复帧中，称为<code>捎带确认</code>。</p>
+<p><code>数据链路层中流量控制机制和可靠传输机制是交织在一起的</code></p>
+<h2 id="单帧滑动窗口与停止-等待协议"><a href="#单帧滑动窗口与停止-等待协议" class="headerlink" title="单帧滑动窗口与停止-等待协议"></a>单帧滑动窗口与停止-等待协议</h2><p>从滑动窗口机制的角度看，停止-等待协议相当于发送窗口和接收窗口大小均为1的滑动窗口协议</p>
+<p>停等协议中，除数据帧丢失外，还可能出现以下两种差错：</p>
+<ol>
+<li><p>到达目的站的帧可能已遭破坏</p>
+</li>
+<li><p>数据帧正确而确认帧被破坏，此时接收方已收到正确的数据帧，但发送方收不到确认帧</p>
+</li>
+</ol>
+<h2 id="多帧滑动窗口与回退N帧协议（Go-back-N，GBN）"><a href="#多帧滑动窗口与回退N帧协议（Go-back-N，GBN）" class="headerlink" title="多帧滑动窗口与回退N帧协议（Go-back N，GBN）"></a>多帧滑动窗口与回退N帧协议（Go-back N，GBN）</h2><p>从滑动窗口机制的角度看，停止-等待协议相当于发送窗口大小为n，接收窗口大小为1的滑动窗口协议，可以保证按序接收数据帧。</p>
+<p>发送方可以连续发送帧，当接收方检测出失序的信息帧后或者某个帧未被接收方确认接收，则需要<code>重发该帧及该帧之后的窗口中的所有帧</code>。即接收方只允许按顺序接收帧。</p>
+<p>源站每发送一帧就要为该帧设置超时计时器，GBN协议还规定接收端不一定每收到一个正确的数据帧就必须立即发回一个确认帧，而可以在连续收到好几个正确的数据帧后，才对最后的一个数据帧发确认消息，对某一数据帧的确认就表明数据帧和<code>此前所有</code>的数据帧均已正确无误的收到。$ACK_n$表示对n号帧的确认，表示接收方已正确收到第n号帧及以前的所有帧。</p>
+<p>若采用n比特对帧编号，则其发送窗口的尺寸$W_T$应该满足${1\leqslant{W_T}\leqslant{2^n-1}}$</p>
+<h1 id="多帧滑动窗口与选择重传协议（Selective-Repeat，SR）"><a href="#多帧滑动窗口与选择重传协议（Selective-Repeat，SR）" class="headerlink" title="多帧滑动窗口与选择重传协议（Selective Repeat，SR）"></a>多帧滑动窗口与选择重传协议（Selective Repeat，SR）</h1><p>从滑动窗口机制的角度看，停止-等待协议相当于发送窗口大小为n，接收窗口大小为m的滑动窗口协议，一般m=n&gt;1</p>
+<p>接收端每个发送缓冲区对应一个计时器，当计时器超时时，只用重发该帧。另外SR使用了更有效的差错处理策略，即一旦接收方怀疑帧出错，就会发一个否定帧NAK给发送方，要求发送方对NAK中指定的帧进行重传。</p>
+<p>若使用n比特对帧编号，接收窗口$W_R$ + 发送窗口$W_T$ $\leqslant 2^n$，且接收窗口$W_R$不应该超过发送窗口$W_T$（否则无意义），即$W_R \leqslant 2^{n-1}$，接收窗口为最大值时，$W_Tmax = W_Rmax = 2^{n-1}$，<code>一般情况下，在SR中，接收窗口的大小和发送窗口的大小是相同的</code>。</p>
+<p>接收端需要使用缓冲区，暂存<code>未按序正确</code>收到的帧，接收端不能接受窗口外的帧，因此所需缓冲的数目等于窗口的大小，而不是序号数目。</p>
+<h1 id="信道利用率和信道吞吐率"><a href="#信道利用率和信道吞吐率" class="headerlink" title="信道利用率和信道吞吐率"></a>信道利用率和信道吞吐率</h1><p>信道的效率也称信道利用率，指<code>发送方</code>在一个发送周期的时间内，有效发送数据所需要的时间站整个发送周期的比率，可以为100%</p>
+<p>信道吞吐率=信道利用率 $\times$ 发送发的发送速率</p>
+<h1 id="介质访问控制"><a href="#介质访问控制" class="headerlink" title="介质访问控制"></a>介质访问控制</h1><p>介质访问的主要任务是，为使用介质的每个结点隔离来自同一信道上其它结点所传送的信号，以协调活动结点的传输。</p>
+<h2 id="信道划分介质访问控制（静态划分信道）"><a href="#信道划分介质访问控制（静态划分信道）" class="headerlink" title="信道划分介质访问控制（静态划分信道）"></a>信道划分介质访问控制（静态划分信道）</h2><p><code>多路复用</code>是实现信道划分介质访问控制的途径。多路复用技术可把多个信道的信息整合到一个复用的信道中，在接收端把收到的信息分离出来并传送到对应的输出信道</p>
+<p><img src="/2023/04/23/cs_network/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/多路复用.jpg" title alt="345d5a21edbfeb0013de3f03c9b0ee6d.jpeg" data-align="center"></p>
+<p>实际上就是把广播通道转变为点对点通道。</p>
+<h2 id="频分多路复用（FDM，Frequency-Division-Mutiplexing）"><a href="#频分多路复用（FDM，Frequency-Division-Mutiplexing）" class="headerlink" title="频分多路复用（FDM，Frequency Division Mutiplexing）"></a>频分多路复用（FDM，Frequency Division Mutiplexing）</h2><p>将多路基带信号调制到不同频率载波上，在叠加形成一个复合信道的多路复用技术。</p>
+<p>每个子信道分配的带宽可不相同，但他们的总和必须不超过信道的总带宽。在实际应用中，为了防止子信道之间的干扰，相邻信道之间需要加入“保护频带”</p>
+<h2 id="时分多路复用（TDM，Time-Division-Mutiplexing）"><a href="#时分多路复用（TDM，Time-Division-Mutiplexing）" class="headerlink" title="时分多路复用（TDM，Time Division Mutiplexing）"></a>时分多路复用（TDM，Time Division Mutiplexing）</h2><p>将一条物理信道按时间分为若干时间片，轮流的分配给多个信号使用，每个时间片由复用的<code>一个</code>信号占用。</p>
+<p><code>统计时分多路复用</code>（STDM，Statistical Time Division Multiplexing，又称异步时分多路复用），它不固定分配时隙，而按需动态的分配时隙，当终端有数据传送时，才会分配到时间片。</p>
+<h2 id="波分多路复用（WDM，Wave-Division-Mutiplexing）"><a href="#波分多路复用（WDM，Wave-Division-Mutiplexing）" class="headerlink" title="波分多路复用（WDM，Wave Division Mutiplexing）"></a>波分多路复用（WDM，Wave Division Mutiplexing）</h2><p>波分多路复用<code>即光的频分多路复用</code>，它在一根光纤中传输多种不同波长（频率）的光信号</p>
+<h2 id="码分多路复用（CDM，Code-Division-Multiplexing）"><a href="#码分多路复用（CDM，Code-Division-Multiplexing）" class="headerlink" title="码分多路复用（CDM，Code Division Multiplexing）"></a>码分多路复用（CDM，Code Division Multiplexing）</h2><p>码分多路复用是采用不同的编码来区分各路原始信号的一种复用方式。它既<code>共享信道的频率，又共享时间</code></p>
+<p><code>码分多址</code>（CDMA，Code Division Multiple Access，CDMA）是码分复用的一种方式。它将每个比特时间被分成m个更短的时间槽，称为“码片”，通常每比特有64或128个码片。每个站点分配唯一的m位代码或码片序列，站点发送1时，站点发送码片序列；发送0时，站点发送码片序列的反码。</p>
+<p>定义向量的规格化内积：${S·T = \frac{1}{m}\sum_{i=0}^mS_iT_i}$，S,T为向量，${S_i}$ $T_i$表示向量的元素</p>
+<p><code>例如</code>A站和B站共享一条物理信道发送信息给C站，A站点的码片序列为00011011，则A站点发送00011011就表示发送比特1，发送11100100就表示发送比特0。将码片中的0写为-1，将1写为+1，A站的码片序列就是-1-1-1+1+1-1+1+1。</p>
+<p>B站的码片序列需要和A站的码片序列相互正交（规格化内积为0，-1和1表示的情况下），所以在这个例子中可以选择B站的码片序列为-1-1+1-1+1+1+1-1（不止这一种）。当A站发送1（-1 1 -1 +1 +1 -1 +1 +1），B站发送0（+1 +1 -1 +1 -1 -1 -1 +1）时，两个信号在信道上叠加，即$A_1-B_0$得（0 0 -2 2 0 -2 0 -2）。数据发送到C站后，C站将收到的结果于A站的码片进行规格化内积，如果结果为1，表示A站发送的是1，如果结果是-1，表示结果为0。同理相获得B站的信息主要和B站的码片做规格化内积即可。</p>
+<p><code>码分多路复用技术主要用于无线通信系统，特别是移动通信系统</code></p>
+<h1 id="随机访问介质访问控制（动态划分信道）"><a href="#随机访问介质访问控制（动态划分信道）" class="headerlink" title="随机访问介质访问控制（动态划分信道）"></a>随机访问介质访问控制（动态划分信道）</h1><p>其核心思想是胜利者通过争用获得信道，从而获得信息的发送权。因此随机访问介质控制协议又称<code>争用型协议</code></p>
+<p>采用随机访问控制机制，各结点之间的通信就即不共享时间，也不共享空间。实质上也是将广播信道转化为点到点的通信。</p>
+<h2 id="ALOHA（Additive-Link-On-line-HAwaii-system）协议"><a href="#ALOHA（Additive-Link-On-line-HAwaii-system）协议" class="headerlink" title="ALOHA（Additive Link On-line HAwaii system）协议"></a>ALOHA（Additive Link On-line HAwaii system）协议</h2><h3 id="纯ALOHA协议"><a href="#纯ALOHA协议" class="headerlink" title="纯ALOHA协议"></a>纯ALOHA协议</h3><p>当网络中的任何一个站点需要发送数据时，可以不进行任何检测就发送数据。如果在一段时间内未收到确认，那么站点就认为传输过程中发生了冲突。发送站点需要等待一段时间后再发送数据，直至发送成功。</p>
+<p>纯ALOHA系统采用的重传策略是让各站等待一段随机的时间，然后进行重传。纯ALOHA网络的最大吞吐量为0.184</p>
+<h3 id="时隙ALOHA协议"><a href="#时隙ALOHA协议" class="headerlink" title="时隙ALOHA协议"></a>时隙ALOHA协议</h3><p>它将所有各站在时间上同步起来，并将时间划分为一段段等长的时隙（Slot），规定只能在每个时隙开始才能发送一个帧。时隙ALOHA的最大吞吐量为0.368</p>
+<h2 id="CSMA（Carrier-Sense-Multiple-Access，载波侦听多路访问）协议"><a href="#CSMA（Carrier-Sense-Multiple-Access，载波侦听多路访问）协议" class="headerlink" title="CSMA（Carrier Sense Multiple Access，载波侦听多路访问）协议"></a>CSMA（Carrier Sense Multiple Access，载波侦听多路访问）协议</h2><h3 id="1-坚持CSMA"><a href="#1-坚持CSMA" class="headerlink" title="1-坚持CSMA"></a>1-坚持CSMA</h3><p>一个结点要发送数据时，首先侦听信道，如果信道空闲，那么<code>立即</code>发送数据。如果信道忙，那么等待，同时继续侦听直至信道空闲。如果发生冲突，那么<code>随机等待一段时间</code>后，再重新开始侦听信道。</p>
+<h3 id="非坚持CSMA"><a href="#非坚持CSMA" class="headerlink" title="非坚持CSMA"></a>非坚持CSMA</h3><p>如果信道空闲，那么立即发送数据；如果信道忙，则放弃监听，等待一个随机的时间后再重复上述过程。</p>
+<p>非坚持CSMA降低了多个结点等待信道空闲后同时发送数据导致冲突的概率，但也会增加数据在网络中的平均延迟。</p>
+<h3 id="P-坚持CSMA"><a href="#P-坚持CSMA" class="headerlink" title="P-坚持CSMA"></a>P-坚持CSMA</h3><p>如果信道忙，那么等待下一个<code>时隙</code>在侦听，如果信道空闲，那么以概率p发送数据，以1-p的概率推迟到下一个<code>时隙</code>；如果在下一个时隙信道仍然空闲，那个仍然以概率p发送数据，以概率1-p推迟到下一个时隙。一直持续这个过程知道发送成功或者检测到信道忙，若是后者，则等待一个随机的时间后重新开始侦听。</p>
+<h3 id="三种CSMA协议比较"><a href="#三种CSMA协议比较" class="headerlink" title="三种CSMA协议比较"></a>三种CSMA协议比较</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>信道状态</th>
+<th>1-坚持</th>
+<th>非坚持</th>
+<th>p-坚持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>空闲</td>
+<td>立即发送数据</td>
+<td>立即发送数据</td>
+<td>以概率p发送数据，以概率1-p推迟到下一个时隙</td>
+</tr>
+<tr>
+<td>忙</td>
+<td>继续坚持侦听信道</td>
+<td>放弃侦听，等待一个随机的时间后再侦听</td>
+<td>持续侦听，等待下一个时隙再侦听</td>
+</tr>
+<tr>
+<td>发生冲突</td>
+<td>随机等待一段时间后再开始侦听</td>
+<td></td>
+<td>随机等待一个随机的时间后重新开始侦听</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="CSMA-CD（Carrier-Sense-Multiple-Access-With-Collision-Detection，载波侦听多路访问-碰撞检测）协议"><a href="#CSMA-CD（Carrier-Sense-Multiple-Access-With-Collision-Detection，载波侦听多路访问-碰撞检测）协议" class="headerlink" title="CSMA/CD（Carrier Sense Multiple Access With Collision Detection，载波侦听多路访问/碰撞检测）协议"></a>CSMA/CD（Carrier Sense Multiple Access With Collision Detection，载波侦听多路访问/碰撞检测）协议</h2><p>其流程可概括为先听后发，边听边发（区别于CSMA协议），冲突停发，随机重发：</p>
+<ol>
+<li><p>适配器侦听信道，如果信道空闲，则开始传输该帧，如果适配器侦听到信道忙，那么它将等待<code>直至侦听到没有信号能量</code>，然后开始传输该帧。</p>
+</li>
+<li><p>在传输过程中，适配器检测到其它适配器的信号能量，如果检测到来自其它适配器的信号能量并且自己没有传输完该帧，则停止该帧的传输，取而代之传输一个48<code>比特</code>的拥塞信号。</p>
+</li>
+<li><p>在传输拥塞信号后，适配器采用截断二进制指数退避算法等待一段时间，后返回步骤1。</p>
+</li>
+</ol>
+<p>CSMA/CD中的站点不能同时发送和接收，因此采用CSMA/CD协议的以太网不太可能进行全双工通信，而只能进行半双工通信。</p>
+<p>把以太网端到端（最远两端）往返时间称为<code>争用期（又称冲突窗口或碰撞窗口）</code><img src="/2023/04/23/cs_network/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/CSMA:CD.jpg" title alt="2815a283496c61f654f8dfed86cabe0c.jpeg" data-align="center"></p>
+<p>CSMA/CA中帧的<code>传输</code>时延至少要两倍于信号在线路中的<code>传播</code>时延，所以CSMA/CD总线网中的所有<code>数据帧都必须要大于一个最小帧长</code>，任何站点收到帧长小于最小帧长的帧时，就把它当做无效帧<code>立即丢弃</code>。最小帧长 = 总线传播时延 $\times$ 数据传输率 $\times$ 2。</p>
+<p>例如，以太网规定最小帧长为64B，<code>如果前64B未发生冲突，那么后续数据也就不会发生冲突（表示以成功抢占信道）</code>。如果数据小于64B，那么就需要在MAC子层中在数据字段后面加入一个整数字节的填充字段。以保证以太网的MAC帧的长度不小于64B。</p>
+<h3 id="二进制指数退避（动态退避）算法"><a href="#二进制指数退避（动态退避）算法" class="headerlink" title="二进制指数退避（动态退避）算法"></a>二进制指数退避（动态退避）算法</h3><ol>
+<li><p>确定基本退避时间，一般取两倍的争用期时间。</p>
+</li>
+<li><p>定义参数k，它等于重传次数，但<code>k不超过10</code>，即k=min[重传次数，10]</p>
+</li>
+<li><p>从离散的整数集合[0, 1, 2, 3, … , $2^k-1$]中随机取出一个数r，重传所需要退避的时间就是<code>r倍的基本退避时间</code></p>
+</li>
+</ol>
+<p>4.当重传达16次仍不能成功时，认为此帧永远无法正确发出，<code>抛弃此帧</code>并<code>向高层报告出错</code></p>
+<h2 id="CSMA-CA（Carrier-Sense-Multiple-Access-With-Collision-Avoidance，载波侦听多路访问-碰撞避免）"><a href="#CSMA-CA（Carrier-Sense-Multiple-Access-With-Collision-Avoidance，载波侦听多路访问-碰撞避免）" class="headerlink" title="CSMA/CA（Carrier Sense Multiple Access With Collision Avoidance，载波侦听多路访问/碰撞避免）"></a>CSMA/CA（Carrier Sense Multiple Access With Collision Avoidance，载波侦听多路访问/碰撞避免）</h2><p>碰撞避免<code>并不是指协议可以完全避免碰撞</code>，而是指协议的设计要尽量降低碰撞发生的概率。</p>
+<p>CSMA/CA也采用二进制指数退避算法。<code>即使信道从忙变为空闲时</code>，任何一个站要发送数据帧时，不仅都须等待一个时间间隔，而且还要进入争用期窗口。并计算随机退避时间以便在此试图接入信道，而且<code>仅当检测到信道空闲并且这个数据帧是要发送的第一数据帧时，才不使用退避算法</code>。</p>
+<p>CSMA/CA还采用预约信道，ACK帧，RTS/CTS帧等三种机制来实现碰撞避免：</p>
+<ol>
+<li><p>预约信道，发送方在发送数据的同时向其它站点通知自己传输数据需要的时间长度，以便让其它站点在这段时间内不发送数据，从而避免碰撞。</p>
+</li>
+<li><p>ACK帧，所有站点在正确接收到发给自己的数据帧（除广播帧和组播帧）后，都需要向发送方发回一个ACK帧。发送方在规定时间内如果未收到ACK帧，那么认为发送失败，此时进行该数据帧的重发，直到收到ACK帧或达到规定重发次数为止。</p>
+</li>
+<li><p>RTS/CTS帧(Request To Send/Clear To Send，请求发送/清除发送)。<code>可选</code>的碰撞避免机制，主要用于解决无线网络中的隐蔽站的问题。</p>
+</li>
+</ol>
+<h4 id="CSMA-CD与CSMA-CA的区别"><a href="#CSMA-CD与CSMA-CA的区别" class="headerlink" title="CSMA/CD与CSMA/CA的区别"></a>CSMA/CD与CSMA/CA的区别</h4><ol>
+<li><p>CSMA/CD可以检测冲突，但无法避免；CSMA/CA发送包的同时不能检测信道上有无冲突（<code>就是因为无法检测冲突，所以自己的站点不能判断一个帧是否发送成功，所以要使用ACK</code>）</p>
+</li>
+<li><p>传输介质不同，CSMA/CD用于<code>总线以太网</code>，CSMA/CA用于<code>无线局域网</code>。</p>
+</li>
+<li><p>检测信道空闲的方法不同。</p>
+</li>
+<li><p><code>在本结点处有(无)冲突，并不意味着在在接收点处就有(无)冲突</code>。（两种协议都是）</p>
+</li>
+</ol>
+<h2 id="CSMA-CD与CSMA-CA总结"><a href="#CSMA-CD与CSMA-CA总结" class="headerlink" title="CSMA/CD与CSMA/CA总结"></a>CSMA/CD与CSMA/CA总结</h2><p>CSMA/CA协议的基本思想是在发送数据时先广播告知其他结点，让其他结点在某段时间内不要发送数据，以免出现碰撞。CSMA/CD协议的基本思想是发送前侦听，边发送边侦听，一旦出现碰撞马上停止发送。</p>
+<h1 id="轮询访问介质控制协议：令牌传递协议"><a href="#轮询访问介质控制协议：令牌传递协议" class="headerlink" title="轮询访问介质控制协议：令牌传递协议"></a>轮询访问介质控制协议：令牌传递协议</h1><p>在轮询访问中，通过一个集中控制的监控站，以循环方式轮询每个结点，在决定信道的分配。当某个结点使用信道时，其他结点都不能使用信道。典型的轮询访问控制协议是令牌传递协议，它主要用于令牌环形局域网中。</p>
+<p>令牌传递协议中，一个令牌在各结点间以某个固定次序交换（在环上单向传输）。令牌是由一组特殊的比特组合而成的帧。<code>当环上的一个站希望传送帧时，必须等待令牌。</code>一旦收到令牌，站点便可启动发送帧。帧在环上传送时，不管该帧是否是发送给本站点的，所有站点都进行转发，直到该帧发回它的始发站，并由该<code>始发站撤销该帧</code>。帧的目的站除转发帧外，应针对该帧维持一个副本，通过在帧的尾部设置“相应比特”来指示已收到此副本。<code>站点在发送完一帧后，应立即释放令牌</code>，以便让其他站使用。</p>
+<p>因为令牌只有一个，所以<code>不会发生冲突</code>。</p>
+<p><code>轮询介质访问控制非常适合负载很高的广播信道</code>。因为对于负载很高的信道采用随机介质访问控制，发生冲突的概率会很大。</p>
+<p>轮询介质访问既不共享时间，也不共享空间。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2023/04/23/cs_network/%E7%89%A9%E7%90%86%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/04/23/cs_network/%E7%89%A9%E7%90%86%E5%B1%82/" class="post-title-link" itemprop="url">物理层</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-04-23 11:14:26 / Modified: 11:26:34" itemprop="dateCreated datePublished" datetime="2023-04-23T11:14:26+08:00">2023-04-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%BD%91/" itemprop="url" rel="index">
+                    <span itemprop="name">计网</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.6k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>9 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><h2 id="数据、信号与码元"><a href="#数据、信号与码元" class="headerlink" title="数据、信号与码元"></a>数据、信号与码元</h2><p><code>模拟信号和数字信号</code>：</p>
+<ul>
+<li><p>连续变化的数据（或信号）称为模拟数据（或模拟信号）</p>
+</li>
+<li><p>取值仅为允许为有限的几个离散值的数据（或信号）称为数字数据（或数字信号）</p>
+</li>
+</ul>
+<p><code>串行传输和并行传输</code>：</p>
+<ul>
+<li><p>串行传输是指一个一个的比特按照时间顺序传递</p>
+</li>
+<li><p>并行传输是指多个比特通过多条通信信道同时传输</p>
+</li>
+</ul>
+<p><code>码元</code>是指用一个固定时长的信号波形（信号脉冲）表示一位k进制数，这个时长内的信号称为<code>k进制码元</code>，而该时长称为<code>码元宽度</code>。<code>一个码元可以携带多个比特信息</code></p>
+<h2 id="信源、信道与信宿"><a href="#信源、信道与信宿" class="headerlink" title="信源、信道与信宿"></a>信源、信道与信宿</h2><p>信源是产生和发送数据的源头，信宿是接收数据的终点</p>
+<p><code>信道与电路并不相同</code>，信道是信号的传输媒介，一个信道可视为一条线路的<code>逻辑部件</code>，多个用户共用通信电路时，每个用户在通信电路上都有一个信道</p>
+<p>信道可分为模拟信道、数字信道；无线信道、有线信道</p>
+<p>信道上传送的信号有基带信号和宽带信号之分：基带信号传送数字信号（称为基带传送）；宽带信号传送模拟信号（称为宽带传输）</p>
+<p>三种基本通信交互方式：</p>
+<ul>
+<li><p>单工通信。只有一个方向的通信而没有反方向的交互</p>
+</li>
+<li><p>半双工通信。双方都能发送和接收信息，但是任意一方不能同时发送和接收信息，此时需要两条信道</p>
+</li>
+<li><p>全双工通信。通信双方可以同时发送和接收信息，也需要两条信道</p>
+</li>
+</ul>
+<p>信道的极限容量是指信道的最高码元传输速率或信道的极限信息传输速率</p>
+<h4 id="速率，波特与带宽"><a href="#速率，波特与带宽" class="headerlink" title="速率，波特与带宽"></a>速率，波特与带宽</h4><p>1、码元传输速率，它表示单位时间内数字通信系统所传输的码元个数，单位是<code>波特(Baud)</code>。码元速率与进制速率无关</p>
+<p>2、信息传输速率。又称信息率、比特率，它表示单位时间内数字通信系统传输的<code>二进制码元</code>个数（即<code>比特数</code>），单位是比特/秒（b/s）</p>
+<p><code>若一个码元携带n比特的信息量，则M波特率的码元传输速率所应对的信息传输速率为Mn比特/秒</code></p>
+<p>带宽原指信号具有的频带宽度，单位是Hz</p>
+<h1 id="奈奎斯特定律与香农定理"><a href="#奈奎斯特定律与香农定理" class="headerlink" title="奈奎斯特定律与香农定理"></a>奈奎斯特定律与香农定理</h1><h3 id="奈奎斯特（Nyquist）定理"><a href="#奈奎斯特（Nyquist）定理" class="headerlink" title="奈奎斯特（Nyquist）定理"></a>奈奎斯特（Nyquist）定理</h3><p>它指出在理性低通（没有噪声、带宽有限）的信道中，极限码元速率为2W波特，其中W是理想低通信道的带宽，<code>单位是Hz</code>。</p>
+<p>若用V表示么个码元能表示的离散电平的数目，则极限数据率为$2W\log_2V$ 即2W $\times$ 一个码元携带的比特数</p>
+<p>若传输速率超过此上限，就会出现严重的码间串扰问题</p>
+<h3 id="香农（shannon）定理"><a href="#香农（shannon）定理" class="headerlink" title="香农（shannon）定理"></a>香农（shannon）定理</h3><p>香农定理给出了带宽受限且有高斯白噪声干扰的信道的极限传输率。</p>
+<p>信道的极限数据传输率=$W\log_2(1 + S/N)$</p>
+<p>W为信道的带宽，S为信道所传输信号的平均功率，N为信道内部的高斯白噪声功率。S/N为信噪比。当信噪比<code>使用分贝计量时</code>，信噪比为$10\log_{10}S/N$，<code>在香农定理中使用的信噪比计量为无单位的信噪比</code>。</p>
+<h1 id="编码与调制"><a href="#编码与调制" class="headerlink" title="编码与调制"></a>编码与调制</h1><p>把数据变为模拟信号的过程称为调制，把数据变换为数字信号的过程称为编码。</p>
+<h3 id="数字数据编码为数字信号"><a href="#数字数据编码为数字信号" class="headerlink" title="数字数据编码为数字信号"></a>数字数据编码为数字信号</h3><p>对于这种编码方式，具体用什么样的数字信号表示0及用什么样的数字信号表示1就是所谓的编码。</p>
+<p><img src="/2023/04/23/cs_network/%E7%89%A9%E7%90%86%E5%B1%82/编码.jpg" title alt data-align="center"></p>
+<ul>
+<li><p>非归零编码（non return to zero，NRZ）用两个电压来代表两个二进制数字，这种编码虽然容易实现，但是没有检错功能，也无法判断一个码元的开始和结束</p>
+</li>
+<li><p>曼切斯特编码（Manchester Encoding），前一个间隔为高电平而后一个间隔为低电平表示码元1，码元0则相反。位中间的调变即作为<code>时钟信号</code>（可用于同步），但它所占的频带宽度是原始基带宽度的两倍。<code>以太网使用的编码方式就是曼切斯特编码</code></p>
+</li>
+<li><p>差分曼切斯特编码，<code>常用于局域网的传输</code>，若码元为1，则前半个码元的电平与上一码元的后半个码元的电平相同；若码元为0，则前半个码元的电平与上一码元的后半个码元的电平相反。每个码元中间有一个电平的跳转，可以实现自同步</p>
+</li>
+<li><p>4B/5B编码，将欲发送数据流的每四位作为一组，然后按照4B/5B编码规则将其转换为相应的5位码，由于多一位码之后可以表示的信息变多了，将多出来的作为控制码</p>
+</li>
+</ul>
+<h3 id="数字数据调制为模拟信号"><a href="#数字数据调制为模拟信号" class="headerlink" title="数字数据调制为模拟信号"></a>数字数据调制为模拟信号</h3><p>数字数据调制技术在发送端将数字信号转换为模拟信号，而在接收端将模拟信号还原为数字信号。基本的调制方法有如下几种：</p>
+<ul>
+<li><p>幅移键控（amplitude shift keyed，ASK），通过改变载波信号的振幅来表示数字信号1和0</p>
+</li>
+<li><p>频移键控（FSK），通过改变载波信号的频率来表示数字信号1和0</p>
+</li>
+<li><p>相移键控（PSK），通过改变载波信号的相位来表示数字信号1和0，分为绝对调相和相对调相</p>
+</li>
+<li><p>正交振幅调制（quadracture amplitude modulation，QAM）。在频率相同的前提下，将ASK与PSK结合起来，设波特率为B，采用m个相位，每个相位有n种振幅，则该QAM技术的数据传输率R为${\frac{B}{log_2mn}}$</p>
+</li>
+</ul>
+<h3 id="模拟数据编码为数字信号"><a href="#模拟数据编码为数字信号" class="headerlink" title="模拟数据编码为数字信号"></a>模拟数据编码为数字信号</h3><p>最典型的例子是对音频信号进行编码的脉码调制（pulse code modulation，PCM）（说是调制，其实本质是编码）。它主要分三个步骤，即采样、量化和编码</p>
+<p>1、采样是指对模拟信号进行周期性扫描，把时间上连续的信号变成时间上离散的信号，<code>采样频率必须大于等于原始信号中的最大频率的两倍，才能保证采样后的数字信号完整保留原始模拟信号的信息</code></p>
+<p>2、量化是把采样取得的电平幅值按照一定的分级标度转化为对应的数字值并取整数</p>
+<p>3、编码是把量化的结果转换为与之对应的<code>二进制编码</code></p>
+<h3 id="模拟数据调制为模拟信号"><a href="#模拟数据调制为模拟信号" class="headerlink" title="模拟数据调制为模拟信号"></a>模拟数据调制为模拟信号</h3><p>电话机和本地交换机采用模拟信号传输模拟数据的方式</p>
+<h1 id="电路交换、报文交换、分组交换"><a href="#电路交换、报文交换、分组交换" class="headerlink" title="电路交换、报文交换、分组交换"></a>电路交换、报文交换、分组交换</h1><h3 id="电路交换"><a href="#电路交换" class="headerlink" title="电路交换"></a>电路交换</h3><p>在进行数据传输前，两个结点必须先建立一条专用（双方独占）的物理通信路径，用户始终占用端到端的固定传输带宽</p>
+<p>电路上的任何结点都采用“直通方式”接收数据和发送数据，即不会存在存储转发所耗费的时间</p>
+<h3 id="报文交换"><a href="#报文交换" class="headerlink" title="报文交换"></a>报文交换</h3><p>报文交换在交换结点采用的是存储转发的传输方式。</p>
+<p><code>发送前无需建立连接</code>，动态分配线路。</p>
+<p>一个报文可以同时发送给多个目的地址</p>
+<p>报文交换对报文的大小没有限制</p>
+<h3 id="分组交换"><a href="#分组交换" class="headerlink" title="分组交换"></a>分组交换</h3><p>分组交换也采用存储转发的方式，但是<code>分组交换闲置了每次传送的数据块大小的限制</code>，把大的数据块划分为合理的小数据块</p>
+<p>分组交换比报文交换的传输时延少。</p>
+<p>分组到达目的结点时，要对分组按编号进行排序等工作</p>
+<h1 id="数据报和虚电路"><a href="#数据报和虚电路" class="headerlink" title="数据报和虚电路"></a>数据报和虚电路</h1><p><code>分组交换</code>可进一步分为<code>面向连接的虚电路方式</code>和<code>无连接的数据报方式</code>。这两种服务都由网络层提供。</p>
+<h3 id="数据报"><a href="#数据报" class="headerlink" title="数据报"></a>数据报</h3><h3 id="虚电路"><a href="#虚电路" class="headerlink" title="虚电路"></a>虚电路</h3><p>在分组发送前，要求在发送方和接收方建立一条<code>逻辑上</code>相连的虚电路并且连接一旦建立，就固定了虚电路所对应的物理路径。</p>
+<p>建立虚电路时，选择一个未使用过的虚电路号分配给该虚电路以区别于本系统中的其它虚电路。</p>
+<p>在虚电路网络中的每个结点上都维持一张虚电路表，它是在虚电路的建立过程中确定的。</p>
+<p>数据的传输是双向的。</p>
+<p>虚电路也存在存储交换（因为是分组交换的一种形式）、</p>
+<p>虚电路的路由选择体现在连接建立阶段，连接建立后，就确定了传输路径。</p>
+<p>虚电路提供了可靠的通信功能</p>
+<p>分组首部<code>并不包含</code>目的地址，而包含虚电路标识符</p>
+<p><code>注意：虚电路之所以是“虚“的，是因为这条电路并不是专用的，每个结点到其它结点之间的链路可能同时有若干虚电路通过，也可能同时与多个结点之间建立虚电路。</code></p>
+<p>数据报服务和虚电路服务的标记</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>*</th>
+<th>数据报服务</th>
+<th>虚电路服务</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>连接的建立</td>
+<td>不需要</td>
+<td>必须有</td>
+</tr>
+<tr>
+<td>目的地址</td>
+<td>每个分组都有完整的目的地址</td>
+<td><code>仅在建立连接阶段使用</code>，之后每个分组使用长度较短的虚电路号</td>
+</tr>
+<tr>
+<td>分组顺序</td>
+<td>不保证分组的有序到达</td>
+<td><code>保证分组的有序到达</code></td>
+</tr>
+<tr>
+<td>可靠性</td>
+<td>不保证可靠通信，可靠性由用户主机来保证</td>
+<td>保证分组的有效到达</td>
+</tr>
+<tr>
+<td>对网络故障的适应性</td>
+<td>出故障的结点丢失分组，其他分组路径选择发生变化时可以正常传输</td>
+<td>所有经过故障结点的虚电路不能正常工作</td>
+</tr>
+<tr>
+<td>差错处理和流量控制</td>
+<td>由用户主机进行流量控制，不保证数据报的可靠性</td>
+<td>可由分组交换网负责，也可以由用户主机保证</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2023/04/23/cs_network/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/04/23/cs_network/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">计算机网络体系结构与参考模型</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-04-23 11:04:05 / Modified: 11:16:46" itemprop="dateCreated datePublished" datetime="2023-04-23T11:04:05+08:00">2023-04-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%BD%91/" itemprop="url" rel="index">
+                    <span itemprop="name">计网</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>10 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="计算机网络分层结构"><a href="#计算机网络分层结构" class="headerlink" title="计算机网络分层结构"></a>计算机网络分层结构</h1><p>把计算机网络的各层及其协议的集合称为网络的体系结构。这些功能究竟是用何种硬件或软件完成的则是一个遵循这种体系结构的实现问题，<code>体系结构是抽象的，而实现是具体的</code>，计算机网络的体系结构通常都具有可分层的特性。</p>
+<p>分层的原则：</p>
+<ul>
+<li><p>每层都实现一种相对独立的功能，降低大系统的复杂度</p>
+</li>
+<li><p>各层之间界面自然清晰、易于理解，相互交流尽可能少</p>
+</li>
+<li><p><code>各层功能的精确定义独立于具体的实现方法</code></p>
+</li>
+<li><p><code>保持下层对上层的独立性，上层单向使用下层提供的服务</code></p>
+</li>
+<li><p>整个分层结构应能促进标准化工作</p>
+</li>
+</ul>
+<p><code>将分层后的网络从低层到高层依次称为第1层、第2层、……、第n层</code></p>
+<p>第n层中的活动元素（硬件或软件进程，通常是一个特定的软件模块）</p>
+<p>不同机器上的同一层称为<code>对等层</code>，同一层的实体称为<code>对等实体</code></p>
+<h3 id="SDU、PCI、PDU"><a href="#SDU、PCI、PDU" class="headerlink" title="SDU、PCI、PDU"></a>SDU、PCI、PDU</h3><p>报文分为两个部分：数据部分：SDU，控制信息部分：PCI</p>
+<ul>
+<li><p>SDU：服务数据单元，第n层的服务数据单元记为n-SDU</p>
+</li>
+<li><p>PCI：协议控制信息，第n层的协议控制信息记为n-PCI</p>
+</li>
+<li><p>PDU：协议数据单元，对等层之间传送的数据单元称为该层的PDU。第n层的协议数据单元记为n-PDU。</p>
+</li>
+</ul>
+<p><code>第n层的SDU和第n层的PCI共同构成第n层的PDU，第n层的PDU作为第n-1层的SDU</code></p>
+<h3 id="层次结构的含义"><a href="#层次结构的含义" class="headerlink" title="层次结构的含义"></a>层次结构的含义</h3><ul>
+<li>第n层的实体向第n+1提供本层的服务，该服务是第n层及其下面各层提供的服务的总和</li>
+<li>上一层只能通过相邻层间的接口使用下一层的服务，下层实现细节对上一层透明</li>
+<li>对等层在<code>逻辑上</code>有一条直接信道<code>(实际上并没有)</code></li>
+</ul>
+<h1 id="计算机网络协议、接口、服务的概念"><a href="#计算机网络协议、接口、服务的概念" class="headerlink" title="计算机网络协议、接口、服务的概念"></a>计算机网络协议、接口、服务的概念</h1><h3 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h3><p>为进行网络中的数据交换而建立的规则、标准或约定称为网络协议，它是控制<code>两个或多个对等实体</code>进行通信的规则的集合，<code>是水平的</code>。<code>不对等实现是没有协议的</code></p>
+<p>协议由语法、语义和同步三部分组成。语法规定了传输数据的格式；语义定义了所要完成的功能；同步规定了执行各种操作的条件、时序关系等。一个完整的协议通常应具有线路管理（建立、释放接口、差错控制、数据转化等功能）</p>
+<h3 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h3><p>接口是同一结点内相邻两层间交换信息的连接点，<code>不能夸层定义接口</code>。<br>在典型的接口上，同一结点的相邻两层的实体通过服务访问点（Service Access Point，SAP）进行交互。服务是通过SAP提供给上层使用的。SAP是一个抽象的概念，他实际上是一个逻辑接口</p>
+<h3 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h3><p>服务指下层为紧邻的上层提供的功能调用，它是垂直的</p>
+<p>OSI服务原语：<br>1、请求<br>2、指示<br>3、相应<br>4、证实</p>
+<p>有应答的服务包括全部四类原语，而无应答服务则只有请求和指示两类原语</p>
+<p>协议和服务的区别：<br>1、只有本层协议的实现才能保证向上一层提供服务<br>2、协议是“水平的”，服务是“垂直的”<br>3、并非在一层内完成的全部功能都称为服务，只有那些能够被高一层实体“看得见”的功能才称为服务</p>
+<h4 id="面向连接服务与无连接服务"><a href="#面向连接服务与无连接服务" class="headerlink" title="面向连接服务与无连接服务"></a>面向连接服务与无连接服务</h4><p>在面向连接服务中，通信前双方必须建立连接，分配相应的资源（如缓冲区）、以保障通信能正常进行，传输结束后释放连接和所占用的资源。因此这种服务可以分为连接建立、数据传输、和连接释放三个阶段。</p>
+<p>在无连接的服务中，通信双方不需要先建立连接，需要发送数据时可直接发送。这是一种不可靠的服务，也叫做“尽最大努力交付”，例如IP和UDP就是无连接服务的协议</p>
+<h4 id="可靠服务和不可靠服务"><a href="#可靠服务和不可靠服务" class="headerlink" title="可靠服务和不可靠服务"></a>可靠服务和不可靠服务</h4><p>可靠服务是指网络具有纠错、检查、应答机制，能确保数据正确、可靠地送达目的地<br>不可靠服务是指网络只是尽量正确、可靠地传送，而不确保数据正确、可靠地传送到目的地，是一种尽力而为的服务<code>（对于提供不可靠服务的网路，其网络的正确性、可靠性要由应用或用户来保障）</code></p>
+<h4 id="有应答服务和无应答服务"><a href="#有应答服务和无应答服务" class="headerlink" title="有应答服务和无应答服务"></a>有应答服务和无应答服务</h4><p>有应答服务指接收方在收到数据后向发送方给出相应的应答，该应答由传输系统内部自动实现，而不由用户实现</p>
+<p>无应答服务指接收方收到数据后不自动给出应答，<code>若需要应答，则由高层实现</code></p>
+<h1 id="ISO-OSI参考模型和TCP-IP模型"><a href="#ISO-OSI参考模型和TCP-IP模型" class="headerlink" title="ISO/OSI参考模型和TCP/IP模型"></a>ISO/OSI参考模型和TCP/IP模型</h1><h2 id="OSI（open-system-interconnection）参考模型-开放系统互连参考模型"><a href="#OSI（open-system-interconnection）参考模型-开放系统互连参考模型" class="headerlink" title="OSI（open system interconnection）参考模型(开放系统互连参考模型)"></a>OSI（open system interconnection）参考模型(开放系统互连参考模型)</h2><p>OSI自上而下依次为物理层、数据链路层、网络层、传输层、会话层、表示层、应用层，<code>第三层统称为通信子网、高三层称为资源子网。</code></p>
+<h3 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h3><p>物理层传输单位是比特，任务是透明的传输比特流</p>
+<p>1、物理层规定了通信链路接口的参数<br>2、物理层也规定了通信链路上传输的信号的意义和电器特征、例如某种信号代表数字0，某种则代表1</p>
+<p><code>传输信息所利用的一些物理媒体，例如光缆，并不在物理层协议之内而在物理层协议的下面</code></p>
+<p>物理层的协议有EIA-232C、EIA/TIA RS-449、CCITT的X.21等</p>
+<h3 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h3><p>数据链路层的传输单位是帧，数据链路层的功能可以概括为成帧、差错控制、流量控制和传输管理以及<code>物理寻址</code>等</p>
+<p>链路层协议有SDLC、HDLC、PPP，STP等</p>
+<h3 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h3><p>网络层的传输单位是<code>数据报</code>，主要任务是把网络层的协议数据单元（<code>分组</code>）从源端传到目的端。关键问题是对分组进行路由选择，并实现流量控制、阻塞控制、差错控制和网际互联（<code>网络寻址</code>）</p>
+<p>网络层也称为<code>网际层</code>或者<code>IP层</code></p>
+<p>网络层协议有IP、IPX、ICMP等</p>
+<h3 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h3><p>传输层也称<code>运输层</code>，传输单位是报文段（TCP）或用户数据报（UDP），传输层负责主机中两个进程之间的通信，功能是为端到端连接提供可靠的传输服务，为端到端连接提供流量控制、差错控制、服务质量、数据传输管理等服务</p>
+<p>传输层协议有TCP、UDP等</p>
+<h3 id="会话层"><a href="#会话层" class="headerlink" title="会话层"></a>会话层</h3><p>为表示层实体或用户进程建立连接并在连接上有序地传输数据，这就是会话，也称建立同步</p>
+<p>会话层可以使用校验点使通信会话在通信失效时从校验点继续恢复通信，实现数据同步</p>
+<h3 id="表示层"><a href="#表示层" class="headerlink" title="表示层"></a>表示层</h3><p>表示层主要处理在两个通信系统中交换信息的表示方式。<br>为了使不同表示方法的数据和信息之间能够相互交换，表示层采用抽象的标准方法定义数据结构，并采用标准的编码形式。数据压缩、加密和解密也是表示层可提供的数据表示变换功能。</p>
+<h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h3><p>应用层为特定类型的网络应用提供访问OSI环境的手段。应用层采用不同的应用协议来解决不同类型的应用要求。</p>
+<p>典型协议有FTP、SMTP、HTTP</p>
+<h2 id="TCP-IP模型"><a href="#TCP-IP模型" class="headerlink" title="TCP/IP模型"></a>TCP/IP模型</h2><p>模型从低到高依次为网络接口层（对应OSI参考模型中的物理层和数据链路层）、网际层、传输层、应用层（对应OSI参考模型中的会话层、表示层和应用层）</p>
+<h4 id="网络接口层"><a href="#网络接口层" class="headerlink" title="网络接口层"></a>网络接口层</h4><p>TCP/IP本身并未真正描述这一部分，只是指出主机必须使用某种协议与网络连接，以便在其上传递IP分组</p>
+<h4 id="网络层-1"><a href="#网络层-1" class="headerlink" title="网络层"></a>网络层</h4><p>和OSI网络层在功能上非常相似，<code>但他不保证各个分组有序地到达，各个分组的有序交付由高层负责</code></p>
+<h4 id="传输层-1"><a href="#传输层-1" class="headerlink" title="传输层"></a>传输层</h4><p>和OSI中的传输层类似，主要使用以下两种协议：<br>1、TCP（Transmission Control Protocol，传输控制协议），它是面向连接的，传输的单位是报文段，提供可靠的交付<br>2、UDP（User Datagram Protocol，用户数据报协议），无连接，传输的单位是用户数据报，不提供可靠的交付</p>
+<h4 id="应用层-1"><a href="#应用层-1" class="headerlink" title="应用层"></a>应用层</h4><h2 id="TCP-IP模型与OSI参考模型的比较"><a href="#TCP-IP模型与OSI参考模型的比较" class="headerlink" title="TCP/IP模型与OSI参考模型的比较"></a>TCP/IP模型与OSI参考模型的比较</h2><p>OSI参考模型在网络层支持无连接和面向连接的通信，但在传输层仅有面向连接的通信。而TCP模型认为可靠性是端到端的问题，因此他在网际层仅有一种无连接的通信模式，但传输层支持无连接和面向连接两种模型</p>
+<p><code>TCP/IP协议是实际执行的标准</code></p>
+<h1 id="物理层设备"><a href="#物理层设备" class="headerlink" title="物理层设备"></a>物理层设备</h1><h2 id="中继器"><a href="#中继器" class="headerlink" title="中继器"></a>中继器</h2><p>中继器又称<code>转发器</code>，主要功能是将信号整形并放大再转发出去，以消除信号经过一长段电缆后，因噪声或其它原因造成的失真和衰减。其原理是信号再生（而非简单地将衰减的信号放大）</p>
+<p><code>中继器没有存储转发功能，使用中继器连接的几个网段仍然是一个局域网，他不能连接两个具有不同速率的局域网，中继器两端的网段一定要使用同一个协议（物理层协议）</code></p>
+<p>在10BASE5以太网规范中，规定互相串联的中继器的个数不能超过4个，而且用4个中继器串联的5段通信介质中只有3段可以挂接计算机</p>
+<p><code>放大器和中继器都起放大作用，只不过放大器放大的是模拟信号，原理是将衰减的信号放大，中继器放大的是数字信号，原理是将衰减的信号整形再生</code></p>
+<h2 id="集线器"><a href="#集线器" class="headerlink" title="集线器"></a>集线器</h2><p>集线器（hub）实质上是一个多端口的中继器。一个端口接收到数据信号后，hub将其进行整形放大，紧接着转发到其它所有（除输入端口外）处于工作状态的端口，如果有同时有两个或多个端口输入，那么输出时会发生冲突，致使这些数据都无效，是一个标准的<code>共享式设备</code></p>
+<p>由集线器组成的网络是共享式网络，但逻辑上仍是一个总线网。hub的每个端口连接的网络部分是同一个网络的不同网段，同时hub也只能在半双工状态</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2023/02/04/IELTS/IELTS-Speaking/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2232,813 +3661,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2022/05/05/devops/k8s/k8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/05/devops/k8s/k8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">k8s常用命令</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-05 13:13:19 / Modified: 13:15:58" itemprop="dateCreated datePublished" datetime="2022-05-05T13:13:19+08:00">2022-05-05</time>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>37</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="集群相关"><a href="#集群相关" class="headerlink" title="集群相关"></a>集群相关</h1><ul>
-<li><p><code>kubectl config get-contexts</code></p>
-<ul>
-<li>查看当前有哪些集群context可以使用</li>
-</ul>
-</li>
-<li><p><code>kubectl config use-context &lt;context name&gt;</code></p>
-<ul>
-<li>切换kubectl当前的集群context</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2022/05/02/Linux/linux%E7%BD%91%E7%BB%9C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/02/Linux/linux%E7%BD%91%E7%BB%9C/" class="post-title-link" itemprop="url">linux网络</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-02 19:12:34" itemprop="dateCreated datePublished" datetime="2022-05-02T19:12:34+08:00">2022-05-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-05 15:01:07" itemprop="dateModified" datetime="2022-05-05T15:01:07+08:00">2022-05-05</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>301</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h1><p>路由可以分为以下三种：</p>
-<ul>
-<li><p>主机路由：表示到某台具体主机的路由（目前来说很少使用了）</p>
-</li>
-<li><p>网络路由：表达到某个网段的路由</p>
-</li>
-<li><p>默认路由：即<code>0.0.0.0/0</code>对应的路由项，它用于在路由表中查不到匹配项时进行的默认路由</p>
-</li>
-</ul>
-<font color="orange">路由表的匹配采用最长匹配的原则</font>
-
-<p>路由表不用记录同一网段中的其他主机的ip，同一网络中的主机通信直接通过数据链路层的ARP协议查询到IP地址对应的MAC地址后进行通信即可。</p>
-<h2 id="linux路由表组成部分"><a href="#linux路由表组成部分" class="headerlink" title="linux路由表组成部分"></a>linux路由表组成部分</h2><p>在linux中可以使用<code>ip route</code>命令来查看路由表。路由表项由以下几个部分组成：</p>
-<ul>
-<li><p>destination：路由目标路径</p>
-</li>
-<li><p>interface：路由器的出口</p>
-</li>
-<li><p>gateway</p>
-<ul>
-<li><p>直连情况（即两个ip之间没有通过路由器相连）：不需要配置gateway，或者值为0.0.0.0</p>
-</li>
-<li><p>非直连情况：需要配置gateway，其值为下一个路由器在本网络中（当路由器对接多个网络时，会有多个网络地址）的ip地址</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="路由表配置"><a href="#路由表配置" class="headerlink" title="路由表配置"></a>路由表配置</h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2022/04/03/devops/k8s/pod%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/03/devops/k8s/pod%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">pod详解</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-04-03 21:57:13" itemprop="dateCreated datePublished" datetime="2022-04-03T21:57:13+08:00">2022-04-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-17 18:59:47" itemprop="dateModified" datetime="2022-05-17T18:59:47+08:00">2022-05-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/k8s/" itemprop="url" rel="index">
-                    <span itemprop="name">k8s</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>3.5k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>12 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id><a href="#" class="headerlink" title=" "></a> </h1><p>pod是k8s集群中的最小调度单元，一个pod中可以有多个容器。k8s引入pod，而不直接对容器进行调度的原因有如下两个：</p>
-<ul>
-<li><p>一个是为了将容器的实现和k8s平台自身引擎的实现进行解耦，从而做到可以支持多种类型的容器（docker、rkt）</p>
-</li>
-<li><p>另外一个是可以让多个容器共享网络、存储、进程空间，减少资源消耗</p>
-</li>
-</ul>
-<h1 id="使用yaml定义一个pod"><a href="#使用yaml定义一个pod" class="headerlink" title="使用yaml定义一个pod"></a>使用yaml定义一个pod</h1><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="comment">#pod name</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="comment">#命名空间，如果无该字段，则使用默认命名空间</span></span><br><span class="line">  <span class="attr">labels:</span> <span class="comment">#pod标签，可选</span></span><br><span class="line">   <span class="attr">key1:</span> <span class="string">value1</span></span><br><span class="line">   <span class="attr">key2:</span> <span class="string">value2</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">volumes:</span> <span class="comment"># 挂载目录，有多种挂载方式 </span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="comment">#容器的名称</span></span><br><span class="line">    <span class="attr">image:</span> <span class="comment">#容器使用的镜像</span></span><br><span class="line">    <span class="attr">ports:</span> <span class="comment"># 容器访问</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">containerPort:</span> </span><br><span class="line">    <span class="attr">env:</span> <span class="comment"># 容器环境变量</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span></span><br><span class="line">      <span class="attr">value:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span></span><br><span class="line">      <span class="attr">value:</span></span><br><span class="line"></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span></span><br><span class="line">    <span class="attr">image:</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">containerPort:</span></span><br><span class="line">    <span class="attr">env:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span></span><br><span class="line">      <span class="attr">value:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span></span><br><span class="line">      <span class="attr">value:</span></span><br></pre></td></tr></table></figure>
-<p>定义好一个pod描述之后，就可以使用<code>kubectl create -f xxx.yaml</code>来创建一个pod</p>
-<h1 id="pod的常用操作"><a href="#pod的常用操作" class="headerlink" title="pod的常用操作"></a>pod的常用操作</h1><ul>
-<li><p>查看pod被调度的节点已经pod ip</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n &lt;namespace&gt; get pod -o wide</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看pod的配置</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n &lt;namespace&gt; get pod &lt;pod name&gt; -o &lt;yaml|json&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看pod的信息及事件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n &lt;namespace&gt; describe pod &lt;pod name&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>进入pod内的容器</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n &lt;namespace&gt; exec &lt;pod name&gt; -c &lt;container name&gt; -it /bin/bash</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看pod内容器日志，显示标准或者错误输出日志</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n &lt;namespace&gt; logs -f &lt;pod name&gt; -c &lt;container name&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>更新pod</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f &lt;pod yaml file&gt; # 更新pod是使用更新yaml文件的形式</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除pod</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete -f &lt;pod yaml file&gt; # 根据配置文件删除</span><br><span class="line">kubectl -n &lt;namespace&gt; delete pod &lt;pod name&gt; # 根据pod name删除</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="Pod健康检查"><a href="#Pod健康检查" class="headerlink" title="Pod健康检查"></a>Pod健康检查</h1><p>pod的健康检查由kubelet来进行，pod健康检查有两种机制：</p>
-<ul>
-<li><p>LivenessProbe：存活性探测，用于判断容器是否存活，即pod是否为running状态。如果LivenessProbe探针探测到容器不健康，则kubelet将kill掉容器，并根据容器的重启策略是否重启（如果不配置，默认会进行重启），如果一个容器不包含LivenessProbe探针，则kubelet认为容器的LivenessProbe探针的返回值永远成功，即任务容器是健康的。 </p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> </span><br><span class="line">    <span class="attr">image:</span></span><br><span class="line">    <span class="attr">livenessProbe:</span></span><br><span class="line">      <span class="attr">httpGet:</span> <span class="comment">#有三种类型：exec(执行脚本，脚本返回0表示健康)、</span></span><br><span class="line">               <span class="comment">#httpGet(返回200-399状态码表示健康)、</span></span><br><span class="line">               <span class="comment">#tcpSocket(如果能够建立TCP连接，则表示健康)</span></span><br><span class="line">        <span class="attr">path:</span></span><br><span class="line">        <span class="attr">port:</span></span><br><span class="line">        <span class="attr">scheme:</span> </span><br><span class="line">      <span class="attr">initialDelaySeconds:</span> <span class="comment"># 容器启动后多少秒后第一次执行探测</span></span><br><span class="line">      <span class="attr">periodSeconds:</span> <span class="comment"># 多少秒执行一次探，默认10s，最小1s，</span></span><br><span class="line">      <span class="attr">timeoutSeconds:</span> <span class="comment"># 探测超时时间默认1s，最小1</span></span><br><span class="line">      <span class="attr">successThreshold:</span> <span class="comment"># 连续探测成功多少次才被认为是成功，默认为为1</span></span><br><span class="line">      <span class="attr">failureThreshold:</span> <span class="comment"># 连续探测失败多少次才被任务是失败，默认为3</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>ReadinessProbe：可用性探测，用于判断容器是否正常提供服务，即容器的Ready是否为True，是否可以接收请求。如果ReadinessProbe探测失败，则容器的ready将为False，Endpoint Controller控制器会将此Pod的Endpoint从对应的service的Endpoint列表中移除，不再将任何请求调度到此Pod上，直到下次探测成功。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> </span><br><span class="line">    <span class="attr">image:</span></span><br><span class="line">    <span class="attr">readinessProbe:</span></span><br><span class="line">      <span class="attr">httpGet:</span></span><br><span class="line">        <span class="attr">path:</span></span><br><span class="line">        <span class="attr">port:</span></span><br><span class="line">        <span class="attr">scheme:</span></span><br><span class="line">      <span class="attr">initialDelaySeconds:</span> <span class="comment"># 容器启动后多少秒后第一次执行探测</span></span><br><span class="line">      <span class="attr">periodSeconds:</span> <span class="comment"># 多少秒执行一次探测</span></span><br><span class="line">      <span class="attr">timeoutSeconds:</span> <span class="comment"># 探测超时时间</span></span><br><span class="line">      <span class="string">...</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<font color="orange">对于同一个容器，两种健康检查可以同时设置。</font>
-
-<h1 id="重启策略"><a href="#重启策略" class="headerlink" title="重启策略"></a>重启策略</h1><font color="orange">Pod的重启策略应用于Pod内的所有容器，并且仅在Pod所处的Node上由Kubelet进行判断和重启操作。</font>当某个容器异常退出或者健康检查失败时，kubelet将根据RestartPolicy的设置来进行相应的操作。Pod的重启策略包括Always、OnFailure和Never，默认值为Always。
-
-* Always：当容器进程退出后，由kubelet自动重启该容器
-
-* OnFailure：当容器进程终止运行且退出码不为0时，由kubelet自动重启该容器
-
-* Never：不论容器运行状态如何，kubelet都不会重启该容器
-
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">restartPolicy:</span> <span class="string">OnFailure</span></span><br><span class="line">  <span class="attr">containers:</span></span><br></pre></td></tr></table></figure>
-
-# 镜像拉取策略
-
-有如下几种镜像拉取策略：
-
-* Always：总是拉取镜像，即使本地有镜像也从镜像仓库拉取
-
-* IfNotPresent：本地有则使用本地镜像，本地没有则去仓库拉取，默认的镜像拉取策略
-
-* Never：只使用本地镜像，本地没有则报错
-
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">myblog</span></span><br><span class="line">    <span class="attr">image:</span></span><br><span class="line">    <span class="attr">imagePullPolicy:</span> <span class="string">IfNotPresent</span></span><br></pre></td></tr></table></figure>
-
-# Pod资源限制
-
-为了保证充分利用集群资源，且确保重要容器在运行周期内能够分配到足够的资源稳定运行，因此平台需要具备Pod的资源限制的能力。对于一个Pod来说，资源最基础的2个指标就是CPU和内存。资源限制有两种类型：
-
-* requests：容器使用的最小资源要求，作用于schedule阶段，作为容器调度时分配的判断依赖，只有当节点上可分配的资源量>=request时，才允许将容器调度到该节点。requests参数不限制容器的最大可用资源。requests.cpu被转成docker的--cpu-shares参数，与cgroup.cpu.shared功能相同。requests.memory没有对应的docker参数，仅作为k8s调度的依据
-
-* limits：容器使用的最大资源限制，不设置或者设置为0表示对使用的资源不做限制。当pod内存超过limit时，会被oom，当cpu超过limit时，不会被kill，但会被限制不超过limit值（因为cpu的时间片是动态调度）。limits.cpu会被转换成docker的-cpu-quota参数，与cgroup.cpu.cfs\_quota_us功能相同。limits.memory会被转换成docker的-memory参数，用来限制容器使用的最大内存。
-
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span></span><br><span class="line">    <span class="attr">image:</span> </span><br><span class="line">    <span class="attr">resources:</span></span><br><span class="line">      <span class="attr">requests:</span></span><br><span class="line">        <span class="attr">memory:</span> <span class="string">100Mi</span></span><br><span class="line">        <span class="attr">cpu:</span> <span class="string">500m</span> <span class="comment"># 等同于0.5</span></span><br><span class="line">      <span class="attr">limits:</span></span><br><span class="line">        <span class="attr">memory:</span> <span class="string">500Mi</span></span><br><span class="line">        <span class="attr">cpu:</span> <span class="number">2</span></span><br></pre></td></tr></table></figure>
-
-# configMap和secret
-
-configMap和Secret是k8s提供的两种资源类型，它们可以用来实现业务配置的统一管理。一般来说会使用configMap存储一些不包含敏感信息的基本配置，secret用于管理敏感信息配置，例如密码、密钥等。
-
-使用yaml定义一个configMap资源：
-
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ConfigMap</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span></span><br><span class="line">  <span class="attr">namespace:</span></span><br><span class="line"><span class="attr">data:</span></span><br><span class="line">  <span class="attr">key1:</span> <span class="string">value1</span></span><br><span class="line">  <span class="attr">key2:</span> <span class="string">value2</span></span><br></pre></td></tr></table></figure>
-
-secret有三种类型：
-
-* Service Accout：用来访问k8s API，由k8s 自动创建，并且会自动挂载到pod的/run/secrets/kubernetes.io/serveraccount目录中；
-
-* Opaque：base64编码的Secret，用来存储密码，密钥等
-
-* kubernetes.io/dockerconfigjson：用来存储私有docker registry的认证信息
-
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Secret</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span></span><br><span class="line">  <span class="attr">namespace:</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">Opaque</span></span><br><span class="line"><span class="attr">data:</span></span><br><span class="line">  <span class="attr">key1:</span> <span class="string">base64_encoded_value1</span></span><br><span class="line">  <span class="attr">key2:</span> <span class="string">base64_encoded_value2</span></span><br></pre></td></tr></table></figure>
-
-configMap和secret的使用：
-
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span></span><br><span class="line">    <span class="attr">image:</span></span><br><span class="line">    <span class="attr">env:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">env_name_1</span></span><br><span class="line">      <span class="attr">valueFrom:</span></span><br><span class="line">        <span class="attr">secretKeyRef:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">&lt;secret</span> <span class="string">resouce</span> <span class="string">name&gt;</span></span><br><span class="line">          <span class="attr">key:</span> <span class="string">&lt;secret</span> <span class="string">resouce</span> <span class="string">key&gt;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">env_name_2</span></span><br><span class="line">      <span class="attr">valueFrom:</span></span><br><span class="line">        <span class="attr">configMapKeyRef:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">&lt;config</span> <span class="string">map</span> <span class="string">resource</span> <span class="string">name&gt;</span></span><br><span class="line">          <span class="attr">key:</span> <span class="string">&lt;config</span> <span class="string">map</span> <span class="string">resource</span> <span class="string">key&gt;</span></span><br></pre></td></tr></table></figure>
-
-# pod生命周期
-
-一个pod可能处于如下的几种状态
-
-| 状态值                    | 描述                                       |
-| ---------------------- | ---------------------------------------- |
-| Pending                | API Server已经创建该Pod，等待调度器调度               |
-| ContainerCreating      | 拉取镜像启动容器中                                |
-| Runing                 | Pod内容器均已创建，且至少有一个容器处于运行状态、正在启动状态或者正在重启状态 |
-| Succeeded \| Completed | 容器内所有容器均已成功执行退出，且不再重启                    |
-| Failed \| Error        | Pod内所有容器均已退出，但至少有一个容器退出为失败状态             |
-| CrashLoopBackOff       | Pod内容器启动失败，比如配置文件丢失导致进程启动失败              |
-| Unknown                | 由于某种原因无法获取该Pod的状态，可能由于网络通信不畅导致           |
-
-pod支持两种hook，post-start hook 和pre-stop hook
-
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">spec:</span> </span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> </span><br><span class="line">      <span class="attr">image:</span></span><br><span class="line">      <span class="attr">lifecycle:</span></span><br><span class="line">        <span class="attr">postStart:</span></span><br><span class="line">          <span class="attr">exec:</span></span><br><span class="line">            <span class="attr">command:</span> </span><br><span class="line">        <span class="attr">preStop:</span></span><br><span class="line">          <span class="attr">exec:</span></span><br><span class="line">            <span class="attr">command:</span></span><br></pre></td></tr></table></figure>
-
-pre-stop hook只有在手动kill掉pod才会触发，如果是Pod自己down掉，则不会触发pre-stop hook
-
-# Pod控制器（workload工作负载）
-
-workload是用于实现管理pod的中间层，确保pod资源符合预期的状态，pod的资源出现故障时，会尝试进行重启，当根据重启策略无效时，则会重新新建pod资源。workload有以下几种类型：
-
-* ReplicaSet：pod副本数量，确保pod副本数量符合预期状态，并且支持滚动式自动阔缩容
-
-* Deployment：工作在ReplicaSet之上，用于管理无状态应用，目前来说最好的控制器，支持滚动更新和回滚功能
-
-* DaemonSet：用于确保集群中的每一个节点只运行特定的pod服务，通常用于实现系统级后台服务
-
-* Job：只要完成就立即退出，不需要重启或重建
-
-* Cronjob：周期性任务控制，不需要持续后台运行
-
-* StatefulSet：管理有状态应用
-
-## Deployment
-
-使用yaml定义一个deployment
-
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> </span><br><span class="line">  <span class="attr">namespace:</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span> <span class="comment"># 指定pod副本数</span></span><br><span class="line">  <span class="attr">selector:</span> <span class="comment"># pod选择器，有对应label的pod都会归于这个deployment管理，不是pod的node selector</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">podLabelKey1:</span> <span class="string">podLabelValue</span></span><br><span class="line">  <span class="attr">template:</span> <span class="comment"># pod 模版，同定义pod的yaml文件</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">podLabelKey1:</span> <span class="string">podLabelValue</span> <span class="comment">#这里定义的lable的key/value要和上面的select字段定义的相对应</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">nodeSelector:</span></span><br><span class="line">        <span class="attr">nodeLabelKey:</span> <span class="string">nodeLabelValue</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span></span><br><span class="line">        <span class="attr">image:</span></span><br><span class="line">        <span class="attr">env:</span></span><br></pre></td></tr></table></figure>
-
-deployment阔缩容命令：
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n &lt;namespace&gt; scale deployment &lt;deployment name&gt; --replicas=&lt;n&gt;</span><br></pre></td></tr></table></figure>
-
-deployment服务更新（镜像更新）
-
-* 通过yaml配置文件的方式（建议）
-
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n &lt;namespace&gt; apply -f &lt;xxx.yaml&gt;</span><br></pre></td></tr></table></figure>
-
-* 通过命令行直接更新
-
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n &lt;namespace&gt; set image deployment &lt;deployment name&gt; &lt;container name&gt;=&lt;image&gt;</span><br></pre></td></tr></table></figure>
-
-deploy服务回滚
-
-回滚只能通过命令行进行回滚，不能通过配置文件进行回滚
-
-* 查看可回滚的历史记录
-
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n &lt;namespace&gt; rollout history deployment &lt;deployment name&gt;</span><br></pre></td></tr></table></figure>
-
-* 回滚
-
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n &lt;namespace&gt; rollout undo deployment &lt;deployment name&gt; --to-revision=&lt;revsion number&gt;</span><br></pre></td></tr></table></figure>
-
-### deployment更新（回滚）策略配置
-
-deployment的更新（回滚）是滚动更新（回滚）的，即一次只进行一部分pod更新（回滚），直到所有的pod都完成更新（回滚），deployment的更新（回滚）策略有以下几种可配置项：
-
-* maxSurge：最大激增数，指更新过程中，最多可以比replicas预先设定值多出的pod数量，可以为固定值或百分比，默认为25%，计算时向上取整
-
-* maxUnavailable：指更新过程中，最多有几个pod处于无法服务状态，可以为固定值或百分比，默认为25%，计算时向下取整
-
-<font color="orange">deployment更新的底层实现其实是新建了一个ReplicaSet，这个ReplicaSet使用的最新版本的镜像，然后通过调整新ReplicaSet和老ReplicaSet的副本数来实现滚动升级。同时老的ReplicaSet不会立即删除，目的是为了方便回滚。</font>
-
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> </span><br><span class="line">  <span class="attr">namespace:</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span> </span><br><span class="line">  <span class="attr">selector:</span> </span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">podLabelKey1:</span> <span class="string">podLabelValue</span></span><br><span class="line">  <span class="attr">strategy:</span></span><br><span class="line">      <span class="attr">rollingUpdate:</span></span><br><span class="line">        <span class="attr">maxSurge:</span> <span class="number">25</span><span class="string">%</span></span><br><span class="line">        <span class="attr">maxUnavailable:</span> <span class="number">25</span><span class="string">%</span></span><br><span class="line">    <span class="attr">template:</span> </span><br><span class="line">      <span class="attr">metadata:</span></span><br><span class="line">        <span class="attr">labels:</span></span><br><span class="line">          <span class="attr">podLabelKey1:</span> <span class="string">podLabelValue</span></span><br><span class="line">      <span class="attr">spec:</span></span><br><span class="line">        <span class="attr">nodeSelector:</span></span><br><span class="line">          <span class="attr">nodeLabelKey:</span> <span class="string">nodeLabelValue</span></span><br><span class="line">        <span class="attr">containers:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span></span><br><span class="line">          <span class="attr">image:</span></span><br><span class="line">          <span class="attr">env:</span></span><br></pre></td></tr></table></figure>
-<h1 id="Service负载均衡之Cluster-IP"><a href="#Service负载均衡之Cluster-IP" class="headerlink" title="Service负载均衡之Cluster IP"></a>Service负载均衡之Cluster IP</h1><p>通过deployment，我们已经可以创建一组Pod来提供具有高可用性的服务，虽然每个Pod都会分配一个单独的Pod IP， 然而却存在如下两个问题：</p>
-<ul>
-<li><p>Pod IP仅仅是集群内部的虚拟IP，在集群内部可以访问，外部却无法访问</p>
-</li>
-<li><p>Pod IP会随着Pod的销毁而消失，当ReplicaSet对Pod进行动态伸缩容时，Pod IP可能随时会发生变化，这样对于我们访问这个服务带来了难度</p>
-</li>
-</ul>
-<p>Services是一组pod服务的抽象，相当于一组pod的load balancer，负责将请求分发到对应的pod。service会有一个IP，一般称为cluster ip，service对象通过selector进行标签选择，找到到对应的pod</p>
-<p>使用yaml定义一个service</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span></span><br><span class="line">  <span class="attr">namespace:</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">80</span> <span class="comment"># service 端口</span></span><br><span class="line">    <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">8002</span> <span class="comment"># pod 端口</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">podLabelName:</span> <span class="string">podLabelValue</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">ClusterIP</span></span><br></pre></td></tr></table></figure>
-<p>创建好service后，在集群内部就可以直接使用service name + pod对服务进行访问，因为集群内部的dns会记录相关解析规则</p>
-<h1 id="Service负载均衡之NodePort"><a href="#Service负载均衡之NodePort" class="headerlink" title="Service负载均衡之NodePort"></a>Service负载均衡之NodePort</h1><p>Cluster IP也是一个虚拟地址，其目的是为了方便集群内部服务直接的通信，只能在k8s集群内部进行访问，如果需要集群外部访问集群内部服务，实现方式之一为使用NodePort方式。NodePort会默认在30000—32767之间，不指定会随机使用其中的一个。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span></span><br><span class="line">  <span class="attr">namespace:</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">8002</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">podLabelName:</span> <span class="string">podLabelValue</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br></pre></td></tr></table></figure>
-<h1 id="kube-proxy"><a href="#kube-proxy" class="headerlink" title="kube-proxy"></a>kube-proxy</h1><p>kube-proxy运行在每个节点上，监听API Server中服务对象的变化，再通过创建流量路由规则来实现网络的转发。kube-proxy支持三种模式：</p>
-<ul>
-<li><p>User space：让kube-proxy 在用户空间监听一个端口，所有的service都转发到这个端口，然后kube-proxy在内部应用层对其进行转发，所有报文都走一遍用户态，性能不高，在k8s v1.2版本后废弃</p>
-</li>
-<li><p>Iptables：当前默认模式，完全由iptables来实现，通过各个节点上的iptable规则来实现service的负载均衡，但是随着service数量增大，iptables模式由于线性查找匹配、全量更新等特点，其性能会显著下降</p>
-</li>
-<li><p>IPVS：与iptables同样基于Netfilter，但是采用的hash表，因此当service数量达到一定规模时，hash查表的速度优势就会显现出来，从而提高service的服务性能。k8s 1.8版本开始引入，1.11版本开始稳定，需要开启宿主机的ipvs模块</p>
-</li>
-</ul>
-<h1 id="Ingress"><a href="#Ingress" class="headerlink" title="Ingress"></a>Ingress</h1><p>对于k8s的service，无论是Cluster-IP还是NodePort的形式，都是四层的负载，集群内的服务如果实现7层的负载均衡，这就需要借助与Ingress。Ingress控制器的实现方式有很多，例如nginx、contour、haproxy，trafik，istio。</p>
-<p>ingress-nginx是7层的负载均衡器，根据用户编写的ingress规则（创建的ingress的yaml文件），动态的去更改nginx服务的配置文件。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.k8s.io/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">host:</span> <span class="comment"># 域名host</span></span><br><span class="line">    <span class="attr">http:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">paths:</span> <span class="string">/</span></span><br><span class="line">      <span class="attr">backend:</span></span><br><span class="line">        <span class="attr">serviceName:</span> <span class="string">&lt;service</span> <span class="string">name&gt;</span></span><br><span class="line">        <span class="attr">servicePort:</span> <span class="string">&lt;service</span> <span class="string">port&gt;</span></span><br></pre></td></tr></table></figure>
-<p>ingress实现逻辑</p>
-<ul>
-<li><p>ingress controller通过api server，监听集群中ingress规则变化</p>
-</li>
-<li><p>然后读取ingress规则（规则就是写明了哪个域名对应哪个service），按照自定义的规则，生成一段nginx配置</p>
-</li>
-<li><p>再写到nginx-ingress-contoller的pod里，nginx-ingress-controller的pod里运行着Nginx服务</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2022/04/03/devops/docker/docker%E7%BD%91%E7%BB%9C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/03/devops/docker/docker%E7%BD%91%E7%BB%9C/" class="post-title-link" itemprop="url">docker网络</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-03 15:24:42 / Modified: 18:48:13" itemprop="dateCreated datePublished" datetime="2022-04-03T15:24:42+08:00">2022-04-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/docker/" itemprop="url" rel="index">
-                    <span itemprop="name">docker</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>545</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>2 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="网络模式"><a href="#网络模式" class="headerlink" title="网络模式"></a>网络模式</h1><p>我们在使用<code>docker run</code>创建Docker容器时，可以用<code>--net</code>选项指定容器的网络模式，docker有以下4中网络模式：</p>
-<ul>
-<li><p>bridage模式：docker容器默认的网络模式。它的原理类似交换机设备，而在linux中，能够起虚拟交互作用的，就是网桥（bridge）。它是一个工作在数据链路层的软件，主要功能是根据MAC地址将数据包转发到网桥的不同端口上。</p>
-<p>有了网桥之后，容器在启动时，会执行如下操作：</p>
-<ol>
-<li><p>创建一对虚拟接口/网卡，也就是veth pair</p>
-</li>
-<li><p>veth pair一端桥接到默认的名称为<code>docker0</code>的网桥或者其他指定网桥上，并具有一个唯一的名字，如veth9953b75</p>
-</li>
-<li><p>veth pair一端放到新启动的容器内部，并修改名字作为eth0</p>
-</li>
-<li><p>从虚拟网桥可用地址段中（也就是bridge对应的network）获取一个空闲地址分配给容器内的eth0</p>
-</li>
-<li><p>容器内部配置默认路由到网桥</p>
-</li>
-</ol>
-<p>如果容器内部需要访问外部网络，需要经过容器内部的eth0网卡、虚拟网桥、宿主机网卡最终访问到外网。如果容器内部需要访问其他容器网络，需要经过容器内部eth0网卡、虚拟网桥、其他容器内部etho0最终访问到其他容器。</p>
-</li>
-<li><p>host模式：容器内部不会创建网络命名空间（Network Namespace），容器共享宿主机的网络空间。</p>
-</li>
-<li><p>container模式：这个模式指定新创建的容器和已经存在的一个容器共享一个网络命名空间（Network Namespace）、网卡、ip。<font color="orange">这种模式在一些特殊的场景中非常有用，例如k8s的pod，k8s为pod创建一个基础设施容器，该pod下的其他容器都以container模式共享这个技术设施容器的网络命名空间，相互之间以localhost访问，构成一个统一的整体。</font></p>
-</li>
-<li><p>none模式：只会在容器内创建网络命名空间（Network Namespace），不会创建虚拟网卡</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2022/04/03/devops/docker/docker%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/03/devops/docker/docker%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">docker 实现原理</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-03 12:02:13 / Modified: 15:24:24" itemprop="dateCreated datePublished" datetime="2022-04-03T12:02:13+08:00">2022-04-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/docker/" itemprop="url" rel="index">
-                    <span itemprop="name">docker</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>727</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>2 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Linux-Namespace资源隔离"><a href="#Linux-Namespace资源隔离" class="headerlink" title="Linux Namespace资源隔离"></a>Linux Namespace资源隔离</h1><p>Linux命名空间是全局资源的一种抽象，将资源发到不同的命名空间中，各个命名空间中的资源时相互隔离的。命名空间有以下几种类别</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>分类</th>
-<th>系统调用参数</th>
-<th>相关内核版本</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Mount Namespace</td>
-<td>CLONE_NEWNS</td>
-<td>Linux 2.4.19</td>
-</tr>
-<tr>
-<td>UTS Namespace</td>
-<td>CLONE_NEWUTS</td>
-<td>Linux 2.6.19</td>
-</tr>
-<tr>
-<td>IPC Namespace</td>
-<td>CLONE_NEWIPC</td>
-<td>Linux 2.6.19</td>
-</tr>
-<tr>
-<td>PID Namespace</td>
-<td>CLONE_NEWPID</td>
-<td>Linux 2.6.24</td>
-</tr>
-<tr>
-<td>Network Namespace</td>
-<td>CLONE_NEWNET</td>
-<td>始于Linux 2.6.24 完成于2.6.29</td>
-</tr>
-<tr>
-<td>User Namespace</td>
-<td>CLONE_NEWUSER</td>
-<td>始于Linux2.6.23 完成于3.8</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>查看进程的namespace</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ls -l /proc/&lt;pid&gt;/ns</span><br><span class="line"></span><br><span class="line">lrwxrwxrwx 1 xiangwei.flower xiangwei.flower 0 Apr  3 12:27 cgroup -&gt; cgroup:[4026531835]</span><br><span class="line">lrwxrwxrwx 1 xiangwei.flower xiangwei.flower 0 Apr  3 12:27 ipc -&gt; ipc:[4026531839]</span><br><span class="line">lrwxrwxrwx 1 xiangwei.flower xiangwei.flower 0 Apr  3 12:27 mnt -&gt; mnt:[4026531840]</span><br><span class="line">lrwxrwxrwx 1 xiangwei.flower xiangwei.flower 0 Apr  3 12:27 net -&gt; net:[4026532057]</span><br><span class="line">lrwxrwxrwx 1 xiangwei.flower xiangwei.flower 0 Apr  3 12:27 pid -&gt; pid:[4026531836]</span><br><span class="line">lrwxrwxrwx 1 xiangwei.flower xiangwei.flower 0 Apr  3 12:27 pid_for_children -&gt; pid:[4026531836]</span><br><span class="line">lrwxrwxrwx 1 xiangwei.flower xiangwei.flower 0 Apr  3 12:27 user -&gt; user:[4026531837]</span><br><span class="line">lrwxrwxrwx 1 xiangwei.flower xiangwei.flower 0 Apr  3 12:27 uts -&gt; uts:[4026531838]</span><br></pre></td></tr></table></figure>
-<h1 id="CGroup资源限制"><a href="#CGroup资源限制" class="headerlink" title="CGroup资源限制"></a>CGroup资源限制</h1><p>通过Namespace可以保证容器之间的隔离，但是无法控制容器可以占用多少资源，如果其中的某一个容器正在执行CPU计算密集型任务，那么就会影响其他容器任务的性能与执行效率，导致多个容器相互影响并且抢占资源。</p>
-<p>CGroup（Control Group）就是能够隔离宿主机上的物理资源，例如CPU、内存、磁盘I/O和网络带宽。而我们需要做的就是把容器进程加入到指定的CGroup中。</p>
-<h1 id="UnionFS-联合文件系统"><a href="#UnionFS-联合文件系统" class="headerlink" title="UnionFS 联合文件系统"></a>UnionFS 联合文件系统</h1><p>Linux Namespace和cgroup分别解决了容器的资源隔离与资源限制，那么容器是很轻量的，通常每台机器中可以运行几十上百个容器，这些容器可能会公用一个image。所以容器在启动的时候，不可能各自将这个image复制一份。Docker在内部使用镜像分层存储以及UnionFS来实现多个容器共用一个镜像。</p>
-<ul>
-<li><p>镜像分层存储：docker镜像是由一系列的层组成的，每层代表Dockerfile中的一条指令，比如下面的Dockerfile文件：</p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">15.04</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . /app</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> make /app</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> python /app/app.py</span></span><br></pre></td></tr></table></figure>
-<p>这个dockerfile文件最终生成镜像的时候会生成四层，这四层是不可写的，而通过镜像实例化容器的过程，其实就是在就是在这四层之上添加了一个可写层，也就是我们通常说的容器层。而对容器层的操作，主要是利用了写时复制（CoW，copy on write）的技术。例如，如果当前操作会改变下面四层的某一层，docker会先将该层拷贝到容器层，然后再在容器层中进行操作。</p>
-</li>
-<li><p>UnionFS 其实是一种为Linux操作系统设计的，用于把多个文件系统联合到同一个挂载点的文件系统服务。</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2022/03/27/math/discrete_mathematics/dft/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/27/math/discrete_mathematics/dft/" class="post-title-link" itemprop="url">dft</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-03-27 10:23:10" itemprop="dateCreated datePublished" datetime="2022-03-27T10:23:10+08:00">2022-03-27</time>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>0</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -3111,7 +3733,7 @@ deployment的更新（回滚）是滚动更新（回滚）的，即一次只进�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -3164,13 +3786,13 @@ deployment的更新（回滚）是滚动更新（回滚）的，即一次只进�
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">155k</span>
+    <span title="Symbols count total">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">8:36</span>
+    <span title="Reading time total">10:11</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>

@@ -181,6 +181,715 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/09/04/redis/redis%E9%85%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/04/redis/redis%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">redis配置</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-04 20:47:41" itemprop="dateCreated datePublished" datetime="2020-09-04T20:47:41+08:00">2020-09-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-05 09:36:29" itemprop="dateModified" datetime="2020-09-05T09:36:29+08:00">2020-09-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>96</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><p>redis的配置文件位于Redis的安装目录下，文件名为redis.conf，windows下为redis.windows.conf，这个文件是一个文本文件。</p>
+<h1 id="配置命名"><a href="#配置命名" class="headerlink" title="配置命名"></a>配置命名</h1><p>在redis命令行下，你可以使用CONFIG命令获取或者设置相关配置</p>
+<p>例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFIG GET loglevel</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFIG GET * # 用于获取所有配置</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFIG SET loglevel &quot;notice&quot;</span><br></pre></td></tr></table></figure>
+<h1 id="Redis参数说明"><a href="#Redis参数说明" class="headerlink" title="Redis参数说明"></a>Redis参数说明</h1><p><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/redis-conf.html">详见</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/08/07/devops/docker/Docker%20%E5%88%9D%E5%AD%A6%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/07/devops/docker/Docker%20%E5%88%9D%E5%AD%A6%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">docker 初学笔记</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-07 15:20:41" itemprop="dateCreated datePublished" datetime="2020-08-07T15:20:41+08:00">2020-08-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-02 22:51:00" itemprop="dateModified" datetime="2022-05-02T22:51:00+08:00">2022-05-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>5 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Docker-镜像与容器"><a href="#Docker-镜像与容器" class="headerlink" title="Docker 镜像与容器"></a>Docker 镜像与容器</h1><h1 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h1><p>Dockerfile 是一个用来构建镜像的文本文件，文本内容包含了一系列构建镜像所需的指令和说明。</p>
+<p>Dockerfile字段介绍:</p>
+<ul>
+<li><p>FROM: 定制的镜像所基于的基础的镜像，后续的操作都将基于这个基础镜像。</p>
+<ul>
+<li>FROM的基础镜像是必须指定的，如果确实没有基于的其他镜像，可以指定为一个特殊的空镜像叫scratch。</li>
+</ul>
+</li>
+<li><p>RUN: 后面接命令行命令，它有两种形式:</p>
+<ul>
+<li>RUN 直接跟要执行的命令行命令</li>
+<li>RUN [“可执行文件”, “参数1”, “参数2”, …]</li>
+</ul>
+<p>Dockerfile 的指令每执行一次都会在 docker 上新建一层。所以过多无意义的层，会造成镜像膨胀过大。如果命令太多，可以使用&amp;&amp;符号连接命令，例如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RUN yum install wget \</span><br><span class="line">  &amp;&amp; wget -O redis.tar.gz &quot;http://download.redis.io/releases/redis-5.0.3.tar.gz&quot; \</span><br><span class="line">  &amp;&amp; tar -xvf redis.tar.gz</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>COPY: 复制指令，从<a href="#使用Dockerfile构建镜像">上下文目录中</a>复制文件或者目录到容器里指定路径：</p>
+<ul>
+<li>```shell<br>COPY [—chown=<user>:<group>] &lt;源路径1&gt;…  &lt;目标路径&gt;<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line">  * 源文件或者源目录，这里可以是通配符表达式，其通配符规则要满足 Go 的 filepath.Match 规则，如COPY hom* /mydir/</span><br><span class="line">  </span><br><span class="line">  * 目标路径: 容器内的指定路径</span><br><span class="line"></span><br><span class="line">* CMD: 类似于RUN指令，但是CMD的命令是在容器开始运行时会被运行，RUN命令是在构建镜像时被运行。CMD命令为启动的容器指定默认要运行的程序，程序运行结束，容器也就结束。CMD 指令指定的程序可被 docker run 命令行参数中指定要运行的程序所覆盖。**如果Dockerfile有多个CMD命令，仅最后一个生效**</span><br><span class="line"></span><br><span class="line">* EVN: 设置环境变量，定义了环境变量，那么在后续的指令中，就可以使用这个环境变量。EVN命令使用格式如下：</span><br><span class="line">  </span><br><span class="line">  * ```shell</span><br><span class="line">    ENV &lt;key&gt; &lt;value&gt;</span><br><span class="line">    ENV &lt;key1&gt;=&lt;value1&gt; &lt;key2&gt;=&lt;value2&gt;...</span><br></pre></td></tr></table></figure>
+</group></user></li>
+</ul>
+</li>
+<li><p>WORKDIR: 指定工作目录。用 WORKDIR 指定的工作目录，会在构建镜像的每一层中都存在。(WORKDIR 指定的工作目录，必须是提前创建好的)。docker build 构建镜像过程中的，每一个 RUN 命令都是新建的一层。只有通过 WORKDIR 创建的目录才会一直存在。</p>
+</li>
+<li><p>其他更多命令见<a target="_blank" rel="noopener" href="https://www.runoob.com/docker/docker-dockerfile.html">这里</a></p>
+</li>
+</ul>
+<h1 id="Docker-常用命令及介绍"><a href="#Docker-常用命令及介绍" class="headerlink" title="Docker 常用命令及介绍"></a>Docker 常用命令及介绍</h1><h1 id="Registry相关"><a href="#Registry相关" class="headerlink" title="Registry相关"></a>Registry相关</h1><p>1、切换Registry</p>
+<h2 id="镜像相关"><a href="#镜像相关" class="headerlink" title="镜像相关"></a>镜像相关</h2><h5 id="获取镜像"><a href="#获取镜像" class="headerlink" title="获取镜像"></a>获取镜像</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull &lt;image-name&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="查找镜像"><a href="#查找镜像" class="headerlink" title="查找镜像"></a>查找镜像</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search &lt;image-name&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="列出本地镜像"><a href="#列出本地镜像" class="headerlink" title="列出本地镜像"></a>列出本地镜像</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br><span class="line">or</span><br><span class="line">docker image ls</span><br></pre></td></tr></table></figure>
+<p>列出来表格有以下几个字端</p>
+<ul>
+<li>REPOSITORY: 镜像名称</li>
+<li>TAG: 镜像的标签</li>
+<li>IMAGE ID: 镜像ID</li>
+<li>CREATED: 镜像创建时间</li>
+<li>SIZE: 镜像大小</li>
+</ul>
+<p>同一仓库源可以有多个 TAG，代表这个仓库源的不同个版本，如 ubuntu 仓库源里，有 15.10、14.04 等多个不同的版本，我们使用 REPOSITORY:TAG 来定义不同的镜像。如果不指定TAG，默认会使用为TAG被标记为latest的那个。</p>
+<h5 id="删除镜像"><a href="#删除镜像" class="headerlink" title="删除镜像"></a>删除镜像</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi [-f] &lt;image-id&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-f 表示force</li>
+</ul>
+<h5 id="使用Dockerfile构建镜像"><a href="#使用Dockerfile构建镜像" class="headerlink" title="使用Dockerfile构建镜像"></a>使用Dockerfile构建镜像</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t &lt;image name&gt;:&lt;tag name&gt; .</span><br></pre></td></tr></table></figure>
+<p>-t 参数是标签，如果不给tag name，会自动将tag name设置为latest，<code>如果该镜像之前已经有被标记为latest tag 的镜像，那个这个之前的镜像的tag会被标记为none</code>。所以最好为每个镜像给一个tag。</p>
+<p>“.”表示上下文路径，是指 docker 在构建镜像，有时候想要使用到本机的文件（比如复制），docker build 命令得知这个路径后，会将路径下的所有内容打包。可以类比cmake命令的”cmake .”</p>
+<p><strong>解析</strong>：由于 docker 的运行模式是 C/S。我们本机是 C，docker 引擎是 S。实际的构建过程是在 docker 引擎下完成的，所以这个时候无法用到我们本机的文件。这就需要把我们本机的指定目录下的文件一起打包提供给 docker 引擎使用。</p>
+<p><strong>注意</strong>：上下文路径下不要放无用的文件，因为会一起打包发送给 docker 引擎，如果文件过多会造成过程缓慢。</p>
+<h2 id="容器相关"><a href="#容器相关" class="headerlink" title="容器相关"></a>容器相关</h2><ul>
+<li><code>docker ps -a</code><ul>
+<li>查看目前创建的所有容器的状态</li>
+</ul>
+</li>
+<li><code>docker stop &lt;container id&gt;</code><ul>
+<li>暂停运行某个容器</li>
+<li>Cotainer id 可以通过docker ps命令查看</li>
+</ul>
+</li>
+<li><code>docker restart &lt;container id&gt;</code><ul>
+<li>重启某个容器</li>
+</ul>
+</li>
+<li><code>docker rm &lt;container id&gt;</code><ul>
+<li>删除某个容器</li>
+</ul>
+</li>
+<li><code>docker rm $(docker ps -aq)</code><ul>
+<li>删除所有容器</li>
+</ul>
+</li>
+<li><code>docker run -it &lt;image_name&gt;:&lt;image_tag&gt; /bin/bash</code><ul>
+<li>使用某个镜像启动某个容器，并以<font color="orange">命令行形式</font>进入该容器</li>
+<li>-i 参数：交互式操作</li>
+<li>-t参数: 为容器重新分配一个伪输入终端</li>
+<li>-i、-t一般同时使用</li>
+<li>/bin/bash：使用的shell</li>
+<li><font color="orange">通过该命令如果在shell中执行exit命令后，容器将会停止运行</font></li>
+</ul>
+</li>
+<li><code>docker run -d &lt;image_name&gt;:&lt;image_tag&gt; [--name &lt;custom_container_name&gt;] [-p &lt;outter_port&gt;:&lt;inner_port&gt;]</code><ul>
+<li>以守护进程模式在后台启动一个容器</li>
+<li>-d参数：表示以守护进程形式在后台启动</li>
+<li>—name参数：容器的名称，如果不定义则会是一个随机的名称</li>
+<li>-p参数：端口映射，docker容器内部默认是不开放端口的，需要手动指定哪些端口开放，并且外部从哪些端口访问对应容器内的端口</li>
+</ul>
+</li>
+<li><code>docker exec -it &lt;container id&gt; /bin/bash</code><ul>
+<li>以命令行的形式进入某个容器</li>
+<li>docker exec 用于在一个运行的container中运行一个命令，更多docker exec的使用可以用docker exec —help查看</li>
+</ul>
+</li>
+<li><code>docker export &lt;container id&gt; &gt; &lt;filename&gt;</code> <ul>
+<li>创建容器快照</li>
+<li>示例：<code>docker export 1e560fca3906 &gt; ubuntu.tar</code></li>
+</ul>
+</li>
+<li><code>docker import &lt;filePath | url&gt; &lt;imageName:tag&gt;</code><ul>
+<li>将容器快照文件再导入为镜像</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/27/program_language/c++/C++PrimerPlus/%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/27/program_language/c++/C++PrimerPlus/%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">函数</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-07-27 16:35:04" itemprop="dateCreated datePublished" datetime="2020-07-27T16:35:04+08:00">2020-07-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-09 16:43:45" itemprop="dateModified" datetime="2022-02-09T16:43:45+08:00">2022-02-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-primer-plus/" itemprop="url" rel="index">
+                    <span itemprop="name">c++ primer plus</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h1><p>inline function在编译后实质上是函数代码块的替换，编译器不一定会实现inline function，如果编译器认为inline function太复杂或者有递归调用。<font color="orange">inline function的链接性为内部链接，所以inline function的定义和声明不能放在不同的文件中。</font></p>
+<h1 id="引用类型作函数参数"><a href="#引用类型作函数参数" class="headerlink" title="引用类型作函数参数"></a>引用类型作函数参数</h1><p>如果函数的参数为引用类型，如果传递的参数类型正确但不是左值或者传递的参数类型不正确，在其可以转换为正确的类型的情况下，<strong>编译将会创建一个临时变量，而将引用参数引用到该临时变量上</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">double</span> <span class="title">refcube</span><span class="params">(<span class="type">const</span> <span class="type">double</span> &amp;ra)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> re * ra * ra;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">double</span> side = <span class="number">3.0</span>;</span><br><span class="line"><span class="type">double</span> *pd = &amp;side;</span><br><span class="line"><span class="type">double</span> &amp;rd = side;</span><br><span class="line"></span><br><span class="line"><span class="type">long</span> edge = <span class="number">5</span>;</span><br><span class="line"><span class="type">double</span> lens[<span class="number">4</span>] = &#123;<span class="number">2.0</span>, <span class="number">5.0</span>, <span class="number">10.0</span>, <span class="number">12.0</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">double</span> c1 = <span class="built_in">refcube</span>(side);<span class="comment">//won&#x27;t create temporary variable</span></span><br><span class="line"><span class="type">double</span> c2 = <span class="built_in">refcube</span>(lens[<span class="number">2</span>]);<span class="comment">//won&#x27;t create temporary variable</span></span><br><span class="line"><span class="type">double</span> c3 = <span class="built_in">refcube</span>(rd);<span class="comment">//won&#x27;t create temporary variable</span></span><br><span class="line"><span class="type">double</span> c4 = <span class="built_in">refcube</span>(*pd);<span class="comment">//won&#x27;t create temporary variable</span></span><br><span class="line"><span class="type">double</span> c5 = <span class="built_in">refcube</span>(edge);<span class="comment">//will create temporary variable</span></span><br><span class="line"><span class="type">double</span> c6 = <span class="built_in">refcube</span>(<span class="number">7.0</span>);<span class="comment">//will create temporary variable</span></span><br><span class="line"><span class="type">double</span> c7 = <span class="built_in">refcube</span>(side + <span class="number">10.0</span>);<span class="comment">//will create temporary variable</span></span><br></pre></td></tr></table></figure>
+<h1 id="带默认参数的函数"><a href="#带默认参数的函数" class="headerlink" title="带默认参数的函数"></a>带默认参数的函数</h1><ul>
+<li>如果要用为某个参数设置默认值，则必须为<code>它右边的所有参数提供默认值</code>。</li>
+<li>函数定义中有默认参数，在函数实现中的函数头中可以不再写默认参数的值。</li>
+</ul>
+<h1 id="可变参数函数"><a href="#可变参数函数" class="headerlink" title="可变参数函数"></a>可变参数函数</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">sum</span><span class="params">(<span class="type">int</span> n, ...)</span></span>;</span><br></pre></td></tr></table></figure>
+<p><code>...</code>代表可以接受<font color="orange">任意类型</font>的数据任意多个。</p>
+<p>获取到可变参数列表的方法</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">sum</span><span class="params">(<span class="type">int</span> n, ...)</span> </span>&#123;</span><br><span class="line">    va_list    ap;</span><br><span class="line">    <span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">va_start</span>(ap, n);</span><br><span class="line">    <span class="keyword">while</span> (n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="type">int</span> temp = <span class="built_in">va_arg</span>(ap, <span class="type">int</span>);</span><br><span class="line">        sum += temp;</span><br><span class="line">        --n;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">va_end</span>(ap);</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">sum</span>(<span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>、va_list args;            <span class="comment">//定义一个可变参数列表</span></span><br><span class="line"><span class="number">2</span>、<span class="built_in">va_start</span>(args,n);    <span class="comment">//初始化args指向强制参数n的`下一个参数`</span></span><br><span class="line"><span class="number">3</span>、<span class="built_in">va_arg</span>(args,type);    <span class="comment">//`获取当前参数内容`并将args指向下一个参数</span></span><br><span class="line"><span class="number">4</span>、<span class="built_in">va_end</span>(args);            <span class="comment">//释放args</span></span><br></pre></td></tr></table></figure>
+<p>在使用va_arg宏时，<code>要求type是POD(Plain Old Data)类型</code>，能用 C 的 memcpy() 等函数进行操作的类、结构体就是 POD 类型的数据，所有基本数据类型都是POD。并且如果type和对应的参数不对的话会产生强制类型转换。如果类型转换失败就会将数据设置为0或者其他初始化的值。</p>
+<h1 id="函数重载"><a href="#函数重载" class="headerlink" title="函数重载"></a>函数重载</h1><ul>
+<li><p>函数的参数列表也称为函数特征标</p>
+</li>
+<li><p>函数重载要求函数的参数数目或参数类型<code>或参数的顺序</code>不同，而参数名是无关紧要，且编译器在检查时<code>不一定</code>会将引用类型和本身类型视为同一特征标，但是如果调用重载函数存在二义性则编译器会报错。</p>
+</li>
+<li><p><code>对于非引用传参，形参是否const是等价的</code>。但是<code>当使用引用传参时，有无const是不同的</code>。使用指针传参时，<code>指向const对象的指针和指向非const对象的指针做形参的函数是不同的</code></p>
+</li>
+<li><p>只是函数返回值不同不能构成函数重载</p>
+</li>
+<li><p><code>在类中，C++将区分常量和非常量函数(即函数本身是否为const)的特征标</code></p>
+</li>
+<li><p>函数重载匹配原则</p>
+<ul>
+<li>最匹配原则</li>
+<li>如果没有匹配的将会进行类型强转后进行匹配，但是进行类型强转后进行匹配后有多个匹配的会产生报错；</li>
+</ul>
+</li>
+</ul>
+<h1 id="函数模版"><a href="#函数模版" class="headerlink" title="函数模版"></a>函数模版</h1><font color="orange">函数模版并没有创建一个函数，它只是告诉编译器如何创建如何创建一个函数，编译器在遇到使用模版函数的地方会将模版函数展开成具体的函数。</font>
+
+<p>模版函数匹配原则：越具体越适配原则</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(T t)</span></span>;<span class="comment">//函数1</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(T *t)</span></span>;<span class="comment">//函数2</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="built_in">func</span>(&amp;a);<span class="comment">//函数2更适配</span></span><br></pre></td></tr></table></figure>
+<h2 id="decltype-x-y"><a href="#decltype-x-y" class="headerlink" title="decltype(x) y"></a>decltype(x) y</h2><p>decltype(x) y，用于说明y的类型和x的类型一样，decltype的运用场景大多是模版</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">gt</span><span class="params">(T1 x, T2 y)</span> -&gt; <span class="title">decltype</span><span class="params">(x + y)</span></span>;</span><br></pre></td></tr></table></figure>
+<h1 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h1><p>函数指针的声明方式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">return_type</span> (*pointer_name)(parameter);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>*</code>和pointer_name要用括号括起来，否则就变成了返回指针的函数。</p>
+</li>
+<li><p>不能声明一个指向模版函数的指针，因为模版函数并没有实现真的函数，而只是说明如何声明函数</p>
+</li>
+</ul>
+<h1 id="宏定义形式的函数"><a href="#宏定义形式的函数" class="headerlink" title="宏定义形式的函数"></a>宏定义形式的函数</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX(a, b) (a) &gt; (b) ? (a) : (b)</span></span><br></pre></td></tr></table></figure>
+<font color="orange">注意要将参数用括号扩起来</font>
+
+<p>有些时候用宏定义的代码被do { } while(0);包含了起来，例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX(a, b) do &#123;    \</span></span><br><span class="line"><span class="meta">    (a) &gt; (b) ? (a) : (b); \</span></span><br><span class="line"><span class="meta">&#125; while(0)</span></span><br></pre></td></tr></table></figure>
+<p>这是因为宏的处理是文本替换，有时候将宏用文本替换后代码就产生了语法错误，而使用do {} while(0)是为了避免由于文本替换后带来的语法错误，并保证宏函数无论如何都会执行一次。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/27/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE04-%E7%A1%AE%E5%AE%9A%E5%AF%B9%E8%B1%A1%E8%A2%AB%E4%BD%BF%E7%94%A8%E5%89%8D%E5%B7%B2%E8%A2%AB%E5%88%9D%E5%A7%8B%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/27/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE04-%E7%A1%AE%E5%AE%9A%E5%AF%B9%E8%B1%A1%E8%A2%AB%E4%BD%BF%E7%94%A8%E5%89%8D%E5%B7%B2%E8%A2%AB%E5%88%9D%E5%A7%8B%E5%8C%96/" class="post-title-link" itemprop="url">条款04-确定对象被使用前已被初始化</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-07-27 11:30:17 / Modified: 10:03:08" itemprop="dateCreated datePublished" datetime="2020-07-27T11:30:17+08:00">2020-07-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/effective-c/" itemprop="url" rel="index">
+                    <span itemprop="name">effective c++</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>799</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="确定对象被使用前已被初始化"><a href="#确定对象被使用前已被初始化" class="headerlink" title="确定对象被使用前已被初始化"></a>确定对象被使用前已被初始化</h1><ul>
+<li>对内置型数据(char, int, float, char * 等)进行手工初始化，因为C++不保证初始化它们</li>
+<li><strong>C++规定，对象的成员变量的初始化动作发生在进入构造函数本体之前</strong></li>
+<li>对象成员变量的初始化使用成员初始化列表的方式(<strong>如果成员变量是const或者reference就一定要使用初始化列表的方式</strong>)</li>
+<li>如果class内存在许多成员变量或者是从多个基类继承来的，而且这个class有多个构造方法，导致成员初始化列表存在许多重复，这种情况下可以合理地在初始列中挑出那些“赋值操作的性能和初始化一样好”的成员变量，改用它们的赋值操作，并将那些赋值操作移往某个函数(通常为private)，供所有的构造函数调用</li>
+<li>C++有十分固定的成员初始化次序，base class总是早于derived class被初始化，<strong>class的成员变量总是以其声明次序被初始化</strong>，即使它们在成员初始化列表中以不同的次序出现，所以<strong>当你在成员初始值列中列出各个成员时，最好总是与其声明次序一致</strong></li>
+</ul>
+<h1 id="不同编译单元内定义的non-local-static对象的初始化次序"><a href="#不同编译单元内定义的non-local-static对象的初始化次序" class="headerlink" title="不同编译单元内定义的non-local static对象的初始化次序"></a>不同编译单元内定义的non-local static对象的初始化次序</h1><p>函数内的static对象称为local static对象，其他static对象成为non-local static对象。</p>
+<p>所谓编译单元是指产出单一目标文件(single object file)的那些源码，基本上它是单一源码文件加上其所含入的头文件。</p>
+<p>现在问题涉及至少两个源码文件，每一个内含至少一个non-local static对象，如果某个编译单元内的某个non-local static对象的初始化动作使用了另一编译单元内的某个non-local static对象，它所用到的这个对象可能尚未被初始化，因为C++对“定义于不同编译单元内的non-local static对象”的初始化次序并无明确定义。</p>
+<p>例子:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//in a.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FileSystem</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="function">std::<span class="type">size_t</span> <span class="title">numDisks</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> FileSystem tfs;<span class="comment">//a non-local static object</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//in b.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Directory</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">Directory</span>( params );</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//in b.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;b.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;a.h&quot;</span></span></span><br><span class="line">Directory::<span class="built_in">Directory</span>( params ) &#123;</span><br><span class="line">  std::<span class="type">size_t</span> disks = tfs.<span class="built_in">numDisks</span>();<span class="comment">//use tfs</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//in main.cpp</span></span><br><span class="line"><span class="function">Directory <span class="title">tmpDirectory</span><span class="params">( params )</span></span>;<span class="comment">//tempDirectory is also a non-local static object</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ...;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在初始化tmpDirectory时需要用到tfs，这时候tfs可能还没有被初始化，这就会出现问题。</p>
+<p>解决办法：将每个non-local static对象放到一个属于它自己的专属函数内，成为一个local static对象，这些函数返回一个reference指向它所含的对象。</p>
+<p>接上例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//in a.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FileSystem</span>&#123; ... &#125;;</span><br><span class="line"><span class="function">FileSystem&amp; <span class="title">tfs</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="type">static</span> FileSystem fs;</span><br><span class="line">  <span class="keyword">return</span> fs;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//in b.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Directory</span>&#123; ... &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//in b.cpp</span></span><br><span class="line">Directory::<span class="built_in">Directory</span>( params ) &#123;</span><br><span class="line">  std::<span class="type">size_t</span> disks = <span class="built_in">tfs</span>().<span class="built_in">numDisks</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//main.cpp</span></span><br><span class="line"><span class="function">Directory&amp; <span class="title">tmpDir</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="type">static</span> Directory <span class="title">td</span><span class="params">( params )</span></span>;</span><br><span class="line">  <span class="keyword">return</span> td;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ...;</span><br><span class="line">  <span class="built_in">temDir</span>().<span class="built_in">doSomething</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种方法的基础在于：C++保证，函数内的local static对象会在“该函数被调用期间”“首次遇上该对象的定义式”时被初始化。<strong>这种方式也是Singleton模式的一个常见实现方法。</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/27/program_language/c++/C++PrimerPlus/%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/27/program_language/c++/C++PrimerPlus/%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/" class="post-title-link" itemprop="url">内存模型与命名空间</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-07-27 10:39:13" itemprop="dateCreated datePublished" datetime="2020-07-27T10:39:13+08:00">2020-07-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-29 16:26:09" itemprop="dateModified" datetime="2022-01-29T16:26:09+08:00">2022-01-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-primer-plus/" itemprop="url" rel="index">
+                    <span itemprop="name">c++ primer plus</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>7 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="变量作用范围"><a href="#变量作用范围" class="headerlink" title="变量作用范围"></a>变量作用范围</h1><h2 id="存储持续性"><a href="#存储持续性" class="headerlink" title="存储持续性"></a>存储持续性</h2><ul>
+<li>自动存储持续性：在程序开始执行其所属的函数或者代码块（花括号括起来的部分）时被创建，执行完函数或者代码块后，其内存空间被释放。</li>
+<li>静态存储持续性：<code>在程序的整个运行过程中都存在</code></li>
+<li>线程存储持续性（c++11）使用thread_local声明，其生命周期与所属线程一样长</li>
+<li>动态存储持续性：使用new和delete来动态管理</li>
+</ul>
+<h2 id="连接性"><a href="#连接性" class="headerlink" title="连接性"></a>连接性</h2><ul>
+<li>外部连接性：可在其他文件中访问</li>
+<li>内部链接性：只能在当前文件中访问</li>
+<li>无链接性：只能在当前函数或代码块中访问</li>
+</ul>
+<h2 id="静态初始化和动态初始化"><a href="#静态初始化和动态初始化" class="headerlink" title="静态初始化和动态初始化"></a>静态初始化和动态初始化</h2><ul>
+<li><p>静态初始化：在编译器处理文件时对变量进行初始化</p>
+</li>
+<li><p>动态初始化：编译后初始化</p>
+</li>
+</ul>
+<h2 id="静态持续变量"><a href="#静态持续变量" class="headerlink" title="静态持续变量"></a>静态持续变量</h2><p>编译器将<code>分配固定的内存块来存储所有的静态变量</code>，这些变量在整个程序执行期间一直存在。并且，<code>如果没有显示地初始化静态变量，编译器将把它设置为0</code>。在默认情况下，静态数组和结构将每个元素或成员的所有<code>位(bit)</code>都设置为0。</p>
+<p>声明三种链接性的静态持续变量的方法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> global = <span class="number">1000</span>;<span class="comment">//静态持续，外部链接</span></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> one_file = <span class="number">50</span>;<span class="comment">//静态持续，内部链接</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    ...;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> count = <span class="number">0</span>;<span class="comment">//静态持续，无链接</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="静态外部变量"><a href="#静态外部变量" class="headerlink" title="静态外部变量"></a>静态外部变量</h3><p><code>静态持续性</code>，<code>外部链接性</code>的变量，<code>定义</code>有两种方式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">double</span> up = <span class="number">0.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="type">double</span> up = <span class="number">0.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//即定义静态外部变量的时候可以省略extern关键字</span></span><br></pre></td></tr></table></figure>
+<p><code>声明</code>外部变量的方式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="type">double</span> up;<span class="comment">//up 在其他文件定义</span></span><br></pre></td></tr></table></figure>
+<h3 id="静态内部变量"><a href="#静态内部变量" class="headerlink" title="静态内部变量"></a>静态内部变量</h3><p>使用static定义并同时初始化声明的变量就是静态内部变量</p>
+<p>static声明的静态内部变量将会隐藏常规同名外部变量</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//in file1</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> errors = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//in file2</span></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> errors = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; errors;<span class="comment">//使用在file2中定义的errors</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> <code>同名变量覆盖规则：外部可见变量被本文件可见变量覆盖，局部变量覆盖全局变量</code></p>
+<h1 id="const定义的全局变量"><a href="#const定义的全局变量" class="headerlink" title="const定义的全局变量"></a>const定义的全局变量</h1><p>默认情况下<code>全局变量</code>的链接性为外部的，<code>但</code>const<code>全局变量</code>的链接性为内部的。也就是全局const定义就像使用了static说明符一样。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> value = <span class="number">10</span>;<span class="comment">//same as static const int value = 10;</span></span><br></pre></td></tr></table></figure>
+<p>但是const可以和extern连用，声明链接性为外部的常量：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="type">const</span> <span class="type">int</span> value = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="函数的持续性和链接性"><a href="#函数的持续性和链接性" class="headerlink" title="函数的持续性和链接性"></a>函数的持续性和链接性</h1><ul>
+<li><p>函数默认情况下是静态的，即在整个程序执行期间都一直存在，<code>默认情况下，函数的链接性为外部的</code>，即多个文件可见</p>
+</li>
+<li><p>可以使用static关键字将函数的链接性设置为内部，<code>且静态定义将覆盖外部定义</code>，且必须在函数的<code>定义和实现中都使用static关键字</code></p>
+</li>
+<li><p>内联函数不受这项规则的约束，内联函数的链接性为内部的，但是<code>c++要求同一个函数的所有内联定义都必须相同</code></p>
+</li>
+</ul>
+<p><code>如果定义了一个与库函数同名的函数，编译器将使用程序员定义的版本</code></p>
+<h1 id="语言链接性"><a href="#语言链接性" class="headerlink" title="语言链接性"></a>语言链接性</h1><p>链接程序要求每个不同的函数都有不同的符号名，在C语言中，一个名称只对应一个函数。例如c编译器可能将spiff这样的函数翻译为_spiff。</p>
+<p>但在c++中，由于函数重载，一个名称可能对应多个函数，必须将这些函数翻译为不同的符号名称。例如可能将spiff(int)翻译为spiff_i，将spiff(double, double)翻译成spiff_d_d。</p>
+<p>如果要在c++程序中使用c库中预编译的函数，由于有c编译器预编译的函数符号和c++要寻找的函数符号不相同，所有可能c++编译器会找不到这些函数。为了解决这个问题，可以用函数原型来指出要使用的约定：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function"><span class="type">void</span> <span class="title">spiff</span><span class="params">(<span class="type">int</span>)</span></span>;<span class="comment">//use C protocol for name look-up</span></span><br><span class="line"><span class="function"><span class="keyword">extern</span> <span class="type">void</span> <span class="title">spoff</span><span class="params">(<span class="type">int</span>)</span></span>;<span class="comment">//use C++ protocol for name look-up</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C++&quot;</span> <span class="function"><span class="type">void</span> <span class="title">spaff</span><span class="params">(<span class="type">int</span>)</span></span>;<span class="comment">//use C++ protocol for name look-up</span></span><br></pre></td></tr></table></figure>
+<p>另外的形式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> __cplusplus</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> &#123;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">some_func</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> __cplusplus</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p><code>注意由于extern &quot;C&quot;之后将按照C的方式翻译函数的名称，所以此时将不能在extern &quot;C&quot; 中进行函数重载</code>。</p>
+<h1 id="new、new-和定位new"><a href="#new、new-和定位new" class="headerlink" title="new、new[]和定位new"></a>new、new[]和定位new</h1><p>new、new[]的调用实质上是分别调用：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> * <span class="keyword">operator</span> <span class="title">new</span><span class="params">(std::<span class="type">size_t</span>)</span></span>;</span><br><span class="line"><span class="type">void</span> * <span class="keyword">operator</span> <span class="keyword">new</span>[](std::<span class="type">size_t</span>);</span><br></pre></td></tr></table></figure>
+<p>要使用定位new特性，首先需要包含头文件new。定位new的用法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">chaff</span> &#123;</span><br><span class="line">    <span class="type">char</span> *dross;</span><br><span class="line">    <span class="type">int</span> slag;</span><br><span class="line">    <span class="built_in">chaff</span>(<span class="type">const</span> <span class="type">char</span> *str = <span class="string">&quot;&quot;</span>, <span class="type">int</span> slag = <span class="number">0</span>) : <span class="built_in">slag</span>(slag) &#123;</span><br><span class="line">        dross = <span class="keyword">new</span> <span class="type">char</span>[<span class="built_in">strlen</span>(str) + <span class="number">1</span>];</span><br><span class="line">        <span class="built_in">strcpy</span>(dross, str, <span class="built_in">strlen</span>(str));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> buffer1[<span class="number">50</span>];</span><br><span class="line"><span class="type">char</span> buffer2[<span class="number">500</span>];</span><br><span class="line"></span><br><span class="line">chaff *p1 = <span class="built_in">new</span> (buffer1) <span class="built_in">chaff</span>(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">chaff *p2 = <span class="built_in">new</span> (buffer2) <span class="type">int</span>[<span class="number">20</span>];</span><br><span class="line">chaff *p3 = <span class="built_in">new</span> (buffer1) <span class="built_in">chaff</span>(<span class="string">&quot;2&quot;</span>);<span class="comment">//将会覆盖p1中的内容</span></span><br><span class="line">chaff *p4 = <span class="built_in">new</span> (buffer1 + <span class="built_in">sizeof</span>(chaff)) <span class="built_in">chaff</span>(<span class="string">&quot;3&quot;</span>);<span class="comment">//不会覆盖p3指向的内容</span></span><br></pre></td></tr></table></figure>
+<p><code>delete和delete[]只能用于指向常规new运算符分配的堆内存，所以delete不一定能作用于定位new运算符所指向的区域，所以最好不要delete定位new运算符返回的指针</code></p>
+<p>new 和 delete、new[] 和 delete[]要配套使用，delete和delete[]可以作用于空指针，delete和delete[]不能同时释放同一内存空间两次，除非是空指针，否则将会出现runtime error。</p>
+<h1 id="说明符和限定符"><a href="#说明符和限定符" class="headerlink" title="说明符和限定符"></a>说明符和限定符</h1><h2 id="cv-限定符"><a href="#cv-限定符" class="headerlink" title="cv-限定符"></a>cv-限定符</h2><ul>
+<li>const</li>
+<li>volatile</li>
+</ul>
+<p>假设编译器发现，程序在几条语句中两次使用了某个变量的值，则编译器可能不是让程序查找这个值两次，而是将这个值缓存到寄存器中。这种优化假设变量的值在这两次使用之间不会发生变化。如果不将变量声明为volatile，则编译器讲进行这种优化；将变量声明为volatile则相当于告诉编译器，不要进行这种优化。<code>volatile的使用一般在多进程或多线程的情况下，可能其他进程或线程或改变某个内存空间的值，如果不两次获取的话，程序就会出错。</code></p>
+<h2 id="mutable限定符"><a href="#mutable限定符" class="headerlink" title="mutable限定符"></a>mutable限定符</h2><p>mutable用来指出即使结构或类变量为const，其某个成员也可以被修改。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">data</span> &#123;</span><br><span class="line">    <span class="type">char</span> name[<span class="number">30</span>];</span><br><span class="line">    <span class="keyword">mutable</span> <span class="type">int</span> access;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> data veep&#123;<span class="string">&quot;tom&quot;</span>, <span class="number">0</span>&#125;;</span><br><span class="line">veep.access++;<span class="comment">//allowed</span></span><br></pre></td></tr></table></figure>
+<h1 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h1><p>“::”放在变量前面，该运算符表示使用变量的全局版本</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cout &lt;&lt; ::value &lt;&lt; <span class="string">&quot;\n&quot;</span></span><br></pre></td></tr></table></figure>
+<p>使用namespace创建名称空间</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> Tom &#123;</span><br><span class="line">    <span class="type">int</span> pal;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> Jack &#123;</span><br><span class="line">    <span class="type">int</span> pal;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>名称空间可以是全局的，也可以位于另一个名称空间中，但<code>不能位于代码块中。</code></p>
+<p>名称空间是开放的，即可以把名称加入到已有的名称空间中：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> Tom &#123;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将会扩展上面的Tom命名空间</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="using声明和using编译指令"><a href="#using声明和using编译指令" class="headerlink" title="using声明和using编译指令"></a>using声明和using编译指令</h2><p>using声明使特定的标示符可用，using编译指令使整个名称空间可用</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Tom::func;<span class="comment">//using声明</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> Tom;<span class="comment">//using 编译指令</span></span><br></pre></td></tr></table></figure>
+<h3 id="using编译指令和using声明的区别"><a href="#using编译指令和using声明的区别" class="headerlink" title="using编译指令和using声明的区别"></a>using编译指令和using声明的区别</h3><p>如果某个名称已经在函数中声明了，则不能用using声明导入相同的名称。然而，使用了using编译指令(using namespace)时，将进行名称解析。如果使用using编译指令导入一个已经在函数中声明的名称，则局部名称将隐藏名称空间名。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> Jill&#123;</span><br><span class="line">    <span class="function"><span class="type">double</span> <span class="title">bucket</span><span class="params">(<span class="type">double</span> n)</span></span>&#123; ... &#125;</span><br><span class="line">    <span class="type">double</span> fetch;</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Hill</span>&#123; ... &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">char</span> fetch;<span class="comment">//全局fetch</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">using</span> <span class="keyword">namespace</span> Jill;</span><br><span class="line">    Hill Thrill;</span><br><span class="line">    <span class="type">double</span> water = <span class="built_in">bucket</span>(<span class="number">2</span>);</span><br><span class="line">    <span class="type">double</span> fetch;<span class="comment">//将会隐藏Jill::fetch</span></span><br><span class="line">    cin &gt;&gt; fetch;<span class="comment">//写局部fetch</span></span><br><span class="line">    cin &gt;&gt; ::fectch;<span class="comment">//写全局的fetch</span></span><br><span class="line">    cin &gt;&gt; Jill::fetch;<span class="comment">//写Jill::fetch</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">foom</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> fetch;<span class="comment">//将会隐藏全局fetch</span></span><br><span class="line">    <span class="keyword">using</span> Jill::fetch;<span class="comment">//错误</span></span><br><span class="line">    Hill top;<span class="comment">//错误</span></span><br><span class="line">    Jill::Hill hill;<span class="comment">//正确</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="关于命名空间的一些小tip"><a href="#关于命名空间的一些小tip" class="headerlink" title="关于命名空间的一些小tip"></a>关于命名空间的一些小tip</h3><ul>
+<li><p>可以在名称空间中使用using编译指令和using声明：</p>
+<ul>
+<li>```cpp<br>namespace myth{<pre><code>using Jill::fetch;
+using namespace std;
+</code></pre>}<br>//这时候访问fetch的两种方式:<br>cout &lt;&lt; myth::fetch;<br>cout &lt;&lt; Jill::fetch<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">* 可以为名称空间创建别名:</span><br><span class="line">  </span><br><span class="line">  * ```cpp</span><br><span class="line">    namespace my_very_favorite_things&#123; ... &#125;;</span><br><span class="line">    namespace mvft = my_very_favorite_things;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>未命名的名称空间：</p>
+<ul>
+<li><pre><code class="lang-cpp">namespace &#123;
+    int ice;
+    int bandycoot;
+&#125;
+</code></pre>
+</li>
+<li><p><code>不能在未命名的名称空间所属文件之外的其他文件中，使用该未命名名称空间中的名称</code>。未命名的名称空间中的变量相当于声明了链接性为内部的静态变量。</p>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/27/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE03-%E5%B0%BD%E5%8F%AF%E8%83%BD%E4%BD%BF%E7%94%A8const/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -732,395 +1441,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE17-%E4%BB%A5%E7%8B%AC%E7%AB%8B%E8%AF%AD%E5%8F%A5%E5%B0%86newed%E5%AF%B9%E8%B1%A1%E7%BD%AE%E5%85%A5%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE17-%E4%BB%A5%E7%8B%AC%E7%AB%8B%E8%AF%AD%E5%8F%A5%E5%B0%86newed%E5%AF%B9%E8%B1%A1%E7%BD%AE%E5%85%A5%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">Untitled</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-07-16 12:20:02 / Modified: 14:43:55" itemprop="dateCreated datePublished" datetime="2020-07-16T12:20:02+08:00">2020-07-16</time>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>218</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="以独立语句将newed对象置入智能指针"><a href="#以独立语句将newed对象置入智能指针" class="headerlink" title="以独立语句将newed对象置入智能指针"></a>以独立语句将newed对象置入智能指针</h1><p>看下面的例子：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123; ... &#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">priority</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">processWidget</span><span class="params">(std::shared_ptr&lt;Widget&gt; pw, <span class="type">int</span> priority)</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">mian</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ...;</span><br><span class="line">  <span class="built_in">processWidget</span>(std::<span class="built_in">shared_ptr</span>&lt;Widget&gt;(<span class="keyword">new</span> Widget), <span class="built_in">priority</span>());</span><br><span class="line">  ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在调用processWidget函数之前，编译器创建代码会做三件事：</p>
-<p>1、调用priority</p>
-<p>2、执行”new Widget”</p>
-<p>3、调用std::share_ptr的构造函数</p>
-<p>但是C++编译器以什么样的次序完成这件事是不确定，唯一确定的顺序是”new Widget”一定在调用std::share_ptr的构造函数之前，编译器有可能在第二步执行调用priority函数。如果此时priority函数的调用发生异常，此时”new Widget”返回的指针可能将会遗失，此时可能引发资源泄漏。为了避免这个问题，最好把创建Widget的语句单独拿出来：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ...;</span><br><span class="line">  <span class="function">std::shared_ptr&lt;Widget&gt; <span class="title">pw</span><span class="params">(<span class="keyword">new</span> Widget)</span></span>;</span><br><span class="line">  <span class="built_in">processWidget</span>(pw, <span class="built_in">priority</span>());</span><br><span class="line">  ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE16-%E6%88%90%E5%AF%B9%E4%BD%BF%E7%94%A8new%E5%92%8Cdelete%E6%97%B6%E8%A6%81%E9%87%87%E7%94%A8%E7%9B%B8%E5%90%8C%E5%BD%A2%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE16-%E6%88%90%E5%AF%B9%E4%BD%BF%E7%94%A8new%E5%92%8Cdelete%E6%97%B6%E8%A6%81%E9%87%87%E7%94%A8%E7%9B%B8%E5%90%8C%E5%BD%A2%E5%BC%8F/" class="post-title-link" itemprop="url">Untitled</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-07-16 11:58:17 / Modified: 12:19:20" itemprop="dateCreated datePublished" datetime="2020-07-16T11:58:17+08:00">2020-07-16</time>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>126</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="成对使用new和delete时要采用相同形式"><a href="#成对使用new和delete时要采用相同形式" class="headerlink" title="成对使用new和delete时要采用相同形式"></a>成对使用new和delete时要采用相同形式</h1><p>如果你在new表达式中使用[ ]，必须在相应的delete表达式中也使用[ ]。如果你在new表达式中不使用[ ]，一定不要在相应的delete表达式中使用[ ]。</p>
-<p><strong>另外尽量不要对数组形式做typedef动作</strong>，否则会导致new和delete的不匹配。例如：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> std::string Address[<span class="number">4</span>];<span class="comment">//用四个字符串来表示地址</span></span><br><span class="line"></span><br><span class="line">std::string *pA = <span class="keyword">new</span> Address;</span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> pA;<span class="comment">//应该使用 delete [] pA;</span></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE15-%E5%9C%A8%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E7%B1%BB%E4%B8%AD%E6%8F%90%E4%BE%9B%E5%AF%B9%E5%8E%9F%E5%A7%8B%E8%B5%84%E6%BA%90%E7%9A%84%E8%AE%BF%E9%97%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE15-%E5%9C%A8%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E7%B1%BB%E4%B8%AD%E6%8F%90%E4%BE%9B%E5%AF%B9%E5%8E%9F%E5%A7%8B%E8%B5%84%E6%BA%90%E7%9A%84%E8%AE%BF%E9%97%AE/" class="post-title-link" itemprop="url">Untitled</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-07-16 11:47:42 / Modified: 11:57:46" itemprop="dateCreated datePublished" datetime="2020-07-16T11:47:42+08:00">2020-07-16</time>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>67</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="在资源管理类中提供对原始资源的访问"><a href="#在资源管理类中提供对原始资源的访问" class="headerlink" title="在资源管理类中提供对原始资源的访问"></a>在资源管理类中提供对原始资源的访问</h1><p>std中的shared_ptr和unique_ptr都提供了对原始资源对象的访问函数get()。在自己设计的资源管理类中也要提供一个访问原始资源的函数。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE14-%E5%9C%A8%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E7%B1%BB%E4%B8%AD%E5%B0%8F%E5%BF%83copy%E8%A1%8C%E4%B8%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE14-%E5%9C%A8%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E7%B1%BB%E4%B8%AD%E5%B0%8F%E5%BF%83copy%E8%A1%8C%E4%B8%BA/" class="post-title-link" itemprop="url">Untitled</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-07-16 11:12:40 / Modified: 11:37:17" itemprop="dateCreated datePublished" datetime="2020-07-16T11:12:40+08:00">2020-07-16</time>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>164</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="在资源管理类中小心copy行为"><a href="#在资源管理类中小心copy行为" class="headerlink" title="在资源管理类中小心copy行为"></a>在资源管理类中小心copy行为</h1><p>由于在资源管理类中存在指向动态内存的指针，在copy资源管理类时，动态资源的拷贝行为要根据实际情况来处理。所以需要对资源管理类的copy行为进行规定。</p>
-<p>对于资管管理类的copy行为一般有以下几种处理办法：</p>
-<ul>
-<li>禁止复制</li>
-<li>使用引用计数法，通常只要内含一个shared_ptr成员变量即可</li>
-<li>复制底部资源（深拷贝）</li>
-<li>转移底部资源的拥有权</li>
-</ul>
-<p><strong>动态资源的copy属性决定了资源管理类的copy属性</strong></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE13-%E4%BB%A5%E5%AF%B9%E8%B1%A1%E7%AE%A1%E7%90%86%E8%B5%84%E6%BA%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE13-%E4%BB%A5%E5%AF%B9%E8%B1%A1%E7%AE%A1%E7%90%86%E8%B5%84%E6%BA%90/" class="post-title-link" itemprop="url">Untitled</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-07-16 11:02:47 / Modified: 11:09:24" itemprop="dateCreated datePublished" datetime="2020-07-16T11:02:47+08:00">2020-07-16</time>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>279</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="以对象管理资源"><a href="#以对象管理资源" class="headerlink" title="以对象管理资源"></a>以对象管理资源</h1><p>该条款针中的资源指的是用户动态申请的资源。看一个例子：</p>
-<p>假设有一个工厂函数，用于生产某特定的Investment对象</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Investment</span> &#123; ... &#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">Investment* <span class="title">createInvestment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Investment</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ...;</span><br><span class="line">  Investment* p = <span class="built_in">createInvestment</span>();</span><br><span class="line">  ...;</span><br><span class="line">  <span class="keyword">delete</span> p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在上例中，如果用户不知道createInvestment的内部实现，那么就不知道Investment是动态创建出来的，另外如果用户知道createInvestment是动态创建出来的，也很有可能忘记了要delete。所以好的方式是利用非动态对象来管理动态申请的资源，利用非动态对象的析构函数来释放资源。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ...;</span><br><span class="line">  <span class="function">std::shared_ptr&lt;Investment&gt; <span class="title">pInv</span><span class="params">(createInvestment())</span></span>;</span><br><span class="line">  ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这种其实还有一个问题，就是用户很有可能忘记使用share_ptr来管理，所以最好直接让工厂函数返回一个shared_ptr。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::shared_ptr&lt;Investment&gt; <span class="title">createInvestment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">share_ptr</span>&lt;Investment&gt;(<span class="keyword">new</span> <span class="built_in">Investment</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>通常使用shared_ptr和unique_ptr就可以完成对动态申请的资源进行管理，但是某些情况下可能需要自己设计一个用于管理动态资源的对象</strong>。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1193,7 +1513,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1246,13 +1566,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">155k</span>
+    <span title="Symbols count total">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">8:36</span>
+    <span title="Reading time total">10:11</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>

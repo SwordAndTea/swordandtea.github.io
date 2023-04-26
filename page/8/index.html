@@ -181,6 +181,395 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE17-%E4%BB%A5%E7%8B%AC%E7%AB%8B%E8%AF%AD%E5%8F%A5%E5%B0%86newed%E5%AF%B9%E8%B1%A1%E7%BD%AE%E5%85%A5%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE17-%E4%BB%A5%E7%8B%AC%E7%AB%8B%E8%AF%AD%E5%8F%A5%E5%B0%86newed%E5%AF%B9%E8%B1%A1%E7%BD%AE%E5%85%A5%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">Untitled</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-07-16 12:20:02 / Modified: 14:43:55" itemprop="dateCreated datePublished" datetime="2020-07-16T12:20:02+08:00">2020-07-16</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>218</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="以独立语句将newed对象置入智能指针"><a href="#以独立语句将newed对象置入智能指针" class="headerlink" title="以独立语句将newed对象置入智能指针"></a>以独立语句将newed对象置入智能指针</h1><p>看下面的例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123; ... &#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">priority</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">processWidget</span><span class="params">(std::shared_ptr&lt;Widget&gt; pw, <span class="type">int</span> priority)</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">mian</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ...;</span><br><span class="line">  <span class="built_in">processWidget</span>(std::<span class="built_in">shared_ptr</span>&lt;Widget&gt;(<span class="keyword">new</span> Widget), <span class="built_in">priority</span>());</span><br><span class="line">  ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在调用processWidget函数之前，编译器创建代码会做三件事：</p>
+<p>1、调用priority</p>
+<p>2、执行”new Widget”</p>
+<p>3、调用std::share_ptr的构造函数</p>
+<p>但是C++编译器以什么样的次序完成这件事是不确定，唯一确定的顺序是”new Widget”一定在调用std::share_ptr的构造函数之前，编译器有可能在第二步执行调用priority函数。如果此时priority函数的调用发生异常，此时”new Widget”返回的指针可能将会遗失，此时可能引发资源泄漏。为了避免这个问题，最好把创建Widget的语句单独拿出来：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ...;</span><br><span class="line">  <span class="function">std::shared_ptr&lt;Widget&gt; <span class="title">pw</span><span class="params">(<span class="keyword">new</span> Widget)</span></span>;</span><br><span class="line">  <span class="built_in">processWidget</span>(pw, <span class="built_in">priority</span>());</span><br><span class="line">  ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE16-%E6%88%90%E5%AF%B9%E4%BD%BF%E7%94%A8new%E5%92%8Cdelete%E6%97%B6%E8%A6%81%E9%87%87%E7%94%A8%E7%9B%B8%E5%90%8C%E5%BD%A2%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE16-%E6%88%90%E5%AF%B9%E4%BD%BF%E7%94%A8new%E5%92%8Cdelete%E6%97%B6%E8%A6%81%E9%87%87%E7%94%A8%E7%9B%B8%E5%90%8C%E5%BD%A2%E5%BC%8F/" class="post-title-link" itemprop="url">Untitled</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-07-16 11:58:17 / Modified: 12:19:20" itemprop="dateCreated datePublished" datetime="2020-07-16T11:58:17+08:00">2020-07-16</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>126</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="成对使用new和delete时要采用相同形式"><a href="#成对使用new和delete时要采用相同形式" class="headerlink" title="成对使用new和delete时要采用相同形式"></a>成对使用new和delete时要采用相同形式</h1><p>如果你在new表达式中使用[ ]，必须在相应的delete表达式中也使用[ ]。如果你在new表达式中不使用[ ]，一定不要在相应的delete表达式中使用[ ]。</p>
+<p><strong>另外尽量不要对数组形式做typedef动作</strong>，否则会导致new和delete的不匹配。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> std::string Address[<span class="number">4</span>];<span class="comment">//用四个字符串来表示地址</span></span><br><span class="line"></span><br><span class="line">std::string *pA = <span class="keyword">new</span> Address;</span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> pA;<span class="comment">//应该使用 delete [] pA;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE15-%E5%9C%A8%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E7%B1%BB%E4%B8%AD%E6%8F%90%E4%BE%9B%E5%AF%B9%E5%8E%9F%E5%A7%8B%E8%B5%84%E6%BA%90%E7%9A%84%E8%AE%BF%E9%97%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE15-%E5%9C%A8%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E7%B1%BB%E4%B8%AD%E6%8F%90%E4%BE%9B%E5%AF%B9%E5%8E%9F%E5%A7%8B%E8%B5%84%E6%BA%90%E7%9A%84%E8%AE%BF%E9%97%AE/" class="post-title-link" itemprop="url">Untitled</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-07-16 11:47:42 / Modified: 11:57:46" itemprop="dateCreated datePublished" datetime="2020-07-16T11:47:42+08:00">2020-07-16</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>67</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="在资源管理类中提供对原始资源的访问"><a href="#在资源管理类中提供对原始资源的访问" class="headerlink" title="在资源管理类中提供对原始资源的访问"></a>在资源管理类中提供对原始资源的访问</h1><p>std中的shared_ptr和unique_ptr都提供了对原始资源对象的访问函数get()。在自己设计的资源管理类中也要提供一个访问原始资源的函数。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE14-%E5%9C%A8%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E7%B1%BB%E4%B8%AD%E5%B0%8F%E5%BF%83copy%E8%A1%8C%E4%B8%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE14-%E5%9C%A8%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E7%B1%BB%E4%B8%AD%E5%B0%8F%E5%BF%83copy%E8%A1%8C%E4%B8%BA/" class="post-title-link" itemprop="url">Untitled</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-07-16 11:12:40 / Modified: 11:37:17" itemprop="dateCreated datePublished" datetime="2020-07-16T11:12:40+08:00">2020-07-16</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>164</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="在资源管理类中小心copy行为"><a href="#在资源管理类中小心copy行为" class="headerlink" title="在资源管理类中小心copy行为"></a>在资源管理类中小心copy行为</h1><p>由于在资源管理类中存在指向动态内存的指针，在copy资源管理类时，动态资源的拷贝行为要根据实际情况来处理。所以需要对资源管理类的copy行为进行规定。</p>
+<p>对于资管管理类的copy行为一般有以下几种处理办法：</p>
+<ul>
+<li>禁止复制</li>
+<li>使用引用计数法，通常只要内含一个shared_ptr成员变量即可</li>
+<li>复制底部资源（深拷贝）</li>
+<li>转移底部资源的拥有权</li>
+</ul>
+<p><strong>动态资源的copy属性决定了资源管理类的copy属性</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE13-%E4%BB%A5%E5%AF%B9%E8%B1%A1%E7%AE%A1%E7%90%86%E8%B5%84%E6%BA%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE13-%E4%BB%A5%E5%AF%B9%E8%B1%A1%E7%AE%A1%E7%90%86%E8%B5%84%E6%BA%90/" class="post-title-link" itemprop="url">Untitled</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-07-16 11:02:47 / Modified: 11:09:24" itemprop="dateCreated datePublished" datetime="2020-07-16T11:02:47+08:00">2020-07-16</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>279</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="以对象管理资源"><a href="#以对象管理资源" class="headerlink" title="以对象管理资源"></a>以对象管理资源</h1><p>该条款针中的资源指的是用户动态申请的资源。看一个例子：</p>
+<p>假设有一个工厂函数，用于生产某特定的Investment对象</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Investment</span> &#123; ... &#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">Investment* <span class="title">createInvestment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Investment</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ...;</span><br><span class="line">  Investment* p = <span class="built_in">createInvestment</span>();</span><br><span class="line">  ...;</span><br><span class="line">  <span class="keyword">delete</span> p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上例中，如果用户不知道createInvestment的内部实现，那么就不知道Investment是动态创建出来的，另外如果用户知道createInvestment是动态创建出来的，也很有可能忘记了要delete。所以好的方式是利用非动态对象来管理动态申请的资源，利用非动态对象的析构函数来释放资源。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ...;</span><br><span class="line">  <span class="function">std::shared_ptr&lt;Investment&gt; <span class="title">pInv</span><span class="params">(createInvestment())</span></span>;</span><br><span class="line">  ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种其实还有一个问题，就是用户很有可能忘记使用share_ptr来管理，所以最好直接让工厂函数返回一个shared_ptr。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::shared_ptr&lt;Investment&gt; <span class="title">createInvestment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">share_ptr</span>&lt;Investment&gt;(<span class="keyword">new</span> <span class="built_in">Investment</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>通常使用shared_ptr和unique_ptr就可以完成对动态申请的资源进行管理，但是某些情况下可能需要自己设计一个用于管理动态资源的对象</strong>。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/14/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE12-%E5%A4%8D%E5%88%B6%E5%AF%B9%E8%B1%A1%E6%97%B6%E5%8B%BF%E5%BF%98%E8%AE%B0%E5%85%B6%E6%AF%8F%E4%B8%80%E4%B8%AA%E6%88%90%E5%88%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -708,429 +1097,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/07/14/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE05-%E4%BA%86%E8%A7%A3C++%E9%BB%98%E8%AE%A4%E7%BC%96%E5%86%99%E5%B9%B6%E8%B0%83%E7%94%A8%E4%BA%86%E5%93%AA%E4%BA%9B%E5%87%BD%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/14/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE05-%E4%BA%86%E8%A7%A3C++%E9%BB%98%E8%AE%A4%E7%BC%96%E5%86%99%E5%B9%B6%E8%B0%83%E7%94%A8%E4%BA%86%E5%93%AA%E4%BA%9B%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">Untitled</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-07-14 11:45:14 / Modified: 15:14:41" itemprop="dateCreated datePublished" datetime="2020-07-14T11:45:14+08:00">2020-07-14</time>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>281</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="了解C-默认编写并调用了哪些函数"><a href="#了解C-默认编写并调用了哪些函数" class="headerlink" title="了解C++默认编写并调用了哪些函数"></a>了解C++默认编写并调用了哪些函数</h1><p>在class中，如果你自己没声明，编译器会为一个类自动声明(编译器版本的)一个默认构造函数，一个copy构造(拷贝构造)函数和一个copy assignment(拷贝赋值)操作符函数，这些函数都是public且inline的。但是只有当这些函数被调用了，它们才会被编译器创建出来。另外编译器还会提供一个默认的析构函数，这个析构函数是non-virtual的，除非这个class的base class自身声明有virtual 析构函数。</p>
-<p>对于编译器提供的copy构造函数和copy assignment操作符函数，都只是单纯地将来源对象的每个non-static成员变量进行<strong>浅拷贝</strong>到目标对象。</p>
-<h1 id="某些情况下即使你自己未声明copy-assignment操作符函数，编译器也会拒绝提供"><a href="#某些情况下即使你自己未声明copy-assignment操作符函数，编译器也会拒绝提供" class="headerlink" title="某些情况下即使你自己未声明copy assignment操作符函数，编译器也会拒绝提供"></a>某些情况下即使你自己未声明copy assignment操作符函数，编译器也会拒绝提供</h1><ul>
-<li>class内含reference成员</li>
-<li>class内含const成员</li>
-<li>Base class将copy assignment操作符声明未private，编译器将拒绝为其derived class生成一个copy assignment操作符</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/04/19/machine_learning/SVM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/19/machine_learning/SVM/" class="post-title-link" itemprop="url">SVM</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-04-19 07:45:50" itemprop="dateCreated datePublished" datetime="2020-04-19T07:45:50+08:00">2020-04-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">machine learning</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>761</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>3 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="间隔与支持向量"><a href="#间隔与支持向量" class="headerlink" title="间隔与支持向量"></a>间隔与支持向量</h1><p>给定训练样本集$D= {(x<em>i, y_i)}</em>{i=1}^m, y_i \in {-1, +1}$，分类学习最基本的思想就是基于训练集D再样本空间中找到一个划分超平面，将不同类别的样本分开，但能将样本分开来的超平面可能有很多。例如：</p>
-<p><img src="/2020/04/19/machine_learning/SVM/划分平面.jpeg" alt="划分平面" style="zoom:25%;"></p>
-<p>对于上图，直观上看，应该去找位于两类训练样本“正中间”的划分超平面，因为该划分超平面对训练样本局部扰动的“容忍”性最好。例如，由于训练集的局限性或噪声的因素，<code>训练集外</code>的样本可能比上图中的训练样本更接近两个类的分隔界，而红色的超平面受影响最小，因此其对未见示例的泛化能力最强。</p>
-<p>在样本空间中，划分超平面可通过如下线性方程来描述：</p>
-<script type="math/tex; mode=display">
-w^T x + b = 0</script><p>其中$w = (w_1, w_2, \cdots, w_d)$为法向量，决定了超平面的方向，$b$为位移项，决定了超平面与原点之间的距离(其实二维平面上的直线$y = kx + b$本质上也是法向量的形式，其可以转换成$kx - y + b = 0$，即$(k, -1)(x, y)^T + b = 0$)。显然，划分超平面可被法向量$w$和位移$b$确定，下面我们将其记为$(w, b)$，样本空间中任意点$x$到超平面$(w, b)$的距离可写为:</p>
-<script type="math/tex; mode=display">
-r = \frac{|w^T x + b|}{||w||}</script><p>假设超平面$(w, b)$能将训练样本正确分类，即对$(x_i, y_i) \in D$，若$y_i = +1$，则有$w^T x_i + b &gt; 0$(在超平面上方)；若$y_i = -1$，则有$w^T x_i + b &lt; 0$(在超平面下方)。令</p>
-<script type="math/tex; mode=display">
-\begin{cases}
-    w^T x_i + b \geq +1, y_i = +1 \\
-    w^T x_i + b \leq -1, y_i = -1
-\end{cases} \tag{1} \\
-即找到那些使得所有样例到平面的距离都大于1的平面</script><p>可以证明，如果存在超平面$(w, b)$能将训练样本正确分类，则总存在缩放变换，使得上式成立，即总存在满足上式的超平面。下图是一个例子：</p>
-<p><img src="/2020/04/19/machine_learning/SVM/支持向量与间隔.jpeg" alt="间隔与支持向量" style="zoom:25%;"></p>
-<p>在上图中，<code>距离超平面最近的几个训练样本点被称为“支持向量”，两个异类支持向量到超平面的距离之和称为“间隔”</code>，在上图中，间隔为$\gamma = \frac{2}{||w||}$。</p>
-<p>欲找到具有“最大间隔”的划分超平面，也就是要找到能满足(1)式约束的$w、b$，使得距离$\gamma$最大，即</p>
-<script type="math/tex; mode=display">
-max_{\{w,b\}} \frac{2}{||w||}，在满足约束y_i · (w^T x_i + b) \geq 1的条件下</script><p>显然为了最大化间隔，仅需要最大化$||w||^{-1}$，这等价于最小化$||w||^2$，于是，上式可重写为</p>
-<script type="math/tex; mode=display">
-min_{\{w, b\}} \frac{1}{2} ||w||^2，在满足约束y_i · (w^T x_i + b) \geq 1的条件下</script><p><code>这就是支持向量机的基本型</code></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/04/17/machine_learning/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/17/machine_learning/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">遗传算法</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-04-17 20:34:27" itemprop="dateCreated datePublished" datetime="2020-04-17T20:34:27+08:00">2020-04-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>0</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/04/17/machine_learning/%E6%A8%A1%E6%8B%9F%E9%80%80%E7%81%AB%E7%AE%97%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/17/machine_learning/%E6%A8%A1%E6%8B%9F%E9%80%80%E7%81%AB%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">模拟退火算法</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-04-17 20:34:18" itemprop="dateCreated datePublished" datetime="2020-04-17T20:34:18+08:00">2020-04-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>0</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/04/17/machine_learning/neural_network&deep_learning/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/17/machine_learning/neural_network&deep_learning/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" class="post-title-link" itemprop="url">卷积神经网络</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-04-17 20:30:59" itemprop="dateCreated datePublished" datetime="2020-04-17T20:30:59+08:00">2020-04-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>0</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1203,7 +1169,7 @@ min_{\{w, b\}} \frac{1}{2} ||w||^2，在满足约束y_i · (w^T x_i + b) \geq 1�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1256,13 +1222,13 @@ min_{\{w, b\}} \frac{1}{2} ||w||^2，在满足约束y_i · (w^T x_i + b) \geq 1�
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">155k</span>
+    <span title="Symbols count total">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">8:36</span>
+    <span title="Reading time total">10:11</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
   </div>
@@ -1322,54 +1288,6 @@ min_{\{w, b\}} \frac{1}{2} ||w||^2，在满足约束y_i · (w^T x_i + b) \geq 1�
   
 
   
-      
-<script type="text/x-mathjax-config">
-
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
-      processEscapes: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    },
-    TeX: {
-      equationNumbers: {
-        autoNumber: 'AMS'
-      }
-    }
-  });
-
-  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
-    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
-      if (data.display) {
-        var next = data.script.nextSibling;
-        while (next && next.nodeName.toLowerCase() === '#text') {
-          next = next.nextSibling;
-        }
-        if (next && next.nodeName.toLowerCase() === 'br') {
-          next.parentNode.removeChild(next);
-        }
-      }
-    });
-  });
-
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for (i = 0; i < all.length; i += 1) {
-      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
-      if (element.nodeName.toLowerCase() == 'li') {
-        element = element.parentNode;
-      }
-      element.classList.add('has-jax');
-    }
-  });
-</script>
-<script>
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
-    MathJax.Hub.Typeset();
-  }, window.MathJax);
-</script>
-
-    
 
   
 
