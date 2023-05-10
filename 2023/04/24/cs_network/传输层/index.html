@@ -62,7 +62,7 @@
 <meta property="og:image" content="http://swordandtea.github.io/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/慢开始和拥塞控制.jpg">
 <meta property="og:image" content="http://swordandtea.github.io/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/快恢复.jpg">
 <meta property="article:published_time" content="2023-04-24T02:55:25.000Z">
-<meta property="article:modified_time" content="2023-04-24T12:00:38.826Z">
+<meta property="article:modified_time" content="2023-04-26T12:32:25.371Z">
 <meta property="article:author" content="SwordAndTea">
 <meta property="article:tag" content="计网">
 <meta name="twitter:card" content="summary">
@@ -216,10 +216,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-04-24 10:55:25 / Modified: 20:00:38" itemprop="dateCreated datePublished" datetime="2023-04-24T10:55:25+08:00">2023-04-24</time>
+              <time title="Created: 2023-04-24 10:55:25" itemprop="dateCreated datePublished" datetime="2023-04-24T10:55:25+08:00">2023-04-24</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-04-26 20:32:25" itemprop="dateModified" datetime="2023-04-26T20:32:25+08:00">2023-04-26</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -272,7 +278,7 @@
 <p>2、<code>无连接状态</code>。UDP不维护连接状态。</p>
 <p>3、分组首部开销小，TCP有20B的首部开销，而UDP只有8B的开销。</p>
 <p>4、应用层能更好地控制要发送的数据和发送时间。UDP<code>没有拥塞控制</code>，因此网络中的拥塞不会影响主机的发送效率。某些实时应用要求以更稳定的速度发送，能容忍一些数据的丢失，但不允许有较大的时延，而UDP正好满足这些应用的需求。</p>
-<p>UDP是面向报文的。发送发UDP对应用层交下来的报文，在添加首部后就向下交付给IP层，既不合并，也不拆分，而是保留这些报文的边界；接收方UDP对IP层交上来UDP用户数据报在去除首部后就原封不动地交给上层应用程序，<code>一次交付一个完整的报文</code>。因此报文不可分割，是UDP数据报处理的最小单位。</p>
+<p>UDP是面向报文的。发送方UDP协议对应用层交下来的报文，在添加首部后就向下交付给IP层，既不合并，也不拆分，而是保留这些报文的边界；接收方UDP对IP层交上来UDP用户数据报在去除首部后就原封不动地交给上层应用程序，<code>一次交付一个完整的报文</code>。因此报文不可分割，是UDP数据报处理的最小单位。</p>
 <h2 id="UDP的首部格式"><a href="#UDP的首部格式" class="headerlink" title="UDP的首部格式"></a>UDP的首部格式</h2><p><img src="/2023/04/24/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/udp.jpg" title alt="2b8fed7f7a91118fbcbef80137bcebc8.jpeg" data-align="center"></p>
 <p>UDP首部有8B，由4个字段组成，每个字段的长度都是2B。</p>
 <p>1、源端口。源端口号，在需要对方回信时选用，不需要时可用0.</p>
