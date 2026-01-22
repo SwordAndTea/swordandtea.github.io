@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.2">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -63,8 +63,8 @@
 <meta property="og:image" content="http://swordandtea.github.io/2021/09/05/DDIA/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/fig3-9.png">
 <meta property="og:image" content="http://swordandtea.github.io/2021/09/05/DDIA/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/fig3-10.png">
 <meta property="og:image" content="http://swordandtea.github.io/2021/09/05/DDIA/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/fig3-11.png">
-<meta property="article:published_time" content="2021-09-05T03:17:32.000Z">
-<meta property="article:modified_time" content="2022-01-16T14:32:17.681Z">
+<meta property="article:published_time" content="2021-09-05T15:17:32.000Z">
+<meta property="article:modified_time" content="2024-10-22T06:32:39.302Z">
 <meta property="article:author" content="SwordAndTea">
 <meta property="article:tag" content="DDIA">
 <meta name="twitter:card" content="summary">
@@ -219,14 +219,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2021-09-05 11:17:32" itemprop="dateCreated datePublished" datetime="2021-09-05T11:17:32+08:00">2021-09-05</time>
+              <time title="Created: 2021-09-05 11:17:32" itemprop="dateCreated datePublished" datetime="2021-09-05T11:17:32-04:00">2021-09-05</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-01-16 22:32:17" itemprop="dateModified" datetime="2022-01-16T22:32:17+08:00">2022-01-16</time>
+                <time title="Modified: 2024-10-22 02:32:39" itemprop="dateModified" datetime="2024-10-22T02:32:39-04:00">2024-10-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -268,7 +268,7 @@
         <blockquote>
 <p>作为一名应用系统开发人员，为什么要关注数据库内部的存储和检索呢？首先，你不太可能从头开始实现一套自己的存储引擎，往往需要从众多现有的存储引擎中选择一个适合自己应用的存储引擎。因此，为了针对你特定的工作负载而对数据库调优时，最好对存储引擎的底层机制有一个大概的了解。</p>
 </blockquote>
-<h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><p>索引是基于原始数据派生来的额外数据结构，很多数据库允许单独添加或删除索引，从而不影响数据库的内容，它只会影响查询性能。它们背后的基本想法是保留一些额外的元数据，这些数据作为路标，帮助定位想要的数据。索引作为额外引入的结构，在维护时势必会引入开销，特别是在新数据写入时。对于写入，它很难超过简单地追加文件方式的性能。对于每次写入数据时，需要更新索引，因此任何类型的索引通常都会降低写的速度。</p>
+<h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><p>索引是基于原始数据派生来的额外数据结构，很多数据库允许单独添加或删除索引，从而不影响数据库的内容，它只会影响查询性能。它们背后的基本想法是保留一些额外的元数据，这些数据作为路标，帮助定位想要的数据。索引作为额外引入的结构，在维护时势必会引入开销，特别是在新数据写入时。对于写入，它很难超过简单地追加文件方式的性能。对于每次写入数据时，需要更新索引，<font color="orange">因此任何类型的索引通常都会降低写的速度</font>。</p>
 <blockquote>
 <p>这里涉及存储系统中重要的权衡设计：适当的索引可以加速读取查询，但每个索引都会减慢写速度。为此，默认情况下，数据库通常不会对所有内容进行索引，它需要应用开发人员或数据库管理员，基于对应用程序典型查询模式的了解，来手动选择索引。目的是为应用程序提供最有利加速的同时，避免引入过多不必要的开销。</p>
 </blockquote>
@@ -323,11 +323,11 @@
 <p>所以SSTable结构的基本构建流程如下：</p>
 <p>1、写入key-value键值对时，将其添加到内存中的平衡树数据结构中</p>
 <p>2、当内存中的平衡树结构大于某个阈值时（通常为几M字节），将其作为段文件写入到磁盘，由于平衡树已经维护了排序过的键值对，所以写磁盘也很高效。在将平衡树写入磁盘的时候，后续的写入则添加到到另外一个新的内存中的平衡树中</p>
-<p>3、在处理读请求时，首先从内存的平衡树中查找，接着是最新的段文件，然后是此新的段文件，以此类推（相对于之前增加了一个内存查找的过程）</p>
+<p>3、在处理读请求时，首先从内存的平衡树中查找，接着是最新的段文件，然后是次新的段文件，以此类推（相对于之前增加了一个内存查找的过程）</p>
 <p>4、后台进程周期性地执行段合并与压缩地过程。</p>
 <p>但是，如果内存中的平衡树还未写入到段文件时，此时系统崩溃了，怎么办呢，内存中的数据无法再恢复。所以，通常SSTable还需要配置日志使用，每个写内存平衡树的记录同时也要写到一个顺序添加的日志文件中。如果系统崩溃，已经写入段文件的可以直接读磁盘恢复，内存中的数据则从日志文件恢复。当内存中的平衡树写入到段文件后，该日志文件就可以丢弃了。</p>
 <h2 id="LSM-Tree"><a href="#LSM-Tree" class="headerlink" title="LSM-Tree"></a>LSM-Tree</h2><p>像SSTable这样类似日志不断在文件末尾进行添加的索引结构称为日志结构的合并树——LSM-Tree（Log-Structured Merge-Tree）</p>
-<h2 id="B-trees"><a href="#B-trees" class="headerlink" title="B-trees"></a>B-trees</h2><p>B-tree是一种常见和被广泛使用的索引类型，它几乎时所有关心数据库中的标准索引实现。</p>
+<h2 id="B-trees"><a href="#B-trees" class="headerlink" title="B-trees"></a>B-trees</h2><p>B-tree是一种常见和被广泛使用的索引类型，它几乎是所有关系数据库中的标准索引实现。</p>
 <p>B-tree本质上也是一种排序的树形数据结构，它在数据库系统中的使用形式一般如下：</p>
 <ol>
 <li><p>将数据库划分为固定大小的块或页，传统上大小为4KB，<font color="orange">页是内存读/写的最小单元。这种设计更接近底层硬件</font></p>
@@ -342,11 +342,11 @@
 <p><img title src="/2021/09/05/DDIA/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/fig3-6.png" alt width="500" data-align="center"></p>
 <p>B-tree底层的基本写操作时使用新数据覆盖磁盘上的旧页。它假设覆盖不会改变页的磁盘存储位置，也就是说，当页被覆盖时，对该页的所有引用保持不变。这与LSM-Tree引形成鲜明对比，LSM-Tree仅追加更新文件。</p>
 <p>但是，覆盖操作是危险的，在硬件层面，意味着磁头首先移动到正确的位置，然后旋转盘面，对于SSD，由于SSD必须一次擦除并重写非常大的存储芯片块，情况会更复杂。此外，某些操作需要覆盖多个不同的页，例如，如果插入导致页溢出，因而需要对页进行分裂，那么需要修改三个页（分裂后的两个页和父页），这是个比较危险的操作，因为如果数据库在完成部分页写入之后发生崩溃，最终会导致索引破坏，例如分裂后新形成的页的引用未更新到父页中，成为一个孤儿页。</p>
-<font color="orange">为了使数据库能从崩溃中恢复，常见B-tree的实现需要支持磁盘上的额外的数据结构：预写日志（write-ahead log，WAL），也成为重做日志。这是一个仅支持追加修改的文件，每个B-tree的修改必须先更新WAL然后再修改树本身的页。当数据库在崩溃后需要恢复时，该日志用于将B-tree恢复到最近一致的状态。</font>
+<font color="orange">为了使数据库能从崩溃中恢复，常见B-tree的实现需要磁盘上的额外的数据结构支持：预写日志（write-ahead log，WAL），也称为重做日志。这是一个仅支持追加修改的文件，每个B-tree的修改必须先更新WAL然后再修改树本身的页。当数据库在崩溃后需要恢复时，该日志用于将B-tree恢复到最近一致的状态。</font>
 
 <h2 id="对比B-tree和LSM-tree"><a href="#对比B-tree和LSM-tree" class="headerlink" title="对比B-tree和LSM-tree"></a>对比B-tree和LSM-tree</h2><p>尽管B-Tree的实现比LSM-tree的实现更为成熟，然而由于LSM-tree的性能特点，LSM-tree目前仍很有吸引力。根据经验，LSM-tree通常对于写入更快，而B-tree被认为对于读取更快。读取通常在LSM-tree上较慢，因为它们必须在不同的压缩阶段检查多个不同的数据结构和SSTable</p>
 <p><strong>LSM-tree相对于B-tree的优点</strong></p>
-<p>B-tree索引必须至少写两次数据：一次写入预写日志，一次写入树的页本身（还可能发生页分裂）。即使该页中只有几个字节更改，也必须承受写整个页的开销。一些存储引擎甚至覆盖相同的页两次，以避免在电影故障的情况下最终出现部分更新的页。<font color="orange">像这种由于一次数据库写入请求导致多次磁盘写的情况成为写放大，</font>对于SSD来说，由于只能承受有限次地擦除覆盖，因此尤为关注写放大指标。</p>
+<p>B-tree索引必须至少写两次数据：一次写入预写日志，一次写入树的页本身（还可能发生页分裂）。即使该页中只有几个字节更改，也必须承受写整个页的开销。一些存储引擎甚至覆盖相同的页两次，以避免在电故障的情况下最终出现部分更新的页。<font color="orange">像这种由于一次数据库写入请求导致多次磁盘写的情况成为写放大，</font>对于SSD来说，由于只能承受有限次地擦除覆盖，因此尤为关注写放大指标。</p>
 <p>对于大量写密集地应用程序，性能瓶颈很可能在于数据库写入磁盘地速率。在这种情况下，写放大具有直接地的性能成本。LSM-tree通常能够承受比B-tree更高的写入吞吐量，部分是因为它们具有较低的写放大，还有部分原因是因为它们以顺序方式写入紧凑的文件，而不必重写多个页（这种差异对于磁盘驱动器尤为重要，原因是磁盘的顺序写比随机写得要快得多）。</p>
 <p>由于B-tree以页为单位，每个页中很有可能有不能利用的磁盘空间，即磁盘碎片，而LSM-tree不是面向页的，而且定期对数据进行合并，所以它们具有较低的存储开销。</p>
 <font color="orange">在许多SSD上，硬件底层使用日志结构化算法会将随机写入转换为底层存储芯片上的顺序写入，所以对SSD来说，顺序写和随机写的影响差异不那么明显。</font>然而，更低的写放大和更少的磁盘碎片在SSD上仍然有益，以更紧凑的方式表示数据，从而在可用的I/O带宽中支持更多的读写请求。
@@ -357,16 +357,16 @@ LMS-tree的缺点就是压缩过程有时会干扰正在进行的读写操作，
 
 另外B-tree的一个优点就是每个键都恰好唯一对应与索引中的某个位置，而日志结构的存储引擎可能在不同的段中具有相同键的多个副本。<font color="orange">如果数据库希望提供强大的事务语义，这方面B-tree显得更具有吸引力：在许多关系数据库中，事务隔离是通过键范围上的锁来实现的，并且在B-tree索引中 ，这些锁还可以直接定义到树中。</font>
 
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><font color="red">不考虑使用场景，空谈那种存储引擎更适合是没有意义的，实地测试总是需要的。</font>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><font color="orange">不考虑使用场景，空谈哪种存储引擎更适合是没有意义的，实地测试总是需要的。</font>
 
 <h1 id="其他索引结构"><a href="#其他索引结构" class="headerlink" title="其他索引结构"></a>其他索引结构</h1><p>之前讨论的key-value索引，它们就像关系模型中的主键索引。主键唯一标识关系表中的一行或文档数据库中的一个文档或图形数据库中的一个顶点。数据库中的一行/文档/顶点通过主键来引用。</p>
-<h2 id="在索引中存储值（聚集索引）"><a href="#在索引中存储值（聚集索引）" class="headerlink" title="在索引中存储值（聚集索引）"></a>在索引中存储值（聚集索引）</h2><p>索引中的key是需要查询的对象，索引中的value可以是以下两类之一：第一种，是实际行数据（或者文档，顶点），也可以是对其他地方存储的行的引用。在后一种情况下，存储行数据的具体位置被成为堆文件，而且它不以特定的顺序存储数据（它可以是追加的，也可以是覆盖的）。<font color="orange">堆文件方式比较常见，这样当存在多个二级索引时，它可以避免复制数据，即每个索引只引用堆文件中的位置信息，实际数据仍保存在一个位置。</font></p>
+<h2 id="在索引中存储值（聚集索引）"><a href="#在索引中存储值（聚集索引）" class="headerlink" title="在索引中存储值（聚集索引）"></a>在索引中存储值（聚集索引）</h2><p>索引中的key是需要查询的对象，索引中的value可以是以下两类之一：第一种，是实际行数据（或者文档，顶点），也可以是对其他地方存储的行的引用。在后一种情况下，存储行数据的具体位置被称为堆文件，而且它不以特定的顺序存储数据（它可以是追加的，也可以是覆盖的）。<font color="orange">堆文件方式比较常见，这样当存在多个二级索引时，它可以避免复制数据，即每个索引只引用堆文件中的位置信息，实际数据仍保存在一个位置。</font></p>
 <p>当更新值而不更新键时，堆文件方式会非常高效：只要新值的字节数不大于旧值，记录就可以直接覆盖，如果新值比较大，则情况比较复杂，它可能需要移动数据到一个最够大的新位置。在这种情况下，所有索引都需要更新以指向记录的新的堆位置，或者在旧堆位置保留一个间接指针。</p>
 <font color="orange">在某些情况下，从索引到堆文件的额外跳转对于读取来说意味着太多的性能损失，因此可能希望将行数据直接存储在索引中，这被称为聚集索引。</font>例如，在mysql的InnoDB存储引擎中，表的主键始终是聚集索引，二级索引引用主键（而不是堆文件位置）。
 
 在聚集索引（在索引中直接保存行数据）和非聚集索引（索引仅存储数据的引用）之间有一种折中设计称为覆盖索引或包含列的索引，它在索引中包含部分列值。它支持通过索引来回答某些简单查询。
 
-<font color="red">与任何类型的数据冗余一样，聚集和覆盖索引可以加快读取速度，但是它们需要额外的存储，并且会增加写入的开销。此外，数据库还需要更多的工作来保证事务性，这样应用程序不会因为数据冗余而得到不一致的结果。</font>
+<font color="orange">与任何类型的数据冗余一样，聚集和覆盖索引可以加快读取速度，但是它们需要额外的存储，并且会增加写入的开销。此外，数据库还需要更多的工作来保证事务性，这样应用程序不会因为数据冗余而得到不一致的结果。</font>
 
 <h2 id="多列索引"><a href="#多列索引" class="headerlink" title="多列索引"></a>多列索引</h2><p>到目前为止，讨论的索引都只有一个key，如果需要对多个key进行查询，就需要多列索引。但是多列索引是高维的，标准的B-tree和LSM-tree索引无法高效地应对这种查询，它们只能针对一个维度进行排序和查询。一种处理方式是将高维数据转换为一维度数据，但是，更常见的做法是使用专门的空间索引，如R树。</p>
 <h2 id="在内存中保存所有的内容"><a href="#在内存中保存所有的内容" class="headerlink" title="在内存中保存所有的内容"></a>在内存中保存所有的内容</h2><p>到目前位置，讨论的索引都是为了适应磁盘限制。与内存相比，磁盘更难处理。使用磁盘SSD，如果要获得良好的读写性能，需要精心地安排磁盘上地数据布局。然而这些工作是值得的，因为磁盘有两个显著的优点：数据持久化和低成本。</p>
@@ -379,8 +379,6 @@ LMS-tree的缺点就是压缩过程有时会干扰正在进行的读写操作，
 
 数据库中的数据一般会用于两种用途，一种是用于在线事务处理（OLTP，online transaction processing），例如用户数据的增删改查，这种情况下一般只需要查找少量记录。另外一种是用于在线数据分析，例如获取一个月每个店铺的总收入是多少，这种情况一般会查找大量数据，这种叫做OLAP（online analytic processing）。
 
-## 
-
 # 数据仓库
 
 一个企业可能有十几种不同的交易系统，例如面向客户网站提供支持的系统、供应商管理系统、员工管理系统等。这些系统中的每一个都足够复杂，往往需要一个专门团队来维护，最终导致这些系统彼此独立运行。
@@ -389,7 +387,7 @@ LMS-tree的缺点就是压缩过程有时会干扰正在进行的读写操作，
 
 <p>相比之下，数据仓库则是单独的数据库，分析人员可以在不影响OLTP操作的情况下尽情地使用。数据仓库包含公司所有各种OLTP系统的只读副本。从OLTP数据库（使用周期性数据转储或连续更新流）中提取数据，转换为分析友好的模式，执行必要的清理，然后加载到数据仓库中。</p>
 <p>几乎所有的大型企业都有数据仓库，但是在小型企业中却几乎闻所未闻。这可能是因为大多数小公司没有那么多不同的OLTP系统，大多数小公司只拥有少量的数据，完全可以在传统的SQL数据库中直接进行查询分析。</p>
-<p>另外使用单独的数据仓库而不是i直接查询OLTP系统来进行分析，很大的优势在于数据仓库可以针对分析访问模式进行优化。<font color="orange">事实证明，前半部分讨论的索引算法适合OLTP，但不擅长应对分析查询。接下来将会讨论一些针对分析型而优化的存储引擎。</font></p>
+<p>另外使用单独的数据仓库而不是直接查询OLTP系统来进行分析，很大的优势在于数据仓库可以针对分析访问模式进行优化。<font color="orange">事实证明，前半部分讨论的索引算法适合OLTP，但不擅长应对分析查询。接下来将会讨论一些针对分析型而优化的存储引擎。</font></p>
 <h2 id="星型与雪花型分析模式"><a href="#星型与雪花型分析模式" class="headerlink" title="星型与雪花型分析模式"></a>星型与雪花型分析模式</h2><p>在事务处理领域有多种不同的数据模型（文档模型，关系模型，图模型），但是在分析型业务中，用到的数据模型则比较少，其中最主要的数据模型就是星型模型。该模型的中心是一个事实表，事实表的每一个行表示在特定时间发生的事件（例如代表客户购买了某个商品），在事实表周围，是许多个维度表，维度表通常记录时间发生的对象、时间、地点、原定等信息。事实表中通过外键指向这些维度表。</p>
 <p><img title src="/2021/09/05/DDIA/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/fig3-9.png" alt="星型模型" width="475" data-align="center"></p>
 <p>通常，事实被捕获为单独的事件，这样之后的分析具有很大的灵活性，但同时这意味着事实表会变得非常庞大，在大公司中，其数据仓库可能有数十PB的交易历史，其中大多数都保存在事实表中。</p>
@@ -404,17 +402,17 @@ LMS-tree的缺点就是压缩过程有时会干扰正在进行的读写操作，
 <h2 id="列压缩"><a href="#列压缩" class="headerlink" title="列压缩"></a>列压缩</h2><p>除了仅从磁盘中加载查询所需的列之外，还可以通过压缩数据来进一步降低磁盘数据的加载。幸运的是，面向列的存储恰好非常适合压缩，因为通常列中不同值的数量会小于行数（例如，零售商可能拥有数十亿个销售交易，但只有十万个不同的商品）。</p>
 <p>一种常见的列压缩方法是使用位图编码+游程编码：一个列中有n个不同的值，则可以创建一个长度位n的位图，位图中的每一位对应一个不同的值，每一行都会有一个位图。但是，如果n很大，那边位图中就会有很多0，这时就可以使用游程编码对位图进一步压缩。</p>
 <p><img title src="/2021/09/05/DDIA/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/fig3-11.png" alt width="528" data-align="center"></p>
-<h2 id="内存带宽和矢量化处理"><a href="#内存带宽和矢量化处理" class="headerlink" title="内存带宽和矢量化处理"></a>内存带宽和矢量化处理</h2><p>对于需要扫描数百行的数据仓库查询，将数据从磁盘磁盘加载到内存的带宽是一个瓶颈，然而，这不是唯一的瓶颈。分析数据库的开发人员还要关心如何高效节省CPU访问内存的带宽，甚至是尽量减少CPU分支预测错误和CPU指令处理流水线中的气泡，并利用现代CPU中的单指令多数据（SIMD）指令。</p>
+<h2 id="内存带宽和矢量化处理"><a href="#内存带宽和矢量化处理" class="headerlink" title="内存带宽和矢量化处理"></a>内存带宽和矢量化处理</h2><p>对于需要扫描数百行的数据仓库查询，将数据从磁盘磁盘加载到内存时，带宽是一个瓶颈，然而，这不是唯一的瓶颈。分析数据库的开发人员还要关心如何高效节省CPU访问内存的带宽，甚至是尽量减少CPU分支预测错误和CPU指令处理流水线中的气泡，并利用现代CPU中的单指令多数据（SIMD）指令（向量计算单元）。</p>
 <p>面向列的存储布局也有利于高效利用CPU的缓存，例如，查询引擎可以将一大块压缩后的列数据放入CPU的L1缓存中，并以紧凑循环（即循环中没有函数调用和条件判断分支）进行迭代，这种技术被成为矢量化处理。</p>
 <h2 id="列存储中的排序"><a href="#列存储中的排序" class="headerlink" title="列存储中的排序"></a>列存储中的排序</h2><p>列存储中的排序并不是简单的单独对某列进行排序，这种排序是没有意义的，因为这样的话就无法知道列中的某一项实际属于哪一行。<font color="orange">即使数据是按列存储的，也需要以行位单位进行排序。</font></p>
 <p>数据库管理员可以基于经常查询的列来进行排序，例如，假如查询经常以日期范围作为目标，那么就可以对数据按照日期这一列作为第一个排序的key对数据进行排序。然后可以对第二经常访问的列作为第二排序key进行排序，以此类推。</p>
 <p><font color="orange">排序的另外一个优点就是它可以帮助进一步压缩列，排序之后该列值相同的行会挨在一起，这时候一个简单的游程编码就可以表示多行。</font>通常来说，第一个排序键的压缩效果最好，后面的排序键对压缩的提升效果就没有那么明显了。</p>
-<h2 id="列多存储排序"><a href="#列多存储排序" class="headerlink" title="列多存储排序"></a>列多存储排序</h2><p>由于不同的查询会从不同的排序中获益，同时数据需要被复制到多台机器上防止单台机器出现故障时不会丢失数据，不妨存储不同方式排序的冗余数据到不同的机器上，在查询时可以选择最适合的排序版本进行查询。</p>
+<h2 id="列式存储排序"><a href="#列式存储排序" class="headerlink" title="列式存储排序"></a>列式存储排序</h2><p>由于不同的查询会从不同的排序中获益，同时数据需要被复制到多台机器上防止单台机器出现故障时不会丢失数据，不妨存储不同方式排序的冗余数据到不同的机器上，在查询时可以选择最适合的排序版本进行查询。</p>
 <p>面向列的存储具有多个排列顺序，有点类似面向行的存储中有多个不同的二级索引，但最大的区别是，面向行的存储将每一行都保存在一个位置（在堆文件或者聚集索引中），而二级索引只包含指向对应行的指针。而对于列存储，通常没有指向别处数据的指针，只有包含列的值。</p>
 <h1 id="列存储的写操作"><a href="#列存储的写操作" class="headerlink" title="列存储的写操作"></a>列存储的写操作</h1><p>面向列的存储、压缩和排序都非常有助于加速读取操作，但是，它们的缺点是让写入更加困难。</p>
 <p>像B-tree使用原地更新的方式，对于压缩的列是不可能的，如果在排序表的中间插入一行，那么很可能不得不重写所有的列文件。</p>
 <p>幸运的是，LSM-Tree可以比较好地解决这个问题：所有的写入首先写入内存，并在内存中进行排序，内存中的存储是面向行还是面向列的都无关紧要，当积累了足够的写入时，将它们和磁盘中的列文件合并，并批量写入新文件。执行查询时，就需要检测磁盘上的数据和内存中最近的写入。</p>
-<h2 id="聚合：数据立方体于物化视图"><a href="#聚合：数据立方体于物化视图" class="headerlink" title="聚合：数据立方体于物化视图"></a>聚合：数据立方体于物化视图</h2><p>基本思想是由于数据仓库的查询通常涉及聚合函数，例如计算总量、平均值，最大值，最小值，每次都处理原始数据将非常浪费，可以缓存查询最常使用的一些计数信息。具体细节不进行讲解。</p>
+<h2 id="聚合：数据立方体与物化视图"><a href="#聚合：数据立方体与物化视图" class="headerlink" title="聚合：数据立方体与物化视图"></a>聚合：数据立方体与物化视图</h2><p>基本思想是由于数据仓库的查询通常涉及聚合函数，例如计算总量、平均值，最大值，最小值，每次都处理原始数据将非常浪费，可以缓存查询最常使用的一些计数信息。具体细节不进行讲解。</p>
 <h1 id><a href="#" class="headerlink" title=" "></a> </h1>
     </div>
 
@@ -437,7 +435,7 @@ LMS-tree的缺点就是压缩过程有时会干扰正在进行的读写操作，
       <i class="fa fa-chevron-left"></i> golang json 源码解析
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/10/01/opengl/texture/" rel="next" title="texture">
+    <a href="/2021/09/30/opengl/texture/" rel="next" title="texture">
       texture <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -499,7 +497,7 @@ LMS-tree的缺点就是压缩过程有时会干扰正在进行的读写操作，
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95"><span class="nav-number">1.</span> <span class="nav-text">索引</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E7%B4%A2%E5%BC%95"><span class="nav-number">1.1.</span> <span class="nav-text">哈希索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LSM-Tree"><span class="nav-number">1.2.</span> <span class="nav-text">LSM-Tree</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#B-trees"><span class="nav-number">1.3.</span> <span class="nav-text">B-trees</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E6%AF%94B-tree%E5%92%8CLSM-tree"><span class="nav-number">1.4.</span> <span class="nav-text">对比B-tree和LSM-tree</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%B4%A2%E5%BC%95%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">其他索引结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E7%B4%A2%E5%BC%95%E4%B8%AD%E5%AD%98%E5%82%A8%E5%80%BC%EF%BC%88%E8%81%9A%E9%9B%86%E7%B4%A2%E5%BC%95%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">在索引中存储值（聚集索引）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E5%88%97%E7%B4%A2%E5%BC%95"><span class="nav-number">2.2.</span> <span class="nav-text">多列索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E4%BF%9D%E5%AD%98%E6%89%80%E6%9C%89%E7%9A%84%E5%86%85%E5%AE%B9"><span class="nav-number">2.3.</span> <span class="nav-text">在内存中保存所有的内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%9F%E5%9E%8B%E4%B8%8E%E9%9B%AA%E8%8A%B1%E5%9E%8B%E5%88%86%E6%9E%90%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.4.</span> <span class="nav-text">星型与雪花型分析模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E5%BC%8F%E5%AD%98%E5%82%A8"><span class="nav-number">2.5.</span> <span class="nav-text">列式存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E5%8E%8B%E7%BC%A9"><span class="nav-number">2.6.</span> <span class="nav-text">列压缩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%B8%A6%E5%AE%BD%E5%92%8C%E7%9F%A2%E9%87%8F%E5%8C%96%E5%A4%84%E7%90%86"><span class="nav-number">2.7.</span> <span class="nav-text">内存带宽和矢量化处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E5%AD%98%E5%82%A8%E4%B8%AD%E7%9A%84%E6%8E%92%E5%BA%8F"><span class="nav-number">2.8.</span> <span class="nav-text">列存储中的排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E5%A4%9A%E5%AD%98%E5%82%A8%E6%8E%92%E5%BA%8F"><span class="nav-number">2.9.</span> <span class="nav-text">列多存储排序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%97%E5%AD%98%E5%82%A8%E7%9A%84%E5%86%99%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">列存储的写操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%9A%E5%90%88%EF%BC%9A%E6%95%B0%E6%8D%AE%E7%AB%8B%E6%96%B9%E4%BD%93%E4%BA%8E%E7%89%A9%E5%8C%96%E8%A7%86%E5%9B%BE"><span class="nav-number">3.1.</span> <span class="nav-text">聚合：数据立方体于物化视图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text"> </span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95"><span class="nav-number">1.</span> <span class="nav-text">索引</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E7%B4%A2%E5%BC%95"><span class="nav-number">1.1.</span> <span class="nav-text">哈希索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LSM-Tree"><span class="nav-number">1.2.</span> <span class="nav-text">LSM-Tree</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#B-trees"><span class="nav-number">1.3.</span> <span class="nav-text">B-trees</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E6%AF%94B-tree%E5%92%8CLSM-tree"><span class="nav-number">1.4.</span> <span class="nav-text">对比B-tree和LSM-tree</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%B4%A2%E5%BC%95%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">其他索引结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E7%B4%A2%E5%BC%95%E4%B8%AD%E5%AD%98%E5%82%A8%E5%80%BC%EF%BC%88%E8%81%9A%E9%9B%86%E7%B4%A2%E5%BC%95%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">在索引中存储值（聚集索引）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E5%88%97%E7%B4%A2%E5%BC%95"><span class="nav-number">2.2.</span> <span class="nav-text">多列索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E4%BF%9D%E5%AD%98%E6%89%80%E6%9C%89%E7%9A%84%E5%86%85%E5%AE%B9"><span class="nav-number">2.3.</span> <span class="nav-text">在内存中保存所有的内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%9F%E5%9E%8B%E4%B8%8E%E9%9B%AA%E8%8A%B1%E5%9E%8B%E5%88%86%E6%9E%90%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.4.</span> <span class="nav-text">星型与雪花型分析模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E5%BC%8F%E5%AD%98%E5%82%A8"><span class="nav-number">2.5.</span> <span class="nav-text">列式存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E5%8E%8B%E7%BC%A9"><span class="nav-number">2.6.</span> <span class="nav-text">列压缩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%B8%A6%E5%AE%BD%E5%92%8C%E7%9F%A2%E9%87%8F%E5%8C%96%E5%A4%84%E7%90%86"><span class="nav-number">2.7.</span> <span class="nav-text">内存带宽和矢量化处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E5%AD%98%E5%82%A8%E4%B8%AD%E7%9A%84%E6%8E%92%E5%BA%8F"><span class="nav-number">2.8.</span> <span class="nav-text">列存储中的排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E5%BC%8F%E5%AD%98%E5%82%A8%E6%8E%92%E5%BA%8F"><span class="nav-number">2.9.</span> <span class="nav-text">列式存储排序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%97%E5%AD%98%E5%82%A8%E7%9A%84%E5%86%99%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">列存储的写操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%9A%E5%90%88%EF%BC%9A%E6%95%B0%E6%8D%AE%E7%AB%8B%E6%96%B9%E4%BD%93%E4%B8%8E%E7%89%A9%E5%8C%96%E8%A7%86%E5%9B%BE"><span class="nav-number">3.1.</span> <span class="nav-text">聚合：数据立方体与物化视图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text"> </span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -515,20 +513,20 @@ LMS-tree的缺点就是压缩过程有时会干扰正在进行的读写操作，
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -558,7 +556,7 @@ LMS-tree的缺点就是压缩过程有时会干扰正在进行的读写操作，
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -568,15 +566,15 @@ LMS-tree的缺点就是压缩过程有时会干扰正在进行的读写操作，
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">183k</span>
+    <span title="Symbols count total">215k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">10:11</span>
+    <span title="Reading time total">11:56</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

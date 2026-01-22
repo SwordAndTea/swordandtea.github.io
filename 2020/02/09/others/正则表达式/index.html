@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.2">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -54,8 +54,8 @@
 <meta property="og:site_name" content="xiangwei&#39;s blog">
 <meta property="og:description" content="正则表达式是由普通字符以及特殊字符(称为&quot;元字符&quot;)组成的文本模式 正则表达式是一个匹配连续串的规则，即匹配会在每个连续的字符串中进行 普通字符普通字符包括没有显示指定为元字符的所有可打印和不可打印字符。这包括所有的大写和小写字母、所有数字、所有标点符号和一些其他符号 非打印字符    字符 描述     \cx 匹配由x指明的控制字符。例如，\cM匹配一个control-M或">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-02-09T07:20:41.000Z">
-<meta property="article:modified_time" content="2023-04-18T09:11:31.058Z">
+<meta property="article:published_time" content="2020-02-09T20:20:41.000Z">
+<meta property="article:modified_time" content="2024-05-07T02:12:25.522Z">
 <meta property="article:author" content="SwordAndTea">
 <meta property="article:tag" content="regular expression">
 <meta name="twitter:card" content="summary">
@@ -209,14 +209,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-02-09 15:20:41" itemprop="dateCreated datePublished" datetime="2020-02-09T15:20:41+08:00">2020-02-09</time>
+              <time title="Created: 2020-02-09 15:20:41" itemprop="dateCreated datePublished" datetime="2020-02-09T15:20:41-05:00">2020-02-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-04-18 17:11:31" itemprop="dateModified" datetime="2023-04-18T17:11:31+08:00">2023-04-18</time>
+                <time title="Modified: 2024-05-06 22:12:25" itemprop="dateModified" datetime="2024-05-06T22:12:25-04:00">2024-05-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -358,7 +358,7 @@
 </tr>
 <tr>
 <td>^</td>
-<td>匹配输入字符串的开始位置，除非在方括号表达式中使用。当该符号在方括号表达式中使用时，表示不接受方括号表达式中的字符集合</td>
+<td>匹配输入字符串的开始位置，除非在方括号表达式中使用。<font color="orange">当该符号在方括号表达式中使用时，表示不接受方括号表达式中的字符集合</font></td>
 </tr>
 <tr>
 <td>{</td>
@@ -451,14 +451,14 @@
 </div>
 <p><code>不能讲限定符与定位符一起使用，由于在紧靠换行或者单词边界的前面或者后面不能有一个以上位置</code>，因此不允许诸如<code>^*</code>之类的表达式</p>
 <p>如果要匹配一行文本开始处的文本，要在正则表达式的开始使用^字符。如果要匹配一行文本结束处的文本，要在正则表达式的结束处使用$字符。<br><code>^和$可以在一个正则表达式中同时使用</code>，例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^Chapter$</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^Chapter$</span><br></pre></td></tr></table></figure>
 <p>表示从文本开始匹配时和从末尾匹配时都是Chapter，说明该行只有Chapter这几个字符</p>
 <p>单词边界是单词和空格之间的位置，非单词边界是任何其他位置。</p>
 <p>\b字符位于要匹配的字符串的开始，它在单词的开始处查找匹配项，如果它位于字符串的结尾，他在单词的结尾处查找匹配项。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\bCha</span><br><span class="line">ter\b</span><br></pre></td></tr></table></figure>
 <h2 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h2><p>AAA | BBB<br>匹配 AAA 或者 BBB</p>
 <h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><h4 id="引用分组和反向引用"><a href="#引用分组和反向引用" class="headerlink" title="引用分组和反向引用"></a>引用分组和反向引用</h4><p>对一个正则表达式或部分模式两边添加圆括号将导致相关匹配到一个临时缓冲区中，所捕获的每个子匹配都按照正则表达式模式中从左到右出现的顺序存储。<font color="red">缓冲区的编号从1开始</font>，最多可以存储99个捕获的子表达式。每个缓冲区都可以使用\n访问，其中n为一个标识特定缓冲区的一位或两位十进制数。<br>例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\b([a-z]+)\1\b</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\b([a-z]+)\1\b</span><br></pre></td></tr></table></figure>
 <p>反向引用只能用于之前出现的分组。</p>
 <p>反向引用的一个例子：要用正则表达式匹配日期，日期的格式为yyyy-mm-dd、yyyy/mm/dd和yyyy.mm.dd都是合理的，注意后面的分隔符和前面的分隔符要相等。则正则表达式可以写作：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\d&#123;4&#125;(-|/|.)\d&#123;2&#125;\1\d&#123;2&#125;</span><br></pre></td></tr></table></figure>
@@ -569,20 +569,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -612,7 +612,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -622,15 +622,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">183k</span>
+    <span title="Symbols count total">215k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">10:11</span>
+    <span title="Reading time total">11:56</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

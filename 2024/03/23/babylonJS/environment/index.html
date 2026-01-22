@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="Introduction To EnvironmentclearColorThe ‘clearColor’ property on the scene object is the most rudimentary of environment properties&#x2F;adjustments. Simply stated, this is how you change the background c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="environment">
+<meta property="og:url" content="http://swordandtea.github.io/2024/03/23/babylonJS/environment/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="Introduction To EnvironmentclearColorThe ‘clearColor’ property on the scene object is the most rudimentary of environment properties&#x2F;adjustments. Simply stated, this is how you change the background c">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-03-23T15:39:47.000Z">
+<meta property="article:modified_time" content="2024-03-26T02:44:52.473Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="BabylonJS">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2024/03/23/babylonJS/environment/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>environment | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2024/03/23/babylonJS/environment/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          environment
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-03-23 11:39:47" itemprop="dateCreated datePublished" datetime="2024-03-23T11:39:47-04:00">2024-03-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-03-25 22:44:52" itemprop="dateModified" datetime="2024-03-25T22:44:52-04:00">2024-03-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/BabylonJS/" itemprop="url" rel="index">
+                    <span itemprop="name">BabylonJS</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>773</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Introduction-To-Environment"><a href="#Introduction-To-Environment" class="headerlink" title="Introduction To Environment"></a>Introduction To Environment</h1><h2 id="clearColor"><a href="#clearColor" class="headerlink" title="clearColor"></a>clearColor</h2><p>The ‘clearColor’ property on the scene object is the most rudimentary of environment properties/adjustments. Simply stated, this is how you change the background color of the scene. Here is how it is done:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scene.clearColor = <span class="keyword">new</span> BABYLON.Color3(<span class="number">0.5</span>, <span class="number">0.8</span>, <span class="number">0.5</span>);</span><br></pre></td></tr></table></figure>
+<p>This color and property is not used in any calculations for the final colors of mesh, materials, textures, or anything else. It is simply the background color of the scene. Easy.</p>
+<h2 id="ambientColor"><a href="#ambientColor" class="headerlink" title="ambientColor"></a>ambientColor</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scene.ambientColor = <span class="keyword">new</span> BABYLON.Color3(<span class="number">0.3</span>, <span class="number">0.3</span>, <span class="number">0.3</span>);</span><br></pre></td></tr></table></figure>
+<p>Mainly, it is used in conjunction with a mesh’s <code>StandardMaterial.ambientColor</code> to determine a FINAL <code>ambientColor</code> for the mesh material. </p>
+<p>When there is no <code>scene.ambientColor</code>, then <code>StandardMaterial.ambientColor</code> and <code>StandardMaterial.ambientTexture</code> will appear to do nothing.</p>
+<p>Set a <code>scene.ambientColor</code> of some value, <code>StandardMaterial.ambientColor</code>/<code>StandardMaterial.ambientTexture</code> will become active on meshes where you have applied such.</p>
+<p>By default, <code>scene.ambientColor</code> is set to <code>Color3(0, 0, 0)</code>, which means there is no <code>scene.ambientColor</code>.</p>
+<h1 id="Fog"><a href="#Fog" class="headerlink" title="Fog"></a>Fog</h1><p>Fog is quite an advanced effect, but fog in Babylon.js has been simplified to the maximum. It’s now very easy to add fog to your scenes.  First, we define the fog mode like this:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scene.fogMode = BABYLON.Scene.FOGMODE_EXP;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>BABYLON.Scene.FOGMODE_NONE</code> - default one, fog is deactivated.</li>
+<li><code>BABYLON.Scene.FOGMODE_EXP</code> - the fog density is following an exponential function.</li>
+<li><code>BABYLON.Scene.FOGMODE_EXP2</code> - same that above but faster.</li>
+<li><code>BABYLON.Scene.FOGMODE_LINEAR</code> - the fog density is following a linear function.</li>
+</ul>
+<p>If you choose the <code>EXP</code>, or <code>EXP2</code> mode, then you can define the density option (default is <code>0.1</code>):</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scene.fogDensity = <span class="number">0.01</span>;</span><br></pre></td></tr></table></figure>
+<p>if you choose <code>LINEAR</code> mode, then you can define where fog starts and where fog ends:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scene.fogStart = <span class="number">20.0</span>;</span><br><span class="line">scene.fogEnd = <span class="number">60.0</span>;</span><br></pre></td></tr></table></figure>
+<p>Finally, whatever the mode, you can specify the color of the fog (default is <code>BABYLON.Color3(0.2, 0.2, 0.3)</code>):</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scene.fogColor = <span class="keyword">new</span> BABYLON.Color3(<span class="number">0.9</span>, <span class="number">0.9</span>, <span class="number">0.85</span>);</span><br></pre></td></tr></table></figure>
+<h1 id="Skyboxes"><a href="#Skyboxes" class="headerlink" title="Skyboxes"></a>Skyboxes</h1><p>In Babylon.js, skyboxes typically use <a target="_blank" rel="noopener" href="https://doc.babylonjs.com/typedoc/classes/babylon.cubetexture">CubeTexture</a> on a large cube.</p>
+<p>The CubeTexture constructor takes a base URL and (by default) appends “_px.jpg”, “_nx.jpg”, “_py.jpg”, “_ny.jpg”, “_pz.jpg” and “_nz.jpg” to load the +x, -x, +y, -y, +z, and -z facing sides of the cube. (These suffixes may be customized if needed.)</p>
+<p>CubeTexture images need to be .jpg format (unless the suffixes are customized) and square. For efficiency, use a power of 2 size, like 1024x1024.</p>
+<h2 id="Manual-creation"><a href="#Manual-creation" class="headerlink" title="Manual creation"></a>Manual creation</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> skybox = BABYLON.MeshBuilder.CreateBox(<span class="string">&quot;skyBox&quot;</span>, &#123; <span class="attr">size</span>: <span class="number">100.0</span> &#125;, scene);</span><br><span class="line"><span class="keyword">const</span> skyboxMaterial = <span class="keyword">new</span> BABYLON.StandardMaterial(<span class="string">&quot;skyBox&quot;</span>, scene);</span><br><span class="line">skyboxMaterial.backFaceCulling = <span class="literal">false</span>;</span><br><span class="line">skybox.material = skyboxMaterial;</span><br></pre></td></tr></table></figure>
+<p>Next, we set the <code>infiniteDistance</code> property. This makes the skybox follow our camera’s position.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">skybox.infiniteDistance = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<p>Now we must remove all light reflections on our box (the sun doesn’t reflect on the sky!):</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">skyboxMaterial.disableLighting = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<p>Next, we apply our special sky texture to it. This texture must have been prepared to be a skybox, in a dedicated directory, named “skybox” in our example:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">skyboxMaterial.reflectionTexture = <span class="keyword">new</span> BABYLON.CubeTexture(<span class="string">&quot;textures/skybox&quot;</span>, scene);</span><br><span class="line">skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;</span><br></pre></td></tr></table></figure>
+<p>In that <code>/skybox</code> directory, we must find 6 sky textures, one for each face of our box. Each image must be named per the corresponding face: “skybox_nx.jpg” (left), “skybox_ny.jpg” (down), “skybox_nz.jpg” (back), “skybox_px.jpg” (right), “skybox_py.jpg” (up), “skybox_pz.jpg” (front). The “_nx.jpg” is added to your path.</p>
+<p>You can also use dds files to specify your skybox. These special files can contain all information required to setup a cube texture:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">skyboxMaterial.reflectionTexture = <span class="keyword">new</span> BABYLON.CubeTexture(<span class="string">&quot;/assets/textures/SpecularHDR.dds&quot;</span>, scene);</span><br></pre></td></tr></table></figure>
+<p>Final note, if you want your skybox to render behind everything else, set the skybox’s <code>renderingGroupId</code> to <code>0</code>, and every other renderable object’s <code>renderingGroupId</code> greater than zero</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">skybox.renderingGroupId = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Some other mesh</span></span><br><span class="line">myMesh.renderingGroupId = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="Automatic-creation"><a href="#Automatic-creation" class="headerlink" title="Automatic creation"></a>Automatic creation</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">envTexture = <span class="keyword">new</span> BABYLON.CubeTexture(<span class="string">&quot;/assets/textures/SpecularHDR.dds&quot;</span>, scene);</span><br><span class="line">scene.createDefaultSkybox(envTexture, <span class="literal">true</span><span class="comment">/*use a PBRMaterial*/</span>, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+<h1 id="Background-Materials"><a href="#Background-Materials" class="headerlink" title="Background Materials"></a>Background Materials</h1><p>The background material is fully unlit (which means it can still show color even there is no light created in the scene) but can still receive shadows or be subject to image processing information. This makes it the best fit to use as a skybox or the material of ground.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> backgroundMaterial = <span class="keyword">new</span> BABYLON.BackgroundMaterial(<span class="string">&quot;backgroundMaterial&quot;</span>, scene);</span><br></pre></td></tr></table></figure>
+<h2 id="Diffuse"><a href="#Diffuse" class="headerlink" title="Diffuse"></a>Diffuse</h2><p>The diffuse part is used to simply give a color to the mesh.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">backgroundMaterial.diffuseTexture = <span class="keyword">new</span> BABYLON.Texture(<span class="string">&quot;textures/grass.jpg&quot;</span>, scene);</span><br></pre></td></tr></table></figure>
+<h2 id="Shadows"><a href="#Shadows" class="headerlink" title="Shadows"></a>Shadows</h2><p>The material is able to receive shadows despite being unlit. This is actually one of its strength making it really attractive for grounds. If you want to dim the amount of shadows, you can use the dedicated properties:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">backgroundMaterial.shadowLevel = <span class="number">0.4</span>;</span><br></pre></td></tr></table></figure>
+<p>Starting from Babylonjs v4.2, there’s also a new <code>shadowOnly</code> property that only renders shadow, making the material behave like the <code>ShadowOnlyMaterial</code> material but without the single light restriction.</p>
+<p>When <code>shadowOnly = true</code>, you can use <code>primaryColor</code> to tint the shadow color and <code>alpha</code> to make the shadows more or less strong</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> backgroundMaterial = <span class="keyword">new</span> BABYLON.BackgroundMaterial(<span class="string">&quot;backgroundMaterial&quot;</span>, scene);</span><br><span class="line"></span><br><span class="line">backgroundMaterial.primaryColor = <span class="keyword">new</span> BABYLON.Color4(<span class="number">0.6</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">backgroundMaterial.shadowOnly = <span class="literal">true</span>;</span><br><span class="line">backgroundMaterial.alpha = <span class="number">0.4</span>;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BabylonJS/" rel="tag"># BabylonJS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/03/21/babylonJS/material/" rel="prev" title="material">
+      <i class="fa fa-chevron-left"></i> material
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/03/29/babylonJS/particles/" rel="next" title="particles">
+      particles <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction-To-Environment"><span class="nav-number">1.</span> <span class="nav-text">Introduction To Environment</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#clearColor"><span class="nav-number">1.1.</span> <span class="nav-text">clearColor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ambientColor"><span class="nav-number">1.2.</span> <span class="nav-text">ambientColor</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Fog"><span class="nav-number">2.</span> <span class="nav-text">Fog</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Skyboxes"><span class="nav-number">3.</span> <span class="nav-text">Skyboxes</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Manual-creation"><span class="nav-number">3.1.</span> <span class="nav-text">Manual creation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Automatic-creation"><span class="nav-number">3.2.</span> <span class="nav-text">Automatic creation</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Background-Materials"><span class="nav-number">4.</span> <span class="nav-text">Background Materials</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Diffuse"><span class="nav-number">4.1.</span> <span class="nav-text">Diffuse</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shadows"><span class="nav-number">4.2.</span> <span class="nav-text">Shadows</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">215k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">11:56</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

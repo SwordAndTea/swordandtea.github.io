@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.2">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -54,8 +54,8 @@
 <meta property="og:site_name" content="xiangwei&#39;s blog">
 <meta property="og:description" content="解决过拟合的一些方法为了减少过拟合，一般有两种方法： 1、减少一些特征。其手段也分为手动选择要丢掉的特征和使用一些算法来丢掉部分特征。但是减少特征就意味着丢失信息，所以要谨慎丢弃特征。 2、在模型中加入正则化项。使用正则化项时不用删除特征。 正则化项的作用正则化项的使用其思想是让某些特征的参数尽可能小(这也叫做对某些参数的惩罚)，从而让这个特征所占的重要性变低。 例如某个模型为$f(x) &#x3D; w1">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-02-23T10:48:08.000Z">
-<meta property="article:modified_time" content="2021-02-10T04:32:24.000Z">
+<meta property="article:published_time" content="2020-02-23T23:48:08.000Z">
+<meta property="article:modified_time" content="2024-04-10T02:55:00.559Z">
 <meta property="article:author" content="SwordAndTea">
 <meta property="article:tag" content="machine learning">
 <meta name="twitter:card" content="summary">
@@ -209,14 +209,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-02-23 18:48:08" itemprop="dateCreated datePublished" datetime="2020-02-23T18:48:08+08:00">2020-02-23</time>
+              <time title="Created: 2020-02-23 18:48:08" itemprop="dateCreated datePublished" datetime="2020-02-23T18:48:08-05:00">2020-02-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 12:32:24" itemprop="dateModified" datetime="2021-02-10T12:32:24+08:00">2021-02-10</time>
+                <time title="Modified: 2024-04-09 22:55:00" itemprop="dateModified" datetime="2024-04-09T22:55:00-04:00">2024-04-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -265,20 +265,16 @@
 <h3 id="L1正则化"><a href="#L1正则化" class="headerlink" title="L1正则化"></a>L1正则化</h3><p>以线性模型为例，加入L1正则化的损失函数形式为: $\sum<em>{i=1}^{m} [wx_i+b-y_i]^2 + \lambda\sum</em>{i=1}^{d}|w_i|$。</p>
 <font color="orange">使用L1正则化通常会导致模型会将一部分特征的权重值清零，而只保留少部分特征的权重值，这种特性也被叫做特征选择。</font>
 
-
-
 <h3 id="L2正则化"><a href="#L2正则化" class="headerlink" title="L2正则化"></a>L2正则化</h3><p>同样以线性模型为例，加入L2正则化的损失函数形式为：$\sum<em>{i=1}^{m}[wx_i + b - y_i]^2 + \lambda \sum</em>{i=1}^{d}w_i^2$。</p>
 <p>如果是使用标准方程法求解的话，其解的形式为：</p>
 <script type="math/tex; mode=display">
 w = (X^TX + \lambda \begin{bmatrix} 
-    0 & & & \\
-    & 1 & & \\
-    & & \ddots & \\
-    & & & 1
+0 & & & \\
+ & 1 & & \\
+ & & \ddots & \\
+ & & & 1
 \end{bmatrix})^{-1}X^TY</script><p>而且在加入正则化项后，标准方程法中的括号部分的矩阵一定可逆。</p>
 <font color="orange">使用L2正则化通常会使特征的权重值分配得比较均匀，即使在特征很多的情况下。</font>
-
-
 
 <h1 id="使用正则化项的一些注意"><a href="#使用正则化项的一些注意" class="headerlink" title="使用正则化项的一些注意"></a>使用正则化项的一些注意</h1><p>1、$\lambda$不能设置得过大。$\lambda$越大，$w$的自由度就越小，$\lambda$越小，$w$的自由度就越高</p>
 <p>2、一般不惩罚常数参数$b$</p>
@@ -300,11 +296,11 @@ w = (X^TX + \lambda \begin{bmatrix}
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/02/22/machine_learning/decision_tree/%E5%86%B3%E7%AD%96%E6%A0%91/" rel="prev" title="决策树">
+    <a href="/2020/02/22/machine_learning/%E5%86%B3%E7%AD%96%E6%A0%91/" rel="prev" title="决策树">
       <i class="fa fa-chevron-left"></i> 决策树
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/03/13/machine_learning/neural_network&deep_learning/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="next" title="神经网络与深度学习">
+    <a href="/2020/03/13/machine_learning/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="next" title="神经网络与深度学习">
       神经网络与深度学习 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -382,20 +378,20 @@ w = (X^TX + \lambda \begin{bmatrix}
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -425,7 +421,7 @@ w = (X^TX + \lambda \begin{bmatrix}
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -435,15 +431,15 @@ w = (X^TX + \lambda \begin{bmatrix}
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">183k</span>
+    <span title="Symbols count total">215k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">10:11</span>
+    <span title="Reading time total">11:56</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

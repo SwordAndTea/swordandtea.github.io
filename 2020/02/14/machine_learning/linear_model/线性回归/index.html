@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.2">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -47,15 +47,15 @@
   };
 </script>
 
-  <meta name="description" content="基本形式给定d个特征描述的示例$x&#x3D;(x_1, x_2, \cdots, x_d)$，其中$x_i$是$x$在第$i$个特征上的取值，线性模型是试图学得一个通过属性的线性组合来进行预测的函数，即  \begin{align*}     f(x) &amp;&#x3D; w_1x_1 + w_2x_2 + \cdots + w_dx_d + b \\     &amp;&#x3D; (w_1, w_2, \cdots , w_d)">
+  <meta name="description" content="基本形式给定d个特征描述的示例$x&#x3D;(x_1, x_2, \cdots, x_d)$，其中$x_i$是$x$在第$i$个特征上的取值，线性模型是试图学得一个通过属性的线性组合来进行预测的函数，即  \begin{align*}  f(x) &amp;&#x3D; w_1x_1 + w_2x_2 + \cdots + w_dx_d + b \\  &amp;&#x3D; (w_1, w_2, \cdots , w_d)  \begin">
 <meta property="og:type" content="article">
 <meta property="og:title" content="线性回归">
 <meta property="og:url" content="http://swordandtea.github.io/2020/02/14/machine_learning/linear_model/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/index.html">
 <meta property="og:site_name" content="xiangwei&#39;s blog">
-<meta property="og:description" content="基本形式给定d个特征描述的示例$x&#x3D;(x_1, x_2, \cdots, x_d)$，其中$x_i$是$x$在第$i$个特征上的取值，线性模型是试图学得一个通过属性的线性组合来进行预测的函数，即  \begin{align*}     f(x) &amp;&#x3D; w_1x_1 + w_2x_2 + \cdots + w_dx_d + b \\     &amp;&#x3D; (w_1, w_2, \cdots , w_d)">
+<meta property="og:description" content="基本形式给定d个特征描述的示例$x&#x3D;(x_1, x_2, \cdots, x_d)$，其中$x_i$是$x$在第$i$个特征上的取值，线性模型是试图学得一个通过属性的线性组合来进行预测的函数，即  \begin{align*}  f(x) &amp;&#x3D; w_1x_1 + w_2x_2 + \cdots + w_dx_d + b \\  &amp;&#x3D; (w_1, w_2, \cdots , w_d)  \begin">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-02-14T13:05:16.000Z">
-<meta property="article:modified_time" content="2020-11-18T16:44:48.000Z">
+<meta property="article:published_time" content="2020-02-15T02:05:16.000Z">
+<meta property="article:modified_time" content="2024-05-14T07:22:20.829Z">
 <meta property="article:author" content="SwordAndTea">
 <meta property="article:tag" content="西瓜书学习笔记">
 <meta property="article:tag" content="machine learning">
@@ -210,14 +210,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-02-14 21:05:16" itemprop="dateCreated datePublished" datetime="2020-02-14T21:05:16+08:00">2020-02-14</time>
+              <time title="Created: 2020-02-14 21:05:16" itemprop="dateCreated datePublished" datetime="2020-02-14T21:05:16-05:00">2020-02-14</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-19 00:44:48" itemprop="dateModified" datetime="2020-11-19T00:44:48+08:00">2020-11-19</time>
+                <time title="Modified: 2024-05-14 03:22:20" itemprop="dateModified" datetime="2024-05-14T03:22:20-04:00">2024-05-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -259,32 +259,32 @@
         <h1 id="基本形式"><a href="#基本形式" class="headerlink" title="基本形式"></a>基本形式</h1><p>给定d个特征描述的示例$x=(x_1, x_2, \cdots, x_d)$，其中$x_i$是$x$在第$i$个特征上的取值，<code>线性模型是试图学得一个通过属性的线性组合来进行预测的函数</code>，即</p>
 <script type="math/tex; mode=display">
 \begin{align*}
-    f(x) &= w_1x_1 + w_2x_2 + \cdots + w_dx_d + b \\
-    &= (w_1, w_2, \cdots , w_d)
-    \begin{pmatrix}
-        x_1 \\
-        x_2 \\
-        \vdots \\
-        x_d
-    \end{pmatrix} + b \\
-    &= w x + b
+ f(x) &= w_1x_1 + w_2x_2 + \cdots + w_dx_d + b \\
+ &= (w_1, w_2, \cdots , w_d)
+ \begin{pmatrix}
+ x_1 \\
+ x_2 \\
+ \vdots \\
+ x_d
+ \end{pmatrix} + b \\
+ &= w x + b
 \end{align*}</script><p>在线性模型中$w$直观表达了个属性在预测中的重要性，<code>因此线性模型有很好的可解释性</code>。</p>
 <h1 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h1><p>给定数据集$D = {(x_1,y_1),(x_2,y_2), \cdots, (x_m,y_m)}$，其中$x_1$为d个特征描述的d维向量。线性回归试图学得</p>
 <script type="math/tex; mode=display">
 f(x_i) = w x_i + b, 使得f(x_i)尽可能接近y_i</script><p>那么如何衡量尽可能接近呢？<code>均方误差是回归任务重最常用的性能度量</code>，因此我们可试图让均方误差最小化，即</p>
 <script type="math/tex; mode=display">
 \begin{align*}
-    (w^*, b^*) &= argmin_{(w,b)} \sum_{i = 1}^{m} (f(x_i) - y_i)^2 \\
-    &= argmin_{(w,b)} \sum_{i = 1}^{m} (wx_i + b - y_i)^2
-\end{align*}</script><p>$(w^*,b^*)$表示$w$和$b$的解。<code>基于均方误差最小化来进行模型求解的方法称为“最小二乘法”</code>，在线性回归中，最小二乘法就是试图找到一条直线，使所有样本到直线上的欧式距离之和最小。</p>
+ (w^*, b^*) &= argmin_{(w,b)} \sum_{i = 1}^{m} (f(x_i) - y_i)^2 \\
+ &= argmin_{(w,b)} \sum_{i = 1}^{m} (wx_i + b - y_i)^2
+\end{align*}</script><p>$(w^<em>,b^</em>)$表示$w$和$b$的解。<code>基于均方误差最小化来进行模型求解的方法称为“最小二乘法”</code>，在线性回归中，最小二乘法就是试图找到一条直线，使所有样本到直线上的欧式距离之和最小。</p>
 <h3 id="单特征求解"><a href="#单特征求解" class="headerlink" title="单特征求解"></a>单特征求解</h3><p><code>对于只有一个特征</code>的线性回归模型的最小二乘法的解方法为：</p>
 <p>令</p>
 <script type="math/tex; mode=display">
 E_{(w,b)} = \sum_{i=1}^{m}(wx_i + b - y_i)^2</script><p>分别对w和b求偏导</p>
 <script type="math/tex; mode=display">
 \begin{align*}
-    \frac{\partial E_(w,b)}{\partial w} &= 2\sum_{i=1}^{m}x_i(wx_i + b - y_i) \\
-    &= 2[w\sum_{i=1}^{m}x_i^2 - \sum_{i=1}^{m}(y_i - b)x_i] \tag{1}
+ \frac{\partial E_(w,b)}{\partial w} &= 2\sum_{i=1}^{m}x_i(wx_i + b - y_i) \\
+ &= 2[w\sum_{i=1}^{m}x_i^2 - \sum_{i=1}^{m}(y_i - b)x_i] \tag{1}
 \end{align*}</script><script type="math/tex; mode=display">
 \begin{align*}
     \frac{\partial E_{(w,b)}}{\partial b} &= 2\sum_{i=1}^{m}(wx_i + b - y_i) \\
@@ -309,38 +309,38 @@ Y = (y_1, y_2, \cdots, y_m)^T</script><p>则</p>
 <script type="math/tex; mode=display">
 X\hat w =
 \begin{pmatrix}
-    x_{11} & x_{12} & \cdots & x_{1d} & 1 \\
-    x_{21} & x_{22} & \cdots & x_{2d} & 1 \\
-    \vdots & \vdots &  & \vdots & \vdots \\
-    x_{m1} & m_{m2} & \cdots & x_{md} & 1
+ x_{11} & x_{12} & \cdots & x_{1d} & 1 \\
+ x_{21} & x_{22} & \cdots & x_{2d} & 1 \\
+ \vdots & \vdots & & \vdots & \vdots \\
+ x_{m1} & m_{m2} & \cdots & x_{md} & 1
 \end{pmatrix}
 
 \begin{pmatrix}
-    w_1 \\
-    w_2 \\
-    \vdots \\
-    w_d \\
-    b
+ w_1 \\
+ w_2 \\
+ \vdots \\
+ w_d \\
+ b
 \end{pmatrix}
 = Y</script><p>则我们的目标是</p>
 <script type="math/tex; mode=display">
 argmin_{\hat w}(Y - X\hat w)^T(Y-X\hat w)</script><p>$Y-X \hat w$为一个$m \times 1$的矩阵。</p>
-<p>同理为了求出$\hat w$，可以对$\hat w$求导并令其等于0，<code>注意这里是标量对向量求导</code>，具体标量如何对向量求导的可以看我的<a href="https://swordandtea.github.io/2020/02/08/math/标量对矩阵求导/">另一篇博客</a>。</p>
+<p>同理为了求出$\hat w$，可以对$\hat w$求导并令其等于0，<code>注意这里是标量对向量求导</code>，具体标量如何对向量求导的可以参考的<a href="https://swordandtea.github.io/2020/02/08/math/标量对矩阵求导/">另一篇博客</a>。</p>
 <p>令$E_{\hat w} = (Y - X\hat w)^T(Y - X\hat w)$，对$\hat w$求导得到：</p>
 <script type="math/tex; mode=display">
 \begin{align*}
-    dE &= d(Y - X\hat w)^T·(Y - X\hat w) + (Y - X \hat w)^T d(Y - X\hat w) \\
-    &= [d(Y - X\hat w)]^T(Y - X\hat w) + (Y - X \hat w)^TdY - (Y - X\hat w)^Td(X\hat w) \\
-    &= [(dY)^T - d(X\hat w)]^T(Y - X\hat w) - (Y - X\hat w)^T(dX · \hat w + Xd\hat w) \\
-    &= -(dX · \hat w + Xd\hat w)^T(Y - X\hat w) - (Y - X\hat w)^T(Xd\hat w) \\
-    &= -(Xd\hat w)^T(Y - X\hat w) - (Y - X\hat w)^T Xd\hat w \\
-    \\
-    dE = tr(E) &= tr[-(Xd\hat w)^T(Y - X\hat w)] - tr[(Y - X\hat w)^T Xd\hat w] \\
-    &= tr[-(Y - X\hat w)^T Xd\hat w] - tr[(Y - X\hat w)^T Xd\hat w] \\
-    &= tr[-2(Y - X\hat w)^T Xd\hat w] \\
-    &= tr[2(X\hat w - Y)X d\hat w] \\
-    \\
-    则\frac{\partial E}{\partial \hat w} &= 2(X\hat w - Y)X \tag{5}
+ dE &= d(Y - X\hat w)^T·(Y - X\hat w) + (Y - X \hat w)^T d(Y - X\hat w) \\
+ &= [d(Y - X\hat w)]^T(Y - X\hat w) + (Y - X \hat w)^TdY - (Y - X\hat w)^Td(X\hat w) \\
+ &= [(dY)^T - d(X\hat w)]^T(Y - X\hat w) - (Y - X\hat w)^T(dX · \hat w + Xd\hat w) \\
+ &= -(dX · \hat w + Xd\hat w)^T(Y - X\hat w) - (Y - X\hat w)^T(Xd\hat w) \\
+ &= -(Xd\hat w)^T(Y - X\hat w) - (Y - X\hat w)^T Xd\hat w \\
+ \\
+ dE = tr(E) &= tr[-(Xd\hat w)^T(Y - X\hat w)] - tr[(Y - X\hat w)^T Xd\hat w] \\
+ &= tr[-(Y - X\hat w)^T Xd\hat w] - tr[(Y - X\hat w)^T Xd\hat w] \\
+ &= tr[-2(Y - X\hat w)^T Xd\hat w] \\
+ &= tr[2(X\hat w - Y)X d\hat w] \\
+ \\
+ 则\frac{\partial E}{\partial \hat w} &= 2(X\hat w - Y)X \tag{5}
 \end{align*}</script><p>(其中$dX$、$dY = 0$)</p>
 <p>令式(5)等于0可得：</p>
 <script type="math/tex; mode=display">
@@ -397,12 +397,12 @@ f(x) = x (X^T X)^{-1} X^T Y</script><p><code>这里求解模型的方法其实�
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/02/13/math/calculus/%E5%82%85%E7%AB%8B%E5%8F%B6%E7%BA%A7%E6%95%B0%E5%85%AC%E5%BC%8F/" rel="prev" title="傅立叶级数公式">
-      <i class="fa fa-chevron-left"></i> 傅立叶级数公式
+    <a href="/2020/02/14/math/calculus/%E4%B8%AD%E5%80%BC%E5%AE%9A%E7%90%86/" rel="prev" title="中值定理">
+      <i class="fa fa-chevron-left"></i> 中值定理
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/02/14/math/calculus/%E4%B8%AD%E5%80%BC%E5%AE%9A%E7%90%86/" rel="next" title="中值定理">
-      中值定理 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/02/14/program_language/c++/C++PrimerPlus/%E5%85%B3%E4%BA%8Ec++%E5%9F%BA%E7%A1%80%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" rel="next" title="关于c++基础的一些注意事项">
+      关于c++基础的一些注意事项 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -479,20 +479,20 @@ f(x) = x (X^T X)^{-1} X^T Y</script><p><code>这里求解模型的方法其实�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -522,7 +522,7 @@ f(x) = x (X^T X)^{-1} X^T Y</script><p><code>这里求解模型的方法其实�
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -532,15 +532,15 @@ f(x) = x (X^T X)^{-1} X^T Y</script><p><code>这里求解模型的方法其实�
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">183k</span>
+    <span title="Symbols count total">215k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">10:11</span>
+    <span title="Reading time total">11:56</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

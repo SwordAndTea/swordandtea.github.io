@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="Default WorldCreate Default CameraThe createDefaultCamera takes three boolean parameters, all set to false by default. They are  createArcRotateCamera: creates a free camera by default and an arc rota">
+<meta property="og:type" content="article">
+<meta property="og:title" content="scene">
+<meta property="og:url" content="http://swordandtea.github.io/2024/03/14/babylonJS/scene/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="Default WorldCreate Default CameraThe createDefaultCamera takes three boolean parameters, all set to false by default. They are  createArcRotateCamera: creates a free camera by default and an arc rota">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-03-14T16:11:47.000Z">
+<meta property="article:modified_time" content="2024-03-27T02:12:12.078Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="BabylonJS">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2024/03/14/babylonJS/scene/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>scene | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2024/03/14/babylonJS/scene/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          scene
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-03-14 12:11:47" itemprop="dateCreated datePublished" datetime="2024-03-14T12:11:47-04:00">2024-03-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-03-26 22:12:12" itemprop="dateModified" datetime="2024-03-26T22:12:12-04:00">2024-03-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/BabylonJS/" itemprop="url" rel="index">
+                    <span itemprop="name">BabylonJS</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>655</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>2 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Default-World"><a href="#Default-World" class="headerlink" title="Default World"></a>Default World</h1><h2 id="Create-Default-Camera"><a href="#Create-Default-Camera" class="headerlink" title="Create Default Camera"></a>Create Default Camera</h2><p>The <code>createDefaultCamera</code> takes three boolean parameters, all set to <em>false</em> by default. They are</p>
+<ul>
+<li>createArcRotateCamera: creates a free camera by default and an arc rotate camera when <em>true</em>;</li>
+<li>replace: when <em>true</em> the created camera will replace the existing active one;</li>
+<li>attachCameraControls: when <em>true</em> attaches control to the canvas.</li>
+</ul>
+<p>This code will create an arc rotate camera, replace any existing camera and attach the camera control to the canvas</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scene.createDefaultCamera(<span class="literal">true</span>, <span class="literal">true</span>, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="Create-Default-Light"><a href="#Create-Default-Light" class="headerlink" title="Create Default Light"></a>Create Default Light</h2><p>The <code>createDefaultLight</code> takes just one boolean parameters, set to <em>false</em> by default:</p>
+<ul>
+<li>replace: when <em>true</em> the created light will replace all the existing ones; when <em>false</em> and there are no existing lights a hemispherical light is created; when <em>false</em> and lights already exist, no change is made to the scene which means no light will add to the scene.</li>
+</ul>
+<p>When this method is used before the creation of any other lights then it is usually sufficient to use</p>
+<h2 id="Create-Default-Environment"><a href="#Create-Default-Environment" class="headerlink" title="Create Default Environment"></a>Create Default Environment</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> environment = scene.createDefaultEnvironment(options);</span><br></pre></td></tr></table></figure>
+<p>adds a skybox and ground to the scene, sets a wide range of environmental parameters and returns an environmental helper to the scene. See more options in the  <a target="_blank" rel="noopener" href="https://doc.babylonjs.com/typedoc/interfaces/BABYLON.IEnvironmentHelperOptions">API Doc</a></p>
+<h2 id="Create-Default-SkyBox"><a href="#Create-Default-SkyBox" class="headerlink" title="Create Default SkyBox"></a>Create Default SkyBox</h2><p>The <code>createDefaultSkybox</code> method can be used when you do not want to create a full environment</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> texture = <span class="keyword">new</span> BABYLON.CubeTexture(<span class="string">&quot;path/to/texture&quot;</span>, scene);</span><br><span class="line">scene.createDefaultSkybox(texture, <span class="literal">true</span>, <span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+<p>In this case the first two parameters used give the texture for the skybox and specify that <a target="_blank" rel="noopener" href="https://doc.babylonjs.com/features/featuresDeepDive/materials/using/introToPBR">a PBRMaterial</a> is to be used (second parameter, <em>true</em>) as opposed to a standard material (second parameter, <em>false</em> - default value).</p>
+<p>The third parameter defines the scale of your skybox (this value depends on the scale of your scene), the default value is <em>1000</em>.</p>
+<h2 id="Note"><a href="#Note" class="headerlink" title="Note"></a>Note</h2><p>Since the <code>createDefault...</code> helpers take into account any models in the scene to calculate parameter like scale and position, so it’s a good practice to createDefaultXXX after creating all models.</p>
+<h1 id="Interacting-With-Scenes"><a href="#Interacting-With-Scenes" class="headerlink" title="Interacting With Scenes"></a>Interacting With Scenes</h1><h2 id="Keyboard-Interactions"><a href="#Keyboard-Interactions" class="headerlink" title="Keyboard Interactions"></a>Keyboard Interactions</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">scene.onKeyboardObservable.add(<span class="function">(<span class="params">kbInfo</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">switch</span> (kbInfo.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> BABYLON.KeyboardEventTypes.KEYDOWN:</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&quot;KEY DOWN: &quot;</span>, kbInfo.event.key);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> BABYLON.KeyboardEventTypes.KEYUP:</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&quot;KEY UP: &quot;</span>, kbInfo.event.code);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="Pointer-Interactions"><a href="#Pointer-Interactions" class="headerlink" title="Pointer Interactions"></a>Pointer Interactions</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">scene.onPointerObservable.add(<span class="function">(<span class="params">pointerInfo</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">switch</span> (pointerInfo.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> BABYLON.PointerEventTypes.POINTERDOWN:</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&quot;POINTER DOWN&quot;</span>);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> BABYLON.PointerEventTypes.POINTERUP:</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&quot;POINTER UP&quot;</span>);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> BABYLON.PointerEventTypes.POINTERMOVE:</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&quot;POINTER MOVE&quot;</span>);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> BABYLON.PointerEventTypes.POINTERWHEEL:</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&quot;POINTER WHEEL&quot;</span>);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> BABYLON.PointerEventTypes.POINTERPICK:</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&quot;POINTER PICK&quot;</span>);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> BABYLON.PointerEventTypes.POINTERTAP:</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&quot;POINTER TAP&quot;</span>);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> BABYLON.PointerEventTypes.POINTERDOUBLETAP:</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&quot;POINTER DOUBLE-TAP&quot;</span>);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h1 id="Using-Multiple-Scenes"><a href="#Using-Multiple-Scenes" class="headerlink" title="Using Multiple Scenes"></a>Using Multiple Scenes</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> scene0 = <span class="keyword">new</span> BABYLON.Scene(engine);</span><br><span class="line"><span class="keyword">var</span> scene1 = <span class="keyword">new</span> BABYLON.Scene(engine);</span><br><span class="line"></span><br><span class="line">engine.runRenderLoop(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  scene0.render();</span><br><span class="line">  scene1.render(); <span class="comment">// scene1 will erase scene0</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Remeber that each <code>scene.render</code> call will try to clear what has been rendered before, and to avoid one scene erasing what another has rendered, you need to set <code>scene.autoClear = false</code> on all the scenes rendered on “top” of others:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> scene0 = <span class="keyword">new</span> BABYLON.Scene(engine);</span><br><span class="line"><span class="keyword">var</span> scene1 = <span class="keyword">new</span> BABYLON.Scene(engine);</span><br><span class="line">scene1.autoClear = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">engine.runRenderLoop(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  scene0.render();</span><br><span class="line">  scene1.render();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h1 id="Applying-Delta-Changes-To-A-Scene"><a href="#Applying-Delta-Changes-To-A-Scene" class="headerlink" title="Applying Delta Changes To A Scene"></a>Applying Delta Changes To A Scene</h1><p> This means you can “record” all changes done to a scene and later on reapply these changes.</p>
+<p>This is particularly useful when you load a scene from a .babylon or a .gltf file and you want to apply changes to it</p>
+<h2 id="Recording-the-changes"><a href="#Recording-the-changes" class="headerlink" title="Recording the changes"></a>Recording the changes</h2><p>To record changes done to a scene, you simply have to create a new <code>SceneRecorder</code> and call its <code>track()</code> function:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> recorder = <span class="keyword">new</span> BABYLON.SceneRecorder();</span><br><span class="line"></span><br><span class="line">recorder.track(scene);</span><br></pre></td></tr></table></figure>
+<p>This will mark the origin of the changes eg. the original state of your scene. Every changes (well, almost actually, please check the limitations chapter below) made after that call will be tracked and available in the delta file.</p>
+<h2 id="Applying-the-changes"><a href="#Applying-the-changes" class="headerlink" title="Applying the changes"></a>Applying the changes</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> delta = recorder.getDelta();</span><br><span class="line">BABYLON.Tools.Download(<span class="built_in">JSON</span>.stringify(delta), <span class="string">&quot;delta.json&quot;</span>); <span class="comment">// download changes</span></span><br><span class="line">BABYLON.SceneRecorder.ApplyDelta(delta, scene); <span class="comment">// apply changes</span></span><br></pre></td></tr></table></figure>
+<h2 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h2><p>The recorder has some limitations listed here:</p>
+<ul>
+<li>It will only record simple values (array, colors, vectors, boolean, number)</li>
+<li>It will not record large state changes like:<ul>
+<li>Updating the material property of a mesh</li>
+<li>Updating the skeleton property of a mesh</li>
+<li>Updating mesh’s geometry</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BabylonJS/" rel="tag"># BabylonJS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/03/14/babylonJS/light/" rel="prev" title="light">
+      <i class="fa fa-chevron-left"></i> light
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/03/21/babylonJS/material/" rel="next" title="material">
+      material <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Default-World"><span class="nav-number">1.</span> <span class="nav-text">Default World</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-Default-Camera"><span class="nav-number">1.1.</span> <span class="nav-text">Create Default Camera</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-Default-Light"><span class="nav-number">1.2.</span> <span class="nav-text">Create Default Light</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-Default-Environment"><span class="nav-number">1.3.</span> <span class="nav-text">Create Default Environment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-Default-SkyBox"><span class="nav-number">1.4.</span> <span class="nav-text">Create Default SkyBox</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Note"><span class="nav-number">1.5.</span> <span class="nav-text">Note</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Interacting-With-Scenes"><span class="nav-number">2.</span> <span class="nav-text">Interacting With Scenes</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Keyboard-Interactions"><span class="nav-number">2.1.</span> <span class="nav-text">Keyboard Interactions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pointer-Interactions"><span class="nav-number">2.2.</span> <span class="nav-text">Pointer Interactions</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Using-Multiple-Scenes"><span class="nav-number">3.</span> <span class="nav-text">Using Multiple Scenes</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Applying-Delta-Changes-To-A-Scene"><span class="nav-number">4.</span> <span class="nav-text">Applying Delta Changes To A Scene</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Recording-the-changes"><span class="nav-number">4.1.</span> <span class="nav-text">Recording the changes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Applying-the-changes"><span class="nav-number">4.2.</span> <span class="nav-text">Applying the changes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Limitations"><span class="nav-number">4.3.</span> <span class="nav-text">Limitations</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">215k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">11:56</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

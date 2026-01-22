@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.2">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -54,7 +54,7 @@
 <meta property="og:site_name" content="xiangwei&#39;s blog">
 <meta property="og:description" content="复制对象时勿忘记其每一个成分如果自己不定义copy构造函数和copy assignment操作函数的话，编译器提供的copy构造函数和copy assignment操作符函数会自动对其基类部分进行copy构造和copy assign，但是如果自己定义了copy构造函数和copy assignment操作函数的话，那么就要在这两个函数中对基类进行复制。 例子： 1234567891011121314">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-07-14T13:06:18.000Z">
+<meta property="article:published_time" content="2020-07-14T13:18:53.000Z">
 <meta property="article:modified_time" content="2020-07-14T13:18:53.000Z">
 <meta property="article:author" content="SwordAndTea">
 <meta name="twitter:card" content="summary">
@@ -207,9 +207,8 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-07-14 21:06:18 / Modified: 21:18:53" itemprop="dateCreated datePublished" datetime="2020-07-14T21:06:18+08:00">2020-07-14</time>
+              <time title="Created: 2020-07-14 09:18:53" itemprop="dateCreated datePublished" datetime="2020-07-14T09:18:53-04:00">2020-07-14</time>
             </span>
 
           <br>
@@ -239,7 +238,7 @@
       
         <h1 id="复制对象时勿忘记其每一个成分"><a href="#复制对象时勿忘记其每一个成分" class="headerlink" title="复制对象时勿忘记其每一个成分"></a>复制对象时勿忘记其每一个成分</h1><p>如果自己不定义copy构造函数和copy assignment操作函数的话，编译器提供的copy构造函数和copy assignment操作符函数会自动对其基类部分进行copy构造和copy assign，但是如果自己定义了copy构造函数和copy assignment操作函数的话，那么就要在这两个函数中对基类进行复制。</p>
 <p>例子：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  std::string name;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span>: <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="type">int</span> age;</span><br><span class="line">  <span class="comment">//注意copy构造函数是在成员初始化列表中调用基类的copy构造函数</span></span><br><span class="line">  <span class="comment">//而copy assignment操作符函数是在函数体内调用基类的copy assignment操作符函数</span></span><br><span class="line">  <span class="built_in">Derived</span>(<span class="type">const</span> Derived &amp;another): <span class="built_in">Base</span>(another), <span class="built_in">age</span>(another.age) &#123;&#125;;</span><br><span class="line">  </span><br><span class="line">  Derived&amp; <span class="keyword">operator</span>=(<span class="type">const</span> Derived &amp;another) &#123;</span><br><span class="line">    Base::<span class="keyword">operator</span>=(another);</span><br><span class="line">    age = another.age;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">string</span> name;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span>:</span> <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">int</span> age;</span><br><span class="line">  <span class="comment">//注意copy构造函数是在成员初始化列表中调用基类的copy构造函数</span></span><br><span class="line">  <span class="comment">//而copy assignment操作符函数是在函数体内调用基类的copy assignment操作符函数</span></span><br><span class="line">  Derived(<span class="keyword">const</span> Derived &amp;another): Base(another), age(another.age) &#123;&#125;;</span><br><span class="line">  </span><br><span class="line">  Derived&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Derived &amp;another) &#123;</span><br><span class="line">    Base::<span class="keyword">operator</span>=(another);</span><br><span class="line">    age = another.age;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -255,11 +254,11 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/07/14/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE11-%E5%9C%A8operator=%20%E4%B8%AD%E5%A4%84%E7%90%86%E2%80%9C%E8%87%AA%E6%88%91%E5%A4%8D%E5%88%B6%E2%80%9D/" rel="prev" title="">
+    <a href="/2020/07/14/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE10-%E4%BB%A4operator=%20%E8%BF%94%E5%9B%9E%E4%B8%80%E4%B8%AA%E6%8C%87%E5%90%91%E8%87%AA%E8%BA%AB%E7%9A%84%E5%BC%95%E7%94%A8/" rel="prev" title="">
       <i class="fa fa-chevron-left"></i> 
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/07/16/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE13-%E4%BB%A5%E5%AF%B9%E8%B1%A1%E7%AE%A1%E7%90%86%E8%B5%84%E6%BA%90/" rel="next" title="">
+    <a href="/2020/07/15/program_language/c++/Effective-c++/%E6%9D%A1%E6%AC%BE13-%E4%BB%A5%E5%AF%B9%E8%B1%A1%E7%AE%A1%E7%90%86%E8%B5%84%E6%BA%90/" rel="next" title="">
        <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -337,20 +336,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -380,7 +379,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -390,15 +389,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">183k</span>
+    <span title="Symbols count total">215k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">10:11</span>
+    <span title="Reading time total">11:56</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="ProseMirror Guide IntroductionThere are four essential modules, which are required to do any editing at all  prosemirror-model defines the editor’s document model, the data structure used to describe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="prose-mirror">
+<meta property="og:url" content="http://swordandtea.github.io/2025/05/24/others/prose-mirror/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="ProseMirror Guide IntroductionThere are four essential modules, which are required to do any editing at all  prosemirror-model defines the editor’s document model, the data structure used to describe">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://swordandtea.github.io/2025/05/24/others/prose-mirror/document-structure.png">
+<meta property="og:image" content="http://swordandtea.github.io/2025/05/24/others/prose-mirror/node-structure.png">
+<meta property="og:image" content="http://swordandtea.github.io/2025/05/24/others/prose-mirror/data-flow.png">
+<meta property="article:published_time" content="2025-05-24T15:31:06.000Z">
+<meta property="article:modified_time" content="2025-05-25T17:08:09.388Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="ProseMirror">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://swordandtea.github.io/2025/05/24/others/prose-mirror/document-structure.png">
+
+<link rel="canonical" href="http://swordandtea.github.io/2025/05/24/others/prose-mirror/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>prose-mirror | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2025/05/24/others/prose-mirror/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          prose-mirror
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-05-24 11:31:06" itemprop="dateCreated datePublished" datetime="2025-05-24T11:31:06-04:00">2025-05-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-05-25 13:08:09" itemprop="dateModified" datetime="2025-05-25T13:08:09-04:00">2025-05-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProseMirror/" itemprop="url" rel="index">
+                    <span itemprop="name">ProseMirror</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>11 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a target="_blank" rel="noopener" href="https://prosemirror.net/docs/guide/">ProseMirror Guide</a></p>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>There are four essential modules, which are required to do any editing at all</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model"><code>prosemirror-model</code></a> defines the editor’s <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/guide/#doc">document model</a>, the data structure used to describe the content of the editor.</li>
+</ul>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state"><code>prosemirror-state</code></a> provides the data structure that describes the editor’s whole state, including the selection, and a transaction system for moving from one state to the next.</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#view"><code>prosemirror-view</code></a> implements a user interface component that shows a given editor state as an editable element in the browser, and handles user interaction with that element.</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#transform"><code>prosemirror-transform</code></a> contains functionality for modifying documents in a way that can be recorded and replayed, which is the basis for the transactions in the <code>state</code> module, and which makes the undo history and collaborative editing possible.</p>
+</li>
+</ul>
+<font color="orange">ProseMirror requires you to specify a schema that your document conforms to,  that schema is then used to create a state, which will generate an empty document conforming to the schema,  and a default selection at the start of that document.</font>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;schema&#125; <span class="keyword">from</span> <span class="string">&quot;prosemirror-schema-basic&quot;</span></span><br><span class="line"><span class="keyword">import</span> &#123;EditorState&#125; <span class="keyword">from</span> <span class="string">&quot;prosemirror-state&quot;</span></span><br><span class="line"><span class="keyword">import</span> &#123;EditorView&#125; <span class="keyword">from</span> <span class="string">&quot;prosemirror-view&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> state = EditorState.create(&#123;schema&#125;)</span><br><span class="line"><span class="keyword">let</span> view = <span class="keyword">new</span> EditorView(<span class="built_in">document</span>.body, &#123;state&#125;)</span><br></pre></td></tr></table></figure>
+<h1 id="Transactions"><a href="#Transactions" class="headerlink" title="Transactions"></a>Transactions</h1><p>When the user types, or otherwise interacts with the view, it generates ‘state transactions’.  What that means is that it does not just modify the document in-place and implicitly update its state in that way.  Instead, <font color="orange">every change causes a transaction to be created, which describes the changes that are made to the state,  and can be applied to create a new state, which is then used to update the view</font>.  <font color="pink">By default this all happens under the cover</font>, but you can hook into by writing plugins or configuring your view.</p>
+<h1 id="Plugins"><a href="#Plugins" class="headerlink" title="Plugins"></a>Plugins</h1><p>Plugins are used to extend the behavior of the editor and editor state in various ways.</p>
+<h1 id="Command"><a href="#Command" class="headerlink" title="Command"></a>Command</h1><p>Most editing actions are written as commands which can be bound to keys, hooked up to menus, or otherwise exposed to the user.</p>
+<h1 id="Content"><a href="#Content" class="headerlink" title="Content"></a>Content</h1><p>A state’s document lives under its <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.EditorState.doc"><code>doc</code></a> property. This is a <font color="orange">read-only data structure</font>, representing the document as a hierarchy of nodes, somewhat like the browser DOM. A simple document might be a <code>&quot;doc&quot;</code> node containing two <code>&quot;paragraph&quot;</code> nodes, each containing a single <code>&quot;text&quot;</code> node.</p>
+<p>When initializing a state, you can give it an initial document to use. In that case, the <code>schema</code> field is optional, since the schema can be taken from the document.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;DOMParser&#125; <span class="keyword">from</span> <span class="string">&quot;prosemirror-model&quot;</span></span><br><span class="line"><span class="keyword">import</span> &#123;EditorState&#125; <span class="keyword">from</span> <span class="string">&quot;prosemirror-state&quot;</span></span><br><span class="line"><span class="keyword">import</span> &#123;schema&#125; <span class="keyword">from</span> <span class="string">&quot;prosemirror-schema-basic&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> content = <span class="built_in">document</span>.getElementById(<span class="string">&quot;content&quot;</span>)</span><br><span class="line"><span class="keyword">let</span> state = EditorState.create(&#123;</span><br><span class="line">  doc: DOMParser.fromSchema(schema).parse(content)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h1 id="Documents"><a href="#Documents" class="headerlink" title="Documents"></a>Documents</h1><h2 id="structure"><a href="#structure" class="headerlink" title="structure"></a>structure</h2><p>A ProseMirror document is a <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.Node">node</a>, which holds a <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.Fragment">fragment</a> containing zero or more child nodes.<br>This is a lot like the <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model">browser DOM</a>, in that it is recursive and tree-shaped. <font color="orange">But it differs from the DOM in the way it stores inline content. Whereas in ProseMirror, the inline content is modeled as a flat sequence, with the markup attached as metadata to the nodes</font>.</p>
+<p><img src="/2025/05/24/others/prose-mirror/document-structure.png" alt></p>
+<font color="pink">Adjacent text nodes with the same set of marks are always combined together, and empty text nodes are not allowed. The order in which marks appear is specified by the schema.</font>
+
+<h2 id="Identity-and-persistence"><a href="#Identity-and-persistence" class="headerlink" title="Identity and persistence"></a><font color="pink">Identity and persistence</font></h2><p> In the DOM, nodes are mutable objects with an <em>identity</em>, which means that a node can only appear in one parent node, and that the node object is mutated when it is updated.</p>
+<font color="orange">In ProseMirror, on the other hand, nodes are simply *values* that can appear in multiple data structures at the same time, it does not have a parent-link to the data structure it is currently part of</font>.
+
+So it is with pieces of ProseMirror documents. They don't change, but can be used as a starting value to compute a modified piece of document. They don't know what data structures they are part of, but can be part of multiple structures, or even occur multiple times in a single structure. They are *values*, not stateful objects.
+
+<font color="orange">This means that every time you update a document, you get a new document value. That document value will share all sub-nodes that didn't change with the original document value, making it relatively cheap to create.</font>
+
+<p>This has a bunch of advantages. It makes it impossible to have an editor in an invalid in-between state during an update, since the new state, with a new document, can be swapped in instantaneously. It also makes it easier to reason about documents in a somewhat mathematical way, which is really hard if your values keep changing underneath you. This helps make collaborative editing possible and allows ProseMirror to run a very efficient DOM <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#view.EditorView.update">update</a> algorithm by comparing the last document it drew to the screen to the current document.</p>
+<h2 id="Data-structures"><a href="#Data-structures" class="headerlink" title="Data structures"></a>Data structures</h2><p><img src="/2025/05/24/others/prose-mirror/node-structure.png" title alt data-align="center"></p>
+<p>The content of a node is stored in an instance of <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.Fragment"><code>Fragment</code></a>, which holds a sequence of nodes. Even for nodes that don’t have or don’t allow content, this field is filled (with the shared <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.Fragment%5Eempty">empty fragment</a>).<br>Some node types allow <font color="orange">attributes, which are extra values stored with each node</font>. For example, an image node might use these to store its alt text and the URL of the image.</p>
+<p>In addition, inline nodes hold a set of active marks—things like emphasis or being a link—which are represented as an array of <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.Mark"><code>Mark</code></a> instances.</p>
+<font color="pink">A full document is just a node. The document content is represented as the top-level node's child nodes</font>.
+
+<font color="orange">What kind of node is allowed where is determined by the document's [schema](https://prosemirror.net/docs/guide/#schema)</font>. To programmatically create nodes, you must go through the schema, for example using the [`node`](https://prosemirror.net/docs/ref/#model.Schema.node) and [`text`](https://prosemirror.net/docs/ref/#model.Schema.text) methods.
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;schema&#125; <span class="keyword">from</span> <span class="string">&quot;prosemirror-schema-basic&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// (The null arguments are where you can specify attributes, if necessary.)</span></span><br><span class="line"><span class="keyword">let</span> docNode = schema.node(<span class="string">&quot;doc&quot;</span>, <span class="literal">null</span>, [</span><br><span class="line">  schema.node(<span class="string">&quot;paragraph&quot;</span>, <span class="literal">null</span>, [schema.text(<span class="string">&quot;One.&quot;</span>)]),</span><br><span class="line">  schema.node(<span class="string">&quot;horizontal_rule&quot;</span>),</span><br><span class="line">  schema.node(<span class="string">&quot;paragraph&quot;</span>, <span class="literal">null</span>, [schema.text(<span class="string">&quot;Two!&quot;</span>)])</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+## Indexing
+
+ProseMirror nodes support two types of indexing—they can be treated as trees, using offsets into individual nodes, or they can be treated as a flat sequence of tokens.
+<font color="orange">The first allows you to do things similar to what you'd do with the DOM</font>—interacting with single nodes, directly accessing child nodes using the [`child` method](https://prosemirror.net/docs/ref/#model.Node.child) and [`childCount`](https://prosemirror.net/docs/ref/#model.Node.childCount), writing recursive functions that scan through a document (if you just want to look at all nodes, use [`descendants`](https://prosemirror.net/docs/ref/#model.Node.descendants) or [`nodesBetween`](https://prosemirror.net/docs/ref/#model.Node.nodesBetween)).
+<font color="orange">The second is more useful when addressing a specific position in the document</font>. It allows any document position to be represented as an integer—the index in the token sequence. These tokens don't actually exist as objects in memory—they are just a counting convention—but the document's tree shape, along with the fact that each node knows its size, is used to make by-position access cheap.
+
+Take care to distinguish between child indices (as per [`childCount`](https://prosemirror.net/docs/ref/#model.Node.childCount)), document-wide positions, and node-local offsets (sometimes used in recursive functions to represent a position into the node that's currently being handled).
+
+## Slices
+
+To handle things like copy-paste and drag-drop, it is necessary to be able to talk about a slice of document, i.e. the content between two positions. Such a slice differs from a full node or fragment in that some of the nodes at its start or end may be ‘open’. For example, if you select from the middle of one paragraph to the middle of the next one, the slice you've selected has two paragraphs in it
+
+## Changing
+
+Most of the time, you'll use [transformations](https://prosemirror.net/docs/guide/#transform) to update documents, and won't have to directly touch the nodes. These also leave a record of the changes, which is necessary when the document is part of an editor state.
+
+# <font color="orange">Schemas</font>
+
+<p>Each ProseMirror <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/guide/#doc">document</a> has a <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.Schema">schema</a> associated with it. The schema describes the kind of <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.Node">nodes</a> that may occur in the document, and the way they are nested. For example, it might say that the top-level node can contain one or more blocks, and that paragraph nodes can contain any number of inline nodes, with any <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.Mark">marks</a> applied to them.</p>
+<h2 id="Node-Types"><a href="#Node-Types" class="headerlink" title="Node Types"></a>Node Types</h2><p>Every node in a document has a <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.NodeType">type</a>, which represents its semantic meaning and its properties, such as the way it is rendered in the editor.</p>
+<p>When you define a schema, you enumerate the node types that may occur within it, describing each with a <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.NodeSpec">spec object</a>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> trivialSchema = <span class="keyword">new</span> Schema(&#123;</span><br><span class="line">  nodes: &#123;</span><br><span class="line">    doc: &#123;<span class="attr">content</span>: <span class="string">&quot;paragraph+&quot;</span>&#125;,</span><br><span class="line">    paragraph: &#123;<span class="attr">content</span>: <span class="string">&quot;text*&quot;</span>&#125;,</span><br><span class="line">    text: &#123;<span class="attr">inline</span>: <span class="literal">true</span>&#125;,</span><br><span class="line">    <span class="comment">/* ... and so on */</span></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>Every schema must at least define a top-level node type (which defaults to the name <code>&quot;doc&quot;</code>, but you can <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.Schema.topNodeType">configure</a> that), and a <code>&quot;text&quot;</code> type for text content.</p>
+<h2 id="Content-Expressions"><a href="#Content-Expressions" class="headerlink" title="Content Expressions"></a><font color="pink">Content Expressions</font></h2><p>The strings in the <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.NodeSpec.content"><code>content</code></a> fields in the example schema above are called <em>content expressions</em>. They control what sequences of child nodes are valid for this node type.</p>
+<p>For example <code>&quot;paragraph&quot;</code> for “one paragraph”, or <code>&quot;paragraph+&quot;</code> to express “one or more paragraphs”. Similarly, <code>&quot;paragraph*&quot;</code> means “zero or more paragraphs” and <code>&quot;caption?&quot;</code> means “zero or one caption node”. You can also use regular-expression-like ranges, such as <code>&#123;2&#125;</code> (“exactly two”) <code>&#123;1, 5&#125;</code> (“one to five”) or <code>&#123;2,&#125;</code> (“two or more”) after node names.</p>
+<p>Such expressions can be combined to create a sequence, for example <code>&quot;heading paragraph+&quot;</code> means ‘first a heading, then one or more paragraphs’. You can also use the pipe <code>|</code> operator to indicate a choice between two expressions, as in <code>&quot;(paragraph | blockquote)+&quot;</code>.<br>Some groups of element types will appear multiple times in your schema—for example you might have a concept of “block” nodes, that may appear at the top level but also nested inside of blockquotes. You can create a node group by giving your node specs a <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.NodeSpec.group"><code>group</code></a> property, and then refer to that group by its name in your expressions.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> groupSchema = <span class="keyword">new</span> Schema(&#123;</span><br><span class="line">  nodes: &#123;</span><br><span class="line">    doc: &#123;<span class="attr">content</span>: <span class="string">&quot;block+&quot;</span>&#125;,</span><br><span class="line">    paragraph: &#123;<span class="attr">group</span>: <span class="string">&quot;block&quot;</span>, <span class="attr">content</span>: <span class="string">&quot;text*&quot;</span>&#125;,</span><br><span class="line">    blockquote: &#123;<span class="attr">group</span>: <span class="string">&quot;block&quot;</span>, <span class="attr">content</span>: <span class="string">&quot;block+&quot;</span>&#125;,</span><br><span class="line">    text: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>Here <code>&quot;block+&quot;</code> is equivalent to <code>&quot;(paragraph | blockquote)+&quot;</code>.</p>
+<p><font color="orange">It is recommended to always require at least one child node in nodes that have block content (such as <code>&quot;doc&quot;</code> and <code>&quot;blockquote&quot;</code> in the example above), because browsers will completely collapse the node when it’s empty, making it rather hard to edit</font>.</p>
+<p>The order in which your nodes appear in an or-expression is significant.</p>
+<h2 id="Marks"><a href="#Marks" class="headerlink" title="Marks"></a>Marks</h2><p>Marks are used to add extra styling or other information to inline content. A schema must declare all mark types it allows in its <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.Schema">schema</a>. <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.MarkType">Mark types</a> are objects much like node types, used to tag mark objects and provide additional information about them.</p>
+<p><font color="orange">By default, nodes with inline content allow all marks defined in the schema to be applied to their children. You can configure this with the <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.NodeSpec.marks"><code>marks</code></a> property on your node spec</font>.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> markSchema = <span class="keyword">new</span> Schema(&#123;</span><br><span class="line">  nodes: &#123;</span><br><span class="line">    doc: &#123;<span class="attr">content</span>: <span class="string">&quot;block+&quot;</span>&#125;,</span><br><span class="line">    paragraph: &#123;<span class="attr">group</span>: <span class="string">&quot;block&quot;</span>, <span class="attr">content</span>: <span class="string">&quot;text*&quot;</span>, <span class="attr">marks</span>: <span class="string">&quot;_&quot;</span>&#125;,</span><br><span class="line">    heading: &#123;<span class="attr">group</span>: <span class="string">&quot;block&quot;</span>, <span class="attr">content</span>: <span class="string">&quot;text*&quot;</span>, <span class="attr">marks</span>: <span class="string">&quot;&quot;</span>&#125;,</span><br><span class="line">    text: &#123;<span class="attr">inline</span>: <span class="literal">true</span>&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  marks: &#123;</span><br><span class="line">    strong: &#123;&#125;,</span><br><span class="line">    em: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>The set of marks is interpreted as a space-separated string of mark names or mark groups—<code>&quot;_&quot;</code> acts as a wildcard, and the empty string corresponds to the empty set.</p>
+<h2 id="Attributes"><a href="#Attributes" class="headerlink" title="Attributes"></a>Attributes</h2><p>The document schema also defines which <em>attributes</em> each node or mark has. If your node type requires extra node-specific information to be stored, such as the level of a heading node, that is best done with an attribute.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">heading: &#123;</span><br><span class="line">    content: <span class="string">&quot;text*&quot;</span>,</span><br><span class="line">    attrs: &#123;<span class="attr">level</span>: &#123;<span class="attr">default</span>: <span class="number">1</span>&#125;&#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>In this schema, every instance of the <code>heading</code> node will have a <code>level</code> attribute under <code>.attrs.level</code>. If it isn’t specified when the node is <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.NodeType.create">created</a>, it will default to 1.<br>When you don’t give a default value for an attribute, an error will be raised when you attempt to create such a node without specifying that attribute.</p>
+<h2 id="Serialization-and-Parsing"><a href="#Serialization-and-Parsing" class="headerlink" title="Serialization and Parsing"></a>Serialization and Parsing</h2><p>In order to be able to edit them in the browser, it must be possible to represent document nodes in the browser DOM. The easiest way to do that is to include information about each node’s DOM representation in the schema using the <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.NodeSpec.toDOM"><code>toDOM</code> field</a> in the node spec.</p>
+<p>Documents also come with a built-in JSON serialization format. You can call <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.Node.toJSON"><code>toJSON</code></a> on them to get an object that can safely be passed to <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify"><code>JSON.stringify</code></a>, and schema objects have a <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.Schema.nodeFromJSON"><code>nodeFromJSON</code> method</a> that can parse this representation back into a document.</p>
+<h2 id="Extending-a-schema"><a href="#Extending-a-schema" class="headerlink" title="Extending a schema"></a>Extending a schema</h2><p>The <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#schema-list">schema-list</a> module exports a <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#schema-list.addListNodes">convenience method</a> to add the nodes exported by those modules to a nodeset.</p>
+<h1 id="Document-transformations"><a href="#Document-transformations" class="headerlink" title="Document transformations"></a>Document transformations</h1><p><a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#transform.Transform">Transforms</a> are central to the way ProseMirror works. They form the basis for <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/guide/#state.transactions">transactions</a>, and are what makes history tracking and collaborative editing possible.</p>
+<h2 id="Steps"><a href="#Steps" class="headerlink" title="Steps"></a>Steps</h2><p>Updates to documents are decomposed into <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#transform.Step">steps</a> that describe an update. <font color="orange">You usually don’t need to work with these directly</font>, but it is useful to know how they work. Examples of steps are <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#transform.ReplaceStep"><code>ReplaceStep</code></a> to replace a piece of a document, or <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#transform.AddMarkStep"><code>AddMarkStep</code></a> to add a mark to a given range.</p>
+<p> applying a step can fail, for example if you try to delete just the opening token of a node, that would leave the tokens unbalanced, which isn’t a meaningful thing you can do. This is why <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#transform.Step.apply"><code>apply</code></a> returns a <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#transform.StepResult">result object</a>, which holds either a new document, <em>or</em> an error message. You’ll usually want to let <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#transform.Transform.replace">helper functions</a> generate your steps for you, so that you don’t have to worry about the details.</p>
+<h2 id="Transforms"><a href="#Transforms" class="headerlink" title="Transforms"></a>Transforms</h2><p>An editing action may produce one or more steps. The most convenient way to work with a sequence of steps is to create a <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#transform.Transform"><code>Transform</code> object</a> (or, if you’re working with a full editor state, a <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.Transaction"><code>Transaction</code></a>, which is a subclass of <code>Transform</code>).</p>
+<h2 id="Rebasing"><a href="#Rebasing" class="headerlink" title="Rebasing"></a>Rebasing</h2><p>When doing more complicated things with steps and position maps, for example to implement your own change tracking, or to integrate some feature with collaborative editing, you might run into the need to <em>rebase</em> steps.</p>
+<p>You might not want to bother studying this until you are sure you need it.</p>
+<h1 id="The-editor-state"><a href="#The-editor-state" class="headerlink" title="The editor state"></a>The editor state</h1><p>What makes up the state of an editor? You have your document, of course. And also the current selection. And there needs to be a way to store the fact that the current set of marks has changed, when you for example disable or enable a mark but haven’t started typing with that mark yet.<br>Those are the three main components of a ProseMirror state, and exist on state objects as <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.EditorState.doc"><code>doc</code></a>, <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.EditorState.selection"><code>selection</code></a>, and <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.EditorState.storedMarks"><code>storedMarks</code></a>.</p>
+<h2 id="Selection"><a href="#Selection" class="headerlink" title="Selection"></a>Selection</h2><p>Selections are represented by instances of (subclasses of) the <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.Selection"><code>Selection</code></a> class. Like documents and other state-related values, they are immutable—to change the selection, you create a new selection object and a new state to hold it.</p>
+<p>Selections have, at the very least, a start (<a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.Selection.from"><code>.from</code></a>) and an end (<a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.Selection.to"><code>.to</code></a>), as positions pointing into the current document. Many selection types also distinguish between the <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.Selection.anchor"><em>anchor</em></a> (unmoveable) and <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.Selection.head"><em>head</em></a> (moveable) side of the selection, so those are also required to exist on every selection object.</p>
+<h2 id="Transactions-1"><a href="#Transactions-1" class="headerlink" title="Transactions"></a>Transactions</h2><p>State updates happen by <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.EditorState.apply">applying</a> a <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.Transaction">transaction</a> to an existing state, producing a new state. Conceptually, they happen in a single shot: given the old state and the transaction, a new value is computed for each component of the state, and those are put together in a new state value.<br><a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.Transaction"><code>Transaction</code></a> is a subclass of <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#transform.Transform"><code>Transform</code></a>, and inherits the way it builds up a new document by applying <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#transform.Step">steps</a> to an initial document. In addition to this, transactions track selection and other state-related components, and get some selection-related convenience methods such as <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.Transaction.replaceSelection"><code>replaceSelection</code></a>.</p>
+<h2 id="Plugin"><a href="#Plugin" class="headerlink" title="Plugin"></a>Plugin</h2><p>When <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.EditorState%5Ecreate">creating</a> a new state, you can provide an array of plugins to use. These will be stored in the state and any state that is derived from it, and can influence both the way transactions are applied and the way an editor based on this state behaves.</p>
+<p>Plugins are instances of the <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.Plugin"><code>Plugin</code> class</a>, and can model a wide variety of features. The simplest ones just add some <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#view.EditorProps">props</a> to the editor view, for example to respond to certain events. More complicated ones might add new state to the editor and update it based on transactions.</p>
+<p>When creating a plugin, you pass it <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.PluginSpec">an object</a> specifying its behavior:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> myPlugin = <span class="keyword">new</span> Plugin(&#123;</span><br><span class="line">  props: &#123;</span><br><span class="line">    <span class="function"><span class="title">handleKeyDown</span>(<span class="params">view, event</span>)</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&quot;A key was pressed!&quot;</span>)</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span> <span class="comment">// We did not handle this</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h1 id="The-view-componet"><a href="#The-view-componet" class="headerlink" title="The view componet"></a>The view componet</h1><p>A ProseMirror <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#view.EditorView">editor view</a> is a user interface component that displays an <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/guide/#state">editor state</a> to the user, and allows them to perform editing actions on it.</p>
+<p>The definition of <em>editing actions</em> used by the core view component is rather narrow—it handles direct interaction with the editing surface, such as typing, clicking, copying, pasting, and dragging, but not much beyond that. This means that things like displaying a menu, or even providing a full set of key bindings, lie outside of the responsibility of the core view component, and have to be arranged through plugins.</p>
+<h2 id="Editable-DOM"><a href="#Editable-DOM" class="headerlink" title="Editable DOM"></a>Editable DOM</h2><p>Browsers allow us to specify that some parts of the DOM are <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/contentEditable">editable</a>, which has the effect of allowing focus and a selection in them, and making it possible to type into them. The view creates a DOM representation of its document (using your schema’s <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#model.NodeSpec.toDOM"><code>toDOM</code> methods</a> by default), and makes it editable. When the editable element is focused, ProseMirror makes sure that the <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Selection">DOM selection</a> corresponds to the selection in the editor state.</p>
+<p>most cursor-motion related keys and mouse actions are handled by the browser, after which ProseMirror checks what kind of <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#state.TextSelection">text selection</a> the current DOM selection would correspond to. If that selection is different from the current selection, a transaction that updates the selection is dispatched.</p>
+<p>Even typing is usually left to the browser, because interfering with that tends to break spell-checking, autocapitalizing on some mobile interfaces, and other native features. When the browser updates the DOM, the editor notices, re-parses the changed part of the document, and translates the difference into a transaction.</p>
+<h2 id="Data-flow"><a href="#Data-flow" class="headerlink" title="Data flow"></a>Data flow</h2><p><img src="/2025/05/24/others/prose-mirror/data-flow.png" alt></p>
+<h2 id="Efficient-updating"><a href="#Efficient-updating" class="headerlink" title="Efficient updating"></a>Efficient updating</h2><p>One way to implement <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#view.EditorView.updateState"><code>updateState</code></a> would be to simply redraw the document every time it is called. But for large documents, that would be really slow.<br>Since, at the time of updating, the view has access to both the old document and the new, it can compare them, and leave the parts of the DOM that correspond to unchanged nodes alone. ProseMirror does this, allowing it to do very little work for typical updates.</p>
+<h1 id="Commands"><a href="#Commands" class="headerlink" title="Commands"></a>Commands</h1><p>In ProseMirror jargon, a <em>command</em> is a function that implements an editing action, which the user can perform by pressing some key combination or interacting with the menu.</p>
+<p>The <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#commands"><code>prosemirror-commands</code></a> module provides a number of editing commands, from simple ones such as a variant of the <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#commands.deleteSelection"><code>deleteSelection</code></a> command, to rather complicated ones such as <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#commands.joinBackward"><code>joinBackward</code></a>, which implements the block-joining behavior that should happen when you press backspace at the start of a textblock. It also comes with a <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#commands.baseKeymap">basic keymap</a> that binds a number of schema-agnostic commands to the keys that are usually used for them.</p>
+<p>When possible, different behavior, even when usually bound to a single key, is put in different commands. The utility function <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/ref/#commands.chainCommands"><code>chainCommands</code></a> can be used to combine a number of commands—they will be tried one after the other until one return true.</p>
+<h2 id="Collaborative-editing"><a href="#Collaborative-editing" class="headerlink" title="Collaborative editing"></a>Collaborative editing</h2><p>Real-time collaborative editing allows multiple people to edit the same document at the same time. Changes they make are applied immediately to their local document, and then sent to peers, which merge in these changes automatically.</p>
+<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p>ProseMirror’s collaborative editing system employs a central authority which determines in which order changes are applied. If two editors make changes concurrently, they will both go to this authority with their changes. The authority will accept the changes from one of them, and broadcast these changes to all editors. The other’s changes will not be accepted, and when that editor receives new changes from the server, it’ll have to <a target="_blank" rel="noopener" href="https://prosemirror.net/docs/guide/#transform.rebasing">rebase</a> its local changes on top of those from the other editor, and try to submit them again.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ProseMirror/" rel="tag"># ProseMirror</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/02/02/cloud_computing/aws/" rel="prev" title="aws">
+      <i class="fa fa-chevron-left"></i> aws
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Transactions"><span class="nav-number">2.</span> <span class="nav-text">Transactions</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Plugins"><span class="nav-number">3.</span> <span class="nav-text">Plugins</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Command"><span class="nav-number">4.</span> <span class="nav-text">Command</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Content"><span class="nav-number">5.</span> <span class="nav-text">Content</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Documents"><span class="nav-number">6.</span> <span class="nav-text">Documents</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#structure"><span class="nav-number">6.1.</span> <span class="nav-text">structure</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Identity-and-persistence"><span class="nav-number">6.2.</span> <span class="nav-text">Identity and persistence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-structures"><span class="nav-number">6.3.</span> <span class="nav-text">Data structures</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Node-Types"><span class="nav-number">6.4.</span> <span class="nav-text">Node Types</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Content-Expressions"><span class="nav-number">6.5.</span> <span class="nav-text">Content Expressions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Marks"><span class="nav-number">6.6.</span> <span class="nav-text">Marks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Attributes"><span class="nav-number">6.7.</span> <span class="nav-text">Attributes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Serialization-and-Parsing"><span class="nav-number">6.8.</span> <span class="nav-text">Serialization and Parsing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extending-a-schema"><span class="nav-number">6.9.</span> <span class="nav-text">Extending a schema</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Document-transformations"><span class="nav-number">7.</span> <span class="nav-text">Document transformations</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Steps"><span class="nav-number">7.1.</span> <span class="nav-text">Steps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Transforms"><span class="nav-number">7.2.</span> <span class="nav-text">Transforms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rebasing"><span class="nav-number">7.3.</span> <span class="nav-text">Rebasing</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-editor-state"><span class="nav-number">8.</span> <span class="nav-text">The editor state</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Selection"><span class="nav-number">8.1.</span> <span class="nav-text">Selection</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Transactions-1"><span class="nav-number">8.2.</span> <span class="nav-text">Transactions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Plugin"><span class="nav-number">8.3.</span> <span class="nav-text">Plugin</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-view-componet"><span class="nav-number">9.</span> <span class="nav-text">The view componet</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Editable-DOM"><span class="nav-number">9.1.</span> <span class="nav-text">Editable DOM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-flow"><span class="nav-number">9.2.</span> <span class="nav-text">Data flow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Efficient-updating"><span class="nav-number">9.3.</span> <span class="nav-text">Efficient updating</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Commands"><span class="nav-number">10.</span> <span class="nav-text">Commands</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Collaborative-editing"><span class="nav-number">10.1.</span> <span class="nav-text">Collaborative editing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Algorithm"><span class="nav-number">10.2.</span> <span class="nav-text">Algorithm</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">215k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">11:56</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

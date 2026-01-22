@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="计算机网络分层结构把计算机网络的各层及其协议的集合称为网络的体系结构。这些功能究竟是用何种硬件或软件完成的则是一个遵循这种体系结构的实现问题，体系结构是抽象的，而实现是具体的，计算机网络的体系结构通常都具有可分层的特性。 分层的原则：  每层都实现一种相对独立的功能，降低大系统的复杂度  各层之间界面自然清晰、易于理解，相互交流尽可能少  各层功能的精确定义独立于具体的实现方法  保持下层对上层的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络体系结构与参考模型">
+<meta property="og:url" content="http://swordandtea.github.io/2023/04/22/cs_network/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="计算机网络分层结构把计算机网络的各层及其协议的集合称为网络的体系结构。这些功能究竟是用何种硬件或软件完成的则是一个遵循这种体系结构的实现问题，体系结构是抽象的，而实现是具体的，计算机网络的体系结构通常都具有可分层的特性。 分层的原则：  每层都实现一种相对独立的功能，降低大系统的复杂度  各层之间界面自然清晰、易于理解，相互交流尽可能少  各层功能的精确定义独立于具体的实现方法  保持下层对上层的">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-04-23T03:04:05.000Z">
+<meta property="article:modified_time" content="2023-04-23T03:16:46.000Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="计网">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2023/04/22/cs_network/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>计算机网络体系结构与参考模型 | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2023/04/22/cs_network/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机网络体系结构与参考模型
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-04-22 23:04:05 / Modified: 23:16:46" itemprop="dateCreated datePublished" datetime="2023-04-22T23:04:05-04:00">2023-04-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%BD%91/" itemprop="url" rel="index">
+                    <span itemprop="name">计网</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>10 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="计算机网络分层结构"><a href="#计算机网络分层结构" class="headerlink" title="计算机网络分层结构"></a>计算机网络分层结构</h1><p>把计算机网络的各层及其协议的集合称为网络的体系结构。这些功能究竟是用何种硬件或软件完成的则是一个遵循这种体系结构的实现问题，<code>体系结构是抽象的，而实现是具体的</code>，计算机网络的体系结构通常都具有可分层的特性。</p>
+<p>分层的原则：</p>
+<ul>
+<li><p>每层都实现一种相对独立的功能，降低大系统的复杂度</p>
+</li>
+<li><p>各层之间界面自然清晰、易于理解，相互交流尽可能少</p>
+</li>
+<li><p><code>各层功能的精确定义独立于具体的实现方法</code></p>
+</li>
+<li><p><code>保持下层对上层的独立性，上层单向使用下层提供的服务</code></p>
+</li>
+<li><p>整个分层结构应能促进标准化工作</p>
+</li>
+</ul>
+<p><code>将分层后的网络从低层到高层依次称为第1层、第2层、……、第n层</code></p>
+<p>第n层中的活动元素（硬件或软件进程，通常是一个特定的软件模块）</p>
+<p>不同机器上的同一层称为<code>对等层</code>，同一层的实体称为<code>对等实体</code></p>
+<h3 id="SDU、PCI、PDU"><a href="#SDU、PCI、PDU" class="headerlink" title="SDU、PCI、PDU"></a>SDU、PCI、PDU</h3><p>报文分为两个部分：数据部分：SDU，控制信息部分：PCI</p>
+<ul>
+<li><p>SDU：服务数据单元，第n层的服务数据单元记为n-SDU</p>
+</li>
+<li><p>PCI：协议控制信息，第n层的协议控制信息记为n-PCI</p>
+</li>
+<li><p>PDU：协议数据单元，对等层之间传送的数据单元称为该层的PDU。第n层的协议数据单元记为n-PDU。</p>
+</li>
+</ul>
+<p><code>第n层的SDU和第n层的PCI共同构成第n层的PDU，第n层的PDU作为第n-1层的SDU</code></p>
+<h3 id="层次结构的含义"><a href="#层次结构的含义" class="headerlink" title="层次结构的含义"></a>层次结构的含义</h3><ul>
+<li>第n层的实体向第n+1提供本层的服务，该服务是第n层及其下面各层提供的服务的总和</li>
+<li>上一层只能通过相邻层间的接口使用下一层的服务，下层实现细节对上一层透明</li>
+<li>对等层在<code>逻辑上</code>有一条直接信道<code>(实际上并没有)</code></li>
+</ul>
+<h1 id="计算机网络协议、接口、服务的概念"><a href="#计算机网络协议、接口、服务的概念" class="headerlink" title="计算机网络协议、接口、服务的概念"></a>计算机网络协议、接口、服务的概念</h1><h3 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h3><p>为进行网络中的数据交换而建立的规则、标准或约定称为网络协议，它是控制<code>两个或多个对等实体</code>进行通信的规则的集合，<code>是水平的</code>。<code>不对等实现是没有协议的</code></p>
+<p>协议由语法、语义和同步三部分组成。语法规定了传输数据的格式；语义定义了所要完成的功能；同步规定了执行各种操作的条件、时序关系等。一个完整的协议通常应具有线路管理（建立、释放接口、差错控制、数据转化等功能）</p>
+<h3 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h3><p>接口是同一结点内相邻两层间交换信息的连接点，<code>不能夸层定义接口</code>。<br>在典型的接口上，同一结点的相邻两层的实体通过服务访问点（Service Access Point，SAP）进行交互。服务是通过SAP提供给上层使用的。SAP是一个抽象的概念，他实际上是一个逻辑接口</p>
+<h3 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h3><p>服务指下层为紧邻的上层提供的功能调用，它是垂直的</p>
+<p>OSI服务原语：<br>1、请求<br>2、指示<br>3、相应<br>4、证实</p>
+<p>有应答的服务包括全部四类原语，而无应答服务则只有请求和指示两类原语</p>
+<p>协议和服务的区别：<br>1、只有本层协议的实现才能保证向上一层提供服务<br>2、协议是“水平的”，服务是“垂直的”<br>3、并非在一层内完成的全部功能都称为服务，只有那些能够被高一层实体“看得见”的功能才称为服务</p>
+<h4 id="面向连接服务与无连接服务"><a href="#面向连接服务与无连接服务" class="headerlink" title="面向连接服务与无连接服务"></a>面向连接服务与无连接服务</h4><p>在面向连接服务中，通信前双方必须建立连接，分配相应的资源（如缓冲区）、以保障通信能正常进行，传输结束后释放连接和所占用的资源。因此这种服务可以分为连接建立、数据传输、和连接释放三个阶段。</p>
+<p>在无连接的服务中，通信双方不需要先建立连接，需要发送数据时可直接发送。这是一种不可靠的服务，也叫做“尽最大努力交付”，例如IP和UDP就是无连接服务的协议</p>
+<h4 id="可靠服务和不可靠服务"><a href="#可靠服务和不可靠服务" class="headerlink" title="可靠服务和不可靠服务"></a>可靠服务和不可靠服务</h4><p>可靠服务是指网络具有纠错、检查、应答机制，能确保数据正确、可靠地送达目的地<br>不可靠服务是指网络只是尽量正确、可靠地传送，而不确保数据正确、可靠地传送到目的地，是一种尽力而为的服务<code>（对于提供不可靠服务的网路，其网络的正确性、可靠性要由应用或用户来保障）</code></p>
+<h4 id="有应答服务和无应答服务"><a href="#有应答服务和无应答服务" class="headerlink" title="有应答服务和无应答服务"></a>有应答服务和无应答服务</h4><p>有应答服务指接收方在收到数据后向发送方给出相应的应答，该应答由传输系统内部自动实现，而不由用户实现</p>
+<p>无应答服务指接收方收到数据后不自动给出应答，<code>若需要应答，则由高层实现</code></p>
+<h1 id="ISO-OSI参考模型和TCP-IP模型"><a href="#ISO-OSI参考模型和TCP-IP模型" class="headerlink" title="ISO/OSI参考模型和TCP/IP模型"></a>ISO/OSI参考模型和TCP/IP模型</h1><h2 id="OSI（open-system-interconnection）参考模型-开放系统互连参考模型"><a href="#OSI（open-system-interconnection）参考模型-开放系统互连参考模型" class="headerlink" title="OSI（open system interconnection）参考模型(开放系统互连参考模型)"></a>OSI（open system interconnection）参考模型(开放系统互连参考模型)</h2><p>OSI自上而下依次为物理层、数据链路层、网络层、传输层、会话层、表示层、应用层，<code>第三层统称为通信子网、高三层称为资源子网。</code></p>
+<h3 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h3><p>物理层传输单位是比特，任务是透明的传输比特流</p>
+<p>1、物理层规定了通信链路接口的参数<br>2、物理层也规定了通信链路上传输的信号的意义和电器特征、例如某种信号代表数字0，某种则代表1</p>
+<p><code>传输信息所利用的一些物理媒体，例如光缆，并不在物理层协议之内而在物理层协议的下面</code></p>
+<p>物理层的协议有EIA-232C、EIA/TIA RS-449、CCITT的X.21等</p>
+<h3 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h3><p>数据链路层的传输单位是帧，数据链路层的功能可以概括为成帧、差错控制、流量控制和传输管理以及<code>物理寻址</code>等</p>
+<p>链路层协议有SDLC、HDLC、PPP，STP等</p>
+<h3 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h3><p>网络层的传输单位是<code>数据报</code>，主要任务是把网络层的协议数据单元（<code>分组</code>）从源端传到目的端。关键问题是对分组进行路由选择，并实现流量控制、阻塞控制、差错控制和网际互联（<code>网络寻址</code>）</p>
+<p>网络层也称为<code>网际层</code>或者<code>IP层</code></p>
+<p>网络层协议有IP、IPX、ICMP等</p>
+<h3 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h3><p>传输层也称<code>运输层</code>，传输单位是报文段（TCP）或用户数据报（UDP），传输层负责主机中两个进程之间的通信，功能是为端到端连接提供可靠的传输服务，为端到端连接提供流量控制、差错控制、服务质量、数据传输管理等服务</p>
+<p>传输层协议有TCP、UDP等</p>
+<h3 id="会话层"><a href="#会话层" class="headerlink" title="会话层"></a>会话层</h3><p>为表示层实体或用户进程建立连接并在连接上有序地传输数据，这就是会话，也称建立同步</p>
+<p>会话层可以使用校验点使通信会话在通信失效时从校验点继续恢复通信，实现数据同步</p>
+<h3 id="表示层"><a href="#表示层" class="headerlink" title="表示层"></a>表示层</h3><p>表示层主要处理在两个通信系统中交换信息的表示方式。<br>为了使不同表示方法的数据和信息之间能够相互交换，表示层采用抽象的标准方法定义数据结构，并采用标准的编码形式。数据压缩、加密和解密也是表示层可提供的数据表示变换功能。</p>
+<h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h3><p>应用层为特定类型的网络应用提供访问OSI环境的手段。应用层采用不同的应用协议来解决不同类型的应用要求。</p>
+<p>典型协议有FTP、SMTP、HTTP</p>
+<h2 id="TCP-IP模型"><a href="#TCP-IP模型" class="headerlink" title="TCP/IP模型"></a>TCP/IP模型</h2><p>模型从低到高依次为网络接口层（对应OSI参考模型中的物理层和数据链路层）、网际层、传输层、应用层（对应OSI参考模型中的会话层、表示层和应用层）</p>
+<h4 id="网络接口层"><a href="#网络接口层" class="headerlink" title="网络接口层"></a>网络接口层</h4><p>TCP/IP本身并未真正描述这一部分，只是指出主机必须使用某种协议与网络连接，以便在其上传递IP分组</p>
+<h4 id="网络层-1"><a href="#网络层-1" class="headerlink" title="网络层"></a>网络层</h4><p>和OSI网络层在功能上非常相似，<code>但他不保证各个分组有序地到达，各个分组的有序交付由高层负责</code></p>
+<h4 id="传输层-1"><a href="#传输层-1" class="headerlink" title="传输层"></a>传输层</h4><p>和OSI中的传输层类似，主要使用以下两种协议：<br>1、TCP（Transmission Control Protocol，传输控制协议），它是面向连接的，传输的单位是报文段，提供可靠的交付<br>2、UDP（User Datagram Protocol，用户数据报协议），无连接，传输的单位是用户数据报，不提供可靠的交付</p>
+<h4 id="应用层-1"><a href="#应用层-1" class="headerlink" title="应用层"></a>应用层</h4><h2 id="TCP-IP模型与OSI参考模型的比较"><a href="#TCP-IP模型与OSI参考模型的比较" class="headerlink" title="TCP/IP模型与OSI参考模型的比较"></a>TCP/IP模型与OSI参考模型的比较</h2><p>OSI参考模型在网络层支持无连接和面向连接的通信，但在传输层仅有面向连接的通信。而TCP模型认为可靠性是端到端的问题，因此他在网际层仅有一种无连接的通信模式，但传输层支持无连接和面向连接两种模型</p>
+<p><code>TCP/IP协议是实际执行的标准</code></p>
+<h1 id="物理层设备"><a href="#物理层设备" class="headerlink" title="物理层设备"></a>物理层设备</h1><h2 id="中继器"><a href="#中继器" class="headerlink" title="中继器"></a>中继器</h2><p>中继器又称<code>转发器</code>，主要功能是将信号整形并放大再转发出去，以消除信号经过一长段电缆后，因噪声或其它原因造成的失真和衰减。其原理是信号再生（而非简单地将衰减的信号放大）</p>
+<p><code>中继器没有存储转发功能，使用中继器连接的几个网段仍然是一个局域网，他不能连接两个具有不同速率的局域网，中继器两端的网段一定要使用同一个协议（物理层协议）</code></p>
+<p>在10BASE5以太网规范中，规定互相串联的中继器的个数不能超过4个，而且用4个中继器串联的5段通信介质中只有3段可以挂接计算机</p>
+<p><code>放大器和中继器都起放大作用，只不过放大器放大的是模拟信号，原理是将衰减的信号放大，中继器放大的是数字信号，原理是将衰减的信号整形再生</code></p>
+<h2 id="集线器"><a href="#集线器" class="headerlink" title="集线器"></a>集线器</h2><p>集线器（hub）实质上是一个多端口的中继器。一个端口接收到数据信号后，hub将其进行整形放大，紧接着转发到其它所有（除输入端口外）处于工作状态的端口，如果有同时有两个或多个端口输入，那么输出时会发生冲突，致使这些数据都无效，是一个标准的<code>共享式设备</code></p>
+<p>由集线器组成的网络是共享式网络，但逻辑上仍是一个总线网。hub的每个端口连接的网络部分是同一个网络的不同网段，同时hub也只能在半双工状态</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%BD%91/" rel="tag"># 计网</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/02/04/IELTS/IELTS-Speaking/" rel="prev" title="IELTS-Speaking">
+      <i class="fa fa-chevron-left"></i> IELTS-Speaking
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/04/22/cs_network/%E7%89%A9%E7%90%86%E5%B1%82/" rel="next" title="物理层">
+      物理层 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%88%86%E5%B1%82%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">计算机网络分层结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SDU%E3%80%81PCI%E3%80%81PDU"><span class="nav-number">1.0.1.</span> <span class="nav-text">SDU、PCI、PDU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E7%9A%84%E5%90%AB%E4%B9%89"><span class="nav-number">1.0.2.</span> <span class="nav-text">层次结构的含义</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%81%E6%8E%A5%E5%8F%A3%E3%80%81%E6%9C%8D%E5%8A%A1%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">计算机网络协议、接口、服务的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.0.1.</span> <span class="nav-text">协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.0.2.</span> <span class="nav-text">接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.0.3.</span> <span class="nav-text">服务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E4%B8%8E%E6%97%A0%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.0.3.1.</span> <span class="nav-text">面向连接服务与无连接服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E9%9D%A0%E6%9C%8D%E5%8A%A1%E5%92%8C%E4%B8%8D%E5%8F%AF%E9%9D%A0%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.0.3.2.</span> <span class="nav-text">可靠服务和不可靠服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%89%E5%BA%94%E7%AD%94%E6%9C%8D%E5%8A%A1%E5%92%8C%E6%97%A0%E5%BA%94%E7%AD%94%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.0.3.3.</span> <span class="nav-text">有应答服务和无应答服务</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ISO-OSI%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B%E5%92%8CTCP-IP%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">ISO&#x2F;OSI参考模型和TCP&#x2F;IP模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OSI%EF%BC%88open-system-interconnection%EF%BC%89%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B-%E5%BC%80%E6%94%BE%E7%B3%BB%E7%BB%9F%E4%BA%92%E8%BF%9E%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.1.</span> <span class="nav-text">OSI（open system interconnection）参考模型(开放系统互连参考模型)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82"><span class="nav-number">3.1.1.</span> <span class="nav-text">物理层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="nav-number">3.1.2.</span> <span class="nav-text">数据链路层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82"><span class="nav-number">3.1.3.</span> <span class="nav-text">网络层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82"><span class="nav-number">3.1.4.</span> <span class="nav-text">传输层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%9A%E8%AF%9D%E5%B1%82"><span class="nav-number">3.1.5.</span> <span class="nav-text">会话层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E7%A4%BA%E5%B1%82"><span class="nav-number">3.1.6.</span> <span class="nav-text">表示层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82"><span class="nav-number">3.1.7.</span> <span class="nav-text">应用层</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP-IP%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.2.</span> <span class="nav-text">TCP&#x2F;IP模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E5%B1%82"><span class="nav-number">3.2.0.1.</span> <span class="nav-text">网络接口层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82-1"><span class="nav-number">3.2.0.2.</span> <span class="nav-text">网络层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82-1"><span class="nav-number">3.2.0.3.</span> <span class="nav-text">传输层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82-1"><span class="nav-number">3.2.0.4.</span> <span class="nav-text">应用层</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP-IP%E6%A8%A1%E5%9E%8B%E4%B8%8EOSI%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">3.3.</span> <span class="nav-text">TCP&#x2F;IP模型与OSI参考模型的比较</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82%E8%AE%BE%E5%A4%87"><span class="nav-number">4.</span> <span class="nav-text">物理层设备</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E7%BB%A7%E5%99%A8"><span class="nav-number">4.1.</span> <span class="nav-text">中继器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E7%BA%BF%E5%99%A8"><span class="nav-number">4.2.</span> <span class="nav-text">集线器</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">215k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">11:56</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

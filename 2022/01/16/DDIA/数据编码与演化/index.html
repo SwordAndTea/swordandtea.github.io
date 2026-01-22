@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.2">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -60,8 +60,8 @@
 <meta property="og:image" content="http://swordandtea.github.io/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-5.png">
 <meta property="og:image" content="http://swordandtea.github.io/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-6.png">
 <meta property="og:image" content="http://swordandtea.github.io/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-7.png">
-<meta property="article:published_time" content="2022-01-16T14:15:28.000Z">
-<meta property="article:modified_time" content="2022-03-03T02:17:16.569Z">
+<meta property="article:published_time" content="2022-01-17T03:15:28.000Z">
+<meta property="article:modified_time" content="2024-10-22T06:52:52.404Z">
 <meta property="article:author" content="SwordAndTea">
 <meta property="article:tag" content="DDIA">
 <meta name="twitter:card" content="summary">
@@ -216,14 +216,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2022-01-16 22:15:28" itemprop="dateCreated datePublished" datetime="2022-01-16T22:15:28+08:00">2022-01-16</time>
+              <time title="Created: 2022-01-16 22:15:28" itemprop="dateCreated datePublished" datetime="2022-01-16T22:15:28-05:00">2022-01-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-03 10:17:16" itemprop="dateModified" datetime="2022-03-03T10:17:16+08:00">2022-03-03</time>
+                <time title="Modified: 2024-10-22 02:52:52" itemprop="dateModified" datetime="2024-10-22T02:52:52-04:00">2024-10-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -270,7 +270,7 @@
 </li>
 </ol>
 <p>因此，在这两种表示之间需要进行类型的转化。<font color="orange">从内存中的表示到字节序列的表示称为编码（或序列化），相反的过程称为解码（或反序列化）</font></p>
-<h1 id="语言特定的编解码格式"><a href="#语言特定的编解码格式" class="headerlink" title="语言特定的编解码格式"></a>语言特定的编解码格式</h1><p>许多语言都内置支持将内存中的对象序列化为字节序列的工具包，例如java有<code>java.io.Serializable</code>，ruby有<code>Marshal</code>，python有<code>pickle</code>等。这些序列化反序列化库使用其他很方便，它们只需要很少的代码就可保存和恢复内存中的对象。然后也有一些问题：</p>
+<h1 id="语言特定的编解码格式"><a href="#语言特定的编解码格式" class="headerlink" title="语言特定的编解码格式"></a>语言特定的编解码格式</h1><p>许多语言都内置支持将内存中的对象序列化为字节序列的工具包，例如java有<code>java.io.Serializable</code>，ruby有<code>Marshal</code>，python有<code>pickle</code>等。这些序列化反序列化库使用起来很方便，它们只需要很少的代码就可保存和恢复内存中的对象。然后也有一些问题：</p>
 <ul>
 <li><p>它们通常和语言绑定在一起，而使用另外一种语言时访问数据就非常困难</p>
 </li>
@@ -290,16 +290,16 @@
 <font color="orange">尽管存在一些缺陷，但JSON和XML已经可用于很多应用。特别是作为数据交换格式，在某些情况下，只要人们就格式本身达成一致，格式多么美观或者高效往往不太重要。</font>
 
 <h1 id="二进制编码"><a href="#二进制编码" class="headerlink" title="二进制编码"></a>二进制编码</h1><p>虽然JSON不像XML那样冗长，但是与二进制格式相比，两者仍然占用大量空间，虽然有很多JSON和XML的二进制变体（例如BSON），这些格式在一些细分领域被采用，但是没有一个像JSON和XML那样被广泛采用。另外，由于JSON和XML没有规定格式，所以需要在编码数据时包含所有的对象字段名称。</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Martin&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;favoriteNumber&quot;</span><span class="punctuation">:</span> <span class="number">1337</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;interests&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;daydreaming&quot;</span><span class="punctuation">,</span> <span class="string">&quot;hacking&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;userName&quot;</span>: <span class="string">&quot;Martin&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;favoriteNumber&quot;</span>: <span class="number">1337</span>,</span><br><span class="line">    <span class="attr">&quot;interests&quot;</span>: [<span class="string">&quot;daydreaming&quot;</span>, <span class="string">&quot;hacking&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在上面的JSON文档中，它们必须在包含字符串userName，favoriteNumber，interest。</p>
 <h2 id="Thrift和Protocol-Buffers"><a href="#Thrift和Protocol-Buffers" class="headerlink" title="Thrift和Protocol Buffers"></a>Thrift和Protocol Buffers</h2><p>Apache Thrift和Protocol Buffers是目前使用得最广泛的两种二进制编码。Protocol Buffers最初是在Google开发的，Thrift最初是在Facebook开发的，并且都是在2007~2008年开源的。</p>
 <font color="orange">Thrift和Protocol Buffers都需要模式来编码任意的数据，它们都使用接口描述语言来描述模式。</font>Thrift的IDL示例：
 
-<figure class="highlight thrift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="number">1</span>: <span class="keyword">required</span> <span class="type">string</span> userName,</span><br><span class="line">    <span class="number">2</span>: <span class="keyword">optional</span> <span class="type">i64</span> favoriteNumber,</span><br><span class="line">    <span class="number">3</span>: <span class="keyword">optional</span> <span class="type">list</span>&lt;<span class="type">string</span>&gt; interests</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight thrift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="number">1</span>: <span class="keyword">required</span> <span class="built_in">string</span> userName,</span><br><span class="line">    <span class="number">2</span>: <span class="keyword">optional</span> <span class="built_in">i64</span> favoriteNumber,</span><br><span class="line">    <span class="number">3</span>: <span class="keyword">optional</span> list&lt;<span class="keyword">string</span>&gt; interests</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 Protocol Buffers IDL示例：
 
-<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">message </span><span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="keyword">required</span> <span class="type">string</span> user_name = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">optional</span> <span class="type">int64</span> favorte_number = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">repeated</span> <span class="type">string</span> interests = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">required</span> <span class="built_in">string</span> user_name = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">optional</span> <span class="built_in">int64</span> favorte_number = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">repeated</span> <span class="built_in">string</span> interests = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 Thrift 和 Portocol Buffers各有对应的代码生成工具，采用和上面类似的模式定义，并生成支持多种编程语言的类，应用程序可以直接调用生成的代码来编码或解码该模式的数据。
 
@@ -340,9 +340,9 @@ Protocol Buffers将字段类型和字段标签打包到单个字节中，并且�
 <h1 id="Avro"><a href="#Avro" class="headerlink" title="Avro"></a>Avro</h1><p>avro 是另一种二进制编码格式，它与Protocol Buffers和Thrift有着一些有趣的差异。由于Thrift不适合Hadoop的用例，因此Avro在2009年作为Hadoop的子项目而启动。</p>
 <p>Avro也使用模式来指定编码的数据结构，<font color="orange">它有两种模式语音，一种Avro IDL易于人工编辑，另一种（基于JSON）更易于机器读取。</font></p>
 <p>用Avro IDL示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">record Person &#123;</span><br><span class="line">    string userName;</span><br><span class="line">    union &#123; null, long &#125; favoriteNumber = null;</span><br><span class="line">    array&lt;string&gt; interests;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">record Person &#123;</span><br><span class="line">    string userName;</span><br><span class="line">    union &#123; null, long &#125; favoriteNumber &#x3D; null;</span><br><span class="line">    array&lt;string&gt; interests;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>注意，<font color="orange">模式中没有标签编号</font>，其对应等价的JSON表示：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;record&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Person&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;fields&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;userName&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;string&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;favoriteNumber&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;null&quot;</span><span class="punctuation">,</span> <span class="string">&quot;long&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span> <span class="attr">&quot;default&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">null</span></span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;interests&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;array&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;items&quot;</span><span class="punctuation">:</span> <span class="string">&quot;string&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;record&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Person&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;fields&quot;</span>: [</span><br><span class="line">        &#123;<span class="attr">&quot;name&quot;</span>: <span class="string">&quot;userName&quot;</span>, <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;string&quot;</span>&#125;,</span><br><span class="line">        &#123;<span class="attr">&quot;name&quot;</span>: <span class="string">&quot;favoriteNumber&quot;</span>, <span class="attr">&quot;type&quot;</span>: [<span class="string">&quot;null&quot;</span>, <span class="string">&quot;long&quot;</span>], <span class="attr">&quot;default&quot;</span>: <span class="literal">null</span>&#125;,</span><br><span class="line">        &#123;<span class="attr">&quot;name&quot;</span>: <span class="string">&quot;interests&quot;</span>, <span class="attr">&quot;type&quot;</span>: &#123;<span class="attr">&quot;type&quot;</span>: <span class="string">&quot;array&quot;</span>, <span class="attr">&quot;items&quot;</span>: <span class="string">&quot;string&quot;</span>&#125;&#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>使用avro对之前的json数据进行编码其结果如下</p>
 <p><img title src="/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-5.png" alt width="494" data-align="center"></p>
 <p>从上图中的字节序列中可以看出，<font color="orange">其中没有标识字段或数据类型，</font>用于标记长度的字节中的最后一位用来标记数据是否为null，编码只是由连在一起的一些列值组成。一个字符串只是一个长度前缀，后紧跟UTF-8字节流。</p>
@@ -388,7 +388,7 @@ Protocol Buffers将字段类型和字段标签打包到单个字节中，并且�
 <p>现在，假如数据库中的数据表的关系模式发生了变化，则可以动态生成新的avro模式，并使用新的avro模式来导出数据。相比之下，如果使用Thrift和Protocol Buffers，则可能必须手动分配字段标签：每次数据库模式更改时，管理员都必须手动更新从数据库名到字段标签的映射（这个部署可以通过代码来完成自动化，但是编写代码时必须非常小心，不要分配到以前使用的字段标签，尤其是删除或者增加列的情况）。</p>
 <h2 id="代码生成和动态类型语言"><a href="#代码生成和动态类型语言" class="headerlink" title="代码生成和动态类型语言"></a>代码生成和动态类型语言</h2><p>Thrift和Protocol Buffers依赖于代码生成：在定义了模式之后，可以使用选择的编程语言生成实现此模式的代码。这在Java、C++等静态类型语言中很有用，因为它允许使用高效的内存结构来解码数据。</p>
 <p>在动态类型编程语言中，如JavaScript、Ruby或Python，因为没有编译时类型检查，生成代码没有太多意义。代码生成在这些语言中经常被忽视。</p>
-<p>Avro为静态类型编程语言提供了可选的代码生成，但是它可可以在不生成代码的情况下直接使用，入股有一个avro文件（它嵌入了writer模式信息），可以简单地使用avro库打开它，并用和查看JSON文件一样的方式查看数据，该文件也是自描述的，它包含了所有必须的元信息。</p>
+<p>Avro为静态类型编程语言提供了可选的代码生成，但是它可可以在不生成代码的情况下直接使用，如果有一个avro文件（它嵌入了writer模式信息），可以简单地使用avro库打开它，并用和查看JSON文件一样的方式查看数据，该文件也是自描述的，它包含了所有必须的元信息。</p>
 <h1 id="模式的优点"><a href="#模式的优点" class="headerlink" title="模式的优点"></a>模式的优点</h1><ul>
 <li><p>它们在大多数情况下比各种“二进制JSON”变体更紧凑，可以节省编码数据中的字段名称</p>
 </li>
@@ -406,7 +406,7 @@ Protocol Buffers将字段类型和字段标签打包到单个字节中，并且�
 <li><p>通过异步消息传递</p>
 </li>
 </ul>
-<h2 id="基于数据库的数据流"><a href="#基于数据库的数据流" class="headerlink" title="基于数据库的数据流"></a>基于数据库的数据流</h2><p>在数据库中，写入数据库的进程对数据进行编码，而读取数据库的进程对数据进行编码。可能只有一个进程会方法数据库，在这种情况下，reader只有一个进程，但是这个reader可能在不同时候用不同版本的模式对数据库进行读写，例如reader用模式写入后，就进行了服务更新，之后会使用新模式来读取数据库的内容。此时向后兼容性就很重要，否则未来的自己将无法解码以前自己写的内容。</p>
+<h2 id="基于数据库的数据流"><a href="#基于数据库的数据流" class="headerlink" title="基于数据库的数据流"></a>基于数据库的数据流</h2><p>在数据库中，写入数据库的进程对数据进行编码，而读取数据库的进程对数据进行编码。可能只有一个进程会访问数据库，在这种情况下，reader只有一个进程，但是这个reader可能在不同时候用不同版本的模式对数据库进行读写，例如reader用模式写入后，就进行了服务更新，之后会使用新模式来读取数据库的内容。此时向后兼容性就很重要，否则未来的自己将无法解码以前自己写的内容。</p>
 <p>但是，一般而言，几个不同的进程同时访问数据库是很常见的。这些进程可能是几个不同的服务，也可能是一个服务的几个实例。无论哪种情况，访问数据库的进程可能某些运行着较新的代码，而其他运行着较旧的代码。这意味着既有可能数据库中的值由较旧的代码写入，较新的代码进行读取，又有可能由较新的代码写入，较旧的代码读取，所以向前和向后的兼容性都很重要。</p>
 <p>另外，还存在一个问题，假设在记录模式中添加了一个字段，并且较新的代码将该新字段的值写入数据库，随后，旧版本的代码（尚不知道该新字段）将其读取、更新记录并写回数据库，在这种情况下，理想的行为通常是旧代码保持新字段不变，即使它无法解释。<font color="orange">之前讨论的编码格式支持未知字段的保存，但是有时候还需要注意应用层面的影响，例如，如果将数据库中的值解码为应用程序中的对象，然后重新编码这些模型对象，则在转换过程中可能会丢失未知字段，在编写代码的时候要有这方面的意识</font></p>
 <p><img title src="/2022/01/16/DDIA/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E4%B8%8E%E6%BC%94%E5%8C%96/fig4-7.png" alt width="543" data-align="center"></p>
@@ -417,7 +417,7 @@ Protocol Buffers将字段类型和字段标签打包到单个字节中，并且�
 
 <h2 id="基于服务的数据流：REST和RPC"><a href="#基于服务的数据流：REST和RPC" class="headerlink" title="基于服务的数据流：REST和RPC"></a>基于服务的数据流：REST和RPC</h2><h2 id="网络http服务"><a href="#网络http服务" class="headerlink" title="网络http服务"></a>网络http服务</h2><p>http服务有两种流行的服务方法：REST和SOAP，它们在设计理念方面几乎式截然相反的。</p>
 <p>REST不是一种协议，而是一个基于HTTP原则的设计理念，它强调简单的数据格式，使用URL来标识资源，并使用HTTP功能进行缓存控、身份验证和内容类型协商。与SOAP相比，REST已经越来越受欢迎，根据REST原则所设计的API称为RESTful。</p>
-<p>相比之下，SOAP是一种基于XML的协议，用于发送网络API请求，虽然它最长用与HTTP，但其目的是独立于HTTP，并避免使用大多数HTTP功能，相反，它带有庞大而复杂的多种相关标准和新增的各种功能，SOAP Web服务的API使用被称为WSDL（Web Service Description Language，一种基于XML的语言）。WSDL支持代码生成，客户端可以使用本地类和方法调用（编码为XML消息并由框架进行解码）来访问远程服务。</p>
+<p>相比之下，SOAP是一种基于XML的协议，用于发送网络API请求，虽然它最常用于HTTP，但其目的是独立于HTTP，并避免使用大多数HTTP功能，相反，它带有庞大而复杂的多种相关标准和新增的各种功能，SOAP Web服务的API使用被称为WSDL（Web Service Description Language，一种基于XML的语言）。WSDL支持代码生成，客户端可以使用本地类和方法调用（编码为XML消息并由框架进行解码）来访问远程服务。</p>
 <p>由于WSDL的设计目标不是人类可读的，而且SOAP消息通常过于复杂，无法手动构建，SOAP用户严重依赖工具支持、代码生成和IDE。对于没有SOAP提供商支持的编程语言用户来说，试图集成SOAP服务非常困难。由于这些原因，尽管它在某些大型企业中仍有使用，但是已经不再收到大多数小公司的青睐。</p>
 <h2 id="远程过程调用RPC"><a href="#远程过程调用RPC" class="headerlink" title="远程过程调用RPC"></a>远程过程调用RPC</h2><p>远程过程调用的思想从20世纪70年代以来就一直存在。RPC模式试图使向远程网络发送请求看起来与在同一进程调用编程语言中的函数或方法相同。<font color="orange">虽然RPC起初看起来很方便，但是这种方法在根本上是有缺陷的，网络请求与本地函数调用非常不同：</font></p>
 <ul>
@@ -433,7 +433,7 @@ Protocol Buffers将字段类型和字段标签打包到单个字节中，并且�
 </li>
 <li><p>调用本地函数时，可以高效地将引用（指针）传递给本地内存中的对象。当你发出一个网络请求时，所有这些参数都需要被编码成可以通过网络发送的一系列字节。</p>
 </li>
-<li><p>客户端和服务可以用不同的编程语音实现，所以RPC框架必须将数据从一种语音翻译成另外一种语音，这样可能会出问题，因为不是所有的语音都具有相同的数据类型（例如JavaScript数字大于$2^{53}$的问题）。</p>
+<li><p>客户端和服务端可以用不同的编程语音实现，所以RPC框架必须将数据从一种语音翻译成另外一种语音，这样可能会出问题，因为不是所有的语音都具有相同的数据类型（例如JavaScript数字大于$2^{53}$的问题）。</p>
 </li>
 <li><p><font color="orange">所有这些因素意味着尝试使远程服务看起来像编程语音中的本地函数调用一样是毫无意义的，因为这是两个根本不同的事情。</font>REST的部分吸引力在于，它并不试图隐藏它是一个网络协议的事实。</p>
 </li>
@@ -477,7 +477,7 @@ Protocol Buffers将字段类型和字段标签打包到单个字节中，并且�
       <i class="fa fa-chevron-left"></i> 列表与字典
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/02/12/devops/k8s/k8s%E5%88%9D%E5%AD%A6%E7%AC%94%E8%AE%B0/" rel="next" title="k8s初学笔记">
+    <a href="/2022/02/11/devops/k8s/k8s%E5%88%9D%E5%AD%A6%E7%AC%94%E8%AE%B0/" rel="next" title="k8s初学笔记">
       k8s初学笔记 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -555,20 +555,20 @@ Protocol Buffers将字段类型和字段标签打包到单个字节中，并且�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -598,7 +598,7 @@ Protocol Buffers将字段类型和字段标签打包到单个字节中，并且�
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -608,15 +608,15 @@ Protocol Buffers将字段类型和字段标签打包到单个字节中，并且�
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">183k</span>
+    <span title="Symbols count total">215k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">10:11</span>
+    <span title="Reading time total">11:56</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

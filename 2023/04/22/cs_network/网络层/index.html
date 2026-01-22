@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="网络层的功能异构网络互联网络层所要完成的任务之一就是使异构网络实现互联，所谓网络互联，是指将两个以上的计算机网络使用中间设备相互连接起来，中间设备又称为中间系统或中继系统 路由与转发路由器主要完成两个功能：一是路由选择（确定哪一条路径），二是分组转发（当一个分组到达时所采取的动作）。前者是根据特定的路由选择协议构造出路由表，同时经常或定期地和相邻路由器交换路由信息而不断地更新和维护路由表。后者处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络层">
+<meta property="og:url" content="http://swordandtea.github.io/2023/04/22/cs_network/%E7%BD%91%E7%BB%9C%E5%B1%82/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="网络层的功能异构网络互联网络层所要完成的任务之一就是使异构网络实现互联，所谓网络互联，是指将两个以上的计算机网络使用中间设备相互连接起来，中间设备又称为中间系统或中继系统 路由与转发路由器主要完成两个功能：一是路由选择（确定哪一条路径），二是分组转发（当一个分组到达时所采取的动作）。前者是根据特定的路由选择协议构造出路由表，同时经常或定期地和相邻路由器交换路由信息而不断地更新和维护路由表。后者处理">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://swordandtea.github.io/2023/04/23/cs_network/%E7%BD%91%E7%BB%9C%E5%B1%82/ipv4.jpg">
+<meta property="og:image" content="http://swordandtea.github.io/2023/04/23/cs_network/%E7%BD%91%E7%BB%9C%E5%B1%82/分类ipv4地址.jpg">
+<meta property="article:published_time" content="2023-04-23T03:44:20.000Z">
+<meta property="article:modified_time" content="2023-04-24T11:46:22.000Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="计网">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://swordandtea.github.io/2023/04/23/cs_network/%E7%BD%91%E7%BB%9C%E5%B1%82/ipv4.jpg">
+
+<link rel="canonical" href="http://swordandtea.github.io/2023/04/22/cs_network/%E7%BD%91%E7%BB%9C%E5%B1%82/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>网络层 | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2023/04/22/cs_network/%E7%BD%91%E7%BB%9C%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          网络层
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-04-22 23:44:20" itemprop="dateCreated datePublished" datetime="2023-04-22T23:44:20-04:00">2023-04-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-04-24 07:46:22" itemprop="dateModified" datetime="2023-04-24T07:46:22-04:00">2023-04-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%BD%91/" itemprop="url" rel="index">
+                    <span itemprop="name">计网</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>8.5k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>28 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="网络层的功能"><a href="#网络层的功能" class="headerlink" title="网络层的功能"></a>网络层的功能</h1><h2 id="异构网络互联"><a href="#异构网络互联" class="headerlink" title="异构网络互联"></a>异构网络互联</h2><p>网络层所要完成的任务之一就是使异构网络实现互联，所谓网络互联，是指将两个以上的计算机网络使用中间设备相互连接起来，中间设备又称为中间系统或中继系统</p>
+<h2 id="路由与转发"><a href="#路由与转发" class="headerlink" title="路由与转发"></a>路由与转发</h2><p>路由器主要完成两个功能：一是路由选择（确定哪一条路径），二是分组转发（当一个分组到达时所采取的动作）。前者是根据特定的路由选择协议构造出路由表，同时经常或定期地和相邻路由器交换路由信息而不断地更新和维护路由表。后者处理通过路由器的数据流，关键操作是转发表查询、转发及相关的队列管理和任务调度等。</p>
+<p>路由表根据路由选择算法得到，而转发表是从路由表得出的。转发表的结构应当使查找过程最优化，路由表则需要对网络拓扑变化的计算最优化。</p>
+<h2 id="拥塞控制"><a href="#拥塞控制" class="headerlink" title="拥塞控制"></a>拥塞控制</h2><p>在通信子网中，因出现过量的分组而引起网络性能下降的现象称为拥塞。单一地增加资源并不能解决拥塞。</p>
+<p>拥塞控制不同于流量控制，流量控制所要做的是抑制发送端发送数据的速率，而拥塞控制必须确保通信子网能够传送待传送的数据，是一个全局性的问题</p>
+<p>拥塞控制的方法有两种：</p>
+<ul>
+<li><p>开环控制(对手工操作开)。在设计网络时事先将有关发生拥塞的因素考虑周到，力求网络在工作时不产生拥塞。这是一种静态的预防方法，一旦整个系统启动并运行，中途就不再修改。开环控制的手段包括确定何时可接收新流量、何时可丢弃分组及丢弃那些分组，确定何种调度决策等。所有这些手段的共性是，<code>在做决定时不考虑当前网络的状态。</code></p>
+</li>
+<li><p>闭环控制(对手工操作闭)。事先不考虑有关发生拥塞的各种因素，采用监测网络系统去监视，及时监测哪里发生了拥塞，然后调整网络系统的运行。闭环控制基于反馈环路的概念，是一种动态的方法。</p>
+</li>
+</ul>
+<h1 id="IPv4"><a href="#IPv4" class="headerlink" title="IPv4"></a>IPv4</h1><p>一个IP分组由首部和数据两部分组成。首部前一部分的长度固定，共20B，是所有IP分组必须具有的。后面是一些可选字段，其长度可变。</p>
+<p><code>IP数据报的格式如下：</code></p>
+<p><img src="/2023/04/23/cs_network/%E7%BD%91%E7%BB%9C%E5%B1%82/ipv4.jpg" title alt="cc66143dbe9f2a4a0d3f775a66233312.png" data-align="center"></p>
+<ul>
+<li><p>版本：指IP的版本，目前广泛使用的版本号为4</p>
+</li>
+<li><p>首部长度：占4位，以32位（4B）为单位，最大值为60B（15*4B）。最常用的首部长度为20B。</p>
+</li>
+<li><p>区分服务：说明数据报的优先级，值越大优先级越高</p>
+</li>
+<li><p>总长度：占16位，<code>指首部和数据之和的长度</code>，单位为1B，因此数据报的最大长度为$2^{16}-1=65535B$。以太网帧的最大传输单元（MTU）为1500B，因此当一个IP数据报封装成帧时，数据报的总长度（首部加数据）一定不能超过下面数据链路层的MTU值。</p>
+</li>
+<li><p>标识：占16位，它是一个计数器，每产生一个数据报就加1，并赋值给标识字段。但它并不是“序号”（IP是无连接服务）。当一个数据报的长度超过网络的MTU时，必须分片，<code>此时每个数据报片都复制一次标识号，以便能正确重装成原来的数据报</code></p>
+</li>
+<li><p>标志：占3位，标志字段的最低位（第二行第18位）为MF（More Fragment），MF=1表示后面还有分片，MF=0表示最后一个分片，标志字段中间一位为DF（Don’t Fragment），<code>只有当DF=0（Don&#39;t Fragment=false）时才允许分片</code></p>
+</li>
+<li><p>片偏移：占13位，它指出较长的分组在分片后，某片在原分组中的相对位置。<code>片偏移以8B为单位，即每个分片的长度一定时8B的整数倍（数据部分，不算头部，除却最后一个分片）</code></p>
+</li>
+<li><p>首部校验和：占16位，<code>只校验分组的首部，而不校验数据部分</code></p>
+</li>
+<li><p>生存时间（TTL，Time To Live）：占8位，数据报在网络中可通过的路由器的最大值，以确保分组不会永远在网络中循环。路由器在转发分组<code>前</code>，先把TTL减1。若TTL被减为0，则该分组必须丢弃</p>
+</li>
+<li><p>协议：占8位，指出此分组应交给哪个传输层协议。其中值6表示TCP，值为17表示UDP。</p>
+</li>
+<li><p>源地址字段：占4B，标识发送方的IP地址</p>
+</li>
+<li><p>目的地址地段：占4B，标识接收方的IP地址</p>
+</li>
+<li><p>填充：使首部长度为4B的整数倍</p>
+</li>
+</ul>
+<h2 id="IP数据报分片"><a href="#IP数据报分片" class="headerlink" title="IP数据报分片"></a>IP数据报分片</h2><p>一个链路层数据报能承载的最大数据称为最大传送单元（MTU）。当IP数据报的总长度大于链路MTU时，就需要将IP数据报中的数据分在两个或多个较小的IP数据报中，这些较小的数据报称为片。片在目的地的网络层被重新组装。由于偏移值的单位是8B，所以<code>除最后一个片外</code>，其他所有片中的<code>有效数据</code>载荷都是8的倍数。</p>
+<h2 id="网络层转发分组"><a href="#网络层转发分组" class="headerlink" title="网络层转发分组"></a>网络层转发分组</h2><p>从数据报的首部提取目的主机的IP地址D，得出目的网络地址N。若网络N与此路由器直接相连，则把数据报直接交付给目的主机D，这称为路由器的<code>直接交付</code>；否则是<code>间接交付</code></p>
+<p><code>在不同网络中传送时，MAC帧中的源地址和目的地址都要发生变化，但在网桥和交换机转发帧时，不改变帧的源地址</code></p>
+<h1 id="IPv4地址与NAT"><a href="#IPv4地址与NAT" class="headerlink" title="IPv4地址与NAT"></a>IPv4地址与NAT</h1><h2 id="IPv4地址"><a href="#IPv4地址" class="headerlink" title="IPv4地址"></a>IPv4地址</h2><p>传统的IPv4地址是分类地址，分为A、B、C、D、E五类，无论哪类IP地址，都由网络号和主机号两部分组成。网络号标识主机(或路由器)所连接到的网络。一个网络号在整个因特网范围内必须是唯一的。一台主机号在它前面的网络号所指明的网络范围内必须是唯一的。</p>
+<p>分类的IP地址：</p>
+<p><img src="/2023/04/23/cs_network/%E7%BD%91%E7%BB%9C%E5%B1%82/分类ipv4地址.jpg" title alt="5acdc63b4eb39e9d31a4762feb423baf.png" data-align="center"></p>
+<p>每个IP地址最前面的数字这样设计的原因是为了构成前缀码，否则将会有解释歧义</p>
+<p><code>在各类IP地址中，有些IP地址具有特殊用途，不用做主机的IP地址：</code></p>
+<ul>
+<li><p>主机号全为0表示网络本身，不用做IP地址</p>
+</li>
+<li><p>主机号全为1表示本网络的广播地址，又称<code>直接广播地址</code></p>
+</li>
+<li><p>网络号为127的IP地址是环回测试地址，127.0.0.0地址表示主机本身</p>
+</li>
+<li><p>32位全为0，即0.0.0.0表示本网络上的主机</p>
+</li>
+<li><p>32位全为1，即255.255.255.255表示整个TCP/IP网络的广播地址，又称<code>受限广播地址</code></p>
+</li>
+</ul>
+<h4 id="常见的三种类别IP地址的使用范围"><a href="#常见的三种类别IP地址的使用范围" class="headerlink" title="常见的三种类别IP地址的使用范围"></a>常见的三种类别IP地址的使用范围</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>网络类别</th>
+<th>最大可用网络数</th>
+<th>第一个可用的网络号</th>
+<th>最后一个可用的网络号</th>
+<th>每个网络的最大主机数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>$2^7-2$</td>
+<td>1</td>
+<td>126</td>
+<td>$2^{24}-2$</td>
+</tr>
+<tr>
+<td>B</td>
+<td>$2^{14}-1$</td>
+<td>128.1</td>
+<td>191.255</td>
+<td>$2^{16}-2$</td>
+</tr>
+<tr>
+<td>C</td>
+<td>$2^{21}-1$</td>
+<td>192.0.1</td>
+<td>223.255.255</td>
+<td>$2^8-2$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>IP地址是标志一台主机(或路由器)和一条链路的接口，<code>当一台主机同时连接到两个网络中时，该主机就必须同时具有两个相应的IP地址</code>。因此IP网络上的路由器必须至少应具有两个IP地址(路由器每个端口必须至少分配一个IP地址)</p>
+<h2 id="网络地址转换NAT-Network-Address-Translation"><a href="#网络地址转换NAT-Network-Address-Translation" class="headerlink" title="网络地址转换NAT(Network Address Translation)"></a>网络地址转换NAT(Network Address Translation)</h2><p>NAT指通过将专用网络地址转换为公用地址，从而对外隐藏内部管理的IP地址。</p>
+<p>私有地址划分：</p>
+<p>A类：1个A类网段，即<strong>10</strong>.0.0.0～<strong>10</strong>.255.255.255</p>
+<p>B类：16个B类网段，即<strong>172.16</strong>.0.0～<strong>172.31</strong>.255.255</p>
+<p>C类：256个C类网段，即<strong>192.168.0</strong>.0～<strong>192.168.255</strong>.255</p>
+<h3 id="NAT路由转发"><a href="#NAT路由转发" class="headerlink" title="NAT路由转发"></a>NAT路由转发</h3><p>NAT路由器至少有一个有效的外部全球地址，NAT表中存放着{本地IP地址：端口}到{全球IP地址：端口}的映射。通过{IP地址：端口}这样的映射方式，可让多个私有IP地址映射到同一个全球IP地址。</p>
+<p>一个典型的NAT转换表：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>WAN端</th>
+<th>LAN端</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>138.76.29.7:5001</td>
+<td>192.168.0.2:2233</td>
+</tr>
+<tr>
+<td>138.76.29.7:5060</td>
+<td>192.168.0.3:1234</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>普通路由器在转发IP数据报时，不改变其源IP地址和目的IP地址。<code>而NAT路由器在转发IP数据报时，一定要更换其IP地址(转换源IP地址或目的IP地址)</code>。普通路由器仅工作在网络层，而NAT路由器转发数据报时需要查看和转换传输层的端口号，故NAT路由器工作在传输层</p>
+<h1 id="子网划分与子网掩码、CIDR"><a href="#子网划分与子网掩码、CIDR" class="headerlink" title="子网划分与子网掩码、CIDR"></a>子网划分与子网掩码、CIDR</h1><h2 id="子网划分"><a href="#子网划分" class="headerlink" title="子网划分"></a>子网划分</h2><p>子网划分属于一个网络内部的事情，网络对外仍表现为没有划分子网的网络。</p>
+<p>从主机号借用若干比特作为子网号，当然主机号也就相应减少了相同的比特。三级IP地址的结构如下：IP地址={&lt;网络号&gt;、&lt;子网号&gt;、&lt;主机号&gt;}</p>
+<p>RFC950规定，对分类的IPv4地址进行子网划分时，子网号不能全为1或全0。但随着CIDR的广泛使用，现在全1和全0的子网号也可以使用</p>
+<p>不论是分类的IPv4还是CIDR，其子网中的主机号全0和全1的地址都不能被指派</p>
+<h2 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h2><p>子网掩码是一个与IP地址相对应的、长32bit的二进制串，他由一串1和跟随的一串0组成。1对应于IP地址中的网络号及子网号，而0对应于主机号。计算机只需将IP地址和其对应的子网掩码逐位“与”，就可以得出相应子网的网络地址。</p>
+<p>现在的因特网标准规定，所有的网络都必须使用子网掩码。如果一个网络未划分子网，那么就采用默认的子网掩码。A、B、C类地址默认的的子网掩码为：255.0.0.0、255.255.0.0、255.255.255.0</p>
+<h2 id="无分类域间路由选择-CIDR，Classless-Inter-Domain-Routing"><a href="#无分类域间路由选择-CIDR，Classless-Inter-Domain-Routing" class="headerlink" title="无分类域间路由选择(CIDR，Classless Inter-Domain Routing)"></a>无分类域间路由选择(CIDR，Classless Inter-Domain Routing)</h2><p>CIDR消除了传统A、B、C类(<code>只消除了ABC类</code>)地址及划分子网的概念，因而可以更加有效分配IPv4的地址空间。CIDR使用“网络前缀”的概念代替子网络的概念。因此，IP地址的无分类两级编址为：IP={&lt;网络前缀&gt;、&lt;主机号&gt;}。CIDR使用“斜线记法”，即IP地址/网络前缀所占比特数。其中网络前缀所占的比特数对应于网络号的部分，等效于子网掩码中连续1的部分。</p>
+<p>CIDR虽然不使用子网，但仍使用”掩码“一词。CIDR不使用子网是指CIDR并没有在32位地址中指明若干位作为子网字段。分配到一个CIDR地址块的组织，仍可以在本组织内根据需要划分一些子网。</p>
+<p>将网络前缀都相同的连续IP地址组成“CIDR”地址块。这种地址的聚合称为路由聚合，或称构成超网。</p>
+<p>CIDR的优点在于网络前缀长度的灵活性。使用CIDR时，路由表中的每个项目由“网络前缀”和“下一路由地址”组成。在查找路由表时，可能会得到不止一个匹配结果。此时，<code>应该从匹配结果中选择具有最长网络前缀的路由</code>，因为网络前缀越长，其地址块就越小，因而路由就越具体。</p>
+<h1 id="ARP、DHCP、ICMP"><a href="#ARP、DHCP、ICMP" class="headerlink" title="ARP、DHCP、ICMP"></a>ARP、DHCP、ICMP</h1><h2 id="IP地址与硬件地址"><a href="#IP地址与硬件地址" class="headerlink" title="IP地址与硬件地址"></a>IP地址与硬件地址</h2><p>由于路由器的隔离，IP网络中无法通过广播方式依靠MAC地址来完成跨网络的寻址。因此在IP网络的网络层只使用IP地址来完成寻址。IP分组通过多次路由转发到达目标网络后，改为在目标LAN中通过数据链路层的MAC地址以广播方式寻址。这样可以提高路由选择的效率</p>
+<p><code>路由器由于互联多个网络，因此它不仅有多个IP地址，也有多个硬件地址</code></p>
+<h2 id="地址解析协议-ARP，Address-Resolution-Protocol"><a href="#地址解析协议-ARP，Address-Resolution-Protocol" class="headerlink" title="地址解析协议(ARP，Address Resolution Protocol)"></a>地址解析协议(ARP，Address Resolution Protocol)</h2><p>无论在网络层使用什么协议，在实际网络的链路上传送数据帧时，最终必须使用硬件地址。所以需要一种方法来完成<code>IP地址到MAC地址的映射</code>，这就是地址解析协议。每台主机都设有一个ARP高速缓存，用来存放局域网上各主机和路由器的IP地址到MAC地址的映射表，称ARP表。</p>
+<p><code>ARP工作在网络层</code>，其工作原理如下：</p>
+<p>1、主机A欲向本局域网上的某台主机B发送IP数据报，先在其ARP高速缓存中查看有无主机B的IP地址。如有，就可查出其对应的硬件地址，再将此硬件地址写入MAC帧，然后通过局域网将该MAC帧发往此硬件地址。<code>如果没有</code>，那么就通过使用目的MAC地址为FF-FF-FF-FF-FF-FF的帧来封装并广播ARP请求分组，使同一个局域网里的所欲主机收到ARP请求。</p>
+<p>2、主机B收到该ARP请求后，向主机A发送响应ARP分组，分组中包含主机B的IP与MAC地址的映射关系，主机A在收到后将此映射写入ARP缓存，然后按查询到的硬件地址发送MAC帧。</p>
+<p><code>ARP用于解决同一个局域网上的主机或路由器的IP地址和硬件地址的映射问题。</code>如果所要找的主机和源主机不再同一局域网上，那么就要通过ARP找到一个位于本局域网上的某个路由器的硬件地址，然后将分组发送给这个路由器，让这个路由器把分组转发给下一个网络，剩下的工作就由下一个网络来做。</p>
+<p><code>尽管ARP请求分组是广播发送的，但ARP响应分组是普通的单播。</code></p>
+<h2 id="动态主机配置协议-DHCP，Dynamic-Host-Configuration-Protocol"><a href="#动态主机配置协议-DHCP，Dynamic-Host-Configuration-Protocol" class="headerlink" title="动态主机配置协议(DHCP，Dynamic Host Configuration Protocol)"></a>动态主机配置协议(DHCP，Dynamic Host Configuration Protocol)</h2><p>DHCP常用于给主机动态地分配IP地址，它提供了即插即用联网的机制，这种机制允许一台计算机加入新的网络和获取IP地址不用手工参与。<code>DHCP是应用层协议，它是基于UDP的</code></p>
+<p>其工作流程如下：</p>
+<p>1、DHCP客户机<code>广播</code>“DHCP发现”消息，试图找到网络中的DHCP服务器。</p>
+<p>2、DHCP服务器收到“DHCP发现”消息后，向网络中<code>广播</code>“DHCP提供”信息，其中包括提供DHCP客户机的IP地址和相关配置信息</p>
+<p>3、DHCP客户机收到“DHCP提供”消息，如果接收DHCP服务器所提供的相关参数，那么通过<code>广播</code>“DHCP请求”消息向DHCP服务器请求提供IP地址</p>
+<p>4、DHCP服务器<code>广播</code>“DHCP确认”消息，将IP地址分配给DHCP客户机</p>
+<p>DHCP允许网络上配置多台DHCP服务器，当DHCP客户机发出DHCP请求时，有可能收到多个应答消息。这是，<code>DHCP客户机只会挑选其中的一个，通常挑选最先到达的</code></p>
+<h2 id="网际控制报文协议-ICMP，Internet-Control-Message-Protocol"><a href="#网际控制报文协议-ICMP，Internet-Control-Message-Protocol" class="headerlink" title="网际控制报文协议(ICMP，Internet Control Message Protocol)"></a>网际控制报文协议(ICMP，Internet Control Message Protocol)</h2><p>ICMP让主机或路由器报告差错和异常情况。<code>ICMP报文作为IP层数据报文的数据，加上数据报的首部，组成IP数据报发送出去。ICMP是IP层协议</code></p>
+<p>ICMP报文的种类有两种，即ICMP差错报告报文和ICMP询问报文</p>
+<h3 id="ICMP差错报告报文"><a href="#ICMP差错报告报文" class="headerlink" title="ICMP差错报告报文"></a>ICMP差错报告报文</h3><p>ICMP差错报告报文用于目标主机或目标主机路径上的路由器向源主机报告差错和异常情况。共有5种类型：</p>
+<ul>
+<li><p>终点不可达：当路由器或主机不能交付数据报时，就向源点发送终点不可达报文。</p>
+</li>
+<li><p>源点抑制：当路由器或主机由于拥塞而丢弃数据报时，就向源点发送源点抑制报文，使源点知道应当把数据报的发送速率放慢。</p>
+</li>
+<li><p>时间超过：当路由器收到生存时间(TTL)为0的数据报时，丢弃该数据报外，还要向源点发送时间超过报文。当终点在预先规定的时间内不能收到一个数据报的全部数据报片时，就把已收到的数据报片都丢弃，并向源点发送参数问题报文</p>
+</li>
+<li><p>改变路由(重定向)。路由器把改变路由报文发送给主机，让主机知道下次应将数据报发送给另外的路由器(可通过更好的路由)</p>
+</li>
+</ul>
+<p><code>不应当发送ICMP差错报告报文的几种情况：</code></p>
+<p>1、对ICMP差错报告报文不再发送ICMP差错报告报文</p>
+<p>2、对第一个分片的数据报片的所有后续数据报片都不发送ICMP差错报告报文</p>
+<p>3、对具有组播地址的数据报都不发送ICMP差错报告报文</p>
+<p>4、对具有特殊地址(如127.0.0.0和0.0.0.0)的数据报不发送ICMP差错报告报文</p>
+<h3 id="ICMP询问报文"><a href="#ICMP询问报文" class="headerlink" title="ICMP询问报文"></a>ICMP询问报文</h3><p>ICMP询问报文有四种类型：回答请求和回答报文，时间戳请求和回答报文，掩码地址请求和回答报答，路由器询问和通告报文，最常用的是前两类。</p>
+<p>PING使用了ICMP回答请求和回答报文。</p>
+<p>PING工作在应用层，它直接使用网络层的ICMP，而未使用传输层的TCP或UDP。</p>
+<h1 id="IPv6"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</h1><h2 id="IPv6的特点"><a href="#IPv6的特点" class="headerlink" title="IPv6的特点"></a>IPv6的特点</h2><p>1、更大的地址空间，IPv6使用128位(16B)的IP地址。</p>
+<p>2、扩展的层次结果</p>
+<p>3、灵活的首部格式</p>
+<p>4、改进的选项</p>
+<p>5、允许协议继续扩充</p>
+<p>6、支持即插即用</p>
+<p>7、支持资源的预分配</p>
+<p>8、IPv6只有在包的源节点才能分片，是<code>端到端</code>的，传输路径中的路由器不能分片，所以从一般意义上说，IPv6不允许分片(不允许类似IPv4在路由分片)</p>
+<p>9、IPv6首部长度必须是8B的整数倍，而IPv4首部是4B的整数倍</p>
+<p>10、增大了安全性。身份验证和保密功能是IPv6的关键特征</p>
+<p>IPv6本身与IPv4不兼容</p>
+<p>IPv6简化了IP分组头，它包含8个域(IPv4是12个域)</p>
+<h2 id="IPv6地址"><a href="#IPv6地址" class="headerlink" title="IPv6地址"></a>IPv6地址</h2><p>IPv6在IPv4单播和多播的基础上又增加了一种类型——任播。任播的目的站是一组计算机，但数据报在交付时只交付给其中的一台计算机，通常是距离最近的一台计算机</p>
+<p>IPv6标准中指定了一种比较紧凑的表示法，即把地址中的每4位用一个十六进制数表示，并用冒号分隔每16位，如4BF5:AA12:0216:FEBC:BA5F:039A:BE9A:2170</p>
+<p>通常可以把IPv6地址缩写成更紧凑的形式。当每16位域的开头有一些0时，可以采用一种缩写表示法，但是域中必须至少有一个数字。例如，可以把地址4BF5:0000:0000:0000:BA5F:039A:000A:2176缩写成4BF5:0:0:0:BA5F:39A:A:2176</p>
+<p>当有相继的0值域出现时，可以进步一缩写，这些域可以用双冒号缩写，<code>但是双冒号表示法在一个地址中仅能出现一次</code>。这样前面的地址就可以进一步缩写为4BF5::BA5F:39A:A:2176</p>
+<p>IPv6拓展了IPv4地址的分级概念，它使用一下3个等级：第一级（顶级）指明全球都知道的公有拓扑；第二级（场点级）指明单个场点；第三级指明单个网络接口。IPv6地址采用多级体系主要是为了使路由器能够更快地查找路由</p>
+<p>目前IPv4向IPv6过渡采用双协议栈和隧道技术两种策略：双协议栈是指在完全过渡到IPv6之前，使一部分主机（路由器）装有两个协议栈，即一个IPv4和IPv6，通过双协议栈进行转换；隧道技术是将整个IPv6数据报封装到IPv4数据报的数据部分</p>
+<h1 id="路由算法"><a href="#路由算法" class="headerlink" title="路由算法"></a>路由算法</h1><h2 id="静态路由与动态路由"><a href="#静态路由与动态路由" class="headerlink" title="静态路由与动态路由"></a>静态路由与动态路由</h2><p>静态路由算法(又称非自适应路由算法)。指由网络管理员手工配置的路由器信息，当网络的拓扑结构或链路的状态发生变化时，网络管理员需要手工去修改路由表中相关的静态路由信息。</p>
+<p>动态路由算法(又称自适应性路由算法)。指路由器上的路由表项是通过相互连接的路由器之间彼此交换信息，然后按照一定的算法优化出来的。而这些路由信息会在一定时间间隙里不断更新，以适应不断变化的网络，以随时获得最优的寻路效果。</p>
+<h2 id="距离-向量路由算法"><a href="#距离-向量路由算法" class="headerlink" title="距离-向量路由算法"></a>距离-向量路由算法</h2><p>所有节点都定期地将它们的整个路由选择表传送给所有<code>与之直接相邻的节点</code>。这种路由选择表包含：</p>
+<ul>
+<li><p>每条路径的目的地(另一结点)</p>
+</li>
+<li><p>路径的代价(也称距离)</p>
+</li>
+</ul>
+<p>这里的距离是一个抽象的概念，不一定是真正物理上的距离，可能是通过的路由器数。</p>
+<h3 id="RIP路由信息协议"><a href="#RIP路由信息协议" class="headerlink" title="RIP路由信息协议"></a>RIP路由信息协议</h3><p>RIP(Routing Information Protocol)路由信息协议是内部网关协议，是一种分布式的基于距离向量的路由选择协议。<code>RIP是应用层协议，它使用UDP传送数据(端口520)</code></p>
+<h4 id="RIP规定"><a href="#RIP规定" class="headerlink" title="RIP规定"></a>RIP规定</h4><p>1、网络中的每个路由器都要维护从它自身到其他每个目的网络的距离记录</p>
+<p>2、距离也称跳数(Hop Count)，规定从一个路由器到直接连接网络的距离(跳数)为1。而每经过一个路由器，距离(跳数)增加1。</p>
+<p>3、RIP认为好的路由就是它通过的路由器的数目少</p>
+<p>4、RIP允许一条路径最多只能包含15个路由器。因此<code>当距离等于16时，它表示网络不可达</code>。距离向量路由可能出现环路的情况，规定最高跳数目的是为了防止数据报在环路上不断循环。</p>
+<p>5、在任意两个使用RIP的路由器之间每30秒广播一次RIP路由更新信息。</p>
+<p>6、在RIP中不支持子网掩码的RIP广播，所有RIP中每个网络的子网掩码必须相同。在新的RIP2中，支持变长子网掩码和CIDR。</p>
+<h4 id="RIP的特点"><a href="#RIP的特点" class="headerlink" title="RIP的特点"></a>RIP的特点</h4><p>1、仅和相邻路由器交换信息</p>
+<p>2、路由器交换的信息是当前路由器所知道的全部信息，即自己的路由表</p>
+<p>3、按固定的时间间隔交换路由信息</p>
+<p>4、如果180秒(RIP默认超时时间为180秒)还没有收到相邻路由器的更新路由表，那么把此相邻路由器记为不可达路由器，即把距离设置为16。</p>
+<h4 id="RIP的优缺点"><a href="#RIP的优缺点" class="headerlink" title="RIP的优缺点"></a>RIP的优缺点</h4><p>RIP最大的优点是实现简单，开销小，收敛过程快。RIP的缺点如下：</p>
+<p>1、RIP限制了网络的规模，它能使用的最大距离为15</p>
+<p>2、路由器之间交换的是路由器中的完整路由表，因此网络规模越大，开销也越大。</p>
+<p>3、网络出现故障时，会出现慢收敛的现象，即需要很长时间才能将此信息传送到所有路由器。俗称“坏消息传得慢”</p>
+<h2 id="链路状态路由算法"><a href="#链路状态路由算法" class="headerlink" title="链路状态路由算法"></a>链路状态路由算法</h2><p>使用该算法的路由结点需要执行以下两项任务。第一，主动测试所有邻接结点的状态。第二，定期地将链路状态传播给<code>所有其他结点</code>，典型的链路状态算法是OSPF算法。</p>
+<p>链路状态路由算法主要有三个特征：</p>
+<p>1、向本自治系统中所有路由器发送信息，这里使用的方法是洪泛法，即路由器通过所有的端口向所有相邻的路由器发送消息。而每个相邻路由器又将此信息发往其所有相邻路由器(但不发送给刚刚发来信息的那个路由器)</p>
+<p>2、发送的信息是与路由器相邻的所有路由器的链路状态，但这只是路由器所知道的部分信息</p>
+<p>3、只有当链路状态发生变化时，路由器才向所有路由器发送此消息</p>
+<p>链路状态报文的大小与网络中的路由结点数目无关，因此链路状态算法比距离-向量算法有更好的规模可扩展性</p>
+<h3 id="开放最短路径优先-OSPF-协议"><a href="#开放最短路径优先-OSPF-协议" class="headerlink" title="开放最短路径优先(OSPF)协议"></a>开放最短路径优先(OSPF)协议</h3><p>开放最短路径优先协议是使用分布式链路状态路由算法的典型代表，也是内部网关协议(IGP)的一种。<code>OSPF是网络层协议，它不使用UDP或TCP，而直接用IP数据报传送</code></p>
+<h4 id="OSPF特点"><a href="#OSPF特点" class="headerlink" title="OSPF特点"></a>OSPF特点</h4><p>1、OSPF对不同的链路可根据IP分组的不同服务类型(TOS)而设置成不同的代价。</p>
+<p>2、如果到同一个目的网络有多条相同代价的路径，那么可以将通信分配到这几条路径。这称为多路径间的负载均衡。</p>
+<p>3、所有在OSPF路由器之间交换的分组都具有鉴别功能，因而保证了仅在可信赖的路由器之间交换链路状态信息。</p>
+<p>4、支持可变长度的子网划分和CIDR</p>
+<p>5、每个链路状态都带上一个32位的序号，序号越大，状态就越新。</p>
+<h4 id="OSPF的基本工作原理"><a href="#OSPF的基本工作原理" class="headerlink" title="OSPF的基本工作原理"></a>OSPF的基本工作原理</h4><p>各路由器之间频繁的交换链路状态信息，因此所有路由器最终都能建立一个全网的拓扑结构图。然后每个路由器根据这个全网拓扑结构图，使用Dijkstra算法计算从自己到各目的网络的最优路径。</p>
+<p>为了使OSPF能够用于规模更大的网络，OSPF将一个自治系统再划分若干更小的范围，称为区域。划分区域的好处是将利用洪泛法交换链路状态信息的范围局限于每个区域而非整个自治系统。在一个区域内部的路由器只知道本区域的完整网络拓扑。这些区域也有层次之分，处在上层的域称为主干区域，负责连通其他下层的区域，并且还连接其他自治域。</p>
+<h4 id="OSPF的五种分组类型"><a href="#OSPF的五种分组类型" class="headerlink" title="OSPF的五种分组类型"></a>OSPF的五种分组类型</h4><p>1、问候分组，用来发现和维持临站的可达性</p>
+<p>2、数据库描述分组，向临站给出自己的链路状态项目的摘要信息</p>
+<p>3、链路状态请求分组，向对方请求发送某些链路状态项目</p>
+<p>4、链路状态更新分组，用洪泛法对全网更新链路状态</p>
+<p>5、链路状态确认分组，对链路更新分组的确认</p>
+<p>通常每隔10秒，每两个相邻路由器要交换一次问候分组。</p>
+<p>为了确保自己保存的链路状态与全网的状态保持一致，OSPF还规定每隔一段时间(如30分钟)就刷新一次数据库中的链路状态。</p>
+<p>OSFP没有“坏消息传得慢”的问题</p>
+<h2 id="边界网关协议-BGP"><a href="#边界网关协议-BGP" class="headerlink" title="边界网关协议(BGP)"></a>边界网关协议(BGP)</h2><p>边界网关协议(Border Gateway Protocol，BGP)是不同自治系统的路由器之间交换路由信息的协议，是一种外部网关协议。</p>
+<p>由于BGP使用的环境，BGP要选择最佳路由是不现实的。由于因特网的规模太大，使得自治系统之间路由选择非常困难。</p>
+<p>BGP只能力求寻找一条能够到达目的网络且比较好的路由，而并非寻找一条最佳路由。BGP采用的是<code>路径</code>向量路由选择协议，<code>BGP是应用层协议，它是基于TCP的</code>。</p>
+<p>每个自治系统的管理员要选择至少一个路由器(可以有多个)作为该自治系统的“BGP发言人”。一个BGP发言人要与其他自治系统中BGP发言人要交换路由信息。每个BGP发言人除必须允许BGP外，还必须运行该AS所用的内部网关协议，如OSPF或RIP。</p>
+<p>BGP所交换的网络可达性信息就是要到达某个网络(用网络前缀表示)所要经过的一系列AS。</p>
+<h4 id="BGP的特点"><a href="#BGP的特点" class="headerlink" title="BGP的特点"></a>BGP的特点</h4><p>1、BGP交换的路由信息的结点数量级是自治系统的数量级，要比这些自治系统中的网络数少很多。</p>
+<p>2、每个自治系统中BGP发言人(或边界路由器)的数目是很少的。这样就使得自治系统之间的路由选择不至于过分复杂。</p>
+<p>3、BGP支持CIDR</p>
+<p>4、在BGP刚运行时，BGP的邻站交换整个BGP路由表，但以后只需在发生变化时更新有变化的部分。</p>
+<h4 id="BGP-4使用的四种报文"><a href="#BGP-4使用的四种报文" class="headerlink" title="BGP-4使用的四种报文"></a>BGP-4使用的四种报文</h4><p>1、打开(Open)报文。用来与相邻的另一个BGP发言人建立关系。</p>
+<p>2、更新(Update)报文。用来发送某一路由的信息，以及列出要撤销的多条路由。</p>
+<p>3、保活(Keepalive)报文。用来确认到开报文并周期性地证实邻站关系。</p>
+<p>5、通知(Notification)报文。用来发送监测到的差错。</p>
+<h1 id="移动IP"><a href="#移动IP" class="headerlink" title="移动IP"></a>移动IP</h1><p>移动IP技术是指移动结点<code>以固定的网络IP地址</code>实现跨越不同网段的漫游功能。并保证基于网络IP的网络权限在漫游过程中不发生任何改变。移动IP的目标是把分组自动地投递给移动结点。一个移动结点是把其连接点从一个网络或子网改变到另一个网络或子网的主机。</p>
+<p>基于IPv4的移动IP定义三种功能实体：移动结点、归属代理(也称本地代理)和外部代理。归属代理和外地代理统称为移动代理。</p>
+<ul>
+<li><p>移动结点：具有固定网络IP地址的移动主机</p>
+</li>
+<li><p>本地代理：一个移动结点的IP所属的网络被称为归属网络，在归属网络中代表移动结点执行移动管理功能的实体称为为本地代理。</p>
+</li>
+<li><p>外部代理：在外部网络中帮助移动结点完成移动管理功能的实体成为外部代理。</p>
+</li>
+</ul>
+<p><code>注意移动IP和移动自组网络的区别</code>，移动IP的核心网络功能仍然是基于固定互联网中一直使用的各种路由选择协议，移动自组网络是将移动性功能拓展到无线领域中的自治系统，它具有自己的独特的路由选择协议，并且可以不和因特网相联。</p>
+<p><code>移动IP和动态IP的区别</code>，动态IP指的是局域网中的计算机可以通过网络中的DHCP服务器动态地获得一个IP地址，而不需要用户在计算机的网络设置指定IP地址。</p>
+<h2 id="移动IP通信过程。"><a href="#移动IP通信过程。" class="headerlink" title="移动IP通信过程。"></a>移动IP通信过程。</h2><p>在移动IP中，每个移动结点都有一个唯一的本地地址。<code>当移动结点移动时，它的本地地址是不变</code>，在本地网络链路上每个本地结点还必须有一个本地代理来为它维护当前的位置信息。这就需要引入<code>转交地址</code>。当移动结点连接到外地网络链路上时，<code>转交地址就用来标识移动结点现在所处的位置</code>，以便进行路由选择。移动结点的本地地址与当前转交地址的联合成为<code>移动绑定</code>或简称绑定。</p>
+<p>移动IP技术的基本通信流程如下：</p>
+<ul>
+<li><p>移动结点在本地网络时，按传统的TCP/IP方式进行通信</p>
+</li>
+<li><p>移动结点漫游到一个外地网络中时，仍然使用固定的IP地址进行通信。为了能够收到通信对端发给它的IP分组，<code>移动结点需要向本地代理注册当前的位置地址，这个地址就是转交地址</code>(它可以是外部代理的地址或动态配置的一个地址)</p>
+</li>
+<li><p>本地代理接收到来自转交地址的注册后，会构建一条通向转交地址的隧道，将截获的发送给移动结点的IP分组通过隧道送给转交地址处。</p>
+</li>
+<li><p>在转交地址处解除隧道封装，恢复原始的IP分组，最后送到移动结点，这样移动结点在外网就能够收到这些发送给它的IP分组。</p>
+</li>
+<li><p>移动结点在外网通过外网的路由器或外部代理向通信对端发送IP数据包</p>
+</li>
+<li><p>移动结点来到另一个网络是，只需要向本地代理更新注册的转交地址</p>
+</li>
+<li><p>移动结点回到本地网时，移动结点向本地代理注销转交地址</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%BD%91/" rel="tag"># 计网</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/04/22/cs_network/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/" rel="prev" title="数据链路层">
+      <i class="fa fa-chevron-left"></i> 数据链路层
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/04/23/cs_network/%E4%BC%A0%E8%BE%93%E5%B1%82/" rel="next" title="传输层">
+      传输层 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="nav-number">1.</span> <span class="nav-text">网络层的功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E6%9E%84%E7%BD%91%E7%BB%9C%E4%BA%92%E8%81%94"><span class="nav-number">1.1.</span> <span class="nav-text">异构网络互联</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E4%B8%8E%E8%BD%AC%E5%8F%91"><span class="nav-number">1.2.</span> <span class="nav-text">路由与转发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="nav-number">1.3.</span> <span class="nav-text">拥塞控制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IPv4"><span class="nav-number">2.</span> <span class="nav-text">IPv4</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IP%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%88%86%E7%89%87"><span class="nav-number">2.1.</span> <span class="nav-text">IP数据报分片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82%E8%BD%AC%E5%8F%91%E5%88%86%E7%BB%84"><span class="nav-number">2.2.</span> <span class="nav-text">网络层转发分组</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IPv4%E5%9C%B0%E5%9D%80%E4%B8%8ENAT"><span class="nav-number">3.</span> <span class="nav-text">IPv4地址与NAT</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv4%E5%9C%B0%E5%9D%80"><span class="nav-number">3.1.</span> <span class="nav-text">IPv4地址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E4%B8%89%E7%A7%8D%E7%B1%BB%E5%88%ABIP%E5%9C%B0%E5%9D%80%E7%9A%84%E4%BD%BF%E7%94%A8%E8%8C%83%E5%9B%B4"><span class="nav-number">3.1.0.1.</span> <span class="nav-text">常见的三种类别IP地址的使用范围</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2NAT-Network-Address-Translation"><span class="nav-number">3.2.</span> <span class="nav-text">网络地址转换NAT(Network Address Translation)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NAT%E8%B7%AF%E7%94%B1%E8%BD%AC%E5%8F%91"><span class="nav-number">3.2.1.</span> <span class="nav-text">NAT路由转发</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86%E4%B8%8E%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81%E3%80%81CIDR"><span class="nav-number">4.</span> <span class="nav-text">子网划分与子网掩码、CIDR</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="nav-number">4.1.</span> <span class="nav-text">子网划分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81"><span class="nav-number">4.2.</span> <span class="nav-text">子网掩码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E5%88%86%E7%B1%BB%E5%9F%9F%E9%97%B4%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9-CIDR%EF%BC%8CClassless-Inter-Domain-Routing"><span class="nav-number">4.3.</span> <span class="nav-text">无分类域间路由选择(CIDR，Classless Inter-Domain Routing)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ARP%E3%80%81DHCP%E3%80%81ICMP"><span class="nav-number">5.</span> <span class="nav-text">ARP、DHCP、ICMP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IP%E5%9C%B0%E5%9D%80%E4%B8%8E%E7%A1%AC%E4%BB%B6%E5%9C%B0%E5%9D%80"><span class="nav-number">5.1.</span> <span class="nav-text">IP地址与硬件地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E5%8D%8F%E8%AE%AE-ARP%EF%BC%8CAddress-Resolution-Protocol"><span class="nav-number">5.2.</span> <span class="nav-text">地址解析协议(ARP，Address Resolution Protocol)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E4%B8%BB%E6%9C%BA%E9%85%8D%E7%BD%AE%E5%8D%8F%E8%AE%AE-DHCP%EF%BC%8CDynamic-Host-Configuration-Protocol"><span class="nav-number">5.3.</span> <span class="nav-text">动态主机配置协议(DHCP，Dynamic Host Configuration Protocol)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E9%99%85%E6%8E%A7%E5%88%B6%E6%8A%A5%E6%96%87%E5%8D%8F%E8%AE%AE-ICMP%EF%BC%8CInternet-Control-Message-Protocol"><span class="nav-number">5.4.</span> <span class="nav-text">网际控制报文协议(ICMP，Internet Control Message Protocol)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ICMP%E5%B7%AE%E9%94%99%E6%8A%A5%E5%91%8A%E6%8A%A5%E6%96%87"><span class="nav-number">5.4.1.</span> <span class="nav-text">ICMP差错报告报文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ICMP%E8%AF%A2%E9%97%AE%E6%8A%A5%E6%96%87"><span class="nav-number">5.4.2.</span> <span class="nav-text">ICMP询问报文</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IPv6"><span class="nav-number">6.</span> <span class="nav-text">IPv6</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv6%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-number">6.1.</span> <span class="nav-text">IPv6的特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv6%E5%9C%B0%E5%9D%80"><span class="nav-number">6.2.</span> <span class="nav-text">IPv6地址</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E7%AE%97%E6%B3%95"><span class="nav-number">7.</span> <span class="nav-text">路由算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1%E4%B8%8E%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1"><span class="nav-number">7.1.</span> <span class="nav-text">静态路由与动态路由</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%9D%E7%A6%BB-%E5%90%91%E9%87%8F%E8%B7%AF%E7%94%B1%E7%AE%97%E6%B3%95"><span class="nav-number">7.2.</span> <span class="nav-text">距离-向量路由算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RIP%E8%B7%AF%E7%94%B1%E4%BF%A1%E6%81%AF%E5%8D%8F%E8%AE%AE"><span class="nav-number">7.2.1.</span> <span class="nav-text">RIP路由信息协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RIP%E8%A7%84%E5%AE%9A"><span class="nav-number">7.2.1.1.</span> <span class="nav-text">RIP规定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RIP%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-number">7.2.1.2.</span> <span class="nav-text">RIP的特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RIP%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">7.2.1.3.</span> <span class="nav-text">RIP的优缺点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E8%B7%AF%E7%8A%B6%E6%80%81%E8%B7%AF%E7%94%B1%E7%AE%97%E6%B3%95"><span class="nav-number">7.3.</span> <span class="nav-text">链路状态路由算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E6%94%BE%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E4%BC%98%E5%85%88-OSPF-%E5%8D%8F%E8%AE%AE"><span class="nav-number">7.3.1.</span> <span class="nav-text">开放最短路径优先(OSPF)协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#OSPF%E7%89%B9%E7%82%B9"><span class="nav-number">7.3.1.1.</span> <span class="nav-text">OSPF特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OSPF%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">7.3.1.2.</span> <span class="nav-text">OSPF的基本工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OSPF%E7%9A%84%E4%BA%94%E7%A7%8D%E5%88%86%E7%BB%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">7.3.1.3.</span> <span class="nav-text">OSPF的五种分组类型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%B9%E7%95%8C%E7%BD%91%E5%85%B3%E5%8D%8F%E8%AE%AE-BGP"><span class="nav-number">7.4.</span> <span class="nav-text">边界网关协议(BGP)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BGP%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-number">7.4.0.1.</span> <span class="nav-text">BGP的特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BGP-4%E4%BD%BF%E7%94%A8%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%8A%A5%E6%96%87"><span class="nav-number">7.4.0.2.</span> <span class="nav-text">BGP-4使用的四种报文</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8IP"><span class="nav-number">8.</span> <span class="nav-text">移动IP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8IP%E9%80%9A%E4%BF%A1%E8%BF%87%E7%A8%8B%E3%80%82"><span class="nav-number">8.1.</span> <span class="nav-text">移动IP通信过程。</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">215k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">11:56</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

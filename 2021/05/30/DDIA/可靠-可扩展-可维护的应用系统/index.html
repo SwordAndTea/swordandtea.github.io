@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.2">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -47,15 +47,15 @@
   };
 </script>
 
-  <meta name="description" content="可靠性什么叫作系统的可靠性原文：  可靠性大致意味着：即使发生了某种错误，系统仍可以继续正常工作  一般，用于测试目的，可以故意提高故障发生概率，例如通过随机杀死某个进程，来确保系统仍保持健壮。  硬件故障例如：磁盘崩溃、内存故障、网络故障、机房停电等等。通常对于硬件故障，都会为硬件添加冗余来减少系统故障率。例如，对磁盘配置RAID，服务器配备双电源，热拔插CPU，数据中心添加备用电源、发电机等。">
+  <meta name="description" content="影响数据系统设计的因素很多，包括参与人员的技能和经验、历史遗留问题、系统路径依赖、交付时限、公司的风险容忍度、监管约束等 可靠性什么叫作系统的可靠性原文：  可靠性大致意味着：即使发生了某种错误，系统仍可以继续正常工作  一般，用于测试目的，可以故意提高故障发生概率，例如通过随机杀死某个进程，来确保系统仍保持健壮。  硬件故障例如：磁盘崩溃、内存故障、网络故障、机房停电等等。通常对于硬件故障，都会">
 <meta property="og:type" content="article">
 <meta property="og:title" content="可靠&amp;可扩展&amp;可维护的应用系统">
 <meta property="og:url" content="http://swordandtea.github.io/2021/05/30/DDIA/%E5%8F%AF%E9%9D%A0-%E5%8F%AF%E6%89%A9%E5%B1%95-%E5%8F%AF%E7%BB%B4%E6%8A%A4%E7%9A%84%E5%BA%94%E7%94%A8%E7%B3%BB%E7%BB%9F/index.html">
 <meta property="og:site_name" content="xiangwei&#39;s blog">
-<meta property="og:description" content="可靠性什么叫作系统的可靠性原文：  可靠性大致意味着：即使发生了某种错误，系统仍可以继续正常工作  一般，用于测试目的，可以故意提高故障发生概率，例如通过随机杀死某个进程，来确保系统仍保持健壮。  硬件故障例如：磁盘崩溃、内存故障、网络故障、机房停电等等。通常对于硬件故障，都会为硬件添加冗余来减少系统故障率。例如，对磁盘配置RAID，服务器配备双电源，热拔插CPU，数据中心添加备用电源、发电机等。">
+<meta property="og:description" content="影响数据系统设计的因素很多，包括参与人员的技能和经验、历史遗留问题、系统路径依赖、交付时限、公司的风险容忍度、监管约束等 可靠性什么叫作系统的可靠性原文：  可靠性大致意味着：即使发生了某种错误，系统仍可以继续正常工作  一般，用于测试目的，可以故意提高故障发生概率，例如通过随机杀死某个进程，来确保系统仍保持健壮。  硬件故障例如：磁盘崩溃、内存故障、网络故障、机房停电等等。通常对于硬件故障，都会">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-05-30T02:57:12.000Z">
-<meta property="article:modified_time" content="2022-01-16T14:16:20.472Z">
+<meta property="article:published_time" content="2021-05-30T14:57:12.000Z">
+<meta property="article:modified_time" content="2024-10-12T04:30:32.624Z">
 <meta property="article:author" content="SwordAndTea">
 <meta property="article:tag" content="Designing Data-Intensive Applications">
 <meta name="twitter:card" content="summary">
@@ -209,14 +209,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2021-05-30 10:57:12" itemprop="dateCreated datePublished" datetime="2021-05-30T10:57:12+08:00">2021-05-30</time>
+              <time title="Created: 2021-05-30 10:57:12" itemprop="dateCreated datePublished" datetime="2021-05-30T10:57:12-04:00">2021-05-30</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-01-16 22:16:20" itemprop="dateModified" datetime="2022-01-16T22:16:20+08:00">2022-01-16</time>
+                <time title="Modified: 2024-10-12 00:30:32" itemprop="dateModified" datetime="2024-10-12T00:30:32-04:00">2024-10-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -236,14 +236,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>2.1k</span>
+              <span>2.4k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>7 mins.</span>
+              <span>8 mins.</span>
             </span>
 
         </div>
@@ -255,7 +255,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="可靠性"><a href="#可靠性" class="headerlink" title="可靠性"></a>可靠性</h1><h2 id="什么叫作系统的可靠性"><a href="#什么叫作系统的可靠性" class="headerlink" title="什么叫作系统的可靠性"></a>什么叫作系统的可靠性</h2><p>原文：</p>
+        <p>影响数据系统设计的因素很多，包括参与人员的技能和经验、历史遗留问题、系统路径依赖、交付时限、公司的风险容忍度、监管约束等</p>
+<h1 id="可靠性"><a href="#可靠性" class="headerlink" title="可靠性"></a>可靠性</h1><h2 id="什么叫作系统的可靠性"><a href="#什么叫作系统的可靠性" class="headerlink" title="什么叫作系统的可靠性"></a>什么叫作系统的可靠性</h2><p>原文：</p>
 <blockquote>
 <p>可靠性大致意味着：即使发生了某种错误，系统仍可以继续正常工作</p>
 </blockquote>
@@ -283,17 +284,18 @@
 <font color="orange">下面对一个描述性能的重要指标进行额外讨论——响应时间</font>
 
 <h3 id="响应时间"><a href="#响应时间" class="headerlink" title="响应时间"></a>响应时间</h3><p>一般来说，对服务进行请求，每次的响应时间都是不同的，而且响应时间可能变化很大。因此。最好不要将响应时间视为一个固定的数字，而应该视为一种数值分布。</p>
-<h4 id="平均响应时间与相关百分位数"><a href="#平均响应时间与相关百分位数" class="headerlink" title="平均响应时间与相关百分位数"></a>平均响应时间与相关百分位数</h4><p>我们经常考察的是服务请求的平均响应时间（算数平均值）。<font color="orange">但是，如果想知道更典型的响应时间，平均值并不是合适的指标。因为它掩盖了一些信息，<font color="red">无法告诉有多少用户实际经历了多少延迟，因此最好使用百分位数</font>&lt;/font&gt;。中位数指标非常适合描述多少用户需要等待多长的时间，一半的用户请求的服务时间少于中位数响应时间，另一半则多用于中位数的时间。因此中位数也称为50百分位数，简写为p50。有些时候还有需要关注更大的百分位数，例如常见的p95、p99甚至p999（99.9百分位数）。<font color="orange">采用较高的响应时间百分位数很重要，因为它们直接影响用户的总体服务体验（长尾效应）。</font></font></p>
+<h4 id="平均响应时间与相关百分位数"><a href="#平均响应时间与相关百分位数" class="headerlink" title="平均响应时间与相关百分位数"></a>平均响应时间与相关百分位数</h4><p>我们经常考察的是服务请求的平均响应时间（算数平均值）。<font color="orange">但是，如果想知道更典型的响应时间，平均值并不是合适的指标。因为它掩盖了一些信息，<font color="red">无法告诉有多少用户实际经历了多少延迟，因此最好使用百分位数</font>&lt;/font&gt;。中位数指标非常适合描述多少用户需要等待多长的时间，一半的用户请求的服务时间少于中位数响应时间，另一半则多用于中位数的时间。因此中位数也称为50百分位数，简写为p50。有些时候还有需要关注更大的百分位数，例如常见的p95、p99甚至p999（99.9百分位数）。<font color="orange">一方面采用较高的响应时间百分位数很重要，因为它们有时直接影响用户的服务体验。</font>例如亚马逊在描述内部服务的响应时间要求时是以 99.9 百分位点为准，即使它只影响一千个请求中的一个。这是因为请求响应最慢的客户往往也是数据最多的客户，也可以说是最有价值的客户 —— 因为他们掏钱了。<font color="orange">另一方面，优化99.99百分位点被认为太昂贵了，所以需要根据业务的具体需求来确认需要的百分位数响应时间。</font></font></p>
 <blockquote>
-<p>排队延迟往往在高百分数响应时间中影响很大，由于服务器并行处理的请求优先（例如，CPU内核数的限制），正在处理的少数请求可能会阻挡后续请求，这种情况有时被称为队头阻塞。即使后续请求可能处理很简单，但它阻塞在等待先前请求的完成，客户端将会观察到极慢的响应时间。因此，很重要的一点是要在客户端来测量响应时间。</p>
+<p>排队延迟往往在高百分数响应时间中影响很大，由于服务器并行处理的请求优先（例如，CPU内核数的限制），正在处理的少数请求可能会阻挡后续请求，这种情况有时被称为队头阻塞（head-of-line-blocking）。即使后续请求可能处理很简单，但它阻塞在等待先前请求的完成，客户端将会观察到极慢的响应时间。因此，很重要的一点是要在客户端来测量响应时间。</p>
 <p>因此，当测试系统的能支持的负载时，负载生成端要独立于响应时间来持续发送请求。如果客户端在发送请求之前总是等待先前请求的完成，就会在测试中人为地缩短了服务器端的累计排队深度，这就带来了测试偏差。</p>
+<p>如果你想将响应时间百分点添加到你的服务的监视仪表板，则需要持续有效地计算它们。例如，你可以使用滑动窗口来跟踪连续10分钟内的请求响应时间。每一分钟，你都会计算出该窗口中的响应时间中值和各种百分数，并将这些度量值绘制在图上</p>
 </blockquote>
 <h2 id="应对负载增加的方法"><a href="#应对负载增加的方法" class="headerlink" title="应对负载增加的方法"></a>应对负载增加的方法</h2><p>一般来说，<font color="orange">针对特定级别负载而设计的架构不太可能应付超出目标10倍的实际负载。如果目标服务处于快速增长阶段，那么需要认真考虑每增加一个数量级的负载，架构应该如何设计。</font></p>
 <p>对于未发生数量级变化的负载，更多的是在垂直拓展（升级到更强大的机器）和水平拓展（增加更多的机器实例）进行选择。通常，在单台机器上运行的系统通常更简单，然而高端机器可能非常昂贵，且扩展水平有限，最终往往还是无法避免需要水平扩展。另外，把无状态服务分布然后扩展至多台机器相对比较容易，而有状态服务从单个节点扩展到分布式多机环境的复杂性会大大增加。</p>
 <p>对于特定应用来说，扩展能力好的架构通常会做出某些假设，然后有针对性地优化设计，如哪些操作是最频繁的，那些负载是少数情况。如果这些假设最终发现是错误的，那么在可扩展性上做的努力就白费了，甚至会出现与设计预期完全相反的情况。<font color="orange">对于早期的初创公司或者尚未定型的产品，快速迭代产品功能往往比投入精力来应对不可知的扩展性更为重要。</font></p>
 <h1 id="可维护性"><a href="#可维护性" class="headerlink" title="可维护性"></a>可维护性</h1><p>软件的大部分成本并不在最初的开发阶段，而在于整个生命周期内持续的投入，包括缺陷修复、增加新功能、适配新需求等等。但是，许多开发人员根本不喜欢维护这些遗留系统，例如修复他人埋下的错误，或者使用过时的开发平台。所以，换个角度，我们应该从软件设计时开始考虑，尽可能减少维护期间的麻烦，一般我们可以考虑以下几点：</p>
 <ul>
-<li>简单性：简化系统复杂性，使新工程师能够轻松理解系统</li>
+<li><font color="orange">简单性：简化系统复杂性，使新工程师能够轻松理解系统</font></li>
 <li>可演化性：后续工程师能够轻松地对系统进行改进，并根据需求变化将其适配其他场景</li>
 </ul>
 
@@ -314,8 +316,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/05/21/machine_learning/neural_network&deep_learning/cnn/polling/" rel="prev" title="polling">
-      <i class="fa fa-chevron-left"></i> polling
+    <a href="/2021/05/24/others/coin-or%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
     </a></div>
       <div class="post-nav-item">
     <a href="/2021/05/30/DDIA/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2%E8%AF%AD%E8%A8%80/" rel="next" title="数据模型与查询语言">
@@ -396,20 +398,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -439,7 +441,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -449,15 +451,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">183k</span>
+    <span title="Symbols count total">215k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">10:11</span>
+    <span title="Reading time total">11:56</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

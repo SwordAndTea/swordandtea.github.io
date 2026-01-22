@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.2">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -55,7 +55,7 @@
 <meta property="og:description" content="背景适配器模式目的是为了让接口不兼容的对象能够相互合作，例如一个流数据处理的第三方库，它目前只能处理XML格式输入的数据，但是你自己从生产环境获取到数据流是JSON格式的，因此你无法直接使用这个第三方库，因为它所需的输入数据与你的程序不兼容。 你可以修改这个第三方库来支持JSON，但是这可能需要修改其他依赖这个第三库的现有代码，甚至你可能根本就没有这个第三方库的源代码。 这时，你可以创建一个适配器">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-02-22T10:19:39.000Z">
-<meta property="article:modified_time" content="2022-01-16T03:07:45.832Z">
+<meta property="article:modified_time" content="2022-01-16T03:07:45.000Z">
 <meta property="article:author" content="SwordAndTea">
 <meta property="article:tag" content="design pattern">
 <meta property="article:tag" content="结构型模式">
@@ -210,14 +210,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2021-02-22 18:19:39" itemprop="dateCreated datePublished" datetime="2021-02-22T18:19:39+08:00">2021-02-22</time>
+              <time title="Created: 2021-02-22 05:19:39" itemprop="dateCreated datePublished" datetime="2021-02-22T05:19:39-05:00">2021-02-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-01-16 11:07:45" itemprop="dateModified" datetime="2022-01-16T11:07:45+08:00">2022-01-16</time>
+                <time title="Modified: 2022-01-15 22:07:45" itemprop="dateModified" datetime="2022-01-15T22:07:45-05:00">2022-01-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -269,7 +269,7 @@
 
 
 <h1 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h1><p>经典的方钉圆孔问题：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">RoundReg</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> _radius;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">RoundReg</span>(<span class="type">int</span> radius): _radius(radius) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">int</span> <span class="title">getRadius</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> _radius</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RoundHole</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> _radius;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">RoundHole</span>(<span class="type">int</span> radius): _radius(radius) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">int</span> <span class="title">getRadius</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> _radius</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">bool</span> <span class="built_in">fits</span>(RoundReg &amp;roundReg) &#123;</span><br><span class="line">        <span class="keyword">return</span> _radius == roundReg.<span class="built_in">getRadius</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SquareReg</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> _edge;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">SquareReg</span>(<span class="type">int</span> edge): _edge(edge) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getEdge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> _edge;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SquarePegAdapter</span>: RoundReg &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    SquareReg _squareReg;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">SquarePegAdapter</span>(<span class="type">const</span> SquareReg&amp; peg): _squareReg(peg) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getRadius</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> _squareReg.<span class="built_in">getEdge</span>() * <span class="built_in">sqrt</span>(<span class="number">2</span>) / <span class="number">2</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RoundReg</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> _radius;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    RoundReg(<span class="keyword">int</span> radius): _radius(radius) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">getRadius</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> _radius</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RoundHole</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> _radius;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    RoundHole(<span class="keyword">int</span> radius): _radius(radius) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">getRadius</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> _radius</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">bool</span> fits(RoundReg &amp;roundReg) &#123;</span><br><span class="line">        <span class="keyword">return</span> _radius == roundReg.getRadius()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SquareReg</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> _edge;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    SquareReg(<span class="keyword">int</span> edge): _edge(edge) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getEdge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> _edge;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SquarePegAdapter</span>:</span> RoundReg &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    SquareReg _squareReg;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    SquarePegAdapter(<span class="keyword">const</span> SquareReg&amp; peg): _squareReg(peg) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getRadius</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> _squareReg.getEdge() * <span class="built_in">sqrt</span>(<span class="number">2</span>) / <span class="number">2</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>SquarePegAdapter内部封装了SquareReg，RoundHole不能直接和SquareReg交互，而和SquarePegAdapter进行交互。</p>
 <p>虽然SquarePegAdapter继承自RoundReg，但是这里继承的目的只是为了获取和RoundReg相同的接口而已，SquareRegAdapter相当于为SquarePeg增加了新的接口</p>
 
@@ -291,7 +291,7 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/02/20/machine_learning/neural_network&deep_learning/parameter-initialization/" rel="prev" title="parameter_initialization">
+    <a href="/2021/02/20/machine_learning/parameter-initialization/" rel="prev" title="parameter_initialization">
       <i class="fa fa-chevron-left"></i> parameter_initialization
     </a></div>
       <div class="post-nav-item">
@@ -373,20 +373,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -416,7 +416,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -426,15 +426,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">183k</span>
+    <span title="Symbols count total">215k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">10:11</span>
+    <span title="Reading time total">11:56</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

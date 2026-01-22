@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="CamerasTo allow user input, a camera must be attached to the canvas using: 1camera.attachControl(canvas, true); The second parameter is optional and defaults to false, which prevents default actions o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="camera">
+<meta property="og:url" content="http://swordandtea.github.io/2024/03/14/babylonJS/camera/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="CamerasTo allow user input, a camera must be attached to the canvas using: 1camera.attachControl(canvas, true); The second parameter is optional and defaults to false, which prevents default actions o">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-03-14T16:11:16.000Z">
+<meta property="article:modified_time" content="2024-03-18T03:56:27.197Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="BabylonJS">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2024/03/14/babylonJS/camera/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>camera | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2024/03/14/babylonJS/camera/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          camera
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-03-14 12:11:16" itemprop="dateCreated datePublished" datetime="2024-03-14T12:11:16-04:00">2024-03-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-03-17 23:56:27" itemprop="dateModified" datetime="2024-03-17T23:56:27-04:00">2024-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/BabylonJS/" itemprop="url" rel="index">
+                    <span itemprop="name">BabylonJS</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>920</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Cameras"><a href="#Cameras" class="headerlink" title="Cameras"></a>Cameras</h1><p>To allow user input, a camera must be attached to the canvas using:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">camera.attachControl(canvas, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<p>The second parameter is optional and defaults to <code>false</code>, which prevents default actions on a canvas event. Set to <code>true</code> to allow canvas default actions.</p>
+<h2 id="Universal-Camera"><a href="#Universal-Camera" class="headerlink" title="Universal Camera"></a>Universal Camera</h2><p>This camera is controlled by the keyboard, mouse, touch, or gamepad depending on the input device used, with no need for the controller to be specified. The UniversalCamera has the same functionality as Free Camera but also adds built-in support for Touch and Gamepads.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Parameters : name, position, scene</span></span><br><span class="line"><span class="keyword">const</span> camera = <span class="keyword">new</span> BABYLON.UniversalCamera(<span class="string">&quot;name&quot;</span>, <span class="keyword">new</span> BABYLON.Vector3(<span class="number">0</span>, <span class="number">0</span>, -<span class="number">10</span>), scene);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Targets the camera to a particular position</span></span><br><span class="line">camera.setTarget(BABYLON.Vector3.Zero());</span><br><span class="line"></span><br><span class="line"><span class="comment">// Attach the camera to the canvas</span></span><br><span class="line">camera.attachControl(canvas, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="Arc-Rotate-Camera"><a href="#Arc-Rotate-Camera" class="headerlink" title="Arc Rotate Camera"></a>Arc Rotate Camera</h2><p>This camera always points towards a given target position and can be rotated around that target with the target as the center of rotation. It can be controlled with cursors and mouse, or with touch events.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Parameters: name, alpha, beta, radius, target position, scene</span></span><br><span class="line"><span class="keyword">const</span> camera = <span class="keyword">new</span> BABYLON.ArcRotateCamera(<span class="string">&quot;Camera&quot;</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">10</span>, <span class="keyword">new</span> BABYLON.Vector3(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), scene);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Positions the camera overwriting alpha, beta, radius</span></span><br><span class="line">camera.setPosition(<span class="keyword">new</span> BABYLON.Vector3(<span class="number">0</span>, <span class="number">0</span>, <span class="number">20</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// This attaches the camera to the canvas</span></span><br><span class="line">camera.attachControl(canvas, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="Follow-Camera"><a href="#Follow-Camera" class="headerlink" title="Follow Camera"></a>Follow Camera</h2><p>Give it a mesh as a target, and from whatever position it is currently at, this camera will move to a goal position from which to view the target. When the target moves, so will the Follow Camera.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Parameters: name, position, scene</span></span><br><span class="line"><span class="keyword">const</span> camera = <span class="keyword">new</span> BABYLON.FollowCamera(<span class="string">&quot;FollowCam&quot;</span>, <span class="keyword">new</span> BABYLON.Vector3(<span class="number">0</span>, <span class="number">10</span>, -<span class="number">10</span>), scene);</span><br><span class="line"></span><br><span class="line"><span class="comment">// The goal distance of camera from target</span></span><br><span class="line">camera.radius = <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// The goal height of camera above local origin (centre) of target</span></span><br><span class="line">camera.heightOffset = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// The goal rotation of camera around local origin (centre) of target in x y plane</span></span><br><span class="line">camera.rotationOffset = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Acceleration of camera in moving from current to goal position</span></span><br><span class="line">camera.cameraAcceleration = <span class="number">0.005</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// The speed at which acceleration is halted</span></span><br><span class="line">camera.maxCameraSpeed = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This attaches the camera to the canvas</span></span><br><span class="line">camera.attachControl(canvas, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// <span class="doctag">NOTE:</span>: SET CAMERA TARGET AFTER THE TARGET&#x27;S CREATION AND NOTE CHANGE FROM BABYLONJS V 2.5</span></span><br><span class="line"><span class="comment">// targetMesh created here.</span></span><br><span class="line">camera.target = targetMesh; <span class="comment">// version 2.4 and earlier</span></span><br><span class="line">camera.lockedTarget = targetMesh; <span class="comment">//version 2.5 onwards</span></span><br></pre></td></tr></table></figure>
+<h2 id="Anaglyph-Camera"><a href="#Anaglyph-Camera" class="headerlink" title="Anaglyph Camera"></a>Anaglyph Camera</h2><p>The <a target="_blank" rel="noopener" href="https://doc.babylonjs.com/typedoc/classes/babylon.anaglyphuniversalcamera">AnaglyphUniversalCamera</a> and <a target="_blank" rel="noopener" href="https://doc.babylonjs.com/typedoc/classes/babylon.anaglypharcrotatecamera">AnaglyphArcRotateCamera</a> extend the use of the Universal and Arc Rotate Cameras for use with red and cyan 3D glasses. They use post-processing filtering techniques.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Parameters : name, position, eyeSpace, scene</span></span><br><span class="line"><span class="keyword">const</span> camera = <span class="keyword">new</span> BABYLON.AnaglyphUniversalCamera(<span class="string">&quot;af_cam&quot;</span>, <span class="keyword">new</span> BABYLON.Vector3(<span class="number">0</span>, <span class="number">1</span>, -<span class="number">15</span>), <span class="number">0.033</span>, scene);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Parameters : name, alpha, beta, radius, target, eyeSpace, scene</span></span><br><span class="line"><span class="keyword">const</span> camera = <span class="keyword">new</span> BABYLON.AnaglyphArcRotateCamera(<span class="string">&quot;aar_cam&quot;</span>, -<span class="built_in">Math</span>.PI / <span class="number">2</span>, <span class="built_in">Math</span>.PI / <span class="number">4</span>, <span class="number">20</span>, BABYLON.Vector3.Zero(), <span class="number">0.033</span>, scene);</span><br></pre></td></tr></table></figure>
+<p>The <code>eyeSpace</code> parameter sets the amount of shift between the left-eye view and the right-eye view. Once you are wearing your 3D glasses, you might want to experiment with this float value.</p>
+<h2 id="Device-Orientation-Camera"><a href="#Device-Orientation-Camera" class="headerlink" title="Device Orientation Camera"></a>Device Orientation Camera</h2><p>The <a target="_blank" rel="noopener" href="https://doc.babylonjs.com/typedoc/classes/babylon.deviceorientationcamera">DeviceOrientationCamera</a> is specifically designed to react to device orientation events such as a modern mobile device being tilted forward, back, left, or right.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Parameters : name, position, scene</span></span><br><span class="line"><span class="keyword">const</span> camera = <span class="keyword">new</span> BABYLON.DeviceOrientationCamera(<span class="string">&quot;DevOr_camera&quot;</span>, <span class="keyword">new</span> BABYLON.Vector3(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), scene);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Targets the camera to a particular position</span></span><br><span class="line">camera.setTarget(<span class="keyword">new</span> BABYLON.Vector3(<span class="number">0</span>, <span class="number">0</span>, -<span class="number">10</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// Sets the sensitivity of the camera to movement and rotation</span></span><br><span class="line">camera.angularSensibility = <span class="number">10</span>;</span><br><span class="line">camera.moveSensibility = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Attach the camera to the canvas</span></span><br><span class="line">camera.attachControl(canvas, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="Fly-Camera"><a href="#Fly-Camera" class="headerlink" title="Fly Camera"></a>Fly Camera</h2><p>FlyCamera imitates free movement in 3D space, think “a ghost in space.” It comes with an option to gradually correct Roll, and also an option to mimic banked-turns.</p>
+<p>Its defaults are:</p>
+<ol>
+<li><p>Keyboard - The A and D keys move the camera left and right. The W and S keys move it forward and backward. The E and Q keys move it up and down.</p>
+</li>
+<li><p>Mouse - Rotates the camera about the Pitch and Yaw (X, Y) axes with the camera as the origin. Holding the right mouse button rotates the camera about the Roll (Z) axis with the camera as the origin.</p>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> camera = <span class="keyword">new</span> BABYLON.FlyCamera(<span class="string">&quot;FlyCamera&quot;</span>, <span class="keyword">new</span> BABYLON.Vector3(<span class="number">0</span>, <span class="number">5</span>, -<span class="number">10</span>), scene);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Airplane like rotation, with faster roll correction and banked-turns.</span></span><br><span class="line"><span class="comment">// Default is 100. A higher number means slower correction.</span></span><br><span class="line">camera.rollCorrect = <span class="number">10</span>;</span><br><span class="line"><span class="comment">// Default is false.</span></span><br><span class="line">camera.bankedTurn = <span class="literal">true</span>;</span><br><span class="line"><span class="comment">// Defaults to 90° in radians in how far banking will roll the camera.</span></span><br><span class="line">camera.bankedTurnLimit = <span class="built_in">Math</span>.PI / <span class="number">2</span>;</span><br><span class="line"><span class="comment">// How much of the Yawing (turning) will affect the Rolling (banked-turn.)</span></span><br><span class="line"><span class="comment">// Less than 1 will reduce the Rolling, and more than 1 will increase it.</span></span><br><span class="line">camera.bankedTurnMultiplier = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This attaches the camera to the canvas</span></span><br><span class="line">camera.attachControl(canvas, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<h1 id="Camera-Collisions"><a href="#Camera-Collisions" class="headerlink" title="Camera Collisions"></a>Camera Collisions</h1><h2 id="Define-and-apply-gravity"><a href="#Define-and-apply-gravity" class="headerlink" title="Define and apply gravity"></a>Define and apply gravity</h2><p>In the real world, gravity is a <em>force</em> (ok, sort of) that is exerted downward — <em>i.e.</em>, in a negative direction along the Y-axis. On Earth, this force is roughly 9.81m/s². Falling bodies <em>accelerate</em> as they fall, so it takes 1 second to fully reach this velocity, then the velocity reaches 19.62m/s after 2 seconds, 29.43m/s after 3 seconds, etc. In an atmosphere, wind drag eventually matches this force and velocity ceases to increase (“terminal velocity”).</p>
+<p>Babylon.js follows a much simpler gravitational model, however — <code>scene.gravity</code> represents a <em>constant velocity</em>, not a force of acceleration, and it is measured in <em>units/frame</em> rather than <em>meters/second</em>. As each frame is rendered, the cameras you apply this gravity to will <em>move</em> by the vector’s value along each axis (usually <code>x</code> and <code>z</code> are set to 0, but you can have “gravity” in any direction!), until a collision is detected.</p>
+<p>If you need a more accurate representation of gravitational (or other) forces, you can use the physics engines</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BabylonJS/" rel="tag"># BabylonJS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/03/12/babylonJS/mesh/" rel="prev" title="mesh">
+      <i class="fa fa-chevron-left"></i> mesh
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/03/14/babylonJS/light/" rel="next" title="light">
+      light <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Cameras"><span class="nav-number">1.</span> <span class="nav-text">Cameras</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Universal-Camera"><span class="nav-number">1.1.</span> <span class="nav-text">Universal Camera</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Arc-Rotate-Camera"><span class="nav-number">1.2.</span> <span class="nav-text">Arc Rotate Camera</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Follow-Camera"><span class="nav-number">1.3.</span> <span class="nav-text">Follow Camera</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Anaglyph-Camera"><span class="nav-number">1.4.</span> <span class="nav-text">Anaglyph Camera</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Device-Orientation-Camera"><span class="nav-number">1.5.</span> <span class="nav-text">Device Orientation Camera</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fly-Camera"><span class="nav-number">1.6.</span> <span class="nav-text">Fly Camera</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Camera-Collisions"><span class="nav-number">2.</span> <span class="nav-text">Camera Collisions</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Define-and-apply-gravity"><span class="nav-number">2.1.</span> <span class="nav-text">Define and apply gravity</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">215k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">11:56</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

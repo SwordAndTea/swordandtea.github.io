@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="BasicsWebGPU is a very simple system. All it does is run 3 types of functions on the GPU.   Vertex Shaders: A Vertex Shader computes vertices. The shader returns vertex positions. For every group of 3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fundamentals">
+<meta property="og:url" content="http://swordandtea.github.io/2024/01/23/web_gpu/fundamentals/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="BasicsWebGPU is a very simple system. All it does is run 3 types of functions on the GPU.   Vertex Shaders: A Vertex Shader computes vertices. The shader returns vertex positions. For every group of 3">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-01-23T14:22:48.000Z">
+<meta property="article:modified_time" content="2024-03-12T03:17:24.007Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="WebGPU">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2024/01/23/web_gpu/fundamentals/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>fundamentals | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2024/01/23/web_gpu/fundamentals/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          fundamentals
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-01-23 09:22:48" itemprop="dateCreated datePublished" datetime="2024-01-23T09:22:48-05:00">2024-01-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-03-11 23:17:24" itemprop="dateModified" datetime="2024-03-11T23:17:24-04:00">2024-03-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/WebGPU/" itemprop="url" rel="index">
+                    <span itemprop="name">WebGPU</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>5.7k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>19 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Basics"><a href="#Basics" class="headerlink" title="Basics"></a>Basics</h1><p>WebGPU is a very simple system. All it does is run 3 types of functions on the GPU. </p>
+<ul>
+<li><p>Vertex Shaders: A Vertex Shader computes vertices. The shader returns vertex positions. For every group of 3 vertices the vertex shader function returns, a <font color="orange">triangle</font> is drawn between those 3 positions</p>
+</li>
+<li><p>Fragment Shaders: A Fragment Shader computes colors (Fragment shaders indirectly write data to textures.  <font color="orange">Colors in WebGPU are usually specified as floating point values from 0.0 to 1.0</font>. That data does not have to be colors. For example, it’s common to output the direction of the surface that pixel represents.) . When a triangle is drawn, for <font color="orange">each pixel</font> to be drawn the GPU calls your fragment shader. The fragment shader then returns a color.</p>
+</li>
+<li><p>Compute Shaders: It’s effectively just a function you call and say “execute this function N times”. The GPU passes the iteration number each time it calls your function so you can use that number to do something unique on each iteration.</p>
+</li>
+</ul>
+<p>The shaders reference resources (buffers, textures, samplers) indirectly through <strong>Bind Groups</strong></p>
+<p>To execute shaders on the GPU, you need to create all of these resources and set up this state. Creation of resources is relatively straightforward. One interesting thing is that most WebGPU resources can not be changed after creation.You can change their contents but not their size, usage, format, etc…If you want to change any of that stuff you create a new resource and destroy the old one.</p>
+<h1 id="Drawing-triangles"><a href="#Drawing-triangles" class="headerlink" title="Drawing triangles"></a>Drawing triangles</h1><p>WebGPU can draw triangles to textures. The <code>&lt;canvas&gt;</code> element represents a texture on a webpage. In WebGPU we can ask the canvas for a texture and then render to that texture.(There are actually 5 modes:</p>
+<ul>
+<li><code>&#39;point-list&#39;</code>: for each position, draw a point</li>
+<li><code>&#39;line-list&#39;</code>: for each 2 positions, draw a line</li>
+<li><code>&#39;line-strip&#39;</code>: draw lines connecting the newest point to the previous point</li>
+<li><code>&#39;triangle-list&#39;</code>: for each 3 positions, draw a triangle (<strong>default</strong>)</li>
+<li><code>&#39;triangle-strip&#39;</code>: for each new position, draw a triangle from it and the last 2 positions)</li>
+</ul>
+<p>steps:</p>
+<ol>
+<li><p>create shader module</p>
+</li>
+<li><p>create pipeline</p>
+</li>
+<li><p>create command encoder (command buffer)</p>
+</li>
+<li><p>submit command buffer</p>
+</li>
+</ol>
+<p>WebGPU takes every 3 vertices we return from our vertex shader and uses them to rasterize a triangle. It does this by determining which pixels’ centers are inside the triangle. It then calls our fragment shader for each pixel to ask what color to make it.</p>
+<p>Positions in WebGPU need to be returned in <em>clip space</em> where X goes from -1.0 on the left to +1.0 on the right, and Y goes from -1.0 at the bottom to +1.0 at the top. This is true regardless of the size of the texture we are drawing to.</p>
+<h1 id="Inter-stage-Variables"><a href="#Inter-stage-Variables" class="headerlink" title="Inter-stage Variables"></a>Inter-stage Variables</h1><p>Inter-stage variables come into play between a vertex shader and a fragment shader.When a vertex shader outputs 3 positions a triangle gets rasterized. The vertex shader can output extra values at each of those positions and by default, those values will be interpolated between the 3 points (every time the GPU called fragment shader, it passed <font color="orange">in</font> a color that was interpolated between all 3 points).</p>
+<p>An important point, like nearly everything in WebGPU, the connection between the vertex shader and the fragment shader is by index. For inter-stage variables, they connect by <font color="orange">location index</font>.</p>
+<p>for inter-stage variables, all that matters is the <code>@location(?)</code>. So, it’s common to declare different structs for a vertex shader’s output vs a fragment shader’s input.</p>
+<h2 id="Interpolation-Settings"><a href="#Interpolation-Settings" class="headerlink" title="Interpolation Settings"></a>Interpolation Settings</h2><p>The outputs from a vertex shader, are interpolated when passed to the fragment shader. There are 2 sets of settings that can be changed for how the interpolation happens. Setting them to anything other than the defaults is not extremely common but there are use cases. </p>
+<p>Interpolation type:</p>
+<ul>
+<li><code>perspective</code>: Values are interpolated in a perspective correct manner (<strong>default</strong>)</li>
+<li><code>linear</code>: Values are interpolated in a linear, non-perspective correct manner.</li>
+<li><code>flat</code>: Values are not interpolated. Interpolation sampling is not used with flat interpolated, <font color="orange">the value passed to the fragment shader is the value of the inter-stage variable for the first vertex in that triangle.</font></li>
+</ul>
+<p>Interpolation sampling:</p>
+<ul>
+<li><code>center</code>: Interpolation is performed at the center of the pixel (<strong>default</strong>)</li>
+<li><code>centroid</code>: Interpolation is performed at a point that lies within all the samples covered by the fragment within the current primitive. This value is the same for all samples in the primitive.</li>
+<li><code>sample</code>: Interpolation is performed per sample. The fragment shader is invoked once per sample when this attribute is applied.</li>
+</ul>
+<p>You specify these as attributes. For example:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@location(2) @interpolate(linear, center) myVariableFoo: vec4f;</span><br><span class="line">@location(3) @interpolate(flat) myVariableBar: vec4f;</span><br></pre></td></tr></table></figure>
+<font color="orange">Note</font> that if the inter-stage variable is an integer type then you must set its interpolation to `flat`.
+
+## @builtin(position)
+
+In a vertex shader `@builtin(position)` is the output that the GPU needs to draw triangles/lines/points
+
+In a fragment shader, `@builtin(position)` is an input. It’s the pixel coordinate of the pixel that the fragment shader is currently being asked to compute a color for. Pixel coordinates are specified by the edges of pixels. The values provided to the fragment shader are the coordinates of the center of the pixel
+
+# [WebGPU Data Memory Layout](https://webgpufundamentals.org/webgpu/lessons/webgpu-memory-layout.html)
+
+In WebGPU, nearly all of the data you provide to it needs to be layed out in memory to match what you define in your shaders. In WGSL when you write your shaders, it’s common to define `struct`s. You declare members of a struct and when providing the data **it’s up to you** to compute where in a buffer that particular member of the struct will appear.
+
+In WGSL v1, there are 4 base types
+
+- `f32` (a 32bit floating point number)
+- `i32` (a 32bit integer)
+- `u32` (a 32bit unsigned integer)
+- `f16` (a 16bit floating point number, optional feature)
+
+Every type has alignment requirements. For a given type it must be aligned to a multiple of a certain number of bytes.
+
+arrays and structs have their own own [special alignment rules](https://www.w3.org/TR/WGSL/#alignment-and-size)
+
+Computing sizes and offsets of data in WGSL is probably the largest pain point of WebGPU. You are required to compute these offsets yourself and keep them up to date. If you add a member somewhere in the middle of a struct in your shaders you need to go back to your JavaScript and update all the offsets. Get a single byte or length wrong and the data you pass to the shader will be wrong. You won’t get an error, but your shader will likely do the wrong thing because it’s looking at bad data. Your model won’t draw or your computation will produce bad results.
+
+Fortunately there are libraries to help with this.
+
+Here’s one: [webgpu-utils](https://github.com/greggman/webgpu-utils)
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">  makeShaderDataDefinitions,</span><br><span class="line">  makeStructuredView,</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">&#x27;https://greggman.github.io/webgpu-utils/dist/0.x/webgpu-utils-1.x.module.js&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> code = <span class="string">`</span></span><br><span class="line"><span class="string">struct Ex4a &#123;</span></span><br><span class="line"><span class="string">  velocity: vec3f,</span></span><br><span class="line"><span class="string">&#125;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">struct Ex4 &#123;</span></span><br><span class="line"><span class="string">  orientation: vec3f,</span></span><br><span class="line"><span class="string">  size: f32,</span></span><br><span class="line"><span class="string">  direction: array&lt;vec3f, 1&gt;,</span></span><br><span class="line"><span class="string">  scale: f32,</span></span><br><span class="line"><span class="string">  info: Ex4a,</span></span><br><span class="line"><span class="string">  friction: f32,</span></span><br><span class="line"><span class="string">&#125;;</span></span><br><span class="line"><span class="string">@group(0) @binding(0) var&lt;uniform&gt; myUniforms: Ex4;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">...</span></span><br><span class="line"><span class="string">`</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> defs = makeShaderDataDefinitions(code);</span><br><span class="line"><span class="keyword">const</span> myUniformValues = makeStructuredView(defs.uniforms.myUniforms);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Set some values via set</span></span><br><span class="line">myUniformValues.set(&#123;</span><br><span class="line">  orientation: [<span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>],</span><br><span class="line">  size: <span class="number">2</span>,</span><br><span class="line">  direction: [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">  scale: <span class="number">1.5</span>,</span><br><span class="line">  info: &#123;</span><br><span class="line">    velocity: [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>],</span><br><span class="line">  &#125;,</span><br><span class="line">  friction: <span class="number">0.1</span>,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+# Uniforms
+
+Uniforms are kind of like global variables for your shader. You can set their values before you execute the shader and they’ll have those values for every iteration of the shader. You can set them to something else the next time you ask the GPU to execute the shader.
+
+# Storage Buffer
+
+Storage buffers are similar to uniform buffers in many ways. If all we did was change `UNIFORM` to `STORAGE` in our JavaScript and `var<uniform>` to `var<storage, read>` in our WGSL
+
+The major differences between uniform buffers and storage buffers are:
+
+1. Uniform buffers can be faster for their typical use-case
+
+   It really depends on the use case. A typical app will need to draw lots of different things. Say it’s a 3D game. The app might draw cars, buildings, rocks, bushes, people, etc… Each of those will require passing in orientations and material properties similar to what our example above passes in. In this case, using a uniform buffer is the recommended solution.
+
+2. Storage buffers can be much larger than uniform buffers.
+
+   - The minimum maximum size of a uniform buffer is 64K
+   - The minimum maximum size of a storage buffer is 128M
+
+   By minimum maximum, there is a maximum size a buffer of a certain type can be. For uniform buffers, the maximum size is at least 64K. For storage buffers, it’s at least 128M. See more about limits in [another article](https://webgpufundamentals.org/webgpu/lessons/webgpu-limits-and-features.html).
+
+3. Storage buffers can be read/write, Uniform buffers are read-only.
+
+# Vertex Buffers
+
+We can put vertex data in a storage buffer and indexed it using the builtin `vertex_index`. While that technique is growing in popularity, the traditional way to provide vertex data to a vertex shader is via vertex buffers and attributes.
+
+Vertex buffers are just like any other WebGPU buffer; they hold data. The difference is we don’t access them directly from the vertex shader. Instead, we tell WebGPU what kind of data is in the buffer and how it’s organized. It then pulls the data out of the buffer and provides it for us.
+
+<font color="orange">Vertex attributes do not have the same padding restrictions as structures in storage buffers</font> so we no longer need the padding.
+
+Attributes in WGSL do not have to match attributes in JavaScript，because attributes always have 4 values available in the shader. They default to `0, 0, 0, 1` so any values we don’t supply get these defaults
+
+# Index Buffer
+
+One last thing to cover here are index buffers. Index buffers describe the order to process and use the vertices.
+
+You can think of `draw` as going through the vertices in order
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0, 1, 2, 3, 4, 5, ....</span><br></pre></td></tr></table></figure>
+
+With an index buffer we can change that order.
+
+# Textures
+
+Textures most often represent a 2d image. What makes textures special is that they can be accessed by special hardware called a *sampler*. A sampler can read up to 16 different values in a texture and blend them together in a way that is useful for many common use cases.
+
+The interesting WGSL functions for textures are ones that filter and blend multiple pixels. These WGSL functions take a <font color="orange">texture which represents that data</font>, a <font color="orange">sampler which represents how we want to pull data out of the texture</font>, and a <font color="orange">texture coordinate which specifies where we want to get a value from the texture</font>.
+
+<font color="orange">Texture coordinates for sampled textures go from 0.0 to 1.0 across and down a texture regardless of the actual size of the texture</font>
+
+<p>Flipping the data is common enough that there are even options when loading textures from images, videos, and canvases to flip the data for you.</p>
+<p>to draw something with a texture we have to create the texture, put data it in, bind it to bindGroup with a sampler, and reference it from a shader.</p>
+<h2 id="Texture-Types-and-Texture-Views"><a href="#Texture-Types-and-Texture-Views" class="headerlink" title="Texture Types and Texture Views"></a>Texture Types and Texture Views</h2><p>There are 3 types of textures</p>
+<ul>
+<li>1d</li>
+<li>2d</li>
+<li>3d</li>
+</ul>
+<p>demension can be passed when creating texture, see <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/GPUDevice/createTexture">device.createTexture</a></p>
+<p>In some way you can <em>kind of</em> consider a “2d” texture just a “3d” texture with a depth of 1. And a “1d” texture is just a “2d” texture with a height of 1. Two actual differences, textures are limited in their maximum allowed dimensions. The limit is different for each type of texture “1d”, “2d”, and “3d”. </p>
+<p>Another is speed, at least for a 3d texture vs a 2d texture, with all the sampler filters set to <code>linear</code>, sampling a 3d texture would require looking at 16 texels and blending them all together. Sampling a 2d texture only needs 8 texels.</p>
+<p>There are 6 types of texture views</p>
+<ul>
+<li>“1d”</li>
+<li>“2d”</li>
+<li>“2d-array”</li>
+<li>“3d”</li>
+<li>“cube”</li>
+<li>“cube-array”</li>
+</ul>
+<font color="orange">“1d” textures can only have a “1d” view. “3d” textures can only have a “3d” view</font>. “2d” texture can have a “2d-array” view. If a “2d” texture has 6 layers it can have a “cube” view. If it has a multiple of 6 layers it can have a “cube-array” view.
+
+You can choose how to view a texture when you call `someTexture.createView`. <font color="orange">Texture views default to the same as their dimension, by default, a view of a 2d texture with more than 1 layer gets the dimension: '2d-array'</font>
+
+<p>A “2d-array” is an array of 2d textures. You can then choose which texture of the array to access in your shader. They are commonly used for terrain rendering among other things.</p>
+<font color="orange">3d textures can be used in cases like 3dLUTS.</font>
+
+<p>Each type of texture has its own corresponding type in WGSL.</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>WGSL types</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1d</td>
+<td><code>texture_1d</code> or <code>texture_storage_1d</code></td>
+</tr>
+<tr>
+<td>2d</td>
+<td><code>texture_2d</code> or <code>texture_storage_2d</code> or <code>texture_multisampled_2d</code> as well as a special case for in certain situations <code>texture_depth_2d</code> and <code>texture_depth_multisampled_2d</code></td>
+</tr>
+<tr>
+<td>2d-array</td>
+<td><code>texture_2d_array</code> or <code>texture_storage_2d_array</code> and sometimes <code>texture_depth_2d_array</code></td>
+</tr>
+<tr>
+<td>3d</td>
+<td><code>texture_3d</code> or <code>texture_storage_3d</code></td>
+</tr>
+<tr>
+<td>cube</td>
+<td><code>texture_cube</code> and sometimes <code>texture_depth_cube</code></td>
+</tr>
+<tr>
+<td>cube-array</td>
+<td><code>texture_cube_array</code> and sometimes <code>texture_depth_cube_array</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="Texture-Formats"><a href="#Texture-Formats" class="headerlink" title="Texture Formats"></a>Texture Formats</h1><p>“unorm” is unsigned normalized data (0 to 1) meaning the data in the texture goes from 0 to N where N is the maximum integer value for that number of bits. That range of integers is then interpreted as a floating point range of (0 to 1). In other words, for an 8unorm texture, that’s 8 bits (so values from 0 to 255) that get interpreted as values from (0 to 1).</p>
+<p>“snorm” is signed normalized data (-1 to +1) so the range of data goes from the most negative integer represented by the number of bits to the most positive. For example 8snorm is 8bits. As a signed integer the lowest number would be -128 and the highest is +127. That range gets converted to (-1 to +1).</p>
+<h1 id="Texture-Altas"><a href="#Texture-Altas" class="headerlink" title="Texture Altas"></a>Texture Altas</h1><p>A Texture Atlas is a fancy name for a texture with multiple images it in. We then use texture coordinates to select which parts go where.</p>
+<h1 id="Using-Video-Effectively"><a href="#Using-Video-Effectively" class="headerlink" title="Using Video Effectively"></a>Using Video Effectively</h1><p><code>copyExternalImageToTexture</code>. This function copies the current frame of video from the video itself into a pre-existing texture that we created.WebGPU has another method for using video. It’s called <code>importExternalTexture</code> and, like the name suggests, it provides a <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/GPUExternalTexture"><code>GPUExternalTexture</code></a>. This external texture represents the data in the video directly. No copy is made. (What actually happens is up to the browser implementation. The WebGPU spec was designed in the hope that browser would not need to make a copy)</p>
+<p>There are a few big caveats to using an texture from <code>importExternalTexture</code></p>
+<ul>
+<li><p>The texture is only valid until you exit the current JavaScript task. An implication of this is that you must make a new bindgroup each time you call <code>importExternalTexture</code>so that you can pass the new texture into your shader.</p>
+</li>
+<li><p>You must use <code>texture_external</code> in your shaders</p>
+</li>
+<li><p>You must use <code>textureSampleBaseClampToEdge</code> in your shaders. Like the name suggests, <code>textureSampleBaseClampToEdge</code> will only sample the base texture mip level (level 0). In other words, <font color="orange">external textures can not have a mipmap</font>. Further, the function clamps to the edge, meaning, setting a sampler to <code>addressModeU: &#39;repeat&#39;</code> will be ignored.</p>
+</li>
+</ul>
+<h1 id="Storage-Texture"><a href="#Storage-Texture" class="headerlink" title="Storage Texture"></a>Storage Texture</h1><h1 id="Multi-Sampling-Anti-aliasing"><a href="#Multi-Sampling-Anti-aliasing" class="headerlink" title="Multi-Sampling Anti-aliasing"></a>Multi-Sampling Anti-aliasing</h1><p>Setting <code>colorAttachment[0].resolveTarget</code> says to WebGPU, “when all the drawing in this render pass has finished, downscale the multisample texture into the texture set on <code>resolveTarget</code>. If you have multiple render passes you probably don’t want to resolve until the last pass. While it’s fastest to resolve in the last pass it’s also perfectly acceptable to make an empty last render pass to do nothing but resolve. Just make sure you set the <code>loadOp</code> to <code>&#39;load&#39;</code> and not <code>&#39;clear&#39;</code> in all the passes except the first pass otherwise it will be cleared.</p>
+<h1 id="Pipeline-Overridable-constants"><a href="#Pipeline-Overridable-constants" class="headerlink" title="Pipeline-Overridable constants"></a>Pipeline-Overridable constants</h1><p><em>pipeline-overridable constants</em> are a type of constant you declare in your shader but you can change when you use that shader to create a pipeline.</p>
+<p>Pipeline overridable constants can only be scalar values so boolean (true/false), integers, floating point numbers. They can not be vectors or matrices.</p>
+<p>If you don’t specify a value in the shader then you <strong>must</strong> supply one in the pipeline. You can also give them a numeric id and then refer to them by their id.</p>
+<h1 id="Canvas-alphaMode"><a href="#Canvas-alphaMode" class="headerlink" title="Canvas alphaMode"></a>Canvas <code>alphaMode</code></h1><p>By default a WebGPU canvas is opaque. Its alpha channel is ignored. To make it not ignored we have to set its <code>alphaMode</code> to <code>&#39;premultiplied&#39;</code> when we call <code>configure</code>. The default is <code>&#39;opaque&#39;</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">context.configure(&#123;</span><br><span class="line">    device,</span><br><span class="line">    format: presentationFormat,</span><br><span class="line">    alphaMode: <span class="string">&#x27;premultiplied&#x27;</span>,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><code>alphaMode: &#39;premultiplied&#39;</code> means the colors you put in the canvas must have their color values already multiplied by the alpha value.</p>
+<h1 id="Blending"><a href="#Blending" class="headerlink" title="Blending"></a>Blending</h1><p>Where <code>color</code> is what happens to the <code>rgb</code> portion of a color and <code>alpha</code> is what happens to the <code>a</code> (alpha) portion.</p>
+<p><code>operation</code> can be one of</p>
+<ul>
+<li>add</li>
+<li>subtract</li>
+<li>reverse-subtract</li>
+<li>min</li>
+<li>max</li>
+</ul>
+<p><code>srcFactor</code> and <code>dstFactor</code> can each be one of</p>
+<ul>
+<li>zero</li>
+<li>one</li>
+<li>src</li>
+<li>one-minus-src</li>
+<li>src-alpha</li>
+<li>one-minus-src-alpha</li>
+<li>dst</li>
+<li>one-minus-dst</li>
+<li>dst-alpha</li>
+<li>one-minus-dst-alpha</li>
+<li>src-alpha-saturated</li>
+<li>constant</li>
+<li>one-minus-constant</li>
+</ul>
+<p>Most of them are relatively straight forward to understand. Think of it as</p>
+<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">result</span> <span class="operator">=</span> <span class="variable">operation</span><span class="punctuation">(</span><span class="punctuation">(</span><span class="variable">src</span> <span class="operator">*</span> <span class="variable">srcFactor</span><span class="punctuation">)</span><span class="operator">,</span> <span class="punctuation">(</span><span class="variable">dst</span> <span class="operator">*</span> <span class="variable">dstFactor</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p>Of the blend factors above, 2 mention a constant, <code>&#39;constant&#39;</code> and <code>&#39;one-minus-constant&#39;</code>. The constant referred to here is set in a render pass with the <code>setBlendConstant</code> command and defaults to <code>[0, 0, 0, 0]</code>. This lets you change it between draws.</p>
+<h1 id="Data-Copying"><a href="#Data-Copying" class="headerlink" title="Data Copying"></a>Data Copying</h1><ul>
+<li><p><code>writeBuffer</code> copies data from a <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code>TypedArray</code></a> or <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code>ArrayBuffer</code></a> in JavaScript to a buffer. This is arguably the most straight forward way to get data into a buffer.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">device.queue.writeBuffer(</span><br><span class="line">  destBuffer,  <span class="comment">// the buffer to write to</span></span><br><span class="line">  destOffset,  <span class="comment">// where in the destination buffer to start writing</span></span><br><span class="line">  srcData,     <span class="comment">// a typedArray or arrayBuffer</span></span><br><span class="line">  srcOffset?,  <span class="comment">// offset in **elements** in srcData to start copying</span></span><br><span class="line">  size?,       <span class="comment">// size in **elements** of srcData to copy</span></span><br><span class="line">)</span><br><span class="line"><span class="comment">//If srcOffset is not passed it’s 0. </span></span><br><span class="line"><span class="comment">// If size is not passed it’s the size of srcData.</span></span><br><span class="line"><span class="comment">// srcOffset and size are in elements of srcData, for example, </span></span><br><span class="line"><span class="comment">// if srcData is Float32Array and srcOffset is 6, it will copy </span></span><br><span class="line"><span class="comment">// starting at 24 bytes</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>writeTexture</code> copies data from a <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code>TypedArray</code></a> or <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code>ArrayBuffer</code></a> in JavaScript to a texture.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">device.writeTexture(</span><br><span class="line">  <span class="comment">// details of the destination</span></span><br><span class="line">  &#123; texture, <span class="attr">mipLevel</span>: <span class="number">0</span>, <span class="attr">origin</span>: [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], <span class="attr">aspect</span>: <span class="string">&quot;all&quot;</span> &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// the source data</span></span><br><span class="line">  srcData,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// details of the source data</span></span><br><span class="line">  &#123; <span class="attr">offset</span>: <span class="number">0</span>, bytesPerRow, rowsPerImage &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// size:</span></span><br><span class="line">  [ width, height, depthOrArrayLayers ]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>texture</code> must have a usage of <code>GPUTextureUsage.COPY_DST</code></p>
+</li>
+<li><p><code>mipLevel</code>, <code>origin</code>, and <code>aspect</code> all have defaults so they often do not need to be specified</p>
+</li>
+<li><p><code>bytesPerRow</code>: This is how many bytes to advance to get to the next <em>block row</em> of data. This is required if you are copying more than 1 <em>block row</em>. It is almost always true that you’re copying more than 1 <em>block row</em> so it is therefore almost always required.</p>
+</li>
+<li><p><code>rowsPerImage</code>: This is the number of <em>block rows</em> to advance to get from the the start of one image to the next image. This is required if you are copying more than 1 layer. In other words, if <code>depthOrArrayLayers</code> in the size argument is &gt; 1 then you need to supply this value.</p>
+</li>
+<li><p><code>aspect</code> really only comes into play when copying data to a depth-stencil format. You can only copy to one aspect at a time, either the <code>depth-only</code> or the <code>stencil-only</code>.</p>
+</li>
+</ul>
+</li>
+<li><p><code>copyBufferToBuffer</code>, like the name suggests, copies data from one buffer to another.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">encoder.copyBufferToBuffer(</span><br><span class="line">  source,       <span class="comment">// buffer to copy from</span></span><br><span class="line">  sourceOffset, <span class="comment">// where to start copying from</span></span><br><span class="line">  dest,         <span class="comment">// buffer to copy to</span></span><br><span class="line">  destOffset,   <span class="comment">// where to start copying to</span></span><br><span class="line">  size,         <span class="comment">// how many bytes to copy</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>source</code> must have a usage of <code>GPUBufferUsage.COPY_SRC</code></li>
+<li><code>dest</code> must have a usage of <code>GPUBufferUsage.COPY_DST</code></li>
+<li><code>size</code> must be a multiple of 4</li>
+</ul>
+</li>
+<li><p><code>copyBufferToTexture</code>, like the name suggests, copies data from a buffer to a texture.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">encoder.copyBufferToTexture(</span><br><span class="line">  <span class="comment">// details of the source buffer</span></span><br><span class="line">  &#123; buffer, <span class="attr">offset</span>: <span class="number">0</span>, bytesPerRow, rowsPerImage &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// details of the destination texture</span></span><br><span class="line">  &#123; texture, <span class="attr">mipLevel</span>: <span class="number">0</span>, <span class="attr">origin</span>: [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], <span class="attr">aspect</span>: <span class="string">&quot;all&quot;</span> &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// size:</span></span><br><span class="line">  [ width, height, depthOrArrayLayers ]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>texture</code> must have a usage of <code>GPUTextureUsage.COPY_DST</code></p>
+</li>
+<li><p><code>buffer</code> must have a usage of <code>GPUBufferUsage.COPY_SRC</code></p>
+</li>
+<li><p><code>bytesPerRow</code> <strong>must be a multiple of 256</strong></p>
+</li>
+</ul>
+</li>
+<li><p><code>copyTextureToBuffer</code> like the name suggests, copies data from a texture to a buffer</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">encoder.copyTextureToBuffer(</span><br><span class="line">  <span class="comment">// details of the source texture</span></span><br><span class="line">  &#123; texture, <span class="attr">mipLevel</span>: <span class="number">0</span>, <span class="attr">origin</span>: [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], <span class="attr">aspect</span>: <span class="string">&quot;all&quot;</span> &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// details of the destination buffer</span></span><br><span class="line">  &#123; buffer, <span class="attr">offset</span>: <span class="number">0</span>, bytesPerRow, rowsPerImage &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// size:</span></span><br><span class="line">  [ width, height, depthOrArrayLayers ]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>texture</code> must have a usage of <code>GPUTextureUsage.COPY_SRC</code></p>
+</li>
+<li><p><code>buffer</code> must have a usage of <code>GPUBufferUsage.COPY_DST</code></p>
+</li>
+<li><p><code>bytesPerRow</code> <strong>must be a multiple of 256</strong></p>
+</li>
+</ul>
+</li>
+<li><p><code>copyTextureToTexture</code> copies a portion of one texture to another, <font color="orange">The two textures must be must either be the same format, or they must only differ by the suffix <code>&#39;-srgb&#39;</code>.</font></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">encoder.copyTextureToBuffer(</span><br><span class="line">  <span class="comment">// details of the source texture</span></span><br><span class="line">  src: &#123; texture, <span class="attr">mipLevel</span>: <span class="number">0</span>, <span class="attr">origin</span>: [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], <span class="attr">aspect</span>: <span class="string">&quot;all&quot;</span> &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// details of the destination texture</span></span><br><span class="line">  dst: &#123; texture, <span class="attr">mipLevel</span>: <span class="number">0</span>, <span class="attr">origin</span>: [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], <span class="attr">aspect</span>: <span class="string">&quot;all&quot;</span> &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// size:</span></span><br><span class="line">  [ width, height, depthOrArrayLayers ]</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>src.<code>texture</code> must have a usage of <code>GPUTextureUsage.COPY_SRC</code></li>
+<li>dst.<code>texture</code> must have a usage of <code>GPUTextureUsage.COPY_DST</code></li>
+<li><code>width</code> must be a multiple of block width</li>
+<li><code>height</code> must be a multiple of block height</li>
+<li>src.<code>origin[0]</code> or <code>.x</code> must be a multiple block width</li>
+<li>src.<code>origin[1]</code> or <code>.y</code> must be a multiple block height</li>
+<li>dst.<code>origin[0]</code> or <code>.x</code> must be a multiple block width</li>
+<li>dst.<code>origin[1]</code> or <code>.y</code> must be a multiple block height</li>
+</ul>
+</li>
+<li><p>Shaders: Shaders can write to storage buffers, storage textures, and indirectly they can render to textures. Those are all ways of getting data into buffers and textures. In other words you can use shaders to generate data.</p>
+</li>
+<li><p>mapping buffers: You can map a buffer. Mapping a buffer means making it available to read or write from JavaScript. At least in version 1 of WebGPU, mappable buffers have severe restrictions, namely, a mappable buffer can can only be used as a temporary place to copy from. A mappable buffer can not be used as any other type of buffer (like a Uniform buffer, vertex buffer, index buffer, storage buffer, etc…)</p>
+<p>You can create a mappable buffer with 2 combinations of usage flags.</p>
+<ul>
+<li><p><code>GPUBufferUsage.MAP_READ | GPU_BufferUsage.COPY_DST</code></p>
+<p>This is a buffer you can use the copy commands above to copy data to from another buffer or a texture, then map it to read the values in JavaScript</p>
+</li>
+<li><p><code>GPUBufferUsage.MAP_WRITE | GPU_BufferUsage.COPY_SRC</code></p>
+<p>This is a buffer you can map in JavaScript, you can then put data in it from JavaScript, and finally unmap it and use the and the copy commands above to copy its contents to another buffer or texture.</p>
+</li>
+</ul>
+<p>The process of mapping a buffer is asynchronous. You call <code>buffer.mapAsync(mode, offset = 0, size?)</code> where <code>offset</code> and <code>size</code> are in bytes. If <code>size</code> is not specified it’s the size of the entire buffer. <code>mode</code> must be either <code>GPUMapMode.READ</code> or <code>GPUMapMode.WRITE</code> and must of course match the <code>MAP_</code> usage flag you passed in when you created the buffer.</p>
+<p><code>mapAsync</code> returns a Promise. When the promise resolves the buffer is mappable. You can then view some or all of the buffer by calling <code>buffer.getMappedRange(offset = 0, size?)</code> where <code>offset</code> a byte offset into the portion of the buffer you mapped. <code>getMappedRange</code> returns an <code>ArrayBuffer</code></p>
+<p>Once mapped, the buffer is not usable by WebGPU until you call <code>unmap</code>. The moment <code>unmap</code> is called the buffer disappears from JavaScript.</p>
+</li>
+<li><p><code>mappedAtCreation: true</code> is a flag you can add when you create a buffer. In this case, the buffer does not need the usage flags <code>GPUBufferUsage.MAP_WRITE</code>. This is a special parameter to let you put data in the buffer on creation. You add the flat <code>mappedAtCreation: true</code> when you create the buffer. The buffer is created, already mapped for writing.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> buffer = device.createBuffer(&#123;</span><br><span class="line">  size: <span class="number">16</span>,</span><br><span class="line">  usage: GPUBufferUsage.UNIFORM,</span><br><span class="line">  mappedAtCreation: <span class="literal">true</span>,</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">const</span> arrayBuffer = buffer.getMappedRange(<span class="number">0</span>, buffer.size);</span><br><span class="line"><span class="keyword">const</span> f32 = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(arrayBuffer);</span><br><span class="line">f32.set([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]);</span><br><span class="line">buffer.unmap();</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="Optional-Features-and-limits"><a href="#Optional-Features-and-limits" class="headerlink" title="Optional Features and limits"></a>Optional Features and limits</h1><p>When you request an adapter with </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> adapter = <span class="keyword">await</span> navigator.gpu?.requestAdapter()</span><br></pre></td></tr></table></figure>
+<p>The adapter will have a list of limits on <code>adapter.limits</code> and array of feature names on <code>adapter.features</code>.</p>
+<p>By default, when you request a device, you get the minimum limits and you get no optional features. The hope is, if you stay under the minimum limits, then your app will run on all devices that support WebGPU.</p>
+<p>But, given the available limits and features listed on the adapter, you can request them when you call <code>requestDevice</code> by passing your desired limits as <code>requiredLimits</code> and your desired features as <code>requiredFeatures</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> adapter = <span class="keyword">await</span> navigator.gpu?.requestAdapter();</span><br><span class="line"><span class="keyword">const</span> device = adapter?.requestDevice(&#123;</span><br><span class="line">  requiredLimits: &#123; <span class="attr">maxBufferSize</span>: <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">1024</span> &#125;,</span><br><span class="line">  requiredFeatures: [ <span class="string">&#x27;float32-filterable&#x27;</span> ],</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>The recommended way to use features and limits is to decide on what you absolutely must have and throw errors if user’s device can not support those features.</p>
+<h1 id="WGSL"><a href="#WGSL" class="headerlink" title="WGSL"></a>WGSL</h1><h2 id="attributes"><a href="#attributes" class="headerlink" title="attributes"></a>attributes</h2><p>The word <em>attributes</em> has 2 meanings in WebGPU. One is <em>vertex attributes</em>. The other is in WGSL where an attribute starts with <code>@</code>.</p>
+<p>For a vertex shader, inputs are defined by the <code>@location</code> attributes of the entry point function of the vertex shader.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@vertex vs1(@location(0) foo: f32, @location(1) bar: vec4f) ...</span><br><span class="line"></span><br><span class="line">struct Stuff &#123;</span><br><span class="line">  @location(0) foo: f32,</span><br><span class="line">  @location(1) bar: vec4f,</span><br><span class="line">&#125;;</span><br><span class="line">@vertex vs2(s: Stuff) ...</span><br></pre></td></tr></table></figure>
+<p>For inter stage variables, <code>@location</code> attributes define the location where the variables are passed between shaders.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">struct VSOut &#123;</span><br><span class="line">  @builtin(position) pos: vec4f,</span><br><span class="line">  @location(0) color: vec4f,</span><br><span class="line">  @location(1) texcoords: vec2f,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct FSIn &#123;</span><br><span class="line">  @location(1) uv: vec2f,</span><br><span class="line">  @location(0) diffuse: vec4f,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">@vertex fn foo(...) -&gt; VSOut &#123; ... &#125;</span><br><span class="line">@fragment fn bar(moo: FSIn) ... </span><br></pre></td></tr></table></figure>
+<p>For fragment shaders, <code>@location</code> specifies which <code>GPURenderPassDescriptor.colorAttachment</code> to store the result in.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct FSOut &#123;</span><br><span class="line">  @location(0) albedo: vec4f;</span><br><span class="line">  @location(1) normal: vec4f;</span><br><span class="line">&#125;</span><br><span class="line">@fragment fn bar(...) -&gt; FSOut &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+<p><code>@builtin</code> attribute is used to specify that a particular variable’s value comes from a built-in feature of WebGPU. </p>
+<table class="data">
+  <thead>
+    <tr>
+      <th>Builtin Name</th>
+      <th>Stage</th>
+      <th>IO</th>
+      <th>Type</th>
+      <th>Description </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport id="built-in-values-vertex_index">vertex_index</dfn> </td>
+      <td>vertex </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">
+       Index of the current vertex within the current API-level draw command,
+         independent of draw instancing. 
+       <p>For a non-indexed draw, the first vertex has an index equal to the <code class="notranslate" translate="no">firstVertex</code> argument
+         of the draw, whether provided directly or indirectly.
+         The index is incremented by one for each additional vertex in the draw instance.</p>
+       <p>For an indexed draw, the index is equal to the index buffer entry for the
+         vertex, plus the <code class="notranslate" translate="no">baseVertex</code> argument of the draw, whether provided directly or indirectly.</p></td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport id="built-in-values-instance_index">instance_index</dfn> </td>
+      <td>vertex </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">
+       Instance index of the current vertex within the current API-level draw command. 
+       <p>The first instance has an index equal to the <code class="notranslate" translate="no">firstInstance</code> argument of the draw,
+         whether provided directly or indirectly.
+         The index is incremented by one for each additional instance in the draw.</p></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport id="built-in-values-position">position</dfn> </td>
+      <td>vertex </td>
+      <td>output </td>
+      <td>vec4<f32> </f32></td>
+      <td style="width:50%">Output position of the current vertex, using homogeneous coordinates.
+      After homogeneous normalization (where each of the <em>x</em>, <em>y</em>, and <em>z</em> components
+      are divided by the <em>w</em> component), the position is in the WebGPU normalized device
+      coordinate space.
+      See <a target="_blank" rel="noopener" href="https://www.w3.org/TR/webgpu/#coordinate-systems"><cite>WebGPU</cite> § 3.3 Coordinate Systems</a>. </td>
+    </tr>
+    <tr>
+      <td>fragment </td>
+      <td>input </td>
+      <td>vec4<f32> </f32></td>
+      <td style="width:50%">Framebuffer position of the current fragment in <a data-link-type="dfn" target="_blank" rel="noopener" href="https://gpuweb.github.io/gpuweb/#framebuffer" id="ref-for-framebuffer">framebuffer</a> space.
+      (The <em>x</em>, <em>y</em>, and <em>z</em> components have already been scaled such that <em>w</em> is now 1.)
+      See <a target="_blank" rel="noopener" href="https://www.w3.org/TR/webgpu/#coordinate-systems"><cite>WebGPU</cite> § 3.3 Coordinate Systems</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport id="built-in-values-front_facing">front_facing</dfn> </td>
+      <td>fragment </td>
+      <td>input </td>
+      <td>bool </td>
+      <td style="width:50%">True when the current fragment is on a <a data-link-type="dfn" target="_blank" rel="noopener" href="https://gpuweb.github.io/gpuweb/#front-facing" id="ref-for-front-facing">front-facing</a> primitive.
+         False otherwise. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport id="built-in-values-frag_depth">frag_depth</dfn> </td>
+      <td>fragment </td>
+      <td>output </td>
+      <td>f32 </td>
+      <td style="width:50%">Updated depth of the fragment, in the viewport depth range.
+      See <a target="_blank" rel="noopener" href="https://www.w3.org/TR/webgpu/#coordinate-systems"><cite>WebGPU</cite> § 3.3 Coordinate Systems</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport id="built-in-values-local_invocation_id">local_invocation_id</dfn> </td>
+      <td>compute </td>
+      <td>input </td>
+      <td>vec3<u32> </u32></td>
+      <td style="width:50%">The current invocation’s <a data-link-type="dfn" href="#local-invocation-id" id="ref-for-local-invocation-id①">local invocation ID</a>,
+            i.e. its position in the <a data-link-type="dfn" href="#workgroup-grid" id="ref-for-workgroup-grid①">workgroup grid</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport id="built-in-values-local_invocation_index">local_invocation_index</dfn> </td>
+      <td>compute </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">The current invocation’s <a data-link-type="dfn" href="#local-invocation-index" id="ref-for-local-invocation-index">local invocation index</a>, a linearized index of
+          the invocation’s position within the <a data-link-type="dfn" href="#workgroup-grid" id="ref-for-workgroup-grid②">workgroup grid</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport id="built-in-values-global_invocation_id">global_invocation_id</dfn> </td>
+      <td>compute </td>
+      <td>input </td>
+      <td>vec3<u32> </u32></td>
+      <td style="width:50%">The current invocation’s <a data-link-type="dfn" href="#global-invocation-id" id="ref-for-global-invocation-id">global invocation ID</a>,
+          i.e. its position in the <a data-link-type="dfn" href="#compute-shader-grid" id="ref-for-compute-shader-grid">compute shader grid</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport id="built-in-values-workgroup_id">workgroup_id</dfn> </td>
+      <td>compute </td>
+      <td>input </td>
+      <td>vec3<u32> </u32></td>
+      <td style="width:50%">The current invocation’s <a data-link-type="dfn" href="#workgroup-id" id="ref-for-workgroup-id">workgroup ID</a>,
+          i.e. the position of the workgroup in the <a data-link-type="dfn" href="#workgroup-grid" id="ref-for-workgroup-grid③">workgroup grid</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport id="built-in-values-num_workgroups">num_workgroups</dfn> </td>
+      <td>compute </td>
+      <td>input </td>
+      <td>vec3<u32> </u32></td>
+      <td style="width:50%">The <a data-link-type="dfn" href="#dispatch-size" id="ref-for-dispatch-size">dispatch size</a>, <code class="notranslate" translate="no">vec<u32>(group_count_x, group_count_y, group_count_z)</u32></code>, of the compute shader <a target="_blank" rel="noopener" href="https://www.w3.org/TR/webgpu/#compute-pass-encoder-dispatch">dispatched</a> by the API. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport id="built-in-values-sample_index">sample_index</dfn> </td>
+      <td>fragment </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">Sample index for the current fragment.
+         The value is least 0 and at most <code class="notranslate" translate="no">sampleCount</code>-1, where <code class="notranslate" translate="no">sampleCount</code> is the MSAA sample <code class="idl"><a data-link-type="idl" target="_blank" rel="noopener" href="https://www.w3.org/TR/webgpu/#dom-gpumultisamplestate-count" id="ref-for-dom-gpumultisamplestate-count">count</a></code> specified for the GPU render pipeline. <br>See <a target="_blank" rel="noopener" href="https://www.w3.org/TR/webgpu/#gpurenderpipeline"><cite>WebGPU</cite> § 10.3 GPURenderPipeline</a>. </td>
+    </tr>
+    <tr>
+      <td rowspan="2"><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport id="built-in-values-sample_mask">sample_mask</dfn> </td>
+      <td>fragment </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">Sample coverage mask for the current fragment.
+         It contains a bitmask indicating which samples in this fragment are covered
+         by the primitive being rendered. <br>See <a target="_blank" rel="noopener" href="https://www.w3.org/TR/webgpu/#sample-masking"><cite>WebGPU</cite> § 23.3.11 Sample Masking</a>. </td>
+    </tr>
+    <tr>
+      <td>fragment </td>
+      <td>output </td>
+      <td>u32 </td>
+      <td style="width:50%">Sample coverage mask control for the current fragment.
+         The last value written to this variable becomes the <a data-link-type="dfn" target="_blank" rel="noopener" href="https://gpuweb.github.io/gpuweb/#shader-output-mask" id="ref-for-shader-output-mask">shader-output mask</a>.
+         Zero bits in the written value will cause corresponding samples in
+         the color attachments to be discarded. <br>See <a target="_blank" rel="noopener" href="https://www.w3.org/TR/webgpu/#sample-masking"><cite>WebGPU</cite> § 23.3.11 Sample Masking</a>. </td>
+    </tr>
+  </tbody>
+  </table>
+
+<h2 id="Builtin-functions"><a href="#Builtin-functions" class="headerlink" title="Builtin functions"></a>Builtin functions</h2><p>See <a target="_blank" rel="noopener" href="https://webgpufundamentals.org/webgpu/lessons/webgpu-wgsl-function-reference.html">the WGSL Function reference</a>.</p>
+</storage,></uniform>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/WebGPU/" rel="tag"># WebGPU</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/04/26/cs_network/%E5%BA%94%E7%94%A8%E5%B1%82/" rel="prev" title="应用层">
+      <i class="fa fa-chevron-left"></i> 应用层
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/02/08/web_gpu/3d-math/" rel="next" title="3d-math">
+      3d-math <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Basics"><span class="nav-number">1.</span> <span class="nav-text">Basics</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Drawing-triangles"><span class="nav-number">2.</span> <span class="nav-text">Drawing triangles</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Inter-stage-Variables"><span class="nav-number">3.</span> <span class="nav-text">Inter-stage Variables</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Interpolation-Settings"><span class="nav-number">3.1.</span> <span class="nav-text">Interpolation Settings</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Texture-Types-and-Texture-Views"><span class="nav-number">3.2.</span> <span class="nav-text">Texture Types and Texture Views</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Texture-Formats"><span class="nav-number">4.</span> <span class="nav-text">Texture Formats</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Texture-Altas"><span class="nav-number">5.</span> <span class="nav-text">Texture Altas</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Using-Video-Effectively"><span class="nav-number">6.</span> <span class="nav-text">Using Video Effectively</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Storage-Texture"><span class="nav-number">7.</span> <span class="nav-text">Storage Texture</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Multi-Sampling-Anti-aliasing"><span class="nav-number">8.</span> <span class="nav-text">Multi-Sampling Anti-aliasing</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Pipeline-Overridable-constants"><span class="nav-number">9.</span> <span class="nav-text">Pipeline-Overridable constants</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Canvas-alphaMode"><span class="nav-number">10.</span> <span class="nav-text">Canvas alphaMode</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Blending"><span class="nav-number">11.</span> <span class="nav-text">Blending</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Data-Copying"><span class="nav-number">12.</span> <span class="nav-text">Data Copying</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Optional-Features-and-limits"><span class="nav-number">13.</span> <span class="nav-text">Optional Features and limits</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WGSL"><span class="nav-number">14.</span> <span class="nav-text">WGSL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#attributes"><span class="nav-number">14.1.</span> <span class="nav-text">attributes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Builtin-functions"><span class="nav-number">14.2.</span> <span class="nav-text">Builtin functions</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">215k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">11:56</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

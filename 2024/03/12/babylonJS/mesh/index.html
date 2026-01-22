@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="Creating MeshesThe current way to create a mesh is using MeshBuilder 1const mesh &#x3D; BABYLON.MeshBuilder.Create &lt; MeshType &gt; (name, options, scene) The options object will have different propertie">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mesh">
+<meta property="og:url" content="http://swordandtea.github.io/2024/03/12/babylonJS/mesh/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="Creating MeshesThe current way to create a mesh is using MeshBuilder 1const mesh &#x3D; BABYLON.MeshBuilder.Create &lt; MeshType &gt; (name, options, scene) The options object will have different propertie">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-03-12T15:16:50.000Z">
+<meta property="article:modified_time" content="2024-03-30T03:01:01.759Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="BabylonJS">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2024/03/12/babylonJS/mesh/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>mesh | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2024/03/12/babylonJS/mesh/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          mesh
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-03-12 11:16:50" itemprop="dateCreated datePublished" datetime="2024-03-12T11:16:50-04:00">2024-03-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-03-29 23:01:01" itemprop="dateModified" datetime="2024-03-29T23:01:01-04:00">2024-03-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/BabylonJS/" itemprop="url" rel="index">
+                    <span itemprop="name">BabylonJS</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>10 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Creating-Meshes"><a href="#Creating-Meshes" class="headerlink" title="Creating Meshes"></a>Creating Meshes</h1><p>The current way to create a mesh is using <em>MeshBuilder</em></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mesh = BABYLON.MeshBuilder.Create &lt; MeshType &gt; (name, options, scene)</span><br></pre></td></tr></table></figure>
+<p>The <em>options</em> object will have different properties according to the type of mesh and can be empty . The scene parameter is optional and defaults to the current scene.</p>
+<h2 id="Create-Set-Shapes"><a href="#Create-Set-Shapes" class="headerlink" title="Create Set Shapes"></a>Create Set Shapes</h2><h3 id="Box"><a href="#Box" class="headerlink" title="Box"></a>Box</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> box = BABYLON.MeshBuilder.CreateBox(<span class="string">&quot;box&quot;</span>, options, scene)</span><br></pre></td></tr></table></figure>
+<h3 id="Tiled-Plane"><a href="#Tiled-Plane" class="headerlink" title="Tiled Plane"></a>Tiled Plane</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> tiledPlane = BABYLON.MeshBuilder.CreateTiledPlane(<span class="string">&quot;plane&quot;</span>, options, scene)</span><br></pre></td></tr></table></figure>
+<p>Tiled Plane is good example for understanding the options parameter, see more in <a target="_blank" rel="noopener" href="https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set/tiled_plane">this doc</a></p>
+<h3 id="Ground-From-Height-Map"><a href="#Ground-From-Height-Map" class="headerlink" title="Ground From Height Map"></a>Ground From Height Map</h3><p>When the ground is created using <em>groundFromHeightMap</em> the surface of the ground can be perturbed by a grayscale image file called a height map. Lighter areas are displayed higher than darker areas. This is a way of creating hills and valleys on your ground.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ground = BABYLON.MeshBuilder.CreateGroundFromHeightMap(<span class="string">&quot;gdhm&quot;</span>, url_to_height_map, options, scene)</span><br></pre></td></tr></table></figure>
+<p>see more in <a target="_blank" rel="noopener" href="https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set/height_map">this docs</a></p>
+<h2 id="Create-Parametric-Meshes"><a href="#Create-Parametric-Meshes" class="headerlink" title="Create Parametric Meshes"></a>Create Parametric Meshes</h2><p>These meshes are so called because their shape is defined by a an array of vector3 parameters and can be irregular in nature. You can produce a series of broken or unbroken lines across 3D space. In 2D you can produce an horizontal irregular convex or concave polygon, which may be extruded vertically into 3D. It is also possible to extrude the 2D outline along a path that travels in 3D space and vary its rotation and scale as it travels the path. You can also ‘lathe’ an outline to give a shape with rotational symmetry.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mesh = BABYLON.MeshBuilder.Create&lt;MeshType&gt;(name, options, scene)</span><br><span class="line"><span class="keyword">const</span> mesh = BABYLON.MeshBuilder.Extrude&lt;MeshType&gt;(name, options, scene)</span><br></pre></td></tr></table></figure>
+<h3 id="Extrusion"><a href="#Extrusion" class="headerlink" title="Extrusion"></a>Extrusion</h3><p><a target="_blank" rel="noopener" href="https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/param/extrude_shape">extrusion docs</a></p>
+<h3 id="Lathe"><a href="#Lathe" class="headerlink" title="Lathe"></a>Lathe</h3><p><a target="_blank" rel="noopener" href="https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/param/lathe">lathe docs</a></p>
+<h3 id="Polygon"><a href="#Polygon" class="headerlink" title="Polygon"></a>Polygon</h3><p><a target="_blank" rel="noopener" href="https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/param/polygon">polygon docs</a></p>
+<h2 id="Creating-Polyhedra-Shapes"><a href="#Creating-Polyhedra-Shapes" class="headerlink" title="Creating Polyhedra Shapes"></a>Creating Polyhedra Shapes</h2><h2 id="Create-Custom-Meshes"><a href="#Create-Custom-Meshes" class="headerlink" title="Create Custom Meshes"></a>Create Custom Meshes</h2><h3 id="Vertex-Normals"><a href="#Vertex-Normals" class="headerlink" title="Vertex Normals"></a>Vertex Normals</h3><p><a target="_blank" rel="noopener" href="https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/custom/vertexNormals">vertex normals docs</a></p>
+<h1 id="Mesh-Transformation"><a href="#Mesh-Transformation" class="headerlink" title="Mesh Transformation"></a>Mesh Transformation</h1><h2 id="Centered-On"><a href="#Centered-On" class="headerlink" title="Centered On"></a>Centered On</h2><h3 id="Mesh-Rotation"><a href="#Mesh-Rotation" class="headerlink" title="Mesh Rotation"></a>Mesh Rotation</h3><p>When you use the <strong>rotation</strong> method on a mesh then the rotation is applied in <font color="orange">local space</font>, the order is - a rotation of beta about the local y axis, then alpha about the local x axis and finally a rotation of gamma about the local z axis.</p>
+<h3 id="Coordinate-Transformation"><a href="#Coordinate-Transformation" class="headerlink" title="Coordinate Transformation"></a>Coordinate Transformation</h3><p>The first step in understanding coordinate transformation Babylon.js is to understand how the data describing a mesh is stored. The positions of each vertex is kept in an array of coordinates in the local space of the mesh. Each transformation applied to the mesh is stored in a matrix called the <em>World Matrix</em>. For each rendered frame the current <em>World Matrix</em> is used on the local space vertex data to obtain the world data for the mesh. Except for exceptional circumstance such as <em>baking a transformation</em> or a user updating it, the mesh vertex data remains unchanged.</p>
+<h3 id="Baking-Transformations"><a href="#Baking-Transformations" class="headerlink" title="Baking Transformations"></a>Baking Transformations</h3><p>Usually, within Babylon.js, positioning, rotating and scaling a mesh changes its world matrix only and the vertex position data of a mesh is left unchanged.</p>
+<p>In certain situations you might be interested in applying a transform (position, rotation, scale) directly to the mesh vertices and leave world matrix unchanged. This is called baking.</p>
+<p>Unless you have good reasons to use baking transformations then your are better with parents and pivots.</p>
+<h2 id="Parents-and-Pivots"><a href="#Parents-and-Pivots" class="headerlink" title="Parents and Pivots"></a>Parents and Pivots</h2><p>When <code>parent</code> property is set on a mesh, transforming the parent will apply the same transformations to the child. Translations, rotations and scaling of the child will take place relative to the <em>local origin</em> of the <font color="orange">child</font>. Setting the position of the child will be relative to the <em>local origin</em> of the parent. In simpler terms, moving the child will not move the parent and moving the parent will move the child.</p>
+<h3 id="TransformNode"><a href="#TransformNode" class="headerlink" title="TransformNode"></a>TransformNode</h3><p>A TransformNode is an object that is not rendered but can be used as a center of transformation. This can decrease memory usage and increase rendering speed compared to using an empty mesh as a parent and is less complicated than using a pivot matrix.</p>
+<h3 id="Parent-and-Children"><a href="#Parent-and-Children" class="headerlink" title="Parent and Children"></a>Parent and Children</h3><p>To add or remove a parent, it’s better to directly set the parent of target mesh, instead calling <code>setParent()</code> and <code>addChild()</code>, as those two method may cause unwanted transformation.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">meshC.parent = meshP; <span class="comment">// 1</span></span><br><span class="line">meshC.parent = <span class="literal">null</span>; <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line">meshC.setParent(meshP); <span class="comment">// 2</span></span><br><span class="line">meshC.setParent(<span class="literal">null</span>); <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line">meshP.addChild(meshC); <span class="comment">// 3</span></span><br><span class="line">meshP.removeChild(meshC); <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+<h1 id="Copies-Clones-and-Instances"><a href="#Copies-Clones-and-Instances" class="headerlink" title="Copies, Clones and Instances"></a>Copies, Clones and Instances</h1><h2 id="Clones"><a href="#Clones" class="headerlink" title="Clones"></a>Clones</h2><p>This simply creates a deep copy of the original mesh and saves memory by sharing the geometry(vertices). Each clone can have its own material and transformation.</p>
+<h2 id="Cloning-With-the-Solid-Particle-System"><a href="#Cloning-With-the-Solid-Particle-System" class="headerlink" title="Cloning With the Solid Particle System"></a>Cloning With the Solid Particle System</h2><p>There is more to the Solid Particle System (SPS) than just producing multiple copies of a mesh and these are considered in full in the <a target="_blank" rel="noopener" href="https://doc.babylonjs.com/features/featuresDeepDive/particles">Particles section</a>. The SPS places multiple copies of a mesh all together into just one mesh. This means that instead of multiple draw calls there is just one draw call for the single mesh.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SPS = <span class="keyword">new</span> BABYLON.SolidParticleSystem(<span class="string">&quot;SPS&quot;</span>, scene);  <span class="comment">//create the SPS</span></span><br><span class="line">SPS.addShape(someMesh, <span class="number">1500</span><span class="comment">/*copy count*/</span>);</span><br><span class="line">someMesh.dispose(); <span class="comment">//dispose of the original mesh</span></span><br><span class="line"><span class="keyword">const</span> spsMesh = SPS.buildMesh();  <span class="comment">//builds the SPS mesh</span></span><br><span class="line">SPS.initParticles = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> p = <span class="number">0</span>; p &lt; SPS.nbParticles; p++) &#123;</span><br><span class="line">        <span class="comment">// do something with each particle/mesh</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125; ;</span><br></pre></td></tr></table></figure>
+<h2 id="instances"><a href="#instances" class="headerlink" title="instances"></a>instances</h2><p>Instances are an excellent way to use hardware accelerated rendering to draw a huge number of identical meshes (let’s imagine a forest or an army). Each instance has the same material as the root mesh. They can vary on the following properties:</p>
+<ul>
+<li><code>position</code></li>
+<li><code>rotation</code></li>
+<li><code>rotationQuaternion</code></li>
+<li><code>setPivotMatrix</code></li>
+<li><code>scaling</code></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> newMesh = someMesh.createInstance(<span class="string">&quot;name&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="instancing-a-glTF-object"><a href="#instancing-a-glTF-object" class="headerlink" title="instancing a glTF object"></a>instancing a glTF object</h3><p>When you instanciate a glTF object, you need to make sure that the new instance will be under the same parent or you need to remove the parent from the source object.</p>
+<p>This is because every gltf file comes from a right handed world. To get it into Babylon.js left handed world, we are adding an arbitrary parent that is adding a negative scale on z.</p>
+<p>So when instancing a glTF object you have to (either):</p>
+<ul>
+<li>Call <code>source.setParent(null)</code></li>
+<li>Or call <code>newInstance.setParent(source.parent)</code></li>
+</ul>
+<h2 id="Thin-Instances"><a href="#Thin-Instances" class="headerlink" title="Thin Instances"></a>Thin Instances</h2><p>instances are an excellent way to use hardware accelerated rendering to draw a huge number of identical meshes.</p>
+<p>However, regular instances still have a performance penalty on the javascript side because each instance is its own object (<code>InstancedMesh</code>): if you have 10000 instances in your scene, the engine must loop over all those objects to make a number of processing</p>
+<p>Thin instances don’t create new objects so you don’t incur any penalty on the javascript side by having thousands of them. This performance increase does come with a cost:</p>
+<ul>
+<li>all thin instances are always all drawn (if the mesh is deemed visible) or none. It’s all or nothing.</li>
+<li>adding / removing a thin instance is more costly than with <code>InstancedMesh</code></li>
+</ul>
+<p>Thin instances should be used when you need a lot of static instances that you know won’t change often / at all. Think of the seats of a stadium</p>
+<p>A thin instance is represented by a position/rotation/scaling data packed into a matrix.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> matrix = BABYLON.Matrix.Translation(-<span class="number">2</span>, <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">let</span> index = someMesh.thinInstanceAdd(matrix); <span class="comment">// You can also pass an array of matrices to thinInstanceAdd if you want to create multiple thin instances at once.</span></span><br></pre></td></tr></table></figure>
+<p>Note that <code>someMesh</code> itself is not rendered. If you want to render it, use <code>thinInstanceAddSelf()</code>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">someMesh.thinInstanceAddSelf();</span><br></pre></td></tr></table></figure>
+<h1 id="Levels-Of-Detail"><a href="#Levels-Of-Detail" class="headerlink" title="Levels Of Detail"></a>Levels Of Detail</h1><p>This feature allows you to specify different meshes based on distance to viewer (by default), or screen coverage.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">someMesh.addLODLevel(<span class="number">15</span>, anotherLessLODMesh);</span><br></pre></td></tr></table></figure>
+<p>The first parameter used with <code>addLODLevel</code> defines the distance to the camera. Each level is independent and can have its own material. By defining a level of detail to null, you disable rendering of the current mesh when it is viewed beyond the indicated distance to camera.</p>
+<p>When a mesh is used as a level of detail for another mesh, it is linked to it and cannot be rendered directly.</p>
+<p>You can remove a LOD level by using <code>removeLODLevel</code>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">baseMesh.removeLODLevel(anotherLessLODMesh);</span><br></pre></td></tr></table></figure>
+<p>You can alternatively add LOD levels by specifying screen coverage cutoff limits. Screen coverage is computed as a ratio between 0 and 1 of the mesh’s rendered screen surface area, over the total screen surface area. <font color="orange">This method has the notable advantage</font> over distance comparison to be scale-independant, as a big object rendered from a long distance, can still be big on the screen.</p>
+<p>To specify that your LOD levels use screen coverage instead of distance, use:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">baseMesh.useLODScreenCoverage = <span class="literal">true</span>;</span><br><span class="line">baseMesh.addLODLevel(<span class="number">0.7</span>,anotherLessLODMesh);</span><br></pre></td></tr></table></figure>
+<h1 id="Interactions"><a href="#Interactions" class="headerlink" title="Interactions"></a>Interactions</h1><p>To avoid costly calculation by checking many details on a mesh, Babylon engine creates a bounding box around the object, and tests for intersection between this box, and the colliding mesh.</p>
+<h2 id="Mesh-intersections"><a href="#Mesh-intersections" class="headerlink" title="Mesh intersections"></a>Mesh intersections</h2><p>We will use the <code>intersectsMesh()</code> function, with two parameters: the mesh to be checked, and the precision of the intersection (boolean), which determines what kind of bounding box will be used.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mesh1.intersectsMesh(mesh2, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+<p>The other function you can use is <code>intersectsPoint()</code> with a specific point</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mesh.intersectsPoint(pointToIntersect)</span><br></pre></td></tr></table></figure>
+<h2 id="Mesh-Picking"><a href="#Mesh-Picking" class="headerlink" title="Mesh Picking"></a>Mesh Picking</h2><h3 id="Raycasts"><a href="#Raycasts" class="headerlink" title="Raycasts"></a>Raycasts</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> ray = <span class="keyword">new</span> BABYLON.Ray(origin, direction, length);</span><br><span class="line"><span class="keyword">let</span> hitInfo = scene.pickWithRay(ray, predicate);</span><br></pre></td></tr></table></figure>
+<p>secon parameter predicate is a filter to choose which meshes will be selectable</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">predicate</span>(<span class="params">mesh</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mesh == mesh1 || mesh == mesh2) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>in the code example above, the mesh1 and mesh2 will not be hit by the ray.</p>
+<p>We can use <code>scene.multiPickWithRay</code> if we don’t want that the ray to stop at the first obstacle:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> hitInfoList = scene.multiPickWithRay(ray);</span><br></pre></td></tr></table></figure>
+<h1 id="Node-Geometry"><a href="#Node-Geometry" class="headerlink" title="Node Geometry"></a>Node Geometry</h1><p>The <code>NodeGeometry</code> feature was inspired by Blender Geometry Nodes where you can use a node system to build geometry procedurally.</p>
+<p>Several reasons to use Node Geometry:</p>
+<ul>
+<li>The cost of downloading assets on the web is a strong limiting factor. Procedural data can help solve that by limiting the download to the core pieces that are assembled later by the <code>NodeGeometry</code> system</li>
+<li>The system is dynamic and can produce infinite variants at run time. While there are many digital content creation tools that can create procedural meshes with the same infinite possibilities, the limiting factor again becomes downloading assets created offline. Examples would be terrain or vegetation generation.</li>
+<li>It allows a new way of modelling in Babylon.js by assembling core shapes and playing around with a node system</li>
+</ul>
+<h2 id="How-to-use"><a href="#How-to-use" class="headerlink" title="How to use"></a>How to use</h2><p>The <code>NodeGeometry</code> class is an utility class, meaning it is autonomous and does not require access to an engine or a scene.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> nodeGeometry = <span class="keyword">new</span> BABYLON.NodeGeometry(<span class="string">&quot;my node geometry&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>Once created, the system will expect you to create a flow from a source to an endpoint.</p>
+<p>By default, the <code>NodeGeometry</code> system supports the following sources:</p>
+<ul>
+<li>Box</li>
+<li>Capsule</li>
+<li>Cylinder</li>
+<li>Disc</li>
+<li>Grid</li>
+<li>Icosphere</li>
+<li>Mesh</li>
+<li>Plane</li>
+<li>Sphere</li>
+<li>Torus</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Create node geometry</span></span><br><span class="line"><span class="keyword">var</span> nodegeo = <span class="keyword">new</span> BABYLON.NodeGeometry(<span class="string">&quot;nodegeo&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create source sphere</span></span><br><span class="line"><span class="keyword">var</span> sphere = <span class="keyword">new</span> BABYLON.SphereBlock(<span class="string">&quot;sphere&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create output</span></span><br><span class="line"><span class="keyword">var</span> output = <span class="keyword">new</span> BABYLON.GeometryOutputBlock(<span class="string">&quot;geometryout&quot;</span>);</span><br><span class="line">nodegeo.outputBlock = output;</span><br><span class="line">sphere.geometry.connectTo(output.geometry);</span><br><span class="line">nodegeo.build();</span><br><span class="line"><span class="keyword">var</span> mesh = nodegeo.createMesh(<span class="string">&quot;nodegeomesh&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>It better to use a Node Geometry Editor to create visual graph and generate code. <a target="_blank" rel="noopener" href="https://doc.babylonjs.com/toolsAndResources/nge">See more about this editor</a></p>
+<h1 id="Drawing-Bounding-Boxes"><a href="#Drawing-Bounding-Boxes" class="headerlink" title="Drawing Bounding Boxes"></a>Drawing Bounding Boxes</h1><p>To draw the bounding box around your mesh, all you need to do is set the showBoundingBox property to true.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mesh.showBoundingBox = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="BillBoard-Mode"><a href="#BillBoard-Mode" class="headerlink" title="BillBoard Mode"></a>BillBoard Mode</h1><p>Billboard is a special mode for meshes, ensuring that the mesh is always facing towards the camera. This is commonly used to display information to the user, sprites or particles for instance.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mesh.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL</span><br></pre></td></tr></table></figure>
+<p>Billboard Mode Value</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>value</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>BILLBOARDMODE_NONE</td>
+</tr>
+<tr>
+<td>1</td>
+<td>BILLBOARDMODE_X</td>
+</tr>
+<tr>
+<td>2</td>
+<td>BILLBOARDMODE_Y</td>
+</tr>
+<tr>
+<td>4</td>
+<td>BILLBOARDMODE_Z</td>
+</tr>
+<tr>
+<td>7</td>
+<td>BILLBOARDMODE_ALL</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="Decals"><a href="#Decals" class="headerlink" title="Decals"></a>Decals</h1><p>Decals are usually used to add details on meshes (bullets hole, local details, etc…). A decal is either a mesh produced from a subset of a previous one with a small offset in order to appear on top of it, or an additional texture applied to a mesh (a “decal map”).</p>
+<h2 id="Mesh-Decals"><a href="#Mesh-Decals" class="headerlink" title="Mesh Decals"></a>Mesh Decals</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> decal = BABYLON.MeshBuilder.CreateDecal(<span class="string">&quot;decal&quot;</span>, mesh, options, scene);</span><br></pre></td></tr></table></figure>
+<h2 id="Decal-Maps"><a href="#Decal-Maps" class="headerlink" title="Decal Maps"></a>Decal Maps</h2><p>Decal Maps are new in Babylon.js since 5.49.0. They are a way to add decal to a mesh without having to create a new mesh. It is a texture that is applied to a mesh in such a way that it appears to be a decal on the mesh.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> decalMap = <span class="keyword">new</span> BABYLON.MeshUVSpaceRenderer(mesh, scene);</span><br><span class="line"><span class="keyword">const</span> texture = <span class="keyword">new</span> BABYLON.Texture(<span class="string">&quot;bullet.png&quot;</span>, scene);</span><br><span class="line"><span class="keyword">const</span> decalSize = <span class="keyword">new</span> BABYLON.Vector3(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line"><span class="comment">// find the position and the normal of the mesh where you want to add the decal</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">decalMap.renderTexture(texture, position, normal, decalSize);</span><br><span class="line"></span><br><span class="line">mesh.decalMap = decalMap;</span><br><span class="line">mesh.material.decalMap.isEnabled = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="Highlightindg-Meshes"><a href="#Highlightindg-Meshes" class="headerlink" title="Highlightindg Meshes"></a>Highlightindg Meshes</h1><p>Before anything else, you must ensure that your engine was created with stencil on:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> engine = <span class="keyword">new</span> BABYLON.Engine(canvas, <span class="literal">true</span>, &#123; <span class="attr">stencil</span>: <span class="literal">true</span> &#125;);</span><br></pre></td></tr></table></figure>
+<p>In the most basic shape, you only need to instantiate one highlight layer in your scene and add the meshes you want to highlight in it.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> hl = <span class="keyword">new</span> BABYLON.HighlightLayer(<span class="string">&quot;hl1&quot;</span>, scene);</span><br><span class="line">hl.addMesh(sphere, BABYLON.Color3.Green()); <span class="comment">// add hightlight to a mesh</span></span><br><span class="line"></span><br><span class="line">hl.removeMesh(sphere); <span class="comment">// remove highlight to a mesh</span></span><br></pre></td></tr></table></figure>
+<h1 id="Making-Meshes-Glow"><a href="#Making-Meshes-Glow" class="headerlink" title="Making Meshes Glow"></a>Making Meshes Glow</h1><p>Emissive meshes are equivalent to self lit meshes. Both the emissive color and texture of the material determine how the mesh will self lit.</p>
+<p>Only one line is needed to make all the emissive parts of a scene glow:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> gl = <span class="keyword">new</span> BABYLON.GlowLayer(<span class="string">&quot;glow&quot;</span>, scene);</span><br></pre></td></tr></table></figure>
+<p>To control the intensity of the color in the glow layer, you can use the dedicated property</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gl.intensity = <span class="number">0.5</span>;</span><br></pre></td></tr></table></figure>
+<p>In order to control the shape of the blur, you can rely on the creation option:</p>
+<ul>
+<li><strong>mainTextureRatio</strong>: Multiplication factor applied to the canvas size to compute the render target size used to generate the glowing objects (the smaller the faster).</li>
+<li><strong>mainTextureFixedSize</strong>: Enforces a fixed size texture to ensure resize independant blur to prevent the shape of the blur to change according to the target device size.</li>
+<li><strong>blurKernelSize</strong>: How big is the kernel of the blur texture.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> gl = <span class="keyword">new</span> BABYLON.GlowLayer(<span class="string">&quot;glow&quot;</span>, scene, &#123;</span><br><span class="line">  mainTextureFixedSize: <span class="number">1024</span>,</span><br><span class="line">  blurKernelSize: <span class="number">64</span>,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="Controlling-glow-color-per-mesh"><a href="#Controlling-glow-color-per-mesh" class="headerlink" title="Controlling glow color per mesh"></a>Controlling glow color per mesh</h2><p>By default the glow layer will use emissive texture and emissive color to generate the glow color of every active mesh. But you can override this behavior with the following callbacks:</p>
+<ul>
+<li><code>customEmissiveColorSelector: (mesh: Mesh, subMesh: SubMesh, material: Material, result: Color4) =&gt; void</code>: Callback used to let the user override the color selection on a per mesh basis</li>
+<li><code>customEmissiveTextureSelector(mesh: Mesh, subMesh: SubMesh, material: Material) =&gt; Texture</code>: Callback used to let the user override the texture selection on a per mesh basis</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">gl.customEmissiveColorSelector = <span class="function"><span class="keyword">function</span> (<span class="params">mesh, subMesh, material, result</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (mesh.name === <span class="string">&quot;lightsaber&quot;</span>) &#123;</span><br><span class="line">    result.set(<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    result.set(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="Anti-Aliasing"><a href="#Anti-Aliasing" class="headerlink" title="Anti Aliasing"></a>Anti Aliasing</h2><p>Depending on your setup, some aliasing artifacts might appear in the glow. To prevent this behavior, you can specify the number of samples to use for MSAA on the main render target. <font color="orange">Please note that it will only work on WebGL2 capable browsers.</font></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> gl = <span class="keyword">new</span> BABYLON.GlowLayer(<span class="string">&quot;glow&quot;</span>, scene, &#123;</span><br><span class="line">  mainTextureSamples: <span class="number">4</span>,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="Exclude-or-Include-Mesh"><a href="#Exclude-or-Include-Mesh" class="headerlink" title="Exclude or Include Mesh"></a>Exclude or Include Mesh</h2><p>Some helper functions have been introduced to exclude or only include some meshes from the scene.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gl.addExcludedMesh(mesh);</span><br><span class="line">gl.addIncludedOnlyMesh(mesh);</span><br></pre></td></tr></table></figure>
+<p>Using the function will automatically switch mode and only render the included meshes. Kind of like the conception in light.</p>
+<h1 id="Merging-Meshes"><a href="#Merging-Meshes" class="headerlink" title="Merging Meshes"></a>Merging Meshes</h1><p>To easily merge a number of meshes to a single mesh use the static <code>MergeMeshes</code> of the <code>Mesh</code> class:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> newMesh = BABYLON.Mesh.MergeMeshes(</span><br><span class="line">  arrayOfMeshes, </span><br><span class="line">  disposeSource, </span><br><span class="line">  allow32BitsIndices, </span><br><span class="line">  meshSubclass, </span><br><span class="line">  subdivideWithSubMeshes, </span><br><span class="line">  multiMultiMaterials</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<font color="orange">merging mesh will merge the vertex data and material data</font>
+
+<h1 id="Facet-Data"><a href="#Facet-Data" class="headerlink" title="Facet Data"></a>Facet Data</h1><p>A mesh can have some planar faces. For example, a box has 6 sides, so 6 planar squared faces. Each of its faces are drawn at the WebGL level with 2 triangles.  <font color="orange">We call “facets” these elementary triangles</font>.</p>
+<p>FacetData is a feature that can be enabled on a mesh.  As it requires some extra memory, <font color="orange">it’s not enabled by default</font>. This feature provides some methods and properties to access each facet of a mesh, like the facet positions, normals.</p>
+<p>To enable this feature, just call once <code>updateFacetData()</code>.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mesh = BABYLON.MeshBuilder.CreateTorusKnot(<span class="string">&quot;t&quot;</span>, &#123; <span class="attr">radius</span>: <span class="number">2.0</span> &#125;, scene);</span><br><span class="line">mesh.updateFacetData();</span><br><span class="line"><span class="built_in">console</span>.log(mesh.facetNb);</span><br></pre></td></tr></table></figure>
+<p>If the mesh belongs to some parent-child relationship, the feature is then not enabled for its parents or children. </p>
+<p>Unless the mesh is updated or morphed afterwards, you don’t need to call this method anymore once it has been done.</p>
+<p>you can disabled it to release the memory with <code>mesh.disableFacetData()</code>.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mesh.updateFacetData();</span><br><span class="line"><span class="built_in">console</span>.log(mesh.isFacetDataEnabled); <span class="comment">// displays &quot;true&quot;</span></span><br><span class="line">mesh.disableFacetData();</span><br><span class="line"><span class="built_in">console</span>.log(mesh.isFacetDataEnabled); <span class="comment">// displays &quot;false&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Facet-Data-1"><a href="#Facet-Data-1" class="headerlink" title="Facet Data"></a>Facet Data</h2><p>You can get the position of the i-th facet of a mesh with <code>getFacetPosition(i)</code>. This returns a new <code>Vector3</code> that is the world coordinates of the <font color="orange">facet center</font>.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> pos = mesh.getFacetPosition(<span class="number">50</span>);</span><br></pre></td></tr></table></figure>
+<p>If you don’t want to allocate a new <code>Vector3</code> per call, you can use <code>getFacetPositionToRef(i, ref)</code> instead.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> pos = BABYLON.Vector3.Zero();</span><br><span class="line">mesh.getFacetPositionToRef(<span class="number">50</span>, pos);</span><br></pre></td></tr></table></figure>
+<p>All the methods dealing with the world coordinates use the mesh world matrix. As you may know, this matrix is automatically computed on the render call.<br>If you’ve just moved, scaled or rotated your mesh before calling the facetData methods using the world values and you’re not sure about this, you can ever force the world matrix computation.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mesh.rotate.y += <span class="number">0.2</span>; <span class="comment">// the mesh will be rotated on the next render call, but I need a rotated normal</span></span><br><span class="line">mesh.computeWorldMatrix(<span class="literal">true</span>); <span class="comment">// force the world matrix computation</span></span><br><span class="line"><span class="keyword">const</span> norm = mesh.getFacetNormal(<span class="number">50</span>); <span class="comment">// returns the world normal of the mesh 50th facet</span></span><br></pre></td></tr></table></figure>
+<h1 id="Morphing"><a href="#Morphing" class="headerlink" title="Morphing"></a>Morphing</h1><p>When talking about morphing, we mean here changing the vertices positions of an existing mesh. Indices remain unchanged.</p>
+<ul>
+<li>To create an updatable mesh, it is mandatory to set its <em>updatable</em> parameter to <em>true</em> when calling <em>CreateXXX()</em> method.</li>
+<li>To update then an existing parametric shape, we just have to use the same <em>CreateXXX</em> method as we used to construct it.</li>
+<li>Only the existing mesh and the data relative to new positions (path, pathArray, array of points) must be passed to this method, the other parameters are ignored.</li>
+<li>If we want to morph the mesh, we then use the <em>CreateXXX()</em> method within the render loop.<br>In this case, it is important not to allocate new memory each frame : we access our arrays by indexes and just change values instead of creating new arrays, we access existing objects instead of instantiating new ones, etc. We also take care about the weight of each object (number of sides, number of vertices, etc).</li>
+</ul>
+<h2 id="More-speed"><a href="#More-speed" class="headerlink" title="More speed"></a>More speed</h2><p>The former <em>CreateXXX()</em> update functions try to be as much optimized as possible to run fast in the render loop.  However, you may need some more speed for any reason (huge mesh with dozens of thousands of vertices for instance).  So, if your mesh doesn’t need to reflect the light (emissive color only for instance), you can skip the normals re-computation which is a CPU consuming process.  Use then the <em>freezeNormals()</em> method just after your mesh is created :</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> tube = BABYLON.Mesh.CreateTube(<span class="string">&quot;tube&quot;</span>, path, <span class="number">3</span>, <span class="number">12</span>, <span class="literal">null</span>, BABYLON.Mesh.NO_CAP, scene, <span class="literal">true</span>);</span><br><span class="line">tube.freezeNormals();</span><br><span class="line"><span class="comment">// path update here ...</span></span><br><span class="line">tube = BABYLON.Mesh.CreateTube(<span class="literal">null</span>, path, <span class="number">3</span>, <span class="literal">null</span>, <span class="literal">null</span>, <span class="literal">null</span>, <span class="literal">null</span>, <span class="literal">null</span>, <span class="literal">null</span>, tube);</span><br></pre></td></tr></table></figure>
+<h1 id="Morph-Targets"><a href="#Morph-Targets" class="headerlink" title="Morph Targets"></a>Morph Targets</h1>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BabylonJS/" rel="tag"># BabylonJS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/02/08/web_gpu/3d-math/" rel="prev" title="3d-math">
+      <i class="fa fa-chevron-left"></i> 3d-math
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/03/14/babylonJS/camera/" rel="next" title="camera">
+      camera <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Creating-Meshes"><span class="nav-number">1.</span> <span class="nav-text">Creating Meshes</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-Set-Shapes"><span class="nav-number">1.1.</span> <span class="nav-text">Create Set Shapes</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Box"><span class="nav-number">1.1.1.</span> <span class="nav-text">Box</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tiled-Plane"><span class="nav-number">1.1.2.</span> <span class="nav-text">Tiled Plane</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ground-From-Height-Map"><span class="nav-number">1.1.3.</span> <span class="nav-text">Ground From Height Map</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-Parametric-Meshes"><span class="nav-number">1.2.</span> <span class="nav-text">Create Parametric Meshes</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Extrusion"><span class="nav-number">1.2.1.</span> <span class="nav-text">Extrusion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lathe"><span class="nav-number">1.2.2.</span> <span class="nav-text">Lathe</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Polygon"><span class="nav-number">1.2.3.</span> <span class="nav-text">Polygon</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Creating-Polyhedra-Shapes"><span class="nav-number">1.3.</span> <span class="nav-text">Creating Polyhedra Shapes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-Custom-Meshes"><span class="nav-number">1.4.</span> <span class="nav-text">Create Custom Meshes</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Vertex-Normals"><span class="nav-number">1.4.1.</span> <span class="nav-text">Vertex Normals</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Mesh-Transformation"><span class="nav-number">2.</span> <span class="nav-text">Mesh Transformation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Centered-On"><span class="nav-number">2.1.</span> <span class="nav-text">Centered On</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mesh-Rotation"><span class="nav-number">2.1.1.</span> <span class="nav-text">Mesh Rotation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Coordinate-Transformation"><span class="nav-number">2.1.2.</span> <span class="nav-text">Coordinate Transformation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Baking-Transformations"><span class="nav-number">2.1.3.</span> <span class="nav-text">Baking Transformations</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Parents-and-Pivots"><span class="nav-number">2.2.</span> <span class="nav-text">Parents and Pivots</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TransformNode"><span class="nav-number">2.2.1.</span> <span class="nav-text">TransformNode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Parent-and-Children"><span class="nav-number">2.2.2.</span> <span class="nav-text">Parent and Children</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Copies-Clones-and-Instances"><span class="nav-number">3.</span> <span class="nav-text">Copies, Clones and Instances</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Clones"><span class="nav-number">3.1.</span> <span class="nav-text">Clones</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cloning-With-the-Solid-Particle-System"><span class="nav-number">3.2.</span> <span class="nav-text">Cloning With the Solid Particle System</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#instances"><span class="nav-number">3.3.</span> <span class="nav-text">instances</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#instancing-a-glTF-object"><span class="nav-number">3.3.1.</span> <span class="nav-text">instancing a glTF object</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Thin-Instances"><span class="nav-number">3.4.</span> <span class="nav-text">Thin Instances</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Levels-Of-Detail"><span class="nav-number">4.</span> <span class="nav-text">Levels Of Detail</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Interactions"><span class="nav-number">5.</span> <span class="nav-text">Interactions</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mesh-intersections"><span class="nav-number">5.1.</span> <span class="nav-text">Mesh intersections</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mesh-Picking"><span class="nav-number">5.2.</span> <span class="nav-text">Mesh Picking</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Raycasts"><span class="nav-number">5.2.1.</span> <span class="nav-text">Raycasts</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Node-Geometry"><span class="nav-number">6.</span> <span class="nav-text">Node Geometry</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-use"><span class="nav-number">6.1.</span> <span class="nav-text">How to use</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Drawing-Bounding-Boxes"><span class="nav-number">7.</span> <span class="nav-text">Drawing Bounding Boxes</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BillBoard-Mode"><span class="nav-number">8.</span> <span class="nav-text">BillBoard Mode</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Decals"><span class="nav-number">9.</span> <span class="nav-text">Decals</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mesh-Decals"><span class="nav-number">9.1.</span> <span class="nav-text">Mesh Decals</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Decal-Maps"><span class="nav-number">9.2.</span> <span class="nav-text">Decal Maps</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Highlightindg-Meshes"><span class="nav-number">10.</span> <span class="nav-text">Highlightindg Meshes</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Making-Meshes-Glow"><span class="nav-number">11.</span> <span class="nav-text">Making Meshes Glow</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Controlling-glow-color-per-mesh"><span class="nav-number">11.1.</span> <span class="nav-text">Controlling glow color per mesh</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Anti-Aliasing"><span class="nav-number">11.2.</span> <span class="nav-text">Anti Aliasing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exclude-or-Include-Mesh"><span class="nav-number">11.3.</span> <span class="nav-text">Exclude or Include Mesh</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Merging-Meshes"><span class="nav-number">12.</span> <span class="nav-text">Merging Meshes</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Facet-Data"><span class="nav-number">13.</span> <span class="nav-text">Facet Data</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Facet-Data-1"><span class="nav-number">13.1.</span> <span class="nav-text">Facet Data</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Morphing"><span class="nav-number">14.</span> <span class="nav-text">Morphing</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#More-speed"><span class="nav-number">14.1.</span> <span class="nav-text">More speed</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Morph-Targets"><span class="nav-number">15.</span> <span class="nav-text">Morph Targets</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">215k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">11:56</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

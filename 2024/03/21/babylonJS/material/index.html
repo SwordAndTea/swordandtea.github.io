@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="Introduction To MaterialMaterials allow you to cover your meshes in color and texture. How a material appears depends on the lights used in the scene and how it is set to react. There are four possibl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="material">
+<meta property="og:url" content="http://swordandtea.github.io/2024/03/21/babylonJS/material/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="Introduction To MaterialMaterials allow you to cover your meshes in color and texture. How a material appears depends on the lights used in the scene and how it is set to react. There are four possibl">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-03-21T15:44:20.000Z">
+<meta property="article:modified_time" content="2024-03-28T03:32:28.154Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="BabylonJS">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2024/03/21/babylonJS/material/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>material | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2024/03/21/babylonJS/material/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          material
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-03-21 11:44:20" itemprop="dateCreated datePublished" datetime="2024-03-21T11:44:20-04:00">2024-03-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-03-27 23:32:28" itemprop="dateModified" datetime="2024-03-27T23:32:28-04:00">2024-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/BabylonJS/" itemprop="url" rel="index">
+                    <span itemprop="name">BabylonJS</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Introduction-To-Material"><a href="#Introduction-To-Material" class="headerlink" title="Introduction To Material"></a>Introduction To Material</h1><p>Materials allow you to cover your meshes in color and texture. <font color="orange">How a material appears depends on the lights used in the scene and how it is set to react</font>.</p>
+<p>There are four possible ways that a material can react to light.</p>
+<ol>
+<li>Diffuse - the basic color or texture of the material as viewed under a light;</li>
+<li>Specular - the highlight given to the material by a light;</li>
+<li>Emissive - the color or texture of the material as if self lit;</li>
+<li>Ambient - the color or texture of the material lit by the environmental background lighting.</li>
+</ol>
+<p>Diffuse and Specular material require a light source to be created.<br>Ambient color requires the ambient color of the scene to be set, giving the environmental background lighting.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myMaterial = <span class="keyword">new</span> BABYLON.StandardMaterial(<span class="string">&quot;myMaterial&quot;</span>, scene);</span><br><span class="line"></span><br><span class="line">myMaterial.diffuseColor = <span class="keyword">new</span> BABYLON.Color3(<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">myMaterial.specularColor = <span class="keyword">new</span> BABYLON.Color3(<span class="number">0.5</span>, <span class="number">0.6</span>, <span class="number">0.87</span>);</span><br><span class="line">myMaterial.emissiveColor = <span class="keyword">new</span> BABYLON.Color3(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">myMaterial.ambientColor = <span class="keyword">new</span> BABYLON.Color3(<span class="number">0.23</span>, <span class="number">0.98</span>, <span class="number">0.53</span>);</span><br><span class="line"></span><br><span class="line">mesh.material = myMaterial;</span><br></pre></td></tr></table></figure>
+<h2 id="Transparent-Color"><a href="#Transparent-Color" class="headerlink" title="Transparent Color"></a>Transparent Color</h2><p>Transparency is achieved by setting a materials <em>alpha</em> property from 0 (invisible) to 1 (opaque).</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myMaterial.alpha = <span class="number">0.5</span>;</span><br></pre></td></tr></table></figure>
+<p>In addition, the image used for the texture might already have a transparency setting,In this case we set the <em>hasAlpha</em> property of the <strong>texture</strong> to true.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myMaterial.diffuseTexture.hasAlpha = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="Back-Face-Culling"><a href="#Back-Face-Culling" class="headerlink" title="Back-Face Culling"></a>Back-Face Culling</h2><p>Usually there is no need to draw the back face of a cube, or other object, as it will be hidden by the front face. In Babylon.js the default setting is set to true. But, in some cases such as transparent front side, you need to see the back face, then you should set the material property <em>backFaceCulling</em> to false</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myMaterial.backFaceCulling = <span class="literal">false</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="WireFrame"><a href="#WireFrame" class="headerlink" title="WireFrame"></a>WireFrame</h2><p>You can see a mesh in wireframe mode by using:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">materialSphere1.wireframe = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="Bump-Map"><a href="#Bump-Map" class="headerlink" title="Bump Map"></a>Bump Map</h1><p>Bump mapping is a technique to simulate bump and dents on a rendered surface. These are made by creating a <strong>normal map</strong> from an image. The means to do this can be found on the web, a search for ‘normal map generator’ will bring up free and paid for methods of doing this.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myMaterial = <span class="keyword">new</span> BABYLON.StandardMaterial(<span class="string">&quot;myMaterial&quot;</span>, scene);</span><br><span class="line">myMaterial.bumpTexture = <span class="keyword">new</span> BABYLON.Texture(<span class="string">&quot;PATH TO NORMAL MAP&quot;</span>, scene);</span><br></pre></td></tr></table></figure>
+<p>Use <em>invertNormalMapX</em> and/or <em>invertNormalMapY</em> on the material can invert Bumps and Dents</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myMaterial = <span class="keyword">new</span> BABYLON.StandardMaterial(<span class="string">&quot;myMaterial&quot;</span>, scene);</span><br><span class="line">myMaterial.bumpTexture = <span class="keyword">new</span> BABYLON.Texture(<span class="string">&quot;PATH TO NORMAL MAP&quot;</span>, scene);</span><br><span class="line">myMaterial.invertNormalMapX = <span class="literal">true</span>;</span><br><span class="line">myMaterial.invertNormalMapY = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="Opacity-Map"><a href="#Opacity-Map" class="headerlink" title="Opacity Map"></a>Opacity Map</h1><p>The opacity of a material can be graded using an image with varying tranparency</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myMaterial = <span class="keyword">new</span> BABYLON.StandardMaterial(<span class="string">&quot;myMaterial&quot;</span>, scene);</span><br><span class="line">myMaterial.opacityTexture = <span class="keyword">new</span> BABYLON.Texture(<span class="string">&quot;PATH TO OPACITY MAP&quot;</span>, scene);</span><br></pre></td></tr></table></figure>
+<h1 id="Tiling-and-Offsetting"><a href="#Tiling-and-Offsetting" class="headerlink" title="Tiling and Offsetting"></a>Tiling and Offsetting</h1><p>When a material is applied to a mesh the image used for a texture is positioned according to coordinates. Rather than x, y which are already in use for the 3D axes the letters u and v are used for the coordinates.</p>
+<p>To tile an image you use the <em>uScale</em> and/or <em>vScale</em> properties, of the texture, to set the number of tiles in each direction.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">myMaterial.diffuseTexture.uScale = <span class="number">5.0</span>;</span><br><span class="line">myMaterial.diffuseTexture.vScale = <span class="number">5.0</span>;</span><br></pre></td></tr></table></figure>
+<p>To offset your texture on your mesh, you use the <em>uOffset</em> and <em>vOffset</em> properties, of the texture, to set the offset in each direction.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">myMaterial.diffuseTexture.uOffset = <span class="number">1.5</span>; <span class="comment">// 1.5 is actually equal to 0.5</span></span><br><span class="line">myMaterial.diffuseTexture.vOffset = <span class="number">0.5</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="Details-Map"><a href="#Details-Map" class="headerlink" title="Details Map"></a>Details Map</h1><p>A detail map (also called secondary map) is generally used to add extra details to the regular main texture when viewed up close.</p>
+<p>The detail map can contains albedo (diffuse), normal and roughness (for PBR materials only) channels, dispatched this way (following <strong>Unity</strong> convention):</p>
+<ul>
+<li>Red channel: greyscale albedo</li>
+<li>Green channel: green component of the normal map</li>
+<li>Blue channel: roughness</li>
+<li>Alpha channel: red component of the normal map</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">myMaterial.detailMap.texture = <span class="keyword">new</span> BABYLON.Texture(<span class="string">&quot;textures/detailmap.png&quot;</span>, scene);</span><br><span class="line">myMaterial.detailMap.isEnabled = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="Parallax-Mapping"><a href="#Parallax-Mapping" class="headerlink" title="Parallax Mapping"></a>Parallax Mapping</h1><p>Parallax Mapping is an algorithm which, based from a height map, apply an offset on the material’s textures in order to accentuate the effect of relief in the geometry’s surface.</p>
+<p>While this technique is independent from Normal Mapping (a.k.a Bump) it’s often used in conjunction with it. The simple reason is that the height map needed to perform Parallax Mapping is most of the time encoded in the Alpha channel of the Normal Map texture. (A diffuse texture is required for using parallax mapping).</p>
+<p>Babylon.js supports two kinds of Parallax Mapping Principle: Parallax Mapping and Parallax Occlusion</p>
+<ul>
+<li><p>Parallax Mapping:The core algorithm which perform an offset computation for the texture UV coordinates, based on a height map. This algorithm is really quick to perform, you can almost think of it as being free if you already are using Bump.</p>
+</li>
+<li><p>Parallax Occlusion Mapping (POM): While traditional Parallax mapping compute the offset based on one sample of the height map, the Occlusion version will make a loop to sample the height map many times in order to reach a more precise location of what the pixel to compute should reflect. <font color="orange">The outcome is way more realistic than traditional Parallax but there can be a performance hit that needs consideration.</font></p>
+</li>
+</ul>
+<p>In Babylon.js we think of a parallax mapping as an extension of Normal Mapping, hence to benefit of the former, you have to enable the later. <font color="orange">The reason is that we support only the height map being encoded in the Alpha channel of the normal map</font>, as explained above.</p>
+<p>You have three properties to work with Parallax:</p>
+<ul>
+<li><strong>useParallax</strong>: enables Parallax Mapping over Bump. This property won’t have any effect if you didn’t assigned a <strong>bumpTexture</strong>.</li>
+<li><strong>useParallaxOcclusion</strong>: enables Parallax Occlusion, when setting this property, you must also set <strong>useParallax</strong> to true.</li>
+<li><strong>parallaxScaleBias</strong>: apply a scaling factor that determine which “depth” the height map should represent. A value between 0.05 and 0.1 is reasonable in Parallax, you can reach 0.2 using Parallax Occlusion.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">material.bumpTexture = someTextureFromNormalMap;</span><br><span class="line">material.useParallax = <span class="literal">true</span>;</span><br><span class="line">material.useParallaxOcclusion = <span class="literal">true</span>;</span><br><span class="line">material.parallaxScaleBias = <span class="number">0.075</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="Understanding-Normal-Maps"><a href="#Understanding-Normal-Maps" class="headerlink" title="Understanding Normal Maps"></a>Understanding Normal Maps</h1><p>Babylon.js was originally designed based on DirectX principles, it has since become more convention agnostic as there are plenty of tools available to make your assets work correctly so long as you know where you are coming from and where you are going.</p>
+<h1 id="Blend-Mode"><a href="#Blend-Mode" class="headerlink" title="Blend Mode"></a>Blend Mode</h1>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BabylonJS/" rel="tag"># BabylonJS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/03/14/babylonJS/scene/" rel="prev" title="scene">
+      <i class="fa fa-chevron-left"></i> scene
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/03/23/babylonJS/environment/" rel="next" title="environment">
+      environment <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction-To-Material"><span class="nav-number">1.</span> <span class="nav-text">Introduction To Material</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Transparent-Color"><span class="nav-number">1.1.</span> <span class="nav-text">Transparent Color</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Back-Face-Culling"><span class="nav-number">1.2.</span> <span class="nav-text">Back-Face Culling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WireFrame"><span class="nav-number">1.3.</span> <span class="nav-text">WireFrame</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bump-Map"><span class="nav-number">2.</span> <span class="nav-text">Bump Map</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Opacity-Map"><span class="nav-number">3.</span> <span class="nav-text">Opacity Map</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tiling-and-Offsetting"><span class="nav-number">4.</span> <span class="nav-text">Tiling and Offsetting</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Details-Map"><span class="nav-number">5.</span> <span class="nav-text">Details Map</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Parallax-Mapping"><span class="nav-number">6.</span> <span class="nav-text">Parallax Mapping</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Understanding-Normal-Maps"><span class="nav-number">7.</span> <span class="nav-text">Understanding Normal Maps</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Blend-Mode"><span class="nav-number">8.</span> <span class="nav-text">Blend Mode</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">215k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">11:56</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

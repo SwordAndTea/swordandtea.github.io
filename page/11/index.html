@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.2">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -181,6 +181,1102 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/14/machine_learning/linear_model/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/14/machine_learning/linear_model/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/" class="post-title-link" itemprop="url">线性回归</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-14 21:05:16" itemprop="dateCreated datePublished" datetime="2020-02-14T21:05:16-05:00">2020-02-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-05-14 03:22:20" itemprop="dateModified" datetime="2024-05-14T03:22:20-04:00">2024-05-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.7k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>6 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="基本形式"><a href="#基本形式" class="headerlink" title="基本形式"></a>基本形式</h1><p>给定d个特征描述的示例$x=(x_1, x_2, \cdots, x_d)$，其中$x_i$是$x$在第$i$个特征上的取值，<code>线性模型是试图学得一个通过属性的线性组合来进行预测的函数</code>，即</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+ f(x) &= w_1x_1 + w_2x_2 + \cdots + w_dx_d + b \\
+ &= (w_1, w_2, \cdots , w_d)
+ \begin{pmatrix}
+ x_1 \\
+ x_2 \\
+ \vdots \\
+ x_d
+ \end{pmatrix} + b \\
+ &= w x + b
+\end{align*}</script><p>在线性模型中$w$直观表达了个属性在预测中的重要性，<code>因此线性模型有很好的可解释性</code>。</p>
+<h1 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h1><p>给定数据集$D = {(x_1,y_1),(x_2,y_2), \cdots, (x_m,y_m)}$，其中$x_1$为d个特征描述的d维向量。线性回归试图学得</p>
+<script type="math/tex; mode=display">
+f(x_i) = w x_i + b, 使得f(x_i)尽可能接近y_i</script><p>那么如何衡量尽可能接近呢？<code>均方误差是回归任务重最常用的性能度量</code>，因此我们可试图让均方误差最小化，即</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+ (w^*, b^*) &= argmin_{(w,b)} \sum_{i = 1}^{m} (f(x_i) - y_i)^2 \\
+ &= argmin_{(w,b)} \sum_{i = 1}^{m} (wx_i + b - y_i)^2
+\end{align*}</script><p>$(w^<em>,b^</em>)$表示$w$和$b$的解。<code>基于均方误差最小化来进行模型求解的方法称为“最小二乘法”</code>，在线性回归中，最小二乘法就是试图找到一条直线，使所有样本到直线上的欧式距离之和最小。</p>
+<h3 id="单特征求解"><a href="#单特征求解" class="headerlink" title="单特征求解"></a>单特征求解</h3><p><code>对于只有一个特征</code>的线性回归模型的最小二乘法的解方法为：</p>
+<p>令</p>
+<script type="math/tex; mode=display">
+E_{(w,b)} = \sum_{i=1}^{m}(wx_i + b - y_i)^2</script><p>分别对w和b求偏导</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+ \frac{\partial E_(w,b)}{\partial w} &= 2\sum_{i=1}^{m}x_i(wx_i + b - y_i) \\
+ &= 2[w\sum_{i=1}^{m}x_i^2 - \sum_{i=1}^{m}(y_i - b)x_i] \tag{1}
+\end{align*}</script><script type="math/tex; mode=display">
+\begin{align*}
+    \frac{\partial E_{(w,b)}}{\partial b} &= 2\sum_{i=1}^{m}(wx_i + b - y_i) \\
+    &= 2[mb - \sum_{i=1}^{m}(y-wx_i)] \tag{2}
+\end{align*}</script><p>令偏导数为0 可解得$w$和$b$为</p>
+<script type="math/tex; mode=display">
+w = \frac{\sum_{i=1}^{m}y_i(x_i - \overline x)}{\sum_{i=1}^{m}x_i^2 - \frac{1}{m}(\sum_{i=1}^{m}x_i)^2} \tag{3}</script><script type="math/tex; mode=display">
+b = \frac{1}{m} \sum_{i=1}^{m}(y_i - wx_i) \tag{4}</script><p>式(4)可由式(2)等于0直接得出，式(3)可有式(2)和式(4)联立推出。其中$\overline x = \frac{1}{m} \sum_{i=1}^{m}x_i$为$x$的均值。</p>
+<h3 id="多元线性回归"><a href="#多元线性回归" class="headerlink" title="多元线性回归"></a>多元线性回归</h3><p>上面对只有一个特征描述的数据集如何使用最小二乘法求解线性回归问题进行了说明，然而实际的问题更一般的情况是有多个特征标记的数据。这种称为<code>多元线性回归</code>。</p>
+<p>为了便于讨论多元线性回归中$w$和$x$都为向量的情况，我们将$b$吸收进入$w$，即令$\hat w = (w;b)$，$\hat w$是一个$(d+1) \times 1$的矩阵。把数据集$D={(x<em>i, y_i)}</em>{i=1}^{m}$(<code>注意</code>$x_i$为向量，$y_i$为标量)表示为一个$m \times (d + 1)$大小的矩阵$X$，其中每行对应一个示例，每行的前d个元素对应一个示例的d个特征取值，最后一个元素恒置为1。并且把所有示例的最后结果表示为一个$m \times 1$的矩阵$Y$</p>
+<p>即：</p>
+<script type="math/tex; mode=display">
+\hat w = (w_1, w_2, \cdots, w_d, b)^T</script><script type="math/tex; mode=display">
+X = 
+\begin{pmatrix}
+    x_{11} & x_{12} & \cdots & x_{1d} & 1 \\
+    x_{21} & x_{22} & \cdots & x_{2d} & 1 \\
+    \vdots & \vdots &  & \vdots & \vdots \\
+    x_{m1} & m_{m2} & \cdots & x_{md} & 1
+\end{pmatrix}</script><script type="math/tex; mode=display">
+Y = (y_1, y_2, \cdots, y_m)^T</script><p>则</p>
+<script type="math/tex; mode=display">
+X\hat w =
+\begin{pmatrix}
+ x_{11} & x_{12} & \cdots & x_{1d} & 1 \\
+ x_{21} & x_{22} & \cdots & x_{2d} & 1 \\
+ \vdots & \vdots & & \vdots & \vdots \\
+ x_{m1} & m_{m2} & \cdots & x_{md} & 1
+\end{pmatrix}
+
+\begin{pmatrix}
+ w_1 \\
+ w_2 \\
+ \vdots \\
+ w_d \\
+ b
+\end{pmatrix}
+= Y</script><p>则我们的目标是</p>
+<script type="math/tex; mode=display">
+argmin_{\hat w}(Y - X\hat w)^T(Y-X\hat w)</script><p>$Y-X \hat w$为一个$m \times 1$的矩阵。</p>
+<p>同理为了求出$\hat w$，可以对$\hat w$求导并令其等于0，<code>注意这里是标量对向量求导</code>，具体标量如何对向量求导的可以参考的<a href="https://swordandtea.github.io/2020/02/08/math/标量对矩阵求导/">另一篇博客</a>。</p>
+<p>令$E_{\hat w} = (Y - X\hat w)^T(Y - X\hat w)$，对$\hat w$求导得到：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+ dE &= d(Y - X\hat w)^T·(Y - X\hat w) + (Y - X \hat w)^T d(Y - X\hat w) \\
+ &= [d(Y - X\hat w)]^T(Y - X\hat w) + (Y - X \hat w)^TdY - (Y - X\hat w)^Td(X\hat w) \\
+ &= [(dY)^T - d(X\hat w)]^T(Y - X\hat w) - (Y - X\hat w)^T(dX · \hat w + Xd\hat w) \\
+ &= -(dX · \hat w + Xd\hat w)^T(Y - X\hat w) - (Y - X\hat w)^T(Xd\hat w) \\
+ &= -(Xd\hat w)^T(Y - X\hat w) - (Y - X\hat w)^T Xd\hat w \\
+ \\
+ dE = tr(E) &= tr[-(Xd\hat w)^T(Y - X\hat w)] - tr[(Y - X\hat w)^T Xd\hat w] \\
+ &= tr[-(Y - X\hat w)^T Xd\hat w] - tr[(Y - X\hat w)^T Xd\hat w] \\
+ &= tr[-2(Y - X\hat w)^T Xd\hat w] \\
+ &= tr[2(X\hat w - Y)X d\hat w] \\
+ \\
+ 则\frac{\partial E}{\partial \hat w} &= 2(X\hat w - Y)X \tag{5}
+\end{align*}</script><p>(其中$dX$、$dY = 0$)</p>
+<p>令式(5)等于0可得：</p>
+<script type="math/tex; mode=display">
+\hat w^* = (X^TX)^{-1} X^T Y</script><p>最后得到的线性回归模型为：</p>
+<script type="math/tex; mode=display">
+f(x) = x (X^T X)^{-1} X^T Y</script><p><code>这里求解模型的方法其实就是标准方程法</code>。</p>
+<p>对于线性规划问题，另外的一种解法就是<a href="https://swordandtea.github.io/2020/02/10/machine%20learning/梯度下降">梯度下降</a>。</p>
+<h1 id="一个小问题：若-X-TX-不可逆"><a href="#一个小问题：若-X-TX-不可逆" class="headerlink" title="一个小问题：若$X^TX$不可逆"></a>一个小问题：若$X^TX$不可逆</h1><p>如果出现了$X^TX$不可逆的情况，可能是一下问题导致的：</p>
+<p>1、选用的特征有冗余的特征，即一个特征可以同其他几个特征<code>线性表示</code></p>
+<p>2、用于训练的数据的数量小于选用的特征数量</p>
+<p>如果仍然还是不可逆，那么可以对矩阵求<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/47688307">伪逆</a>，事实上在编程时大多数矩阵操作运算的库都提供了求矩阵伪逆的函数。</p>
+<p>或者直接使用求解线性方程的方法，求出多个$\hat w$，他们都能使均方误差最小化，选择哪一个作为最后的输出将由学习算法的归纳偏好决定，常见的做法是引入正则化。</p>
+<h1 id="对比一下梯度下降法和标准方程法"><a href="#对比一下梯度下降法和标准方程法" class="headerlink" title="对比一下梯度下降法和标准方程法"></a>对比一下梯度下降法和标准方程法</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>梯度下降法</th>
+<th>标准方程法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>需要选定学习率$\alpha$，可能需要多次运行训练程序才能确定最后的$\alpha$</td>
+<td>不需要确定学习率</td>
+</tr>
+<tr>
+<td>需要多次迭代才能找到最优解</td>
+<td>不需要迭代</td>
+</tr>
+<tr>
+<td>梯度下降法在有很多特征时也能很好的运行，即使对于百万级的特征数也可以使用梯度下降法</td>
+<td>在特征数量过多时，存储矩阵需要的内存需要很大，并且计算矩阵的逆矩阵会很慢。<code>求解矩阵的逆的时间复杂度大致为</code>$O(n^3)$，其中n为方阵的阶数。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code>综上所述，当n比较小时，可以考虑使用标准方程法，当n很大时，使用梯度下降法会比较好</code></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/14/math/calculus/%E4%B8%AD%E5%80%BC%E5%AE%9A%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/14/math/calculus/%E4%B8%AD%E5%80%BC%E5%AE%9A%E7%90%86/" class="post-title-link" itemprop="url">中值定理</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-14 08:31:04" itemprop="dateCreated datePublished" datetime="2020-02-14T08:31:04-05:00">2020-02-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-11 08:26:41" itemprop="dateModified" datetime="2020-07-11T08:26:41-04:00">2020-07-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/math/" itemprop="url" rel="index">
+                    <span itemprop="name">math</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>434</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="介值定理"><a href="#介值定理" class="headerlink" title="介值定理"></a>介值定理</h1><p>1、如果函数$f(x) \in C[a,b]$，即在$(a,b)$上连续，则存在$\eta \in (a,b)$，使得$f(\eta)$介于$f(a)$与$f(b)$之间。</p>
+<p>2、如果函数$f(x) \in C[a,b]$，且在$f(x)$在$[a,b]$上取得最小值min，最大值max，则存在$\eta \in (a,b)$，使得$f(\eta) in [min, max]$。</p>
+<h1 id="费马定理"><a href="#费马定理" class="headerlink" title="费马定理"></a>费马定理</h1><p>若函数$f(x)$一阶可导，且在点$x_0$出取得极值，则$f’(x_0) = 0$</p>
+<h1 id="罗尔中值定理"><a href="#罗尔中值定理" class="headerlink" title="罗尔中值定理"></a>罗尔中值定理</h1><p>若函数$f(x) \in C[a,b]$，且$f(a)=f(b)$，则存在$\eta \in (a,b)$，使得$f’(\eta) = 0$</p>
+<p>洛尔定理的推广：</p>
+<p>1、//TODO: finish this part</p>
+<h1 id="拉格朗日中值定理"><a href="#拉格朗日中值定理" class="headerlink" title="拉格朗日中值定理"></a>拉格朗日中值定理</h1><p>若函数$f(x) \in C[a,b]$，则存在$\eta \in (a,b)$，使得$f(b) - f(a) = f’(\eta)(b-a)$。</p>
+<p>证明：</p>
+<p>构造函数$F(x) = [f(b) - f(a)]x - (b-a)f(x)$，则有$F(a) = F(b)$，则根据罗尔中值定理可证得。</p>
+<h1 id="柯西中值定理"><a href="#柯西中值定理" class="headerlink" title="柯西中值定理"></a>柯西中值定理</h1><p>如函数$f(x) \in C[a,b], g(x) \in C[a,b]$，则存在$\eta \in (a,b)$，使得: </p>
+<script type="math/tex; mode=display">
+\frac{f'(\eta)}{g'(\eta)} = \frac{f(b)-f(a)}{g(b)-g(a)}</script><p>证明：</p>
+<p>构造函数$F(x) = f(x)[g(b) - g(a)] - f(x)[f(b) - f(a)]$ ，然后有$F(a) = F(b)$，则根据罗尔中值定理可证得。</p>
+<h1 id="积分中值定理"><a href="#积分中值定理" class="headerlink" title="积分中值定理"></a>积分中值定理</h1><p>若$f(x)$在$[a,b]$上可积分，则存在$\eta \in (a,b)$，使得$f(\eta)(b-a) = \int_{a}^{b} f(x)dx$</p>
+<h1 id="推广的积分中值定理"><a href="#推广的积分中值定理" class="headerlink" title="推广的积分中值定理"></a>推广的积分中值定理</h1><p>设$f(x)$，$g(x)$在$[a,b]$上连续，且$g(x)$在$[a,b]$上<code>不变号</code>，则存在$\eta \in (a,b)$，使得$\int<em>{a}^{b} f(x)g(x)dx = f(\eta) \int</em>{a}^{b}g(x)dx$</p>
+<p>证明：</p>
+<p>设$F(x) = \int<em>{a}^{x} f(t)g(t)dt$，$G(x) = \int</em>{a}^{x}g(t)dt$，在$(a,b)$上使用柯西中值定理即可证得。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/13/math/calculus/%E5%82%85%E7%AB%8B%E5%8F%B6%E7%BA%A7%E6%95%B0%E5%85%AC%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/13/math/calculus/%E5%82%85%E7%AB%8B%E5%8F%B6%E7%BA%A7%E6%95%B0%E5%85%AC%E5%BC%8F/" class="post-title-link" itemprop="url">傅立叶级数公式</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-13 09:01:55" itemprop="dateCreated datePublished" datetime="2020-02-13T09:01:55-05:00">2020-02-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-11 08:26:41" itemprop="dateModified" datetime="2020-07-11T08:26:41-04:00">2020-07-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/math/" itemprop="url" rel="index">
+                    <span itemprop="name">math</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>352</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="三角函数族"><a href="#三角函数族" class="headerlink" title="三角函数族"></a>三角函数族</h1><h1 id="傅立叶级数"><a href="#傅立叶级数" class="headerlink" title="傅立叶级数"></a>傅立叶级数</h1><p>对于一个周期函数，它都能展开为三角函数的级数</p>
+<h3 id="以-2-pi-为周期的函数"><a href="#以-2-pi-为周期的函数" class="headerlink" title="以$2\pi$为周期的函数"></a>以$2\pi$为周期的函数</h3><p>如果一个函数以$2\pi$为周期，则它可以展开为形如$\frac{a<em>0}{2} + \sum</em>{n=1}^{\infty} (a_n cosnx + b_n sinnx)$，其中</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+    a_n &= \frac{1}{\pi}\int_{-\pi}^{\pi} f(x)cosnx dx \\
+    b_n &= \frac{1}{\pi}\int_{-\pi}^{\pi} f(x)sinnx dx
+\end{align*}</script><p>若记$s(x) = \frac{a<em>0}{2} + \sum</em>{n=1}^{\infty} (a_n cosnx + b_n sinnx)$，则</p>
+<script type="math/tex; mode=display">
+s(x) = 
+\begin{cases}
+    f(x), \space f(x)的连续点 \\
+    \frac{f(x_0^+) + f(x_0^-)}{2}，\space f(x)的间断点 \\
+  \frac{f(-\pi^+) + f(\pi^-)}{2}，\space x=\pm \pi
+\end{cases}</script><h3 id="以-2l-为周期的函数"><a href="#以-2l-为周期的函数" class="headerlink" title="以$2l$为周期的函数"></a>以$2l$为周期的函数</h3><p>如果一个函数以$2\pi$为周期，则它可以展开为形如$\frac{a<em>0}{2} + \sum</em>{n=1}^{\infty} (a_n cos \frac{n\pi}{l}x + b_n sin \frac{n\pi}{l})$，其中</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+    a_n &= \frac{1}{l}\int_{-l}^{l} f(x)cos \frac{n\pi}{l}x dx \\
+    b_n &= \frac{1}{l}\int_{-l}^{l} f(x)sin \frac{n\pi}{l}x dx
+\end{align*}</script><p>若记若记$s(x) = \frac{a<em>0}{2} + \sum</em>{n=1}^{\infty} (a_n cos \frac{n\pi}{l}x + b_n sin \frac{n\pi}{l})$，则</p>
+<script type="math/tex; mode=display">
+s(x) = 
+\begin{cases}
+    f(x), \space f(x)的连续点 \\
+    \frac{f(x_0^+) + f(x_0^-)}{2}，\space f(x)的间断点 \\
+  \frac{f(-l^+) + f(l^-)}{2}，\space x=\pm l
+\end{cases}</script><h3 id="偶函数"><a href="#偶函数" class="headerlink" title="偶函数"></a>偶函数</h3><p>对于偶函数其傅立叶级数展开形式<code>没有</code>正弦项</p>
+<h3 id="奇函数"><a href="#奇函数" class="headerlink" title="奇函数"></a>奇函数</h3><p>对于奇函数其傅立叶级数展开形式<code>只有</code>正弦项</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/13/math/%E5%A4%9A%E5%85%83%E5%87%BD%E6%95%B0%E7%9A%84%E4%BA%8C%E9%98%B6%E6%B3%B0%E5%8B%92%E5%B1%95%E5%BC%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/13/math/%E5%A4%9A%E5%85%83%E5%87%BD%E6%95%B0%E7%9A%84%E4%BA%8C%E9%98%B6%E6%B3%B0%E5%8B%92%E5%B1%95%E5%BC%80/" class="post-title-link" itemprop="url">多元函数的二阶泰勒展开</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-13 06:33:27" itemprop="dateCreated datePublished" datetime="2020-02-13T06:33:27-05:00">2020-02-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-20 02:50:01" itemprop="dateModified" datetime="2021-02-20T02:50:01-05:00">2021-02-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/math/" itemprop="url" rel="index">
+                    <span itemprop="name">math</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>445</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="复习一元函数泰勒展开"><a href="#复习一元函数泰勒展开" class="headerlink" title="复习一元函数泰勒展开"></a>复习一元函数泰勒展开</h1><p>一元函数$f(x)$在点$x_0$展开：</p>
+<script type="math/tex; mode=display">
+f(x) = \sum_{n=1} \frac{1}{n!} f^{(n)} (x-x_0)^n</script><h1 id="从二元到多元"><a href="#从二元到多元" class="headerlink" title="从二元到多元"></a>从二元到多元</h1><h4 id="二元函数"><a href="#二元函数" class="headerlink" title="二元函数"></a>二元函数</h4><p>首先看二元函数的<code>二阶</code>展开，对于二元函数$f(x, y)$在点$(x_0, y_0)$处展开式为：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+    f(x, y) =& f(x_0, y_0) + f'_x(x_0,y_0)(x-x_0) + f'_y(x_0,y_0)(y-y_0) \\
+    & + \frac{1}{2!}[f''_{xx}(x_0, y_0)(x-x_0)^2 + f''_{xy}(x_0,y_0)(x-x_0)(y-y_0) \\
+    & + f''_{yx}(x_0,y_0)(x-x_0)(y-y_0) + f''_{yy}(x_0,y_0)(y-y_0)^2] + O(x^2)
+\end{align*}</script><p>转换为矩阵形式为：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+    f(x, y) =& f(x_0, y_0) + f'_x(x_0,y_0)(x-x_0) + f'_y(x_0,y_0)(y-y_0) \\
+    & + \frac{1}{2!}
+  [
+        \begin{pmatrix}
+            x-x_0,y-y_0
+        \end{pmatrix}
+
+        \begin{pmatrix}
+            f''_{xx} & f''_{xy} \\
+            f''_{yx} & f''_{yy}
+        \end{pmatrix}
+
+        \begin{pmatrix}
+            x-x_0 \\
+            y-y_0
+        \end{pmatrix}
+    ]
+\end{align*}</script><h4 id="推广到m元函数"><a href="#推广到m元函数" class="headerlink" title="推广到m元函数"></a>推广到m元函数</h4><p>由上的公式可以推出函数$f(x<em>1,x_2,\ldots \space,x_m)$在点$(x</em>{k1}, x<em>{k2}, \ldots \space ,x</em>{k2})$处展开的公式为：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+    f(x_1,x_2,\ldots \space,x_m) =& f(x_{k1}, x_{k2}, \ldots \space ,x_{km}) \\
+    & + \sum_{i=1}^{m} f'_{x_{ki}}(x_{k1}, x_{k2}, \ldots \space ,x_{k2})(x_i - x_{ki}) \\
+    & + \frac{1}{2!}
+    [
+        \begin{pmatrix}
+            x-x_{k1}, x-x_{k2}, \ldots, x-x_{km}
+        \end{pmatrix}
+
+        \begin{pmatrix}
+            f''_{x_1 x_1} & f''_{x_1 x_2} & \cdots & f''_{x_1 x_m} \\
+            f''_{x_2 x_1} & f''_{x_2 x_2} & \cdots & f''_{x_2 x_m} \\
+            \vdots & \vdots & & \vdots \\
+            f''_{x_m x_1} & f''_{x_m x_2} & & f''_{x_m x_m}
+        \end{pmatrix}
+
+        \begin{pmatrix}
+            x-x_{k1} \\ 
+            x-x_{k2} \\
+      \vdots \\
+      x-x_{km}
+        \end{pmatrix}
+    ]
+\end{align*}</script><p>若记</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+    X &= (x_1, x_2, \cdots, x_m)\\
+    X_k &= (x_{k1}, x_{k2}, \cdots, x_{km}) \\
+    X-X_k &= (x_1-x_{k0}, x_2-x_{k2}, \cdots, x_m-x_{km}) \\
+    f'_X &= (f'_{x{k1}}, f'_{x_{k2}}, \cdots, f'_{x_{km}} )
+\end{align*}</script><script type="math/tex; mode=display">
+H(X) = 
+\begin{pmatrix}
+            f''_{x_1 x_1} & f''_{x_1 x_2} & \cdots & f''_{x_1 x_m} \\
+            f''_{x_2 x_1} & f''_{x_2 x_2} & \cdots & f''_{x_2 x_m} \\
+            \vdots & \vdots & & \vdots \\
+            f''_{x_m x_1} & f''_{x_m x_2} & & f''_{x_m x_m}
+        \end{pmatrix}</script><p>则上式可以写为: </p>
+<script type="math/tex; mode=display">
+f(X) = f(X_k) + f'_X · (X-X_k)^T + \frac{1}{2!}(X-X_k)H(X)(X-X_k)^T</script>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/12/math/calculus/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0%E7%9A%84%E9%BA%A6%E5%85%8B%E5%8A%B3%E6%9E%97%E5%B1%95%E5%BC%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/12/math/calculus/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0%E7%9A%84%E9%BA%A6%E5%85%8B%E5%8A%B3%E6%9E%97%E5%B1%95%E5%BC%80/" class="post-title-link" itemprop="url">常用函数的麦克劳林展开</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-12 23:10:23" itemprop="dateCreated datePublished" datetime="2020-02-12T23:10:23-05:00">2020-02-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-11 08:26:41" itemprop="dateModified" datetime="2020-07-11T08:26:41-04:00">2020-07-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/math/" itemprop="url" rel="index">
+                    <span itemprop="name">math</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>316</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>麦克劳林公式是在$x=0$点处展开的泰勒公式</p>
+<h1 id="常用函数的麦克劳林公式的展开式："><a href="#常用函数的麦克劳林公式的展开式：" class="headerlink" title="常用函数的麦克劳林公式的展开式："></a>常用函数的麦克劳林公式的展开式：</h1><p>1、指数函数</p>
+<script type="math/tex; mode=display">
+e^x = \sum_{n=0}^{\infty}\frac{x^n}{n!}</script><p>2、正弦函数</p>
+<script type="math/tex; mode=display">
+sin x = \sum_{n = 0}^{\infty} (-1)^n \frac{x^{2n+1}}{(2n+1)!}</script><p>3、余弦函数</p>
+<script type="math/tex; mode=display">
+cos x = \sum_{n=0}^{\infty}(-1)^n \frac{x^{2n}}{(2n)!}</script><p>4、对数函数</p>
+<script type="math/tex; mode=display">
+ln(1+x) = \sum_{n=1}^{\infty} (-1)^{n-1} \frac{x^n}{n}</script><p>5、幂函数</p>
+<script type="math/tex; mode=display">
+(1+x)^{\alpha} = 1 + \sum_{n=1}^{\infty} \frac{\alpha (\alpha - 1) \cdots (\alpha-n+1)}{n!} x^n</script><p><code>一个简单的记忆口诀</code>: 幂指无负1，对数无阶乘，幂对起于1，首项都为正</p>
+<h1 id="几个重要的低阶展开的麦克劳林公式"><a href="#几个重要的低阶展开的麦克劳林公式" class="headerlink" title="几个重要的低阶展开的麦克劳林公式"></a>几个重要的低阶展开的麦克劳林公式</h1><p>1、$sinx = x - \frac{x^3}{3!} + O(x^3)$，$arcsinx = x + \frac{x^3}{3!} + O(x^3)$</p>
+<p>2、$tanx = x + \frac{x^3}{3} + O(x^3)$，$arctanx = x - \frac{x^3}{3} + O(x^3)$</p>
+<p>3、$cosx = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} + O(x^4)$，$arccosx = \frac{\pi}{2} - x - \frac{x^3}{3!}-O(x^3)$</p>
+<p>4、$ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} + O(x^3)$</p>
+<p>5、$e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + O(x^3)$</p>
+<p>6、$(1+x)^{\alpha} = 1 + \alpha x + \frac{\alpha(\alpha - 1)}{2!} x^2 + O(x^2)$</p>
+<p><code>利用上述公式可以得到一组“差函数的无穷小等价替换</code>，例如：$x-sinx ～ \frac{x^3}{6}$​</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/11/math/llinear%20algebra/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/11/math/llinear%20algebra/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">线性代数笔记</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-11 09:35:42" itemprop="dateCreated datePublished" datetime="2020-02-11T09:35:42-05:00">2020-02-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-11-17 11:49:00" itemprop="dateModified" datetime="2020-11-17T11:49:00-05:00">2020-11-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/math/" itemprop="url" rel="index">
+                    <span itemprop="name">math</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.5k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>5 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这篇笔记用于记录经常在线性代数中用到的相关知识</p>
+<h1 id="线性代数基本术语"><a href="#线性代数基本术语" class="headerlink" title="线性代数基本术语"></a>线性代数基本术语</h1><p>1、n阶矩阵即n阶方阵</p>
+<p>2、如果矩阵A与矩阵B都是$m \times n$矩阵，就称A和B为同型矩阵</p>
+<h1 id="矩阵的乘法性质"><a href="#矩阵的乘法性质" class="headerlink" title="矩阵的乘法性质"></a>矩阵的乘法性质</h1><p>1、结合律：$(AB)C=A(BC)$</p>
+<p>2、数乘结合律：$k(AB) = (kA)B = A(kB)$，k为常数</p>
+<p>3、分配律：$A(B+C) = AB+AC$</p>
+<p>4、<code>矩阵的乘法没有交换律</code>，即一般有$AB \neq BA$，如果有$AB \neq BA$，称A与B是不可交换的；当$AB=BA$时，称A与B是可交换的。</p>
+<p>5、即使有$A \neq 0(0矩阵)$，由$AB=BA$也不能退出$B=C$</p>
+<p>6、$f(A) = a<em>k A^k + a</em>{k-1} A^{k-1} + \cdots + a_1 A + a_0 I,(a_0、a_1、\ldots 、a_n为常数)$，称为方阵A的k次多项式，如果有多项式$f(x)$与$g(x)$，则有$f(A)g(A) = g(A)f(A)$，<code>注意都是A</code>。但是一般情况下$f(A)g(B) \neq f(B)f(A)$。</p>
+<p>7、$(A+\lambda I)^n = \sum_{k=0}^{n} \lambda^k A^{n-k}$</p>
+<h1 id="矩阵的转置的性质"><a href="#矩阵的转置的性质" class="headerlink" title="矩阵的转置的性质"></a>矩阵的转置的性质</h1><p>1、$(A^T)^T = A$</p>
+<p>2、$(A+B)^T = A^T + B^T$</p>
+<p>3、$(kA)^T = k(A^T)$</p>
+<p>4、$(AB)^T = B^T A^T$，$(A<em>1 A_2 \cdots A_n)^T = {A_n}^T {A</em>{n-1}}^T \cdots {A_1}^T$，$(A^n)^T = (A^T)^n$</p>
+<p>5、若$A^T A = 0$，则$A = A^T = 0$</p>
+<p>6、若$A^T = A$，则称A为对称矩阵；若$A^T = -A$，则称A为反称矩阵</p>
+<p>8、<code>实对称矩阵的n次方仍是实对称矩阵</code>，证明：$A^n = (A^T)^n = (A^n)^T $</p>
+<h1 id="逆矩阵的性质"><a href="#逆矩阵的性质" class="headerlink" title="逆矩阵的性质"></a>逆矩阵的性质</h1><p>A为n阶矩阵，若存在n阶矩阵，使得$AB=BA=I$，则称A为可逆矩阵。A的<code>可逆矩阵唯一</code>，记为$A^{-1}$。</p>
+<p><code>在使用处等变换求解矩阵的逆矩阵的过程中，如果使用行变换则只能全程使用行变换，如果使用列变换则只能全程使用列变换</code></p>
+<p>1、$(A^{-1})^{-1} = A$</p>
+<p>2、$(\lambda A)^{-1} = \frac{1}{\lambda} A^{-1}$</p>
+<p>3、$(AB)^{-1} = B^{-1} A^{-1}$，$(A<em>1 A_2 \cdots A_n) = {A_n}^{-1} {A</em>{n-1}}^{-1} \cdots {A_1}^{-1}$，$(A^n)^{-1} = (A^{-1})^n$</p>
+<p>4、</p>
+<script type="math/tex; mode=display">
+\begin{pmatrix}
+    a_{1,1} & & & \\
+     & a_{2,2} & & \\
+     & & \ddots & \\
+     & & & a_{n,n}
+\end{pmatrix}^{-1} 
+
+=
+
+\begin{pmatrix}
+    \frac{1}{a_{1,1}} & & & \\
+     & \frac{1}{a_{2,2}} & & \\
+     & & \ddots & \\
+     & & & \frac{1}{a_{n,n}}
+\end{pmatrix}</script><p>5、</p>
+<script type="math/tex; mode=display">
+\begin{pmatrix}
+ & & & a_{1,n} \\
+ & & a_{2,n-1} & \\
+ & \cdots & & \\
+a_{n,1} & & & 
+\end{pmatrix}^{-1}
+
+=
+
+\begin{pmatrix}
+ & & & \frac{1}{a_{n, 1}} \\
+ & & \frac{1}{a_{n-1, 2}} & \\
+ & \cdots & & \\
+ \frac{1}{a_{1, n}} & & & \\
+\end{pmatrix}</script><p>6、$(E<em>{ij})^{-1} = E</em>{ij}$，$(E<em>{i(c)})^{-1} = E</em>{i(\frac{1}{c})}$，$(E<em>{ij(c)})^{-1} = E</em>{ij(-c)}$</p>
+<h1 id="行列式的性质"><a href="#行列式的性质" class="headerlink" title="行列式的性质"></a>行列式的性质</h1><p>1、</p>
+<script type="math/tex; mode=display">
+\left|
+    \begin{array}
+        {cccc}
+        a_{1} & & & \\
+        & a_{2} & & \\
+        & & \ddots & \\
+        \star & & & a_{n}
+    \end{array}
+\right|
+
+=
+
+\left|
+    \begin{array}
+        {cccc}
+        a_{1} & & & \star \\
+        & a_{2} & & \\
+        & & \ddots & \\
+        & & & a_{n}
+    \end{array}
+\right|
+
+= a_1 a_2 \cdots a_n</script><p>2、</p>
+<script type="math/tex; mode=display">
+\left|
+    \begin{array}
+        {cccc}
+        & & & a_n \\
+        & & \cdots & \\
+        & a_2 & & \\
+        a_1 & & & \star \\
+    \end{array}
+\right|
+
+=
+
+\left|
+    \begin{array}
+        {cccc}
+        \star & & & a_n \\
+        & & \cdots & \\
+        & a_2 & &\\
+        a_1 & & & \\
+    \end{array}
+\right|
+
+=
+
+(-1)^{\frac{n(n-1)}{2}} a_1 a_2 \cdots a_n</script><p>3、交换矩阵$A$的两行的到$A’$，则$|A’| = -|A|$，即有$|E_{ij}| = -1$</p>
+<p>4、将矩阵$A$的<code>某一行数乘k</code>得到$A’$，则$|A’| = k|A|$，即有$|E_{i(c)} = C|$</p>
+<p>5、将矩阵$A$的某一行的k倍加到另一行的到$A’$，则$|A’| = |A|$，即有$|E_{ij{c}}| = 1$</p>
+<p>6、$|A^T| = |A|$</p>
+<p>7、$|A^{-1}| = |A|^{-1}$</p>
+<p>8、$|AB| = |A||B|$，继而有$|A^n| = |A|^n$</p>
+<p>9、$|kA| = k^n |A|$，n为方阵的阶数</p>
+<p>10、范德蒙行列式：</p>
+<script type="math/tex; mode=display">
+\left|
+    \begin{array}
+        {cccc}
+        1 & 1 & 1 & \cdots & 1 \\
+        x_1 & x_2 & x_3 & \cdots & x_n \\
+        x_1^2 & x_2^2 & x_3^2 & \cdots & x_n^2 \\
+        \vdots & \vdots & \vdots & & \vdots \\
+        x_1^{n-1} & x_2^{n-1} & x_3^{n-1} & \cdots & x_n^{n-1}
+    \end{array}
+\right|
+
+=
+
+\prod_{1 \leq j < i \leq n} (x_i - x_j)</script><p>11、分块矩阵行列式</p>
+<script type="math/tex; mode=display">
+\left|
+    \begin{array}
+        {cccc}
+        B_{m \times m} & 0 \\
+        \\
+        \star & C_{n \times n}
+    \end{array}
+\right|
+
+=
+
+\left|
+    \begin{array}
+        {cccc}
+        B_{m \times m} & \star \\
+        \\
+        0 & C_{n \times n}
+    \end{array}
+\right|
+
+= |B||C|</script><script type="math/tex; mode=display">
+\left|
+    \begin{array}
+        {cccc}
+        0 & C_{r \times r} \\
+        \\
+        B_{s \times s} & \star
+    \end{array}
+\right|
+
+=
+
+\left|
+    \begin{array}
+        {cccc}
+        \star & C_{r \times r} \\
+        \\
+        B_{s \times s} & 0
+    \end{array}
+\right|
+
+= (-1)^{rs} |B||C|</script><h1 id="伴随矩阵性质"><a href="#伴随矩阵性质" class="headerlink" title="伴随矩阵性质"></a>伴随矩阵性质</h1><p>若方阵</p>
+<script type="math/tex; mode=display">
+A = 
+\begin{pmatrix}
+    a_{11} & a_{12} & \cdots  & a_{1n} \\
+    a_{21} & a_{22} & \cdots & a_{2n} \\
+    \vdots & \vdots & & \vdots \\
+    a_{n1} & a_{n2} & \cdots & a_{nn}
+\end{pmatrix}</script><p>则其伴随矩阵为：</p>
+<script type="math/tex; mode=display">
+A^{*} =
+\begin{pmatrix}
+     A_{11} & A_{21} & \cdots & A_{n1} \\
+     A_{12} & A_{22} & \cdots & A_{n2} \\
+     \vdots & \vdots & & \vdots \\
+     A_{1n} & A_{2n} & & A_{nn}
+\end{pmatrix}</script><p>其中$A<em>{ij}$为$a</em>{ij}$的代数余子式，<code>注意</code>$A^*$的下标排列方式</p>
+<p>1、$\sum<em>{k=1}^{n} a</em>{ik} A_{jk} = 0$，($i \neq j; i, j = 1、2、\ldots \space、n$)，即矩阵的任一行（列）的元素乘以另一行(列)对应元的代数余子式之和为0</p>
+<p>2、$AA^<em> = A^</em> A = |A|I$，$\implies A^{-1} = \frac{1}{|A|} A^*$</p>
+<p>3、$(kA)^<em> = k^{n-1}A^</em>$，n为方阵阶数</p>
+<p>4、$(A^<em>)^{-1} = (A^{-1})^</em>$，$(A^T)^<em> = (A^</em>)^T$</p>
+<p>5、$|A^*| = |A|^{n-1}$，n为方阵阶数</p>
+<p>6、$(AB)^<em> = B^</em> A^<em>$，$(A^</em>)^n = (A^n)^*$</p>
+<h1 id="克拉默法则"><a href="#克拉默法则" class="headerlink" title="克拉默法则"></a>克拉默法则</h1><p>设n阶矩阵$A$可逆则线性方程组$Ax=b$有唯一解$(x_1,x_2, \space \ldots \space,x_n)^T$，其中$x_i = \frac{|A_i|}{A}$，$|A_i|$<code>表示用b代替｜A｜中第j列得到的行列式</code></p>
+<h1 id="矩阵的秩"><a href="#矩阵的秩" class="headerlink" title="矩阵的秩"></a>矩阵的秩</h1><p>1、初等变换不改变矩阵的秩</p>
+<p>2、设A为$m \times n$矩阵，则R(A) = r的充分必要条件是通过行初等变换(行变换和列变换能同时使用)能将A化为具有r个非零行的行阶梯行矩阵。这也是求解矩阵的秩的基本方法。</p>
+<p>3、设$A$为n阶矩阵，则A可逆的充分必要条件是$R(A) = n$，即$A可逆 \iff R(A) = n$</p>
+<p>4、$R(A) = R(A^T)$，$R(A^TA) = R(AA^T) = R(A)$</p>
+<p>5、$R(A^*) = \begin{cases} n, \space 若R(A) = n \ 1, \space 若R(A)=n-1 \ 0, \space 若R(A) &lt; n-1 \end{cases}$ ，这个性质的一个应用是证明A*为0矩阵，则只需要证明$R(A)&lt; n-1$ 即可</p>
+<p>6、设$A$为$m \times n$矩阵，$B$为$n \times s$矩阵，若$AB = 0$，则$R(A) + R(B) \leq n$</p>
+<p>7、$R(AB) \leq min{R(A), \space R(B)}$，$R(A+B) \leq R(A) + R(B)$</p>
+<p>8、若B为<code>可逆矩阵</code>，则$R(AB) = R(BA) = R(A)$</p>
+<h1 id="正交矩阵"><a href="#正交矩阵" class="headerlink" title="正交矩阵"></a>正交矩阵</h1><h1 id="矩阵相似"><a href="#矩阵相似" class="headerlink" title="矩阵相似"></a>矩阵相似</h1><p>对于同型方阵A、B，若存在<code>可逆矩阵</code>Q，使得$Q^{-1}AQ = B$，记为$A～B$。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/10/machine_learning/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/10/machine_learning/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" class="post-title-link" itemprop="url">梯度下降</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-10 21:27:18" itemprop="dateCreated datePublished" datetime="2020-02-10T21:27:18-05:00">2020-02-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-03-28 03:54:24" itemprop="dateModified" datetime="2024-03-28T03:54:24-04:00">2024-03-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="什么是梯度"><a href="#什么是梯度" class="headerlink" title="什么是梯度"></a>什么是梯度</h1><p>梯度本质上来说就是一个向量，这个向量的各个分量是多元函数在某点的各个一阶偏导数。既然是一个向量，那么就可以表示方向。进而由方向导数的定义可以知道，沿梯度方向，函数值<code>增大</code>的速度就越快，相反沿梯度的反方向，函数值<code>减小</code>的速度就越大</p>
+<h1 id="为什么要使用梯度下降法"><a href="#为什么要使用梯度下降法" class="headerlink" title="为什么要使用梯度下降法"></a>为什么要使用梯度下降法</h1><p>对于一些优化问题时，我们一般需要求解问题的局部最优解，而表现在函数上，局部最优解就是函数的极值点。根据费马定理，如果一个函数一阶可偏导，那么极值点处的一阶偏导数都为0。而一般绝大多数的函数都是一阶可偏导的。</p>
+<p>但是直接求出函数的偏导数，然后令偏导数等于0求解方程的这种方法一般很难求出方程的解。所以只有通过数值计算的方法来求解近似解。</p>
+<h1 id="梯度下降法的一般形式"><a href="#梯度下降法的一般形式" class="headerlink" title="梯度下降法的一般形式"></a>梯度下降法的一般形式</h1><p>首先确定一个初始点$W<em>0$，然后使用迭代公式: $w</em>{n+1}^i = w<em>n^i - \alpha f’</em>{w^i}(W_n)$，$w^i$表示点$W$的第$i$个分量，$\alpha$为学习率，一般为一个接近0的常数，例如0.001。</p>
+<p>迭代，直到达到一定的迭代步数或者是目标函数的变化或参数的变化小于某一阈值时停止迭代。</p>
+<h1 id="实现细节问题"><a href="#实现细节问题" class="headerlink" title="实现细节问题"></a>实现细节问题</h1><h4 id="初始值的设定"><a href="#初始值的设定" class="headerlink" title="初始值的设定"></a>初始值的设定</h4><p>一般的，对于不带约束条件的优化问题，可以将初始值设置为0，或者设置为随机数。初始值的设定对算法的收敛很重要，不同的初始值最后可能收敛到不同的极值点。</p>
+<h4 id="学习率的设定"><a href="#学习率的设定" class="headerlink" title="学习率的设定"></a>学习率的设定</h4><p>一般可以令学习率为一个很小的正数例如0.001，并且在接下来的迭代过程中不再改变学习率。或者可以在迭代的过程中动态的调整学习率的值，例如前10000步迭代时学习率为0.001，然后10000步学习率减半。如果梯地下降算法运行异常的话，可能也是学习率设置得不太合理。</p>
+<h4 id="特征缩放"><a href="#特征缩放" class="headerlink" title="特征缩放"></a>特征缩放</h4><p>有时候，一个特征的可能取值范围可能很大，这对于梯度下降法来说就可能需要很多次迭代才能最后收敛。所以为了减少迭代次数，可以使用特征缩放的方法。</p>
+<p>例如有特征$x_1$，其取值范围为$(0, 2000)$，特征$x_2$，其取值$(0, 100)$，那么就可以对这两个特征进行缩放为$\frac{x_1}{2000}$和$\frac{x_2}{100}$。</p>
+<p>一般的，特征缩放后的读取范围一般为$[-1,1]$之间。为此，可以使用均值归一化方法，如果一个特征$x$的均值为$\mu$，其取值区间长度为$n$，则归一化方法缩放方式为$\frac{x-\mu}{n}$。</p>
+<h4 id="判断梯度下降法是否收敛"><a href="#判断梯度下降法是否收敛" class="headerlink" title="判断梯度下降法是否收敛"></a>判断梯度下降法是否收敛</h4><p>一种方法是设置收敛阈值，即当目标函数的变化值小于某个阈值时表明梯度下降收敛。</p>
+<p>令一种方法是画出目标函数值随着迭代步数变化的图形，例如每迭代100次就画出当时的目标函数的函数值。最后根据图像来判断是否收敛。</p>
+<p>第一种方法有可能不好设置阈值，两种方法可以配合着使用。</p>
+<h1 id="梯度下降法的问题"><a href="#梯度下降法的问题" class="headerlink" title="梯度下降法的问题"></a>梯度下降法的问题</h1><p>在大多数非凸优化问题中，极值点不一定就是局部最优解的点，而且，即使某个极值点是局部最优解的点但是局部最优解不一定就是全局最优解。</p>
+<h1 id="随机梯度下降"><a href="#随机梯度下降" class="headerlink" title="随机梯度下降"></a>随机梯度下降</h1><p>对于某些机器学习问题，我们的目标函数是关于样本的损失函数，例如对于线性规划问题，假设训练集中有N个样本，并且N很大，在进行训练时我们使用均方误差来作为损失函数。即$L(W) = \frac{1}{N} \sum_{k=1}^{N} (Y-WX)^2$，$Y,X$都是N维向量，$W$是我们的自变量。则一次迭代下来，要计算全部样本的话计算量就太大了。</p>
+<p>作为改进，可以在一次迭代时，<code>随机选择部分样本</code>来进行近似损失函数，即$L(W) = \frac{1}{M} \sum_{k=1}^{M} (Y-WX)^2, M \ll N$。这就是随机梯度下降法。已经证明，随机梯度下降法产生的梯度的期望值等于全部样本最为产生的梯度。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/10/math/calculus/%E7%BA%A7%E6%95%B0%E5%88%A4%E6%95%9B%E6%B3%95%E5%88%99/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -205,14 +1301,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-02-10 21:42:20" itemprop="dateCreated datePublished" datetime="2020-02-10T21:42:20+08:00">2020-02-10</time>
+              <time title="Created: 2020-02-10 08:42:20" itemprop="dateCreated datePublished" datetime="2020-02-10T08:42:20-05:00">2020-02-10</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
+                <time title="Modified: 2020-07-11 08:48:25" itemprop="dateModified" datetime="2020-07-11T08:48:25-04:00">2020-07-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -314,111 +1410,6 @@ R=\begin{cases}
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/10/machine_learning/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="SwordAndTea">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xiangwei's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/10/machine_learning/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" class="post-title-link" itemprop="url">梯度下降</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-10 21:27:18" itemprop="dateCreated datePublished" datetime="2020-02-10T21:27:18+08:00">2020-02-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-17 10:14:59" itemprop="dateModified" datetime="2020-11-17T10:14:59+08:00">2020-11-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">machine learning</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.2k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>4 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="什么是梯度"><a href="#什么是梯度" class="headerlink" title="什么是梯度"></a>什么是梯度</h1><p>梯度本质上来说就是一个向量，这个向量的各个分量是多元函数在某点的各个一阶偏导数。既然是一个向量，那么就可以表示方向。进而由方向导数的定义可以知道，沿梯度方向，函数值<code>增大</code>的速度就越快，相反沿梯度的反方向，函数值<code>减小</code>的速度就越大</p>
-<h1 id="为什么要使用梯度下降法"><a href="#为什么要使用梯度下降法" class="headerlink" title="为什么要使用梯度下降法"></a>为什么要使用梯度下降法</h1><p>对于一些优化问题时，我们一般需要求解问题的局部最优解，而表现在函数上，局部最优解就是函数的极值点。根据费马定理，如果一个函数一阶可偏导，那么极值点处的一阶偏导数都为0。而一般绝大多数的函数都是一阶可偏导的。</p>
-<p>但是直接求出函数的偏导数，然后令偏导数等于0求解方程的这种方法一般很难求出方程的解。所以只有通过数值计算的方法来求解近似解。</p>
-<h1 id="梯度下降法的一般形式"><a href="#梯度下降法的一般形式" class="headerlink" title="梯度下降法的一般形式"></a>梯度下降法的一般形式</h1><p>首先确定一个初始点$W<em>0$，然后使用迭代公式: $w</em>{n+1}^i = w<em>n^i - \alpha f’</em>{w^i}(W_n)$，$w^i$表示点$W$的第$i$个分量，$\alpha$为学习率，一般为一个接近0的常数，例如0.001。</p>
-<p>迭代，直到达到一定的迭代步数或者是目标函数的变化或参数的变化小于某一阈值时停止迭代。</p>
-<h1 id="实现细节问题"><a href="#实现细节问题" class="headerlink" title="实现细节问题"></a>实现细节问题</h1><h4 id="初始值的设定"><a href="#初始值的设定" class="headerlink" title="初始值的设定"></a>初始值的设定</h4><p>一般的，对于不带约束条件的优化问题，可以将初始值设置为0，或者设置为随机数。初始值的设定对算法的收敛很重要，不同的初始值最后可能收敛到不同的极值点。</p>
-<h4 id="学习率的设定"><a href="#学习率的设定" class="headerlink" title="学习率的设定"></a>学习率的设定</h4><p>一般可以令学习率为一个很小的正数例如0.001，并且在接下来的迭代过程中不再改变学习率。或者可以在迭代的过程中动态的调整学习率的值，例如前10000步迭代时学习率为0.001，然后10000步学习率减半。如果梯地下降算法运行异常的话，可能也是学习率设置得不太合理。</p>
-<h4 id="特征缩放"><a href="#特征缩放" class="headerlink" title="特征缩放"></a>特征缩放</h4><p>有时候，一个特征的可能取值范围可能很大，这对于梯度下降法来说就可能需要很多次迭代才能最后收敛。所以为了减少迭代次数，可以使用特征缩放的方法。</p>
-<p>例如有特征$x_1$，其取值范围为$(0, 2000)$，特征$x_2$，其取值$(0, 100)$，那么就可以对这两个特征进行缩放为$\frac{x_1}{2000}$和$\frac{x_2}{100}$。</p>
-<p>一般的，特征缩放后的读取范围一般为$[-1,1]$之间。为此，可以使用均值归一化方法，如果一个特征$x$的均值为$\mu$，其取值区间长度为$n$，则归一化方法缩放方式为$\frac{x-\mu}{n}$。</p>
-<h4 id="判断梯度下降法是否收敛"><a href="#判断梯度下降法是否收敛" class="headerlink" title="判断梯度下降法是否收敛"></a>判断梯度下降法是否收敛</h4><p>一种方法是设置收敛阈值，即当目标函数的变化值小于某个阈值时表明梯度下降收敛。</p>
-<p>令一种方法是画出目标函数值随着迭代步数变化的图形，例如每迭代100次就画出当时的目标函数的函数值。最后根据图像来判断是否收敛。</p>
-<p>第一种方法有可能不好设置阈值，两种方法可以配合着使用。</p>
-<h1 id="梯度下降法的问题"><a href="#梯度下降法的问题" class="headerlink" title="梯度下降法的问题"></a>梯度下降法的问题</h1><p>在大多数非凸优化问题中，极值点不一定就是局部最优解的点，而且，即使某个极值点是局部最优解的点但是局部最优解不一定就是全局最优解。</p>
-<h1 id="随机梯度下降"><a href="#随机梯度下降" class="headerlink" title="随机梯度下降"></a>随机梯度下降</h1><p>对于某些机器学习问题，我们的目标函数是关于样本的损失函数，例如对于线性规划问题，假设训练集中有N个样本，并且N很大，在进行训练时我们使用均方误差来作为损失函数。即$L(W) = \frac{1}{N} \sum_{k=1}^{N} (Y-WX)^2$，$Y,X$都是N维向量，$W$是我们的自变量。则一次迭代下来，要计算全部样本的话计算量就太大了。</p>
-<p>作为改进，可以在一次迭代时，<code>随机选择部分样本</code>来进行近似损失函数，即$L(W) = \frac{1}{M} \sum_{k=1}^{M} (Y-WX)^2, M \ll N$。这就是随机梯度下降法。已经证明，随机梯度下降法产生的梯度的期望值等于全部样本最为产生的梯度。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/09/machine_learning/%E5%87%B8%E4%BC%98%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -443,14 +1434,14 @@ R=\begin{cases}
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-02-09 18:46:57" itemprop="dateCreated datePublished" datetime="2020-02-09T18:46:57+08:00">2020-02-09</time>
+              <time title="Created: 2020-02-09 18:46:57" itemprop="dateCreated datePublished" datetime="2020-02-09T18:46:57-05:00">2020-02-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-18 00:37:29" itemprop="dateModified" datetime="2020-11-18T00:37:29+08:00">2020-11-18</time>
+                <time title="Modified: 2024-03-28 04:17:20" itemprop="dateModified" datetime="2024-03-28T04:17:20-04:00">2024-03-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -584,14 +1575,14 @@ R=\begin{cases}
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-02-09 15:20:41" itemprop="dateCreated datePublished" datetime="2020-02-09T15:20:41+08:00">2020-02-09</time>
+              <time title="Created: 2020-02-09 15:20:41" itemprop="dateCreated datePublished" datetime="2020-02-09T15:20:41-05:00">2020-02-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-04-18 17:11:31" itemprop="dateModified" datetime="2023-04-18T17:11:31+08:00">2023-04-18</time>
+                <time title="Modified: 2024-05-06 22:12:25" itemprop="dateModified" datetime="2024-05-06T22:12:25-04:00">2024-05-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -733,7 +1724,7 @@ R=\begin{cases}
 </tr>
 <tr>
 <td>^</td>
-<td>匹配输入字符串的开始位置，除非在方括号表达式中使用。当该符号在方括号表达式中使用时，表示不接受方括号表达式中的字符集合</td>
+<td>匹配输入字符串的开始位置，除非在方括号表达式中使用。<font color="orange">当该符号在方括号表达式中使用时，表示不接受方括号表达式中的字符集合</font></td>
 </tr>
 <tr>
 <td>{</td>
@@ -826,14 +1817,14 @@ R=\begin{cases}
 </div>
 <p><code>不能讲限定符与定位符一起使用，由于在紧靠换行或者单词边界的前面或者后面不能有一个以上位置</code>，因此不允许诸如<code>^*</code>之类的表达式</p>
 <p>如果要匹配一行文本开始处的文本，要在正则表达式的开始使用^字符。如果要匹配一行文本结束处的文本，要在正则表达式的结束处使用$字符。<br><code>^和$可以在一个正则表达式中同时使用</code>，例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^Chapter$</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^Chapter$</span><br></pre></td></tr></table></figure>
 <p>表示从文本开始匹配时和从末尾匹配时都是Chapter，说明该行只有Chapter这几个字符</p>
 <p>单词边界是单词和空格之间的位置，非单词边界是任何其他位置。</p>
 <p>\b字符位于要匹配的字符串的开始，它在单词的开始处查找匹配项，如果它位于字符串的结尾，他在单词的结尾处查找匹配项。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\bCha</span><br><span class="line">ter\b</span><br></pre></td></tr></table></figure>
 <h2 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h2><p>AAA | BBB<br>匹配 AAA 或者 BBB</p>
 <h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><h4 id="引用分组和反向引用"><a href="#引用分组和反向引用" class="headerlink" title="引用分组和反向引用"></a>引用分组和反向引用</h4><p>对一个正则表达式或部分模式两边添加圆括号将导致相关匹配到一个临时缓冲区中，所捕获的每个子匹配都按照正则表达式模式中从左到右出现的顺序存储。<font color="red">缓冲区的编号从1开始</font>，最多可以存储99个捕获的子表达式。每个缓冲区都可以使用\n访问，其中n为一个标识特定缓冲区的一位或两位十进制数。<br>例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\b([a-z]+)\1\b</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\b([a-z]+)\1\b</span><br></pre></td></tr></table></figure>
 <p>反向引用只能用于之前出现的分组。</p>
 <p>反向引用的一个例子：要用正则表达式匹配日期，日期的格式为yyyy-mm-dd、yyyy/mm/dd和yyyy.mm.dd都是合理的，注意后面的分隔符和前面的分隔符要相等。则正则表达式可以写作：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\d&#123;4&#125;(-|/|.)\d&#123;2&#125;\1\d&#123;2&#125;</span><br></pre></td></tr></table></figure>
@@ -887,14 +1878,14 @@ R=\begin{cases}
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-02-08 23:03:15" itemprop="dateCreated datePublished" datetime="2020-02-08T23:03:15+08:00">2020-02-08</time>
+              <time title="Created: 2020-02-08 10:03:15" itemprop="dateCreated datePublished" datetime="2020-02-08T10:03:15-05:00">2020-02-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-11 20:48:25" itemprop="dateModified" datetime="2020-07-11T20:48:25+08:00">2020-07-11</time>
+                <time title="Modified: 2020-07-11 08:48:25" itemprop="dateModified" datetime="2020-07-11T08:48:25-04:00">2020-07-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -999,14 +1990,14 @@ R=\begin{cases}
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-02-08 20:51:36" itemprop="dateCreated datePublished" datetime="2020-02-08T20:51:36+08:00">2020-02-08</time>
+              <time title="Created: 2020-02-08 07:51:36" itemprop="dateCreated datePublished" datetime="2020-02-08T07:51:36-05:00">2020-02-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-20 15:25:03" itemprop="dateModified" datetime="2021-02-20T15:25:03+08:00">2021-02-20</time>
+                <time title="Modified: 2021-02-20 02:25:03" itemprop="dateModified" datetime="2021-02-20T02:25:03-05:00">2021-02-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1231,20 +2222,20 @@ dz &= tr[(\frac{\partial f}{\partial Y})^TdY] \\
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -1274,7 +2265,7 @@ dz &= tr[(\frac{\partial f}{\partial Y})^TdY] \\
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -1284,15 +2275,15 @@ dz &= tr[(\frac{\partial f}{\partial Y})^TdY] \\
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">183k</span>
+    <span title="Symbols count total">215k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">10:11</span>
+    <span title="Reading time total">11:56</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

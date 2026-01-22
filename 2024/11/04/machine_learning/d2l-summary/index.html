@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="PreliminariesData PreprocessingIn real life data, usually there will be missing values. Depending upon the context, missing values might be handled either via imputation or deletion.  Imputation: repl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="d2l-summary">
+<meta property="og:url" content="http://swordandtea.github.io/2024/11/04/machine_learning/d2l-summary/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="PreliminariesData PreprocessingIn real life data, usually there will be missing values. Depending upon the context, missing values might be handled either via imputation or deletion.  Imputation: repl">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://swordandtea.github.io/2024/11/04/machine_learning/d2l-summary/inception-block.png">
+<meta property="og:image" content="http://swordandtea.github.io/2024/11/04/machine_learning/d2l-summary/GoogLeNet.png">
+<meta property="og:image" content="http://swordandtea.github.io/2024/11/04/machine_learning/d2l-summary/resnet-block.png">
+<meta property="og:image" content="http://swordandtea.github.io/2024/11/04/machine_learning/d2l-summary/deep-rnn.png">
+<meta property="og:image" content="http://swordandtea.github.io/2024/11/04/machine_learning/d2l-summary/bidirectional-rnn.png">
+<meta property="article:published_time" content="2024-11-04T13:45:34.000Z">
+<meta property="article:modified_time" content="2024-11-30T19:31:52.744Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="machine learning">
+<meta property="article:tag" content="deep learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://swordandtea.github.io/2024/11/04/machine_learning/d2l-summary/inception-block.png">
+
+<link rel="canonical" href="http://swordandtea.github.io/2024/11/04/machine_learning/d2l-summary/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>d2l-summary | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2024/11/04/machine_learning/d2l-summary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          d2l-summary
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-11-04 08:45:34" itemprop="dateCreated datePublished" datetime="2024-11-04T08:45:34-05:00">2024-11-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-11-30 14:31:52" itemprop="dateModified" datetime="2024-11-30T14:31:52-05:00">2024-11-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>10 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Preliminaries"><a href="#Preliminaries" class="headerlink" title="Preliminaries"></a>Preliminaries</h1><h2 id="Data-Preprocessing"><a href="#Data-Preprocessing" class="headerlink" title="Data Preprocessing"></a>Data Preprocessing</h2><p>In real life data, usually there will be missing values. Depending upon the context, missing values might be handled either via imputation or deletion.</p>
+<ul>
+<li><p>Imputation: replaces missing values with estimates of their values</p>
+</li>
+<li><p>Deletion: simply discards either those rows or those columns that contain missing values.</p>
+</li>
+</ul>
+<h1 id="Linear-Model"><a href="#Linear-Model" class="headerlink" title="Linear Model"></a>Linear Model</h1><h2 id="Linear-Regression"><a href="#Linear-Regression" class="headerlink" title="Linear Regression"></a>Linear Regression</h2><p>Leanr Regression Model can be represented as $\hat{y} = Xw + b$, where $X$ is in the shape of $[\text{batch_size}, \text{num_features}]$, $w$ is in the shape of $[\text{num_features}, 1]$, b is a scale value. Correspondingly, $\hat{y}$ is in the shape of $[\text{batch_size}, 1]$</p>
+<p>Linear Regression Model usually use <strong>Mean Square Loss</strong> as loss function</p>
+<font color="orange">Linear Regression Model as analytic solution</font>, which is $w^{*} = (X^{T}X)^{-1}X^{T}y$
+
+## Logistic Regression
+
+Logistic Regression is a binary classification model. Basicaly, it adds a sigmoid function on the output of Leaner Regression Model, $\sigma(x) = \frac{1}{1 + e^{-x}}$, the output value is bounded to $[0, 1]$
+
+## Softmax Regression
+
+Softmax Regression is a multi-classification model. In the final layer, there will be multiple output nodes which normally will be the same as the number of classes. For the output nodes, we apply softmax function: 
+
+$$
+\hat{y} = softmax(o) \space \text{where} \space \hat{y_i} = \frac{exp(o_i)}{\sum_{j}exp(o_j)}
+$$
+
+The output value of softmax can be treated as the probability. For the label, we use **one-hot encoding** and use **Cross Entropy Loss**:
+
+$$
+l(y, \hat{y}) = -\sum_{j=1}^{q} y_i \log \hat{y_i}
+$$
+
+# Accuracy of Classification Model
+
+accuracy is simple way to evaluate the performance of classification model, it is simply calculated by the number of right perdiction divide by the number of total predictions.
+
+# MLP
+
+Multilayer Perceptrons is based on linear model with hidden layers and activation functions. <font color="orange">The activation functions is to introduce nonlinear to the model</font>. If there is no activation function, the MLP will still be a linear model. Usually, we use `ReLU` as activation function.
+
+# Dropout
+
+Dropout is a method to prevent overfitting. Dropout will random set some paramater value of a layer to zero with probability of $p$, and in order to keep the the distribution of the data unshifted, we need to scale those remain parameter to $\frac{h}{1-p}$. 
+
+<font color="orange">Dropout is usuallly applied after activation functions</font>.
+
+<font color="orange">Dropout is only used during training steps, there will be no drop out in inference step</font>.
+
+# Weight Decay
+
+Like Dropout, Weight Decay is a way to prevent overfitting. It is basically add $l2$ penalty to the **loss function**, it is defined as
+
+$$
+\frac{\lambda}{2}||W||^2
+$$
+
+$\lambda$ is called **Weight Decay Rate**. In pytorch, weight decay is set upon optimizer.
+
+# CNN
+
+# Convolutional Operation
+
+In the two-dimensional Convolutional(cross-correlation) operation, we begin with the convolution window positioned at the upper-left corner of the input tensor and slide it across the input tensor, both from left to right and top to bottom. When the convolution window slides to a certain position, the input subtensor contained in that window and the kernel tensor are multiplied elementwise and the resulting tensor is summed up yielding a single scalar value.
+
+For input tensor with size $n_h \times n_w$ and convultional kernal size $k_h \times k_w$, the output tensor size is $(n_h - k_h + 1) \times (n_w - k_w +1)$
+
+For a convolutional Layer, it usually <font color="orange">has bias parameter</font> like the linear model. The size of bias parameter is number of output channel.
+
+The kernal can be learned based on input value and output value.
+
+The output tensor of the convolutional layer is also called feature map. In the deep cnn neural network, the feature map close to the data input usually has smaller receptive field, representing some local spatial features(i.e. edges, corners). While the feature map in deep layer usually has larger receptive field, representing gobal spatial features or semantic features(i.e class information).
+
+## Padding and Stride
+
+* padding: the convolutional op will reduce tensor size, in order to keep the size unchanged, we can padding zeros around the input, if the kernel size is $k_h \times k_w$, usually, we will padding $(k_h - 1) / 2$ on top and bottom, padding $(k_w - 1)/2$ on left and right. <font color="orange">Hence, we often use odd sized convolutional kernel</font>.
+
+* stride: stride is mainly used for reduce tensor size. Defaultly, convolutional layer use stride of 1, which means the kernel window moves one element next after the convolutional operation. stride size can be set both in height and width. Usually, we will set stride to 2 to downsampling the tensor size to half both in height and width.
+
+## Pooling
+
+* max pooling: output the max value in the kernel area
+* average pooling: output the avage value in the kernel area
+
+Pooling layer has no learning parameter. 
+
+<font color="orange">In Deep CNNs, the Convolutional Layer usually will use padding to keep the height and width unchanged but extend output channels to double. While Pooling Layer is usually set with stride equal to 2 to half the width and height. </font>
+
+<font color="orange">In pytorch, the stride size by default is equal to kernel size</font>.
+
+## Multiple Input Output Channels
+
+usually image has three channels(rgb) and for a convolutional layer, it can have multiple output channels. 
+
+If the input channels is $c_i$ and output channels is 1, then we need $c_i$ cnn kernels, <font color="orange">the result will be the sum of convolutional(cross-correlation) operation result of input channel $i$ and convolutional kernal $i$</font>. Correspondingly, if the input channels is $c_i$ and output channels is $c_o$, the there will be $c_i \cdot c_o$ number of cnn kernels
+
+<font color="orange">The channel dimension can be considered as the feature dimension of convolutional nerual network</font>
+
+<h2 id="LeNet"><a href="#LeNet" class="headerlink" title="LeNet"></a>LeNet</h2><p>The first Deep CNN.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">self.net = nn.Sequential(</span><br><span class="line">            nn.LazyConv2d(<span class="number">6</span>, kernel_size=<span class="number">5</span>, padding=<span class="number">2</span>), </span><br><span class="line">            nn.Sigmoid(),</span><br><span class="line">            nn.AvgPool2d(kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>),</span><br><span class="line"></span><br><span class="line">            nn.Conv2d(<span class="number">6</span>, <span class="number">16</span>, kernel_size=<span class="number">5</span>), </span><br><span class="line">            nn.Sigmoid(),</span><br><span class="line">            nn.AvgPool2d(kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>),</span><br><span class="line"></span><br><span class="line">            nn.Flatten(),</span><br><span class="line"></span><br><span class="line">            nn.LazyLinear(<span class="number">120</span>),</span><br><span class="line">            nn.Sigmoid(),</span><br><span class="line"></span><br><span class="line">            nn.Linear(<span class="number">120</span>, <span class="number">84</span>),</span><br><span class="line">            nn.Sigmoid(),</span><br><span class="line"></span><br><span class="line">            nn.Linear(<span class="number">84</span>, num_classes)</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+<h1 id="Modern-CNN"><a href="#Modern-CNN" class="headerlink" title="Modern CNN"></a>Modern CNN</h1><h2 id="AlexNet"><a href="#AlexNet" class="headerlink" title="AlexNet"></a>AlexNet</h2><p>AlexNet is basically a bigger and deep version of LeNet.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">self.net = nn.Sequential(</span><br><span class="line">            nn.LazyConv2d(<span class="number">96</span>, kernel_size=<span class="number">11</span>, stride=<span class="number">4</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.MaxPool2d(<span class="number">3</span>, stride=<span class="number">2</span>),</span><br><span class="line"></span><br><span class="line">            nn.Conv2d(<span class="number">96</span>, <span class="number">256</span>, kernel_size=<span class="number">5</span>, padding=<span class="number">2</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.MaxPool2d(<span class="number">3</span>, stride=<span class="number">2</span>),</span><br><span class="line"></span><br><span class="line">            nn.Conv2d(<span class="number">256</span>, <span class="number">384</span>, kernel_size=<span class="number">3</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line"></span><br><span class="line">            nn.Conv2d(<span class="number">384</span>, <span class="number">384</span>, kernel_size=<span class="number">3</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line"></span><br><span class="line">            nn.Conv2d(<span class="number">384</span>, <span class="number">256</span>, kernel_size=<span class="number">3</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.MaxPool2d(<span class="number">3</span>, stride=<span class="number">2</span>),</span><br><span class="line"></span><br><span class="line">            nn.Flatten(),</span><br><span class="line"></span><br><span class="line">            nn.LazyLinear(<span class="number">4096</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Dropout(<span class="number">0.5</span>),</span><br><span class="line"></span><br><span class="line">            nn.Linear(<span class="number">4096</span>, <span class="number">4096</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Dropout(<span class="number">0.5</span>),</span><br><span class="line"></span><br><span class="line">            nn.Linear(<span class="number">4096</span>, num_classes)</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+<h2 id="VGG"><a href="#VGG" class="headerlink" title="VGG"></a>VGG</h2><p>VGG provide a general template to design convolutional nerual network which is use net blocks. In VGG, the layers in a  block are basic Conv Layer, Activation Layer and Pooling Layer</p>
+<p>block code</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">vgg_block</span>(<span class="params">num_convs, out_channels</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    @param num_convs: number of convolutional layers</span></span><br><span class="line"><span class="string">    @param out_channels: number of output channels, the channel num will be </span></span><br><span class="line"><span class="string">        changed immediately in the first conv layer</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    layers = []</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_convs):</span><br><span class="line">        layers.append(nn.LazyConv2d(out_channels, kernel_size=<span class="number">3</span>, padding=<span class="number">1</span>))</span><br><span class="line">        layers.append(nn.ReLU())</span><br><span class="line"></span><br><span class="line">    layers.append(nn.MaxPool2d(<span class="number">2</span>, stride=<span class="number">2</span>))</span><br><span class="line">    <span class="keyword">return</span> nn.Sequential(*layers)</span><br></pre></td></tr></table></figure>
+<p>net structure</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">conv_blocks = []</span><br><span class="line"><span class="keyword">for</span> (num_convs, out_channels) <span class="keyword">in</span> arch:</span><br><span class="line">    conv_blocks.append(vgg_block(num_convs, out_channels))</span><br><span class="line"></span><br><span class="line">    self.net = nn.Sequential(</span><br><span class="line">        *conv_blocks,</span><br><span class="line"></span><br><span class="line">        nn.Flatten(),</span><br><span class="line"></span><br><span class="line">        nn.LazyLinear(<span class="number">4096</span>),</span><br><span class="line">        nn.ReLU(),</span><br><span class="line">        nn.Dropout(<span class="number">0.5</span>),</span><br><span class="line"></span><br><span class="line">        nn.Linear(<span class="number">4096</span>, <span class="number">4096</span>),</span><br><span class="line">        nn.ReLU(),</span><br><span class="line">        nn.Dropout(<span class="number">0.5</span>),</span><br><span class="line"></span><br><span class="line">        nn.Linear(<span class="number">4096</span>, num_classes)</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+<h2 id="NiN-Network-in-Network"><a href="#NiN-Network-in-Network" class="headerlink" title="NiN(Network in Network)"></a>NiN(Network in Network)</h2><p>NiN Replaces the Full Connect Layers in CNN with Global Avg Pool, which significant reduces training parameters.</p>
+<p>NiN block:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">nin_block</span>(<span class="params">out_channels, kernel_size, stride, padding</span>):</span></span><br><span class="line">    block = nn.Sequential(</span><br><span class="line">        nn.LazyConv2d(out_channels, kernel_size=kernel_size, stride=stride, padding=padding),</span><br><span class="line">        nn.ReLU(),</span><br><span class="line"></span><br><span class="line">        nn.Conv2d(out_channels, out_channels, kernel_size=<span class="number">1</span>),</span><br><span class="line">        nn.ReLU(),</span><br><span class="line"></span><br><span class="line">        nn.Conv2d(out_channels, out_channels, kernel_size=<span class="number">1</span>),</span><br><span class="line">        nn.ReLU()</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> block</span><br></pre></td></tr></table></figure>
+<p>NiN net structure</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">self.net = nn.Sequential(</span><br><span class="line">            nin_block(<span class="number">96</span>, kernel_size=<span class="number">11</span>, stride=<span class="number">4</span>, padding=<span class="number">0</span>),</span><br><span class="line">            nn.MaxPool2d(<span class="number">3</span>, stride=<span class="number">2</span>),</span><br><span class="line"></span><br><span class="line">            nin_block(<span class="number">256</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>),</span><br><span class="line">            nn.MaxPool2d(<span class="number">3</span>, stride=<span class="number">2</span>),</span><br><span class="line"></span><br><span class="line">            nin_block(<span class="number">384</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.MaxPool2d(<span class="number">3</span>, stride=<span class="number">2</span>),</span><br><span class="line"></span><br><span class="line">            <span class="comment"># nn.Dropout in cnn will random drop some pixel at every channel</span></span><br><span class="line">            <span class="comment"># nn.dropout2d in cnn will drop some entire channels</span></span><br><span class="line">            nn.Dropout(<span class="number">0.5</span>),</span><br><span class="line"></span><br><span class="line">            <span class="comment"># import here: we reduce channels to number of classes</span></span><br><span class="line">            nin_block(num_classes, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>),</span><br><span class="line">            <span class="comment"># adaptive pool will make the result height and width to the target size</span></span><br><span class="line">            nn.AdaptiveAvgPool2d((<span class="number">1</span>, <span class="number">1</span>)),</span><br><span class="line"></span><br><span class="line">            nn.Flatten()</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+<h2 id="GoogLeNet"><a href="#GoogLeNet" class="headerlink" title="GoogLeNet"></a>GoogLeNet</h2><p>GoogLeNet designed a multi-branch structure called <strong>Inception Block</strong></p>
+<p><img src="/2024/11/04/machine_learning/d2l-summary/inception-block.png" alt> </p>
+<p>for the input, it use different size of convolutional kernels to extract new features and contact the result of all branchs in <font color="orange">feature dimension</font>. In order to do contatenation sucessfully, the output height and width of each branch should be the same. </p>
+<p>The each branch in inception block keep the height and width the same as the input. While during blocks, it use pooling layer to half height and width.</p>
+<p>Moreover, in the final layer, it use a single full connect layer simply to match the output with number of classes.</p>
+<p>GoogLeNet structure: </p>
+<p><img src="/2024/11/04/machine_learning/d2l-summary/GoogLeNet.png" alt></p>
+<h2 id="ResNet"><a href="#ResNet" class="headerlink" title="ResNet"></a>ResNet</h2><p>ResNet is a net that will add input back into output for each block</p>
+<p><img title src="/2024/11/04/machine_learning/d2l-summary/resnet-block.png" alt data-align="center"></p>
+<font color="orange">In order to add input and output successfully, the number of channels, width and height should all be the same</font>. So, normally, we will use 1x1 convolutional kernel to do some transform on the input.
+
+The resnet-18 architecture:
+
+![](./d2l-summary/resnet18.png)
+
+## ResNeXt Block
+
+ResNeXt Block use a grouped convolution to speed up calculation of convolutional block. In a convolutional layer with out grouped convolution, if the input channel is $c_i$ and the output channel is $c_o$, the computational cost of this layer is proportional to $O(c_i \cdot c_o)$. If we use grouped convolution, we will split the input channels into $g$ groups, so, for each group, the input channel size is $\frac{c_i}{g}$, and we output $\frac{c_o}{g}$ number of channels for every group. Then we contact the outputs from all groups into $c_o$ channels. Hence, after grouped convolution, the computational cost for each group is $O(\frac{c_i}{g} \cdot \frac{c_o}{g})$, and the computational cost of the total group is $O(g \cdot \frac{c_i}{g} \cdot \frac{c_o}{g})=O(\frac{c_i \cdot c_o}{g})$. So, If the group size is $g$, then the speed is theoretically g times faster.
+
+![](./d2l-summary/resNeXt-block.png)
+
+## DenseNet
+
+DenseNet like ResNet, will utilize the input in each convolutional block (dense block), but instead of add the input with the output elementwisely, <font color="orange">it concat the input and output in channel dimension</font>.
+
+![](./d2l-summary/densenet.png)
+
+As for the dense block, it consists of multiple convolution blocks, each using the same number of output channels. <font color="orange">And in order to enable concatation with input and output in channel dimension, the dense block convolutional layers will keep the width and height unchanged</font>.
+
+Since each dense block will increase the number of channels, adding too many of them will lead to an excessively complex model. A transition layer is used to control the complexity of the model. It reduces the number of channels by using a 1x1 convolution. Moreover, it halves the height and width via average pooling with a stride of 2.
+
+# Batch Normalization
+
+Batch Normalization is a technique to accelerate the convergence of deep neural network. It is defined as:
+
+$$
+BN(X) = \gamma \odot \frac{x- \hat{\mu_{B}}}{\hat{\sigma_{B}}} + \beta
+$$
+
+Where $\mu_{B}$ is the sample mean and $\sigma_{B}$ is the sample standard deviation of the minibatch $B$, 
+
+Batch Normalization <font color="orange">has training parameter</font> $\gamma$ and $\beta$. After applying standardization, the resulting minibatch has zero mean and unit variance. The choice of unit variance (rather than some other magic number) is arbitrary. We recover this degree of freedom by including an elementwise scale parameter $\gamma$ and shift parameter $\beta$.  <font color="orange">Batch Normalization will be used both in training process and inference process, but during the two phases, it has different behaviors</font>. During train phase, the mean and variance is calculated with a batch of data, meanwhile, we accumulate the mean amd variance of the whole training data with momentum. Then during inference phase, we apply the learn $\gamma$, $\beta$, and the accumulated mean and variance to calculate the output of the Batch Normalization Layer.
+
+Basically, Batch Normalization will first normalize the batch data to mean equal to 0 and variance equal to 1 <font color="orange">for each feature</font>, then shift the data to mean equal to $\gamma$ and variance to $\beta$. 
+
+Because Batch Normalization calculates mean and variance among a batch of data, the <font color="orange">batch size parameter has a significant influence on the Batch Normalization</font>.
+
+Usually, Batch Normalization layer is applied after Convolutional Layer and before activation function.
+
+# Layer Normalization
+
+The difference of Layer Normalization and Batch Normalization is that Layer Norm calculate mean and variance based on <font color="orange">a single data among all features</font>, while Batch Normalization calculate mean and variance based on a single feature among a batch of data. Hence, Layer Normalization is not sensitive to batch size we choose. <font color="orange">In addition, layer normalization has no learning parameters</font>.
+
+Layer Normalization is often used in transformer for vision like ViT net.
+
+# Computer Vision
+
+## Image Augmentation
+
+## Fine-Tuning
+
+## Single Shot Multibox Detection
+
+## R-CNNS
+
+
+
+# RNN
+
+## Raw Test into Sequence Data
+
+* Tokenize the raw text and build a vocabulary
+
+  * token is the atomic(indivisible) units of text, the simplest way is to tokenize text by characters or words, but modern model use more complex way to tokenize text.
+
+  * vocabulary is a map that can encode token to number can decode number back to token
+
+* then we encode the whole raw text into a sequence of number
+
+* next, we need to convert the whole sequence of number into our training/testing features and label.
+
+* we choose a time step n, we randomly choose n length of sequence of number as features and the label is the token that exact <font color="orange">one token shift</font> of the feature token. For example, if the text is "hello, world", and the time step we choose is 4, then a training data can be ['h', 'e', 'l', 'l'], then corresponding label data is ['e', 'l', 'l', 'o'], which means if the network sees 'h', it need to output 'e', if it sees 'e', then it should output 'l', etc.
+
+## rnn
+
+RNN is a network with hidden state
+
+$$
+\begin{align*}
+H_t & = \phi(X_t W_{xh} + H_{t-1} W_{hh} + b_{h}) \\
+O & = H_{t} W_{ho} + b_{o}
+\end{align*}
+$$
+
+$t$ range in $[1, \text{Number of Time Steps}]$, Nomally, we will initialize the initial hidden state $H_{0}$ with zeros.
+
+![](./d2l-summary/rnn.png)
+
+During training steps, the feature data $X$ from dataset usually in the shape of $(batch\_size, time\_steps, vocab\_size)$ , normally will put the time_steps dimension to first, i.e. $(time\_steps, batch\_size, vocab\_size)$. After that, in every time step, we can calculate hidden states and output by batch. <font color="orange">And for every number time_steps of data in a batch, they corresponding to their own sequence of hidden states.</font>
+
+<h2 id="Perplexity"><a href="#Perplexity" class="headerlink" title="Perplexity"></a>Perplexity</h2><p>Basically, perlexity is the exponential value of cross entropy loss. We can use perlexity to evaluate the performance of a lanuage model. <font color="orange">During training step we still the result of cross entropy loss to calculate the gradients and update parameters</font>. The cross entropy loss ranges in $[0, +\infty]$, so the perplexity ranges in $[1, +\infty]$.</p>
+<h1 id="Modern-RNN"><a href="#Modern-RNN" class="headerlink" title="Modern RNN"></a>Modern RNN</h1><h2 id="LSTM-amp-GRU"><a href="#LSTM-amp-GRU" class="headerlink" title="LSTM &amp; GRU"></a>LSTM &amp; GRU</h2><p>LSTM and GRU are RNN models with more complex hidden states, they mainly design to prevent gradient exploding in training rnn.</p>
+<h2 id="Deep-RNN"><a href="#Deep-RNN" class="headerlink" title="Deep RNN"></a>Deep RNN</h2><p>deep rnn increase the number of layers of hidden states.</p>
+<p><img src="/2024/11/04/machine_learning/d2l-summary/deep-rnn.png" alt></p>
+<p>As depicted in the graph, Hidden state is computed by:</p>
+<script type="math/tex; mode=display">
+H_{t}^{(l)} = \phi_{l}(H_{t}^{(l-1)} W_{xh}^{(l)} + H_{t-1}^{(l)} W_{hh}^{l} + b_{h}^{(l)})</script><p>To use deep rnn in pytorch, we only need to simply use the <code>num_layers</code> parameter</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nn.RNN(input_size=vocab_size, hidden_size=<span class="number">32</span>, num_layers=<span class="number">4</span>)</span><br><span class="line">nn.GRU(input_size=vocab_size, hidden_size=<span class="number">32</span>, num_layers=<span class="number">4</span>)</span><br><span class="line">nn.LSTM(input_size=vocab_size, hidden_size=<span class="number">32</span>, num_layers=<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="Bidirectional-RNN"><a href="#Bidirectional-RNN" class="headerlink" title="Bidirectional RNN"></a>Bidirectional RNN</h2><p>In Bidirectional RNN, in each hidden layer, there is a hidden state calculated from $t_1$ to $t_n$ and a hidden state calculated from $t_n$ to $t_1$, after that, we concat the hidden state in horizontal direction. As a result, the final output size of hidden state is the double of each hidden state size.</p>
+<p><img src="/2024/11/04/machine_learning/d2l-summary/bidirectional-rnn.png" alt></p>
+<p>A trick to calculate hidden state from $t_n$ to $t_1$ is to reverse input $X$ to $X_t$ to $X_1$ and then do calculated like normal input, this can speed up calculate instead of use for loop from $t$ to $1$.</p>
+<p>Bidirectional RNNs are mostly useful for sequence encoding and the estimation of observations given bidirectional context.</p>
+<p>Bidirectional RNNs are very costly to train due to long gradient chains.</p>
+<p><font color="orange">Bidirectional RNNs are not quite useful in predicting next token by given tokens, as there are only information from past was given during prediction</font>.</p>
+<h2 id="Encoder-Decoder-Framework"><a href="#Encoder-Decoder-Framework" class="headerlink" title="Encoder-Decoder Framework"></a>Encoder-Decoder Framework</h2><h2 id="Encoder-Decoder-for-Machine-Translation"><a href="#Encoder-Decoder-for-Machine-Translation" class="headerlink" title="Encoder-Decoder for Machine Translation"></a>Encoder-Decoder for Machine Translation</h2><h2 id="Beam-Search"><a href="#Beam-Search" class="headerlink" title="Beam Search"></a>Beam Search</h2><h1 id="Attention-Mechanisms-and-Transformers"><a href="#Attention-Mechanisms-and-Transformers" class="headerlink" title="Attention Mechanisms and Transformers"></a>Attention Mechanisms and Transformers</h1><h2 id="Queries-Keys-and-Values"><a href="#Queries-Keys-and-Values" class="headerlink" title="Queries, Keys, and Values"></a>Queries, Keys, and Values</h2><h1 id="Reinforcement-Learning"><a href="#Reinforcement-Learning" class="headerlink" title="Reinforcement Learning"></a>Reinforcement Learning</h1><h1 id="GAN"><a href="#GAN" class="headerlink" title="GAN"></a>GAN</h1><h1 id="Engineering"><a href="#Engineering" class="headerlink" title="Engineering"></a>Engineering</h1><h2 id="Parameter-Initialization-and-Management"><a href="#Parameter-Initialization-and-Management" class="headerlink" title="Parameter Initialization and Management"></a>Parameter Initialization and Management</h2><h2 id="Lazy-Initialization"><a href="#Lazy-Initialization" class="headerlink" title="Lazy Initialization"></a>Lazy Initialization</h2><h2 id="Compute-Devices"><a href="#Compute-Devices" class="headerlink" title="Compute Devices"></a>Compute Devices</h2><h2 id="Model-Backend"><a href="#Model-Backend" class="headerlink" title="Model Backend"></a>Model Backend</h2><h2 id="Data-Parallization-in-Multiple-GPUs"><a href="#Data-Parallization-in-Multiple-GPUs" class="headerlink" title="Data Parallization in Multiple GPUs."></a>Data Parallization in Multiple GPUs.</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+              <a href="/tags/deep-learning/" rel="tag"># deep learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/10/08/machine_learning/reinforcement-learning/" rel="prev" title="reinforcement-learning">
+      <i class="fa fa-chevron-left"></i> reinforcement-learning
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/02/02/cloud_computing/aws/" rel="next" title="aws">
+      aws <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Preliminaries"><span class="nav-number">1.</span> <span class="nav-text">Preliminaries</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-Preprocessing"><span class="nav-number">1.1.</span> <span class="nav-text">Data Preprocessing</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linear-Model"><span class="nav-number">2.</span> <span class="nav-text">Linear Model</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linear-Regression"><span class="nav-number">2.1.</span> <span class="nav-text">Linear Regression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LeNet"><span class="nav-number">2.2.</span> <span class="nav-text">LeNet</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Modern-CNN"><span class="nav-number">3.</span> <span class="nav-text">Modern CNN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#AlexNet"><span class="nav-number">3.1.</span> <span class="nav-text">AlexNet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VGG"><span class="nav-number">3.2.</span> <span class="nav-text">VGG</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NiN-Network-in-Network"><span class="nav-number">3.3.</span> <span class="nav-text">NiN(Network in Network)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GoogLeNet"><span class="nav-number">3.4.</span> <span class="nav-text">GoogLeNet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ResNet"><span class="nav-number">3.5.</span> <span class="nav-text">ResNet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Perplexity"><span class="nav-number">3.6.</span> <span class="nav-text">Perplexity</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Modern-RNN"><span class="nav-number">4.</span> <span class="nav-text">Modern RNN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#LSTM-amp-GRU"><span class="nav-number">4.1.</span> <span class="nav-text">LSTM &amp; GRU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deep-RNN"><span class="nav-number">4.2.</span> <span class="nav-text">Deep RNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bidirectional-RNN"><span class="nav-number">4.3.</span> <span class="nav-text">Bidirectional RNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Encoder-Decoder-Framework"><span class="nav-number">4.4.</span> <span class="nav-text">Encoder-Decoder Framework</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Encoder-Decoder-for-Machine-Translation"><span class="nav-number">4.5.</span> <span class="nav-text">Encoder-Decoder for Machine Translation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Beam-Search"><span class="nav-number">4.6.</span> <span class="nav-text">Beam Search</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Attention-Mechanisms-and-Transformers"><span class="nav-number">5.</span> <span class="nav-text">Attention Mechanisms and Transformers</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Queries-Keys-and-Values"><span class="nav-number">5.1.</span> <span class="nav-text">Queries, Keys, and Values</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reinforcement-Learning"><span class="nav-number">6.</span> <span class="nav-text">Reinforcement Learning</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GAN"><span class="nav-number">7.</span> <span class="nav-text">GAN</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Engineering"><span class="nav-number">8.</span> <span class="nav-text">Engineering</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Parameter-Initialization-and-Management"><span class="nav-number">8.1.</span> <span class="nav-text">Parameter Initialization and Management</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lazy-Initialization"><span class="nav-number">8.2.</span> <span class="nav-text">Lazy Initialization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Compute-Devices"><span class="nav-number">8.3.</span> <span class="nav-text">Compute Devices</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Model-Backend"><span class="nav-number">8.4.</span> <span class="nav-text">Model Backend</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-Parallization-in-Multiple-GPUs"><span class="nav-number">8.5.</span> <span class="nav-text">Data Parallization in Multiple GPUs.</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">215k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">11:56</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

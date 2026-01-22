@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="Markov ModelsMarkov assumption states that the probability of the current state depends only on a finite series of previous states. As a special case, this assumption gives rise to the Markov chain re">
+<meta property="og:type" content="article">
+<meta property="og:title" content="reinforcement-learning">
+<meta property="og:url" content="http://swordandtea.github.io/2024/10/08/machine_learning/reinforcement-learning/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="Markov ModelsMarkov assumption states that the probability of the current state depends only on a finite series of previous states. As a special case, this assumption gives rise to the Markov chain re">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://swordandtea.github.io/2024/10/08/machine_learning/reinforcement-learning/hmm.png">
+<meta property="article:published_time" content="2024-10-08T18:33:02.000Z">
+<meta property="article:modified_time" content="2024-10-15T20:39:45.053Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="machine learning">
+<meta property="article:tag" content="deep learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://swordandtea.github.io/2024/10/08/machine_learning/reinforcement-learning/hmm.png">
+
+<link rel="canonical" href="http://swordandtea.github.io/2024/10/08/machine_learning/reinforcement-learning/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>reinforcement-learning | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2024/10/08/machine_learning/reinforcement-learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          reinforcement-learning
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-10-08 14:33:02" itemprop="dateCreated datePublished" datetime="2024-10-08T14:33:02-04:00">2024-10-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-10-15 16:39:45" itemprop="dateModified" datetime="2024-10-15T16:39:45-04:00">2024-10-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>11 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Markov-Models"><a href="#Markov-Models" class="headerlink" title="Markov Models"></a>Markov Models</h1><p>Markov assumption states that the probability of the current state depends only on <font color="orange">a finite series</font> of previous states. As a special case, this assumption gives rise to the Markov chain representation, asserting that future state predictions are conditionally independent of the past given the present state-$P(X<em>t | X</em>{t-1})$</p>
+<h1 id="Hidden-Markov-Models"><a href="#Hidden-Markov-Models" class="headerlink" title="Hidden Markov Models"></a>Hidden Markov Models</h1><p>In hidden markov models, our agent usually don’t have a information about the state, , instead, our agents gather observations over time.</p>
+<p><img src="/2024/10/08/machine_learning/reinforcement-learning/hmm.png" alt="hmm"></p>
+<p>A Hidden Markov Model consists of three fundamental components: the initial distribution $P(X1)$, transition probabilities denoted by $P(X<em>t | X</em>{t-1})$, and observation probabilities $P(O_t | X_t)$. Additionally, HMMs operate under two critical Markov assumptions:</p>
+<ol>
+<li><p>The future states of the system depend solely on the present state, encapsulated by the transition probabilities $P(X<em>t | X</em>{t-1})$.</p>
+</li>
+<li><p>The observation at a particular time step depend solely on the current state, encapsulated by the transition probabilities $P(O_t | X_t)$.</p>
+</li>
+</ol>
+<h2 id="Compute-the-probability-of-an-observation-sequence"><a href="#Compute-the-probability-of-an-observation-sequence" class="headerlink" title="Compute the probability of an observation sequence"></a>Compute the probability of an observation sequence</h2><p>If we know the hidden state sequence, then the computation of the probability is straightforward.</p>
+<script type="math/tex; mode=display">
+P(O | S) = P((o_1, o_2, \dots, o_T) | S) = \prod_{t=1}^{T}P(s_t|s_{t-1}) \cdot P(o_t | s_t)</script><p>To compute $P(s_1 | s_0)$ in the above equation (the probability of being in a specific hidden state at the first time step), <font color="orange">we often simply resort to using the stationary distribution of the Markov chain defined over the hidden states</font>.</p>
+<p>If we do not know the hidden state sequence, only know the observation sequence, then, in this scenario, we need to account for all possible hidden-state sequences, and sum over their joint probabilities with the observation sequence.</p>
+<script type="math/tex; mode=display">
+P(O) = \sum_{S} P(O | S) P(S)</script><p>However, if we do bruteforcely, for an HMM with $N$ hidden states and an observation sequence of $T$ observations, there are $N^T$ possible hidden sequences, which is unacceptable. <font color="orange">To solve this problem, we can exploit the fact that the probability of the observation sequence up to time $t$ can be computed using the probability of the observation sequence up to time $t-1</font>$. This is done by summing over the probabilities of all possible hidden-state sequences at time:</p>
+<script type="math/tex; mode=display">
+P(O_{0 \to t} | (s_t= s_i)) = \sum_{j=1}^{N} P(O_{0 \to t-1} | (s_{t-1}=s_j))P(s_i|s_j)P(o_t|s_i)</script><p>Then, we have</p>
+<script type="math/tex; mode=display">
+P(O_{o \to t}) = \sum_{i=1}^{N} P(O_{0 \to t} | (s_t= s_i))</script><p>Having the recurrance, we can use dynamic programming to solve this problem with a $O(N^2 T)$ time complexity. <font color="orange">Still, at $t=1$, we use stationary distribution to compute $P(O_{0 \to 1} | (s_1 = s_i) = P(s_i)P(o_1 |s_i)$</font>.</p>
+<h2 id="Compute-the-most-likely-state-sequence-base-on-observation-sequence"><a href="#Compute-the-most-likely-state-sequence-base-on-observation-sequence" class="headerlink" title="Compute the most likely state sequence base on observation sequence"></a>Compute the most likely state sequence base on observation sequence</h2><p>We use Viterbi algorithm to solve this. Very much like the dp program in previous part:</p>
+<script type="math/tex; mode=display">
+P(O_{0 \to t} | (s_t= s_i)) = \max_{j=1}^{N} P(O_{0 \to t-1} | (s_{t-1}=s_j))P(s_i|s_j)P(o_t|s_i)</script><p>The final probability of the most likely hidden state sequence $S$ after $T$ time-steps is then given by</p>
+<script type="math/tex; mode=display">
+P(S) = \max_{i=1}^{N} P(O_{0 \to t} | (s_t= s_i))</script><p>Then</p>
+<script type="math/tex; mode=display">
+S = \argmax P(S)</script><h1 id="Markov-Decision-Process-MDP"><a href="#Markov-Decision-Process-MDP" class="headerlink" title="Markov Decision Process(MDP)"></a>Markov Decision Process(MDP)</h1><p>When an action taken from a state is no longer guaranteed to lead to a specific successor state. Instead, we now consider the scenario where there is a probability associated with each action leading our agent from one state to another.</p>
+<p>For example from state $S_1$, the agent takes action $a$ , but may end up in state $S_2$ with probability of $p$ and $S_3$ with probability of $1-p$ . This stochastic system can be formally represented as a markov decision process(MDP).</p>
+<p>For MDP, we have those info:</p>
+<ul>
+<li><p>State Space $S$ : the set of all possible states that the system can be in.</p>
+</li>
+<li><p>Action Space $A$ : the set of all possible actions, <font color="orange">if there is no actions can be taken from states, those states are therefore terminal or end states in the MDP.</font></p>
+</li>
+<li><p>Transition Probabilities $T$ : a the probabilities of transitioning from one state to another given a specific action, notated as $T(s, a, s’)$, where $s$ is the source state, $a$ is the action and $s’$ is the target/successor state.</p>
+</li>
+<li><p>Rewards $R$ : a numerical reward associated with each transition. In general, $R(s, a, s’)$ should be thought of as the reward of reaching state $s’$ from state $s$ using action $a$. </p>
+</li>
+<li><p>Discount Factor $\gamma$ : accounts for the discounting of future rewards in decision-making. It ensures that immediate rewards are valued more than future rewards. Discounting rewards in general prevents the agent from choosing actions that may lead to infinite rewards (cyclical paths).</p>
+</li>
+<li><p>Policy $\pi$ : a policy is defined as a mapping from states to actions. In other words, a policy defines a choice of <font color="orange">one action</font> for every state in MDP. <font color="orange">Note that a policy does not concern itself with the transition probabilities or rewards, but only with the actions to be taken in each state. It also says nothing about a specific path the agent might end up taking as a result of the chosen actions</font>. Different policies, therefore, may lead to different cumulative rewards <font color="orange">on average</font>. <font color="orange">The goal of the agent in an MDP is to find the policy that maximizes the expected cumulative reward over time</font>. This is known as the <em>optimal policy</em>. Here is a policy example: ${s_0: a_0, s_1: a_1, \dots, s_n:a_n}$, this policy says that: in state $s_0$, always take action $a_0$, in state $s_1$, always take action $a_1$,  and so on.</p>
+</li>
+</ul>
+<h2 id="Evaluation-policies"><a href="#Evaluation-policies" class="headerlink" title="Evaluation policies"></a>Evaluation policies</h2><p>In order to find the best policy for our agent, we must be able to compare two or more given policies quantitatively. Under any one policy, even every time the agent is in a state, it takes the same action, the agent may end up in a different state each time (based on the values in Transition Probabilities $T$), so the outcome of the policy may vary, This is why <font color="orange">we need to evaluate policies in terms of their expected cumulative rewards rather than what happens in any one specific sample</font>.</p>
+<p>A single actual path taken by the agent as a result of following a policy is called an <strong>episode</strong>. We define the <strong>Reward</strong> of an episode as the discounted sum of rewards along the path. Given the episode $E = (s_0, a_0, r_0, s_1, a_1, r_1, \dots, s_n, a_n, r_n)$, the Reward of the episode is given by:</p>
+<script type="math/tex; mode=display">
+R(E) = \sum_{t=0}^{n} \gamma^{t} r_t</script><p>where $r_t$ is the reward at time , and $\gamma$ is the discount factor. The expected Reward of a policy $\pi$ is then given by the expected value of the Reward of the episodes generated by the policy. Given a series of episodes, the expected value is simply the average of the utilities obtained in each episode; i.e., given a set of episodes $E_1, E_2, \dots, E_n$, the expected utility of the policy is given by:</p>
+<script type="math/tex; mode=display">
+E(R(\pi)) = \frac{1}{n} \sum_{i=1}^{n} R(E_i)</script><font color="orange">In practice, we are often concerned about the expected value of starting in a given state $s$ and following a policy $\pi$ from there</font>. This is called the **value** of the state under the policy, and denoted $V(s)$. 
+
+Here, it is useful to define a second, related quantity, called the **Q-value**, defined over a state-action pair. The Q-value of a state-action pair $(s, a)$ under a policy $\pi$, denoted $Q(s, a)$, is the expected utility of starting in state $s$, taking action $a$, and then following policy $\pi$ <font color="orange">thereafter</font>.
+
+Note that when the action $a$ is also the action dictated by the policy $\pi$, then we have $V_{\pi}(s) = Q_{\pi}(s, a=\pi(s))$ . 
+
+<font color="orange">Finally, also note that the value of any end state is always $0$, since no action can be taken from that state.</font>
+
+<p>By the definition above, we can deduce to the Bellman equation:</p>
+<script type="math/tex; mode=display">
+Q_{\pi}(s, a) = \sum_{s'} T(s, a, s')[R(s, a, s')] + \gamma V_{\pi}(s')</script><p>When $a=\pi(s)$, then $Q<em>{\pi}(s, a)=V</em>{\pi}(s)$, and the value of the state under the policy $\pi$ is then given by:</p>
+<script type="math/tex; mode=display">
+V_{\pi}(s) = \sum_{s'} T(s, a, s')[R(s, a, s')] + \gamma V_{\pi}(s')</script><p>While in certain situations, the above equations may yield a closed-form solution for the value of a state under a policy, in general, we need to solve a system of linear equations to find the value of each state under the policy. This is done using a dynamic programming algorithm that iteratively computes the value of each state under the policy <font color="orange">until the values converge</font>. This algorithm is called the <strong>Policy Evaluation</strong> algorithm, and works as follows. We re-write the above equation to use previous estimates of $V<em>{\pi}(s)$ to compute new estimates of $V</em>{\pi}(s)$ as follows:</p>
+<script type="math/tex; mode=display">
+V_{\pi}^{(t)}(s) = \sum_{s'} T(s, a, s')[R(s, a, s')] + \gamma V_{\pi}^{(t-1)}(s')</script><p>where $V_{\pi}^{(t)}$ is the estimate of the value of state $s$ under policy $\pi$ at iteration $t$. We start with an initial guess for the value of each state (usually set to 0), and then iteratively update the value of each state using the above equation until the values converge.</p>
+<h2 id="Find-the-Best-Policy"><a href="#Find-the-Best-Policy" class="headerlink" title="Find the Best Policy"></a>Find the Best Policy</h2><p>Now that we have a way to evaluate the value of each state under a policy, we can use this information to find the best policy. The best policy is the one that maximizes the value of each state.</p>
+<p>Given the value of each state $V<em>{\pi}(s)$ under some policy $\pi$, we can find the best action for each state by simply taking the action maximizes the expected value, i.e. $\argmax</em>{a} Q_{\pi}(s, a)$. This is known as the <em>greedy</em> policy.</p>
+<p><font color="orange">We can use the policy evaluation algorithm to evaluate one policy, and then find the best action for each state to form a new policy. We can then evaluate this new policy and form next new policy, and so on, until the policy converges</font>. This is known as the <em>policy iteration</em> algorithm. The step of policy iteration algorithm:</p>
+<ul>
+<li><p>Initialize an guess for the value of each state $V(s)$ (usually set to 0)</p>
+</li>
+<li><p>Then we caculate Q-value of each possible action under a state $Q(s, a)$</p>
+</li>
+<li><p>After that, we can decide each state the currrent optimal action and form a new policy $\pi_{opt}$</p>
+</li>
+<li><p>Assign the maximum $Q(s, a)$ to the new $V(s)$</p>
+</li>
+<li><p>Then redo the process until the policy converges.</p>
+</li>
+</ul>
+<p>there is one key difference  between policy evaluation alogrithm and policy iteration alogrithm: <font color="orange">instead of using a fixed policy $\pi$, we use the greedy policy at each iteration such that the chosen action maximizes the expected value</font>.</p>
+<h1 id="Partially-Observable-MDPS"><a href="#Partially-Observable-MDPS" class="headerlink" title="Partially Observable MDPS"></a>Partially Observable MDPS</h1><p>In the previous discussion about MDP, agent knows precisely which state in the state-space it is currently in. However, in many real-life implementations of autonomous agents, the agent does not have a global view of the world, but must instead rely on observations of its immediate surroundings. Using these observations, the agent may then compute how likely it is to be in every possible state in the state space. Such scenarios can be modeled using the Partially Observable MDP (or POMDP) framework.</p>
+<p>A POMDP need 2 more elements than MDP:</p>
+<ul>
+<li><p>Observation Space $O$: the set of all possible observations that the agent can make.</p>
+</li>
+<li><p>Observation Probabilities $\Omega$ : a function that gives the probability of making an observation given a specific state</p>
+</li>
+</ul>
+<p><font color="orange">As in the MDP, the agent’s goal in a POMDP is to find the policy that maximizes the expected cumulative reward over time</font>.</p>
+<p>Now, given an observation, the agent must update its belief about which state it is actually in, since the agent does not know this for sure. <font color="orange">The <strong>belief state</strong> is defined as a probability distribution over the state space</font>, representing the agent’s likelihood of being in each state in the state-space.</p>
+<p>Instead of moving from state $s$ to $s’$ in MDP, in a POMDP, the agent transitions between belief states, say $b$ to $b’$ as the result of an action .</p>
+<p>Given an observation, we need to calcuate the probability of being one state, i.e. $P(s|o)$. Luckily, Bayes’ theorem allows us to invert this dependency, and compute the probability as follows:</p>
+<script type="math/tex; mode=display">
+P(s|o) = \frac{P(o|s) \cdot P(s)}{P(o)}</script><p>where $P(o|s)$ is the probability of making the observation $o$ given the state $s$ - this is nothing but $\Omega(o, s)$, $P(s)$ is the prior probability of being in state $s$, and $P(o)$ is the probability of making the observation $o$ from any state, and is given by:</p>
+<script type="math/tex; mode=display">
+P(o) = \sum_{s \in S} P(o|s) \cdot P(s)</script><p><font color="orange">In practice, we can usually ignore the denominator, since it is the same for all states in the equation for</font> $P(s|o)$. Therefore, we can compute the belief state as</p>
+<script type="math/tex; mode=display">
+b(s) = P(o|s) \cdot P(s) = \Omega(o, s) \cdot P(s)</script><p>where $b(s)$ is the probability of being in state $s$ given the observation $o$, i.e. $P(s|o)$.</p>
+<p>We can now begin to reason about the transition <em>between belief states</em> for POMDPs, instead of the transition model between states in standard MDPs. First, let us compute the belief state update resulting from this specific action and observation, and we will then discuss the belief state transition in general. The belief state update is given by:</p>
+<script type="math/tex; mode=display">
+b^{(t)}(s') = \sum_{s \in S} T(s, a, s') \Omega(o, s')b^{(t-1)}(s)</script><p>where $b^{(t)}(s’)$ is the probability of being in state $s’$ after taking action $a$ and making observation $o$, and $b^{(t-1)}(s)$ is the last-known probability of being in state $s$ before taking action. There are a few key things to keep in mind here:</p>
+<ul>
+<li><p>First, note that we update the probability of being in every <em>target</em> cell $s’$, summing over all origin state $s$ from where the action $a$ could have brought us to $s’$. This is opposite to the MDP Bellman equation, where we update the value of every <em>origin</em> state $s$, summing over all target states $s’$ under the action $a$.</p>
+</li>
+<li><p>Second, just like the Bellman updates, the above belief-state update is calculated for every state in the state-space, considering each as a target state under the action $a$.</p>
+</li>
+<li><p>Third, result ofactions may be stochastic, therefore we still have a notion of an action taking the agent to a different state.</p>
+</li>
+</ul>
+<p><font color="orange">Now we give previous belief state, an action and an observation after that action, we can compute the new belief state</font>. Next, we need to estimate $T(b, a, b’)$, the probability of transitioning to one specific belief state from a previous one, given an action, accounting for all possible observations as a result of that action. We must keep in mind that unlike the number of states in an MDP, <font color="orange">the number of belief states in a POMDP is infinite</font>, since every probability distribution over the state-space is a valid belief state. However, given any one belief state, if we take an action and make an observation, we can only end up in one new belief state.</p>
+<h1 id="Reinforcement-Learning"><a href="#Reinforcement-Learning" class="headerlink" title="Reinforcement Learning"></a>Reinforcement Learning</h1><p>As our final layer of complexity, imagine a situation where neither the transition probabilities nor the rewards are known a priori. <font color="orange">The action space is assumed to be fully known</font>, and the state space may or may not be fully known. In such environments, we deploy a class of algorithms known collectively as reinforcement learning (RL), where the agent learns to make decisions through interactions with the environment. The agent may choose to infer or estimate the underlying mechanics of the world such as $T(s, a, s’)$ and $R(s, a, s’)$, or directly try to optimize the value function in search of an optimal policy.</p>
+<h2 id="Model-Based-Monte-Carlo-MBMC"><a href="#Model-Based-Monte-Carlo-MBMC" class="headerlink" title="Model Based Monte Carlo (MBMC)"></a>Model Based Monte Carlo (MBMC)</h2><p>we assume an underlying MDP, and use the episodes data solely to infer the model’s parameters(transition probabilities and rewards). Once we have an MDP, evaluating a given policy, or computing the optimal policy proceeds exactly as we did before. However, this approach may have a few drawbacks:</p>
+<ul>
+<li><p>MBMC approaches use data-based estimates to construct a fixed model of the environmentOnce this model is constructed, it is typically not updated</p>
+</li>
+<li><p>The second drawback is that policy evaluation and optimal policy estimation for a given MDP is computationally expensive. To compute optimal policies, we must consider all possible actions from all states, running a large number of updates for each legal state-action pair until the values converge.</p>
+</li>
+</ul>
+<h2 id="Model-Free-Monte-Carlo-MFMC"><a href="#Model-Free-Monte-Carlo-MFMC" class="headerlink" title="Model Free Monte Carlo (MFMC)"></a>Model Free Monte Carlo (MFMC)</h2><p>we use the data from the environment to directly estimate Q-values, without first constructing the underlying MDP.</p>
+<h2 id="Q-Learning"><a href="#Q-Learning" class="headerlink" title="Q-Learning"></a>Q-Learning</h2><p>Q-Learning is an <strong>off-policy value-based method that uses a TD approach to train its action-value function</strong></p>
+<ul>
+<li><p>First we initialize for All State-Action Value (or State Value) with 0</p>
+</li>
+<li><p>We use Epsilon($\epsilon$)-Greedy Policy to choose our action</p>
+<ul>
+<li><p>each step with $\epsilon$ probability to choose random action</p>
+</li>
+<li><p>with $1 - \epsilon$ probabilty to choose the optimal action</p>
+</li>
+<li><p>initially, $\epsilon$ is 1, and after some time steps, it will drop to some smaller value</p>
+</li>
+</ul>
+</li>
+<li><p>Then, we update our State-Action Value table (or State Value table) for each $(S, A, R,S’)$ pairs</p>
+<script type="math/tex; mode=display">
+\begin{gather*}
+Q_{new}(S, A) \gets V_{old}(S, A) + lr \times [R + \gamma \times max(Q_{old}(S', A)) - Q_{old}(S, A)] \\
+\text{or} \\
+V_{new}(S) \gets V_{old(S)} + lr \times [R + \gamma \times V_{old}(S') - V_{old}(S)]
+\end{gather*}</script></li>
+</ul>
+<p>Explain for the word <font color="orange">Off-policy: using a different policy for acting and updating</font>. For instance, <font color="orange">with Q-Learning, the epsilon-greedy policy (acting policy), is different from the greedy policy that is <strong>used to select the best next-state action value to update our Q-value (updating policy)</strong></font>.</p>
+<p>While <font color="orange">On-policy: using the same policy for acting and updating</font>. For instance, with Sarsa, another value-based algorithm, the epsilon-greedy policy selects the next state-action pair, not a greedy policy.</p>
+<h1 id="Deep-Q-Learning"><a href="#Deep-Q-Learning" class="headerlink" title="Deep Q-Learning"></a>Deep Q-Learning</h1><p>Q-Learning worked well with small state space environments, if the states and actions spaces are not small enough to be represented efficiently by arrays and tables, Q-Learning Cannot solve those problem efficiently.</p>
+<p>Instead of using a Q-table, Deep Q-Learning uses a Neural Network that takes a state as input and approximates Q-values for <font color="orange">each action</font> based on that state.</p>
+<p>in Deep Q-Learning, we create a loss function that compares our Q-value prediction and the Q-target and uses gradient descent to update the weights of our Deep Q-Network to approximate our Q-values better.</p>
+<p>The Deep Q-Learning training algorithm has two phases:</p>
+<ul>
+<li>Sampling: we perform actions and store the observed experience tuples in a replay memory.</li>
+<li>Training: Select a small batch of tuples randomly and learn from this batch using a gradient descent update step.</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+              <a href="/tags/deep-learning/" rel="tag"># deep learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/04/26/machine_learning/batch-normalization/" rel="prev" title="batch-normalization">
+      <i class="fa fa-chevron-left"></i> batch-normalization
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/11/04/machine_learning/d2l-summary/" rel="next" title="d2l-summary">
+      d2l-summary <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Markov-Models"><span class="nav-number">1.</span> <span class="nav-text">Markov Models</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hidden-Markov-Models"><span class="nav-number">2.</span> <span class="nav-text">Hidden Markov Models</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Compute-the-probability-of-an-observation-sequence"><span class="nav-number">2.1.</span> <span class="nav-text">Compute the probability of an observation sequence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Compute-the-most-likely-state-sequence-base-on-observation-sequence"><span class="nav-number">2.2.</span> <span class="nav-text">Compute the most likely state sequence base on observation sequence</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Markov-Decision-Process-MDP"><span class="nav-number">3.</span> <span class="nav-text">Markov Decision Process(MDP)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Evaluation-policies"><span class="nav-number">3.1.</span> <span class="nav-text">Evaluation policies</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Find-the-Best-Policy"><span class="nav-number">3.2.</span> <span class="nav-text">Find the Best Policy</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Partially-Observable-MDPS"><span class="nav-number">4.</span> <span class="nav-text">Partially Observable MDPS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reinforcement-Learning"><span class="nav-number">5.</span> <span class="nav-text">Reinforcement Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Model-Based-Monte-Carlo-MBMC"><span class="nav-number">5.1.</span> <span class="nav-text">Model Based Monte Carlo (MBMC)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Model-Free-Monte-Carlo-MFMC"><span class="nav-number">5.2.</span> <span class="nav-text">Model Free Monte Carlo (MFMC)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-Learning"><span class="nav-number">5.3.</span> <span class="nav-text">Q-Learning</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Deep-Q-Learning"><span class="nav-number">6.</span> <span class="nav-text">Deep Q-Learning</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">215k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">11:56</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

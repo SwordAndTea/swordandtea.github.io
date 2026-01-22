@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="The default number of lights allowed is four but this can be increased. There are four types of lights that can be used with a range of lighting properties.  The Point Light - think light bulb. The Di">
+<meta property="og:type" content="article">
+<meta property="og:title" content="light">
+<meta property="og:url" content="http://swordandtea.github.io/2024/03/14/babylonJS/light/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="The default number of lights allowed is four but this can be increased. There are four types of lights that can be used with a range of lighting properties.  The Point Light - think light bulb. The Di">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-03-14T16:11:37.000Z">
+<meta property="article:modified_time" content="2024-03-28T00:51:20.239Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="BabylonJS">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://swordandtea.github.io/2024/03/14/babylonJS/light/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>light | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2024/03/14/babylonJS/light/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          light
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-03-14 12:11:37" itemprop="dateCreated datePublished" datetime="2024-03-14T12:11:37-04:00">2024-03-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-03-27 20:51:20" itemprop="dateModified" datetime="2024-03-27T20:51:20-04:00">2024-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/BabylonJS/" itemprop="url" rel="index">
+                    <span itemprop="name">BabylonJS</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>The default number of lights allowed is four but this can be increased.</p>
+<p>There are four types of lights that can be used with a range of lighting properties.</p>
+<ul>
+<li>The Point Light - think light bulb.</li>
+<li>The Directional Light - think planet lit by a distant sun.</li>
+<li>The Spot Light - think of a focused beam of light.</li>
+<li>The Hemispheric Light - think of the ambient light.</li>
+</ul>
+<p>Color properties for all lights include <em>emissive</em>, <em>diffuse</em> and <em>specular</em>.</p>
+<p>Overlapping lights will interact as you would expect with the overlap of red, green and blue producing white light. Every light can be switched on or off and when on its intensity can be set with a value from 0 to 1.</p>
+<p> All meshes allow light to pass through them unless shadow generation is activated.</p>
+<h1 id="Types-of-Lights"><a href="#Types-of-Lights" class="headerlink" title="Types of Lights"></a>Types of Lights</h1><h2 id="Point-Light"><a href="#Point-Light" class="headerlink" title="Point Light"></a>Point Light</h2><p>A point light is a light defined by an unique point in world space. The light is emitted in <font color="orange">every direction</font> from this point. A good example of a point light is a standard light bulb.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> light = <span class="keyword">new</span> BABYLON.PointLight(<span class="string">&quot;pointLight&quot;</span>, <span class="keyword">new</span> BABYLON.Vector3(<span class="number">1</span>, <span class="number">10</span>, <span class="number">1</span>), scene);</span><br></pre></td></tr></table></figure>
+<h2 id="Directional-Light"><a href="#Directional-Light" class="headerlink" title="Directional Light"></a>Directional Light</h2><p>A directional light is defined by a direction. The light is emitted from <font color="orange">everywhere</font> in the specified direction, and has an <font color="orange">infinite range</font>.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> light = <span class="keyword">new</span> BABYLON.DirectionalLight(<span class="string">&quot;DirectionalLight&quot;</span>, <span class="keyword">new</span> BABYLON.Vector3(<span class="number">0</span>, -<span class="number">1</span>, <span class="number">0</span>), scene);</span><br></pre></td></tr></table></figure>
+<h2 id="Spot-Light"><a href="#Spot-Light" class="headerlink" title="Spot Light"></a>Spot Light</h2><p>A spot light is defined by a position, a direction, an angle, and an exponent. These values define a cone of light starting from the position, emitting toward the direction.</p>
+<p>The angle, in radians, defines the size (field of illumination) of the spotlight’s conical beam , and the exponent defines the speed of the decay of the light with distance (reach).</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> light = <span class="keyword">new</span> BABYLON.SpotLight(<span class="string">&quot;spotLight&quot;</span>, <span class="keyword">new</span> BABYLON.Vector3(<span class="number">0</span>, <span class="number">30</span>, -<span class="number">10</span>), <span class="keyword">new</span> BABYLON.Vector3(<span class="number">0</span>, -<span class="number">1</span>, <span class="number">0</span>), <span class="built_in">Math</span>.PI / <span class="number">3</span>, <span class="number">2</span>, scene);</span><br></pre></td></tr></table></figure>
+<h2 id="Hemispheric-Light"><a href="#Hemispheric-Light" class="headerlink" title="Hemispheric Light"></a>Hemispheric Light</h2><p>A hemispheric light is an easy way to simulate an ambient environment light. A hemispheric light is defined by a direction, usually ‘up’ towards the sky. However it is by setting the color properties that the full effect is achieved.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> light = <span class="keyword">new</span> BABYLON.HemisphericLight(<span class="string">&quot;HemiLight&quot;</span>, <span class="keyword">new</span> BABYLON.Vector3(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>), scene);</span><br></pre></td></tr></table></figure>
+<h1 id="Color-Properties"><a href="#Color-Properties" class="headerlink" title="Color Properties"></a>Color Properties</h1><p>There are three properties of lights that affect color. Two of these <em>diffuse</em> and <em>specular</em> apply to all four types of light, the third, <em>groundColor</em>, only applies to an Hemispheric Light.</p>
+<ol>
+<li>Diffuse gives the basic color to an object;</li>
+<li>Specular produces a highlight color on an object.</li>
+</ol>
+<h1 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h1><p>a single material can only handle a defined number simultaneous lights (by default this value is equal to 4 which means the first four enabled lights of the scene’s lights list). You can change this number with this code</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> material = <span class="keyword">new</span> BABYLON.StandardMaterial(<span class="string">&quot;mat&quot;</span>, scene);</span><br><span class="line">material.maxSimultaneousLights = <span class="number">6</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="On-Off-or-Dimmer"><a href="#On-Off-or-Dimmer" class="headerlink" title="On, Off or Dimmer"></a>On, Off or Dimmer</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">light.setEnabled(<span class="literal">false</span>); <span class="comment">// off</span></span><br><span class="line">light.setEnabled(<span class="literal">true</span>); <span class="comment">// on</span></span><br><span class="line">light.intensity = <span class="number">0.5</span>; <span class="comment">// dimmer, default value is 1</span></span><br><span class="line">light.intensity = <span class="number">2.4</span>; <span class="comment">// brighter, default value is 1</span></span><br></pre></td></tr></table></figure>
+<p>For point and spot lights you can set how far the light reaches using the <em>range</em> property</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">light.range = <span class="number">100</span>; </span><br></pre></td></tr></table></figure>
+<h1 id="Choosing-Meshes-to-Light"><a href="#Choosing-Meshes-to-Light" class="headerlink" title="Choosing Meshes to Light"></a>Choosing Meshes to Light</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">light.excludedMeshes.push(someMesh)</span><br><span class="line">light.includedOnlyMeshes.push(someMesh)</span><br></pre></td></tr></table></figure>
+<h1 id="Shadows"><a href="#Shadows" class="headerlink" title="Shadows"></a>Shadows</h1><p>Shadows are easy to generate using the Babylon.js <code>ShadowGenerator</code>. This function uses a shadow map: a map of your scene generated from the light’s point of view.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> shadowGenerator = <span class="keyword">new</span> BABYLON.ShadowGenerator(<span class="number">1024</span>, light);</span><br></pre></td></tr></table></figure>
+<p>The two parameters used by the shadow generator are: the size of the shadow map (which determines the shadow detail level), and which light is used for the shadow map’s computation. </p>
+<p>Next, you have to define which shadows will be rendered:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shadowGenerator.getShadowMap().renderList.push(mesh);</span><br></pre></td></tr></table></figure>
+<p>And finally, you will have to define where the shadows will be displayed by setting a mesh parameter to true:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">someMesh.receiveShadows = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h2 id="Soft-shadows"><a href="#Soft-shadows" class="headerlink" title="Soft shadows"></a>Soft shadows</h2><p>If you want to go further, you can activate shadows filtering in order to create better looking shadows by removing the hard edges: </p>
+<h3 id="Possion-sampling"><a href="#Possion-sampling" class="headerlink" title="Possion sampling"></a>Possion sampling</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shadowGenerator.usePoissonSampling = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<p>If you set this one to <code>true</code>, Variance shadow maps will be disabled. This filter uses Poisson sampling to soften shadows. <font color="orange">The result is better, but slower</font>.</p>
+<h3 id="Exponential-shadow-map"><a href="#Exponential-shadow-map" class="headerlink" title="Exponential shadow map"></a>Exponential shadow map</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shadowGenerator.useExponentialShadowMap = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<p>It is <code>true</code> by default, because it is useful to decrease the aliasing of the shadow.  But if you want to reduce computation time, feel free to turn it off. You can also control how the exponential shadow map scales depth values by changing the <code>shadowGenerator.depthScale</code>. By default, the value is 50.0 but you may want to change it if the depth scale of your world (the distance between MinZ and MaxZ) is small.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shadowGenerator.depthScale = <span class="number">25.0</span></span><br></pre></td></tr></table></figure>
+<h3 id="Blur-exponential-shadow-map"><a href="#Blur-exponential-shadow-map" class="headerlink" title="Blur exponential shadow map"></a>Blur exponential shadow map</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shadowGenerator.useBlurExponentialShadowMap = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="Close-exponential-shadow-map"><a href="#Close-exponential-shadow-map" class="headerlink" title="Close exponential shadow map"></a>Close exponential shadow map</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shadowGenerator.useCloseExponentialShadowMap = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<p>The Close Exponential Shadow Map is a way of doing exponential shadow map to deal with self-shadowing issues</p>
+<h3 id="Percentage-Close-Filtering"><a href="#Percentage-Close-Filtering" class="headerlink" title="Percentage Close Filtering"></a>Percentage Close Filtering</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shadowGenerator.usePercentageCloserFiltering = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="Transparent-Objects-shadows"><a href="#Transparent-Objects-shadows" class="headerlink" title="Transparent Objects shadows"></a>Transparent Objects shadows</h2><p>For transparent objects to cast shadows, you must set the <code>transparencyShadow</code> property to <code>true</code> on the shadow generator:</p>
+<p>Starting with Babylonjs v4.2, you can simulate soft transparent shadows for transparent objects. To do this, you need to set the <code>enableSoftTransparentShadow</code> property to <code>true</code> on the shadow generator:</p>
+<h2 id="Lights"><a href="#Lights" class="headerlink" title="Lights"></a>Lights</h2><p>Keep in mind that <font color="orange">one shadow generator can only be used with one light.</font> If you want to generate shadows from another light, then you will need to create another shadow generator.</p>
+<font color="orange">Only point, directional and spot lights can cast shadows.</font>
+
+<h3 id="Point-Lights"><a href="#Point-Lights" class="headerlink" title="Point Lights"></a>Point Lights</h3><p>Point lights use cubemaps rendering</p>
+<p><code>BlurExponentialShadowMap</code> and <code>CloseBlurExponentialShadowMap</code> are not supported by point lights (mostly because blurring the six faces of the cubemap would be too expensive).</p>
+<h3 id="Spot-lights"><a href="#Spot-lights" class="headerlink" title="Spot lights"></a>Spot lights</h3><p>Spot lights use perspective projection to compute the shadow map.</p>
+<h3 id="Directional-lights"><a href="#Directional-lights" class="headerlink" title="Directional lights"></a>Directional lights</h3><p>Directional lights use orthogonal projection.</p>
+<font color="orange">The light's position of directional light can determine where the shadows will appear, even though by defination, drectional light is emitted from everywhere in the specified direction, and has an infinite range.</font>
+
+<p>The light position is set as being <code>-light.direction</code> at creation time</p>
+<p>You can also set <code>light.autoCalcShadowZBounds = true</code> to compute automatically the best <code>light.shadowMinZ</code> and <code>light.shadowMaxZ</code> values for each frame. Tightening those values to best fit your scene improve the precision of the depth map, and consequently the shadow rendering. Be warned, however, that when using this parameter with PCF and PCSS you may miss some shadows because of the way those filtering technics are implemented. Note that <code>light.autoUpdateExtends</code> must be set to <code>true</code> for <code>light.autoCalcShadowZBounds</code> to work.</p>
+<p>By default, the x and y extents of the light frustum (the position of the left/right/top/bottom planes of the frustum) are automatically computed by Babylon because <code>light.autoUpdateExtends = true</code>. You can set this property to <code>false</code> and set the frustum sizes manually by updating the <code>orthoLeft</code>, <code>orthoRight</code>, <code>orthoTop</code> and <code>orthoBottom</code> properties. You can use the <code>shadowFrustumSize</code> property instead if you want to set the frustum with a fixed size in all dimensions.</p>
+<p>The values for the near/far planes are stored in <code>shadowMinZ</code> and <code>shadowMaxZ</code>, properties that you can change (as in the PG). You can also let Babylon compute them automatically by setting <code>light.autoCalcShadowZBounds = true</code> (<code>false</code> by default). Note that when Babylon computes the bounds automatically, it does so by taking into account only the objects that are shadow casters! That’s why if you activate it in the PG, you will see that the light frustum does not encompass the ground, which is not a shadow caster but only a receiver.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BabylonJS/" rel="tag"># BabylonJS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/03/14/babylonJS/camera/" rel="prev" title="camera">
+      <i class="fa fa-chevron-left"></i> camera
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/03/14/babylonJS/scene/" rel="next" title="scene">
+      scene <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Types-of-Lights"><span class="nav-number">1.</span> <span class="nav-text">Types of Lights</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Point-Light"><span class="nav-number">1.1.</span> <span class="nav-text">Point Light</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Directional-Light"><span class="nav-number">1.2.</span> <span class="nav-text">Directional Light</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spot-Light"><span class="nav-number">1.3.</span> <span class="nav-text">Spot Light</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hemispheric-Light"><span class="nav-number">1.4.</span> <span class="nav-text">Hemispheric Light</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Color-Properties"><span class="nav-number">2.</span> <span class="nav-text">Color Properties</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Limitations"><span class="nav-number">3.</span> <span class="nav-text">Limitations</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#On-Off-or-Dimmer"><span class="nav-number">4.</span> <span class="nav-text">On, Off or Dimmer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Choosing-Meshes-to-Light"><span class="nav-number">5.</span> <span class="nav-text">Choosing Meshes to Light</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Shadows"><span class="nav-number">6.</span> <span class="nav-text">Shadows</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Soft-shadows"><span class="nav-number">6.1.</span> <span class="nav-text">Soft shadows</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Possion-sampling"><span class="nav-number">6.1.1.</span> <span class="nav-text">Possion sampling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Exponential-shadow-map"><span class="nav-number">6.1.2.</span> <span class="nav-text">Exponential shadow map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Blur-exponential-shadow-map"><span class="nav-number">6.1.3.</span> <span class="nav-text">Blur exponential shadow map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Close-exponential-shadow-map"><span class="nav-number">6.1.4.</span> <span class="nav-text">Close exponential shadow map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Percentage-Close-Filtering"><span class="nav-number">6.1.5.</span> <span class="nav-text">Percentage Close Filtering</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Transparent-Objects-shadows"><span class="nav-number">6.2.</span> <span class="nav-text">Transparent Objects shadows</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lights"><span class="nav-number">6.3.</span> <span class="nav-text">Lights</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Point-Lights"><span class="nav-number">6.3.1.</span> <span class="nav-text">Point Lights</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spot-lights"><span class="nav-number">6.3.2.</span> <span class="nav-text">Spot lights</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Directional-lights"><span class="nav-number">6.3.3.</span> <span class="nav-text">Directional lights</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">215k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">11:56</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

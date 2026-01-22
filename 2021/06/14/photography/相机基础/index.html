@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="相机的分类按取景方式分单反相机：单镜头反光式取景相机，相机的镜头内部有一片反光镜，用于将镜头前的图像反射到取景窗，反光镜后面时感光元件当相机进行拍摄时，反光镜会先弹下（避免挡住感光元件），所以拍摄时镜头一般会黑一下。由于单反是通过物理的方法将镜头前的图像反射到取景窗中的，所以在没有开启相机电源的情况下，也能从取景窗中看到镜头中的画面。  微单相机：单镜头无反相机，无反相机，没有反光镜。无反相机直接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="相机基础">
+<meta property="og:url" content="http://swordandtea.github.io/2021/06/14/photography/%E7%9B%B8%E6%9C%BA%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="相机的分类按取景方式分单反相机：单镜头反光式取景相机，相机的镜头内部有一片反光镜，用于将镜头前的图像反射到取景窗，反光镜后面时感光元件当相机进行拍摄时，反光镜会先弹下（避免挡住感光元件），所以拍摄时镜头一般会黑一下。由于单反是通过物理的方法将镜头前的图像反射到取景窗中的，所以在没有开启相机电源的情况下，也能从取景窗中看到镜头中的画面。  微单相机：单镜头无反相机，无反相机，没有反光镜。无反相机直接">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://swordandtea.github.io/2021/06/15/photography/%E7%9B%B8%E6%9C%BA%E5%9F%BA%E7%A1%80/单反相机原理.png">
+<meta property="og:image" content="http://swordandtea.github.io/2021/06/15/photography/%E7%9B%B8%E6%9C%BA%E5%9F%BA%E7%A1%80/双镜头相机.jpeg">
+<meta property="og:image" content="http://swordandtea.github.io/2021/06/15/photography/%E7%9B%B8%E6%9C%BA%E5%9F%BA%E7%A1%80/动态范围.png">
+<meta property="article:published_time" content="2021-06-14T16:21:31.000Z">
+<meta property="article:modified_time" content="2023-05-03T07:26:07.000Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="photography">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://swordandtea.github.io/2021/06/15/photography/%E7%9B%B8%E6%9C%BA%E5%9F%BA%E7%A1%80/单反相机原理.png">
+
+<link rel="canonical" href="http://swordandtea.github.io/2021/06/14/photography/%E7%9B%B8%E6%9C%BA%E5%9F%BA%E7%A1%80/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>相机基础 | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2021/06/14/photography/%E7%9B%B8%E6%9C%BA%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          相机基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-06-14 12:21:31" itemprop="dateCreated datePublished" datetime="2021-06-14T12:21:31-04:00">2021-06-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-05-03 03:26:07" itemprop="dateModified" datetime="2023-05-03T03:26:07-04:00">2023-05-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/photography/" itemprop="url" rel="index">
+                    <span itemprop="name">photography</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="相机的分类"><a href="#相机的分类" class="headerlink" title="相机的分类"></a>相机的分类</h1><h2 id="按取景方式分"><a href="#按取景方式分" class="headerlink" title="按取景方式分"></a>按取景方式分</h2><p>单反相机：单镜头反光式取景相机，相机的镜头内部有一片反光镜，用于将镜头前的图像反射到取景窗，反光镜后面时感光元件当相机进行拍摄时，反光镜会先弹下（避免挡住感光元件），所以拍摄时镜头一般会黑一下。由于单反是通过物理的方法将镜头前的图像反射到取景窗中的，所以在没有开启相机电源的情况下，也能从取景窗中看到镜头中的画面。</p>
+<p><img src="/2021/06/15/photography/%E7%9B%B8%E6%9C%BA%E5%9F%BA%E7%A1%80/单反相机原理.png" alt="单反相机原理" style="zoom:50%;"></p>
+<p>微单相机：单镜头无反相机，无反相机，没有反光镜。无反相机直接通过感光原件将镜头前的画面输出到感光器和屏幕中，所以当微单相机未开机时，无法从取景窗中看到镜头前的画面。</p>
+<p>双反相机：双镜头反光式取景相机，一个镜头负责取景，一个镜头负责拍摄。双镜头相机一般在用于拍摄人文照片时比较方便（因为看取景窗时要从上往下看，别人一般觉察不到你在进行拍摄）</p>
+<p><img src="/2021/06/15/photography/%E7%9B%B8%E6%9C%BA%E5%9F%BA%E7%A1%80/双镜头相机.jpeg" alt="双镜头相机" style="zoom:50%;"></p>
+<p>旁轴相机：一般在相机右上角单独有一个取景窗，从取景窗中看到的和镜头中实际的图片有一些微小的差距（非常下，一般没有太大影响）</p>
+<h2 id="按成像介质分"><a href="#按成像介质分" class="headerlink" title="按成像介质分"></a>按成像介质分</h2><p>数码相机：利用感光元件将影像转换成电子数据的相机，都称为数码相机</p>
+<p>胶片相机：以化学方法，将影像记录在卤化银胶片上的相机</p>
+<h1 id="全画幅和APS-C画幅的区别"><a href="#全画幅和APS-C画幅的区别" class="headerlink" title="全画幅和APS-C画幅的区别"></a>全画幅和APS-C画幅的区别</h1><p>全画幅和APS-C画幅的主要区别是在于感光元件的大小不同，全画幅的感光元件大小一般在36mm <em> 24mm，APS-C画幅的感光元件的大小一般在23mm </em> 15mm。全画幅的感光元件比较大，所以在其他参数一致的条件下，全画幅拍到的画面会比较大一些。</p>
+<h1 id="如何清洁相机"><a href="#如何清洁相机" class="headerlink" title="如何清洁相机"></a>如何清洁相机</h1><p>对相机的显示屏幕和镜头的前镜头可以使用清洁布清理。对相机的内部镜头和观光元件<code>最多</code>使用气吹清理，必要时可以去专业的店进行清洗。</p>
+<h1 id="镜头的分类及镜头参数"><a href="#镜头的分类及镜头参数" class="headerlink" title="镜头的分类及镜头参数"></a>镜头的分类及镜头参数</h1><h2 id="定焦镜头和变焦镜头"><a href="#定焦镜头和变焦镜头" class="headerlink" title="定焦镜头和变焦镜头"></a>定焦镜头和变焦镜头</h2><p>定焦镜头只有一个固定的焦距，也只有一个固定的视野，没有变焦的功能。</p>
+<p>变焦镜头，在一定范围内，可以变换焦距，从而得到不同的视野。</p>
+<p>变焦镜头的好处就是焦段可动态调节。定焦镜头的好处是在同样焦段下，拍出来的图片细节保留更好。原因是变焦镜头为了可以变焦一般是多个镜片叠加起来的，而每通过一层镜片，由于折射和反射，就损失了一些细节。</p>
+<h2 id="最近对焦距离"><a href="#最近对焦距离" class="headerlink" title="最近对焦距离"></a>最近对焦距离</h2><p>对焦距离是感光元件到被摄对象之间的距离，而最近对焦距离就是：每一种镜头都有一个能使相机对上焦的最小对焦距离，如果小于这个距离，相机是无法对上焦的。如果需要非常近距离的拍摄，例如拍摄昆虫，可以使用微距镜头（最近对焦距离非常小）。</p>
+<h2 id="广角镜头简介"><a href="#广角镜头简介" class="headerlink" title="广角镜头简介"></a>广角镜头简介</h2><p>35mm以下焦段的镜头称为广角镜头。</p>
+<h2 id="中焦段镜头简介"><a href="#中焦段镜头简介" class="headerlink" title="中焦段镜头简介"></a>中焦段镜头简介</h2><p>35——70mm焦段的镜头称为中焦段镜头。</p>
+<h2 id="长焦镜头简介"><a href="#长焦镜头简介" class="headerlink" title="长焦镜头简介"></a>长焦镜头简介</h2><p>70mm以上的镜头称为长焦镜头</p>
+<h1 id="动态范围（宽容度）"><a href="#动态范围（宽容度）" class="headerlink" title="动态范围（宽容度）"></a>动态范围（宽容度）</h1><p>从亮到暗，相机只能选择其中的一部分范围来记录</p>
+<p><img title src="/2021/06/15/photography/%E7%9B%B8%E6%9C%BA%E5%9F%BA%E7%A1%80/动态范围.png" alt data-align="center" width="673"></p>
+<p>动态范围越大的相机，能记录的明暗范围越广，这在拍摄一些明暗差别比较大的场景（通常是一些山水风光）比较有用，否则就需要靠后期修图。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/photography/" rel="tag"># photography</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/30/DDIA/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2%E8%AF%AD%E8%A8%80/" rel="prev" title="数据模型与查询语言">
+      <i class="fa fa-chevron-left"></i> 数据模型与查询语言
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/06/14/photography/%E6%9B%9D%E5%85%89%E4%B8%89%E8%A6%81%E7%B4%A0/" rel="next" title="曝光三要素">
+      曝光三要素 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%B8%E6%9C%BA%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">相机的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E5%8F%96%E6%99%AF%E6%96%B9%E5%BC%8F%E5%88%86"><span class="nav-number">1.1.</span> <span class="nav-text">按取景方式分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E6%88%90%E5%83%8F%E4%BB%8B%E8%B4%A8%E5%88%86"><span class="nav-number">1.2.</span> <span class="nav-text">按成像介质分</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%A8%E7%94%BB%E5%B9%85%E5%92%8CAPS-C%E7%94%BB%E5%B9%85%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.</span> <span class="nav-text">全画幅和APS-C画幅的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%B8%85%E6%B4%81%E7%9B%B8%E6%9C%BA"><span class="nav-number">3.</span> <span class="nav-text">如何清洁相机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%95%9C%E5%A4%B4%E7%9A%84%E5%88%86%E7%B1%BB%E5%8F%8A%E9%95%9C%E5%A4%B4%E5%8F%82%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">镜头的分类及镜头参数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E7%84%A6%E9%95%9C%E5%A4%B4%E5%92%8C%E5%8F%98%E7%84%A6%E9%95%9C%E5%A4%B4"><span class="nav-number">4.1.</span> <span class="nav-text">定焦镜头和变焦镜头</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E8%BF%91%E5%AF%B9%E7%84%A6%E8%B7%9D%E7%A6%BB"><span class="nav-number">4.2.</span> <span class="nav-text">最近对焦距离</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E8%A7%92%E9%95%9C%E5%A4%B4%E7%AE%80%E4%BB%8B"><span class="nav-number">4.3.</span> <span class="nav-text">广角镜头简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E7%84%A6%E6%AE%B5%E9%95%9C%E5%A4%B4%E7%AE%80%E4%BB%8B"><span class="nav-number">4.4.</span> <span class="nav-text">中焦段镜头简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%95%BF%E7%84%A6%E9%95%9C%E5%A4%B4%E7%AE%80%E4%BB%8B"><span class="nav-number">4.5.</span> <span class="nav-text">长焦镜头简介</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%8C%83%E5%9B%B4%EF%BC%88%E5%AE%BD%E5%AE%B9%E5%BA%A6%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">动态范围（宽容度）</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">215k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">11:56</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

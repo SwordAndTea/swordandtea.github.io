@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.2">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -54,11 +54,14 @@
 <meta property="og:site_name" content="xiangwei&#39;s blog">
 <meta property="og:description" content="复制主要指通过互联网络在多台机器上保存相同数据的副本，通过数据复制方案，人们通常希望达到以下目的：  使数据在地理位置上更接近用户，从而降低访问延迟  当部分组件出现故障，系统依然可以继续工作，从而提高可用性  扩展至多台机器以同时提供数据访问服务，从而提高吞吐量   本章讨论的内容都是在假设数据规模比较小，集群的每一台机器都可以保存数据集的完整副本。在接下来的第6章中，我们讨论单台机器无法容纳整">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-02-20T07:13:27.000Z">
-<meta property="article:modified_time" content="2022-03-03T02:17:16.568Z">
+<meta property="og:image" content="http://swordandtea.github.io/2022/02/20/DDIA/%E6%95%B0%E6%8D%AE%E5%A4%8D%E5%88%B6/fig5-1.png">
+<meta property="og:image" content="http://swordandtea.github.io/2022/02/20/DDIA/%E6%95%B0%E6%8D%AE%E5%A4%8D%E5%88%B6/fig5-2.png">
+<meta property="article:published_time" content="2022-02-20T20:13:27.000Z">
+<meta property="article:modified_time" content="2024-10-24T07:34:17.796Z">
 <meta property="article:author" content="SwordAndTea">
 <meta property="article:tag" content="DDIA">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://swordandtea.github.io/2022/02/20/DDIA/%E6%95%B0%E6%8D%AE%E5%A4%8D%E5%88%B6/fig5-1.png">
 
 <link rel="canonical" href="http://swordandtea.github.io/2022/02/20/DDIA/%E6%95%B0%E6%8D%AE%E5%A4%8D%E5%88%B6/">
 
@@ -209,14 +212,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2022-02-20 15:13:27" itemprop="dateCreated datePublished" datetime="2022-02-20T15:13:27+08:00">2022-02-20</time>
+              <time title="Created: 2022-02-20 15:13:27" itemprop="dateCreated datePublished" datetime="2022-02-20T15:13:27-05:00">2022-02-20</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-03 10:17:16" itemprop="dateModified" datetime="2022-03-03T10:17:16+08:00">2022-03-03</time>
+                <time title="Modified: 2024-10-24 03:34:17" itemprop="dateModified" datetime="2024-10-24T03:34:17-04:00">2024-10-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -236,14 +239,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>2.2k</span>
+              <span>8.6k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>7 mins.</span>
+              <span>29 mins.</span>
             </span>
 
         </div>
@@ -255,7 +258,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>复制主要指通过互联网络在多台机器上保存相同数据的副本，通过数据复制方案，人们通常希望达到以下目的：</p>
+        <p>复制主要指通过互联网络在多台机器上<font color="orange">保存相同数据的副本</font>，通过数据复制方案，人们通常希望达到以下目的：</p>
 <ul>
 <li><p>使数据在地理位置上更接近用户，从而降低访问延迟</p>
 </li>
@@ -265,26 +268,26 @@
 </li>
 </ul>
 <p>本章讨论的内容都是在假设数据规模比较小，集群的每一台机器都可以保存数据集的完整副本。在接下来的第6章中，我们讨论单台机器无法容纳整个数据集的情况（即必须分区）。在后面的章节中，我们还将讨论复制过程中可能出现的各种故障，以及该如何处理这些故障。</p>
-<p>如果复制的数据一成不变，那么复制就非常容易：只需将数据复制到每个节点，一次即可搞定。然而所有的技术挑战都在于处理哪些持续更改的数据，而这正是本章讨论的核心。我们将讨论是那种流行的复制变化数据的方法：主从复制、多节点复制和无主节点复制。几乎所有的分布式数据库都使用上述方法中的某一种，而三种方法各有优缺点。</p>
+<p>如果复制的数据一成不变，那么复制就非常容易：只需将数据复制到每个节点，一次即可搞定。然而所有的技术挑战都在于处理那些持续更改的数据，而这正是本章讨论的核心。我们将讨论是三种流行的复制变化数据的方法：主从复制、多节点复制和无主节点复制。几乎所有的分布式数据库都使用上述方法中的某一种，而三种方法各有优缺点。</p>
 <h1 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h1><p>每个保存数据库完整数据集的节点称之为副本。当有了多个副本，不可避免地会引入一些问题：如何确保所有副本之间的数据是一致的？</p>
 <p>对于每一笔数据写入，所有副本都需要随之更新，否则，某些副本将出现不一致。最常见的解决方案是基于主节点的复制，也即主从复制。主从复制的工作原理如下：</p>
 <ol>
-<li><p>指定某一个副本为主副本（或主节点）。当客户写数据库时，必须将写请求发送给主副本</p>
+<li><p>指定某一个副本为主副本（或主节点）。当客户写数据库时，必须将写请求发送给主副本，主副本首先将数据写入本地存储。</p>
 </li>
-<li><p>其他副本则全称为从副本（或从节点）。主副本把数据写入本地存储后，将数据更改为复制的日志或更改流发送给所有从副本。每个从副本获得更改日志后将其应用到本地，且严格保持与主副本相同的写入顺序。</p>
+<li><p>其他副本则全称为从副本（或从节点）。主副本把数据写入本地存储后，<font color="orange">将数据更改为复制的日志或更改流发送给所有从副本</font>。每个从副本获得更改日志后将其应用到本地，且严格保持与主副本相同的写入顺序。</p>
 </li>
 <li><p>客户端从数据库中读数据时，既可以在主副本也可以在从副本上执行查询。</p>
 </li>
 </ol>
-<p>//TODO: 贴图</p>
+<p><img src="/2022/02/20/DDIA/%E6%95%B0%E6%8D%AE%E5%A4%8D%E5%88%B6/fig5-1.png" alt="主从复制"></p>
 <p>许多关系型数据库都内置支持主从复制，例如PostgresSQL、Mysql、SQL Server。一些非关系型数据库如MongoDB、RethinkDB和Espresso也支持主从复制。另外，主从复制技术也不仅限于数据库，还广泛应用于分布式消息队列如Kafka和RabbitMQ，以及一些网络文件系统和复制块设备（如DRBD）</p>
 <h2 id="同步复制与异步复制"><a href="#同步复制与异步复制" class="headerlink" title="同步复制与异步复制"></a>同步复制与异步复制</h2><p>复制非常重要的一个设计选项是同步复制还是异步复制。对于关系数据库系统，同步或异步通常是一个可配置的选项；而其他系统则可能是硬性指定或者只能二选一。</p>
 <p>结合一个例子，假设网站用户需要更新首页的头像图片。其基本流程是，客户将更新请求发送给主节点，主节点接收到请求，接下来将数据更新转发给从节点。最后，由主节点来通知客户端更新完成。</p>
-<p>TODO：//贴图</p>
+<p><img src="/2022/02/20/DDIA/%E6%95%B0%E6%8D%AE%E5%A4%8D%E5%88%B6/fig5-2.png" alt="主从复制"></p>
 <p>在上图中，从节点1的复制是同步的，即主节点需等待直到从节点1确认完成了写入，然后才会向用户报告完成，并且将最新的写入对其他客户端可见。而从节点2的复制是异步的：主节点发送完消息之后立即返回，不用等待从节点2完成确认。</p>
 <p>从节点2在接收到复制日志并完成数据同步有一段延迟，通常情况下，复制速度会非常快，例如多数数据库系统可以在一秒之内完成所有从节点的更新，但是，系统其实并没有保证一定会在多长时间内完成复制。有些情况下，从节点可能落后主节点几分钟甚至更长时间，例如，由于从节点刚从故障中恢复，或者系统已经接近最大设计上限，或者节点之间的网络出现问题。</p>
 <p>同步复制的优点是，一旦向用户确认，从节点可以明确保证完成了与主节点的更新同步，数据已经处于最新版本。万一主节点发生故障，总是可以在从节点继续访问最新数据。缺点则是，如果同步的从节点无法完成确认（例如由于从节点发生崩溃，或者网络故障，或任何其他原因），写入就不能视为成功。节点会阻塞所有的写操作，直到同步副本确认完成。</p>
-<p>因此，把所有的节点都配置为同步复制有些不切实际。因为这样的话，任何一个同步节点的中断都会导致整个系统更新停滞不前。实践中，如果数据库启用了同步复制，通常意味着其中某一个从节点是同步的，而其他节点则是异步模式。万一同步的从节点变得不可用或性能下降，则将另一个异步的从节点提升为同步模型。这样可以保证至少有两个节点（即主节点和一个同步从节点）拥有最新的数据副本。这种配置有时也称为半同步。</p>
+<p>因此，<font color="orange">把所有的节点都配置为同步复制有些不切实际</font>。因为这样的话，任何一个同步节点的中断都会导致整个系统更新停滞不前。实践中，如果数据库启用了同步复制，通常意味着其中某一个从节点是同步的，而其他节点则是异步模式。万一同步的从节点变得不可用或性能下降，则将另一个异步的从节点提升为同步模型。这样可以保证至少有两个节点（即主节点和一个同步从节点）拥有最新的数据副本。这种配置有时也称为<font color="orange">半同步</font>。</p>
 <p>主从复制还经常会被配置为全异步模式。此时如果主节点发送失败且不可恢复，则所有尚未复制到从节点的写请求都会丢失。这意味着即使向客户端确认了写操作，却无法保证数据一定会持久化存储到。但全异步配置的优点则是，不管从节点上数据多么滞后，主节点总是可以继续响应写请求，系统的吞吐性能更好。</p>
 <p>全异步模式这种弱化的持久性听起来是一个非常不靠谱的折中设计，但是异步复制还是被广泛使用，特别是那些从节点数量巨大或者分布于广域地理环境。</p>
 <h2 id="配置新的从节点"><a href="#配置新的从节点" class="headerlink" title="配置新的从节点"></a>配置新的从节点</h2><p>如果出现一下情况时，如需要增加副本数以提高容错能力，或者替换失败的副本，就需要考虑增加新的从节点，但如何确保新的从节点和主节点保持数据一致呢？</p>
@@ -294,10 +297,141 @@
 <li>在某个时间点对主节点的数据副本产生一个一致性快照，这样避免长时间锁定整个数据库。</li>
 <li>将此快照拷贝到新的从节点</li>
 <li>从节点连接到主节点请求快照点所发生的数据更改日志。因为在第一步创建快照时，快照与系统复制日志的某个确定位置相关联。</li>
-<li>获取日志之后，从节点来应用这些快照点之后所有数据变更，这个步骤称之为追赶。</li>
+<li>获取日志之后，从节点来应用这些快照点之后所有数据变更，这个步骤称之为<font color="orange">追赶</font>。</li>
 </ol>
 <p>建立新的从副本具体操作步骤可能因数据库系统而异，某些系统中，这个过程是全自动化的，而在某些系统中由于所设计的步骤、流程可能会比较复杂，甚至需要管理员手动介入。</p>
-<h2 id="处理节点失效"><a href="#处理节点失效" class="headerlink" title="处理节点失效"></a>处理节点失效</h2>
+<h2 id="处理节点失效"><a href="#处理节点失效" class="headerlink" title="处理节点失效"></a>处理节点失效</h2><p>系统中的任何节点都可能因故障或者计划内的维护(例如重启节点以安装内核安全补丁)而导致中断甚至停机。如果能够在不停机的情况下重启某个节点，这会对运维带来巨大的便利。我们的目标是，尽管个别节点会出现中断，但要保持系统总体的持续运行，并尽可能减小节点中断带来的影响。</p>
+<h3 id="从节点失效：追赶式恢复"><a href="#从节点失效：追赶式恢复" class="headerlink" title="从节点失效：追赶式恢复"></a>从节点失效：追赶式恢复</h3><p>根据副本的复制日志，从节点可以知道在发生故障之前所处理的最后一笔事务，然后连接到主节点，并请求自那笔事务之后中断期间内所有的数据变更。在收到这些数据变更日志之后，将其应用到本地来追赶主节点。之后就和正常情况一样持续接收来自主节点数据流的变化。</p>
+<h3 id="主节点失效：节点切换"><a href="#主节点失效：节点切换" class="headerlink" title="主节点失效：节点切换"></a>主节点失效：节点切换</h3><p>处理主节点故障的情况则比较棘手：需要选择某个从节点将其提升为主节点，这一过程称之为切换。故障切换可以手动进行，例如通知管理员主节点发生失效，采取必要的步骤来创建新的主节点，或者以自动方式进行。自动切换的步骤通常如下：</p>
+<ol>
+<li><p>确认主节点失效。大多数系统都采用了基于超时的机制：节点间频繁地互相发生发送心跳存活消息，如果发现某一个节点在一段比较长时间内（例如30<strong>s</strong>) 没有响应，即认为该节点发生失效。</p>
+</li>
+<li><p>选举新的主节点。可以通过选举的方式（超过多数的节点达成共识）来选举新的主节点，或者由之前选定的某控制节点来指定新的主节点。候选节点最好与原主节点的数据差异最小，这样可以最小化数据丢失的风险。</p>
+</li>
+<li><p>重新配置系统使新主节点生效，现在需要将写请求发送给新的主节点，如果原主节点之后重新上线，可能仍然自认为是主节点，而没有意识到其他节点已经达成共识迫使其下台。这时系统要确保原主节点降级为从节点，并认可新的主节点。</p>
+</li>
+</ol>
+<p>然而，上述切换过程依然充满了很多变数：</p>
+<ul>
+<li><p>如果使用了异步复制，且失效之前，新的主节点并未收到原主节点的所有数据；在选举之后，原主节点很快又重新上线并加入到集群，新的主节点很可能会收到冲突的写请求，这是因为原主节点未意识的角色变化，还会尝试同步其他从节点，但其中的一个现在已经接管成为现任主节点。常见的解决方案是，原主节点上未完成复制的写请求就此丢弃，但这可能会违背数据更新持久化的承诺</p>
+</li>
+<li><p>在某些故障情况下，可能会发生两个节点同时都自认为是主节点。这种情况被称为脑裂，它非常危险：两个主节点都可能接受写请求，并且没有很好解决冲突的办法，最后数据可能会丢失或者破坏。作为一种安全应急方案，有些系统会采取措施来强制关闭其中一个节点</p>
+</li>
+</ul>
+<p>坦白讲，<font color="orange">对于这些问题没有简单的解决方案</font>。因此，即使系统可能支持自动故障切</p>
+<p>换，有些运维团队仍然更愿意以手动方式来控制整个切换过程。上述这些问题，包括节点失效、网络不可靠、副本一致性、持久性、可用性与延迟之间各种细微的权衡，实际上正是分布式系统核心的基本问题</p>
+<h1 id="复制日志的实现"><a href="#复制日志的实现" class="headerlink" title="复制日志的实现"></a>复制日志的实现</h1><h3 id="基于语句的复制"><a href="#基于语句的复制" class="headerlink" title="基于语句的复制"></a>基于语句的复制</h3><p>最简单的情况，主节点记录所执行的每个写请求（操作语句）并将该操作语句作为日志志发送给从节点。对于关系数据库，这意味着每个<strong>INSERT</strong>、<strong>UPDATE</strong>或<strong>DELEH</strong>语句都会转发给从节点，并且每个从节点都会分析并执行这些<strong>SQL</strong>语句，如同它们是来自客户端那样。</p>
+<p>听起来很合理也不复杂，但这种复制方式有一些不适用的场景：</p>
+<ul>
+<li><p>任何调用非确定性函数的语句，如<strong>NOW</strong> ()获取当前时间，或<strong>RAND</strong> ()获取一个随机</p>
+<p>数等，可能会在不同的副本上产生不同的值</p>
+</li>
+<li><p>如果语句中使用了自增列，或者依赖于现有数据</p>
+</li>
+</ul>
+<p>有可能采取一些特殊措施来解决这些问题，但这里面存在太多边界条件需要考虑，因此<font color="orange">目前通常首选的是其他复制实现方案</font>。</p>
+<h3 id="基于预写日志（WAL）的复制"><a href="#基于预写日志（WAL）的复制" class="headerlink" title="基于预写日志（WAL）的复制"></a>基于预写日志（WAL）的复制</h3><p>从节点收到日志进行处理，建立和主节点内容完全相同的数据副本。其主要缺点是日志描述的数据结果非常底层：一个<strong>WAL</strong>包含了哪些磁盘块的哪些字节发生改变，诸如此类的细节。这使得复制方案和存储引擎紧密耦合。如果数据库的存储格式从一个版本改为另一个版本，那么系统通常无法支持主从节点上运行不同版本的软件。</p>
+<h3 id="基于行的逻辑日志复制"><a href="#基于行的逻辑日志复制" class="headerlink" title="基于行的逻辑日志复制"></a>基于行的逻辑日志复制</h3><p>另一种方法是复制和存储引擎采用不同的日志格式，这样复制与存储逻辑剥离。这种</p>
+<p>复制日志称为逻辑日志，以区分物理存储引擎的数据表示。</p>
+<p>关系数据库的逻辑日志通常是指一系列记录来描述数据表行级别的写请求：</p>
+<ul>
+<li><p>对于行插入，日志包含所有相关列的新值</p>
+</li>
+<li><p>对于行刪除，日志里有足够的信息来唯一标识已删除的行，通常是靠主键，但如</p>
+<p>果表上没有定义主键，就需要记录所有列的旧值</p>
+</li>
+<li><p>对于行更新，日志包含足够的信息来唯一标识更新的行，以及所有列的新值（或</p>
+<p>至少包含所有已更新列的新值）</p>
+</li>
+</ul>
+<p>如果一条事务涉及多行的修改，则会产生多个这样的日志记录，并在后面跟着一条记</p>
+<p>录，指出该事务已经提交。<strong>MySQL</strong>的二进制日志<strong>binlog</strong> (当配置为基于行的复制时）</p>
+<p>使用该方式。</p>
+<p>由于逻辑日志与存储引擎逻辑解耦，因此可以更容易地保持向后兼容，从而使主从节</p>
+<p>点能够运行不同版本的软件甚至是不同的存储引擎。</p>
+<h3 id="基于触发器的复制"><a href="#基于触发器的复制" class="headerlink" title="基于触发器的复制"></a>基于触发器的复制</h3><p>到目前为止所描述的复制方法都是由数据库系统来实现的，不涉及任何应用程序代码。通常这是大家所渴望的，不过，在某些情况下，我们可能需要更高的灵活性。例如，只想复制数据的一部分，或者想从一种数据库复制到另一种数据库，则需要将复制控制交给应用程序层。</p>
+<p>触发器支持注册自己的应用层代码，使得当数据库系统发生数据更改（写事务）时自动执行上述自定义代码。</p>
+<h1 id="复制滞后问题"><a href="#复制滞后问题" class="headerlink" title="复制滞后问题"></a>复制滞后问题</h1><p>不幸的是，如果一个应用正好从一个异步的从节点读取数据，而该副本落后于主节点，则应用可能会读到过期的信息。这种不一致只是一个暂时的状态，如果停止写数据库，经过一</p>
+<p>段时间之后，<font color="orange">从节点最终会赶上并与主节点保持一致。这种效应也被称为最终一致性</font>。</p>
+<p>正常情况下，主节点和从节点上完成写操作之间的时间延迟（复制滞后）可能不足1秒，这样的滞后，在实践中通常不会导致太大影响。但是，如果系统已接近设计上限，或者网络存在问题，则滞后可能轻松增加到几秒甚至几分钟不等。当滞后时间太长时，导致的不一致性不仅仅是一个理论存在的问题，而是个实实在在的现实问题。</p>
+<h2 id="读自己的写"><a href="#读自己的写" class="headerlink" title="读自己的写"></a>读自己的写</h2><p>许多应用让用户提交一些数据，接下来査看他们自己所提交的内容，提交新数据须发送到主节点，但是当用户读取数据时，数据可能来自从节点。然而对于异步复制存在这样一个问题，用户在写入不久即查看数据，则新数据可能尚未到达从节点。对用户来讲，看起来似乎是刚刚提交的数据丢失了。对于这种情况，我们需要<font color="orange">写后读一致性，机制保证如果用户重新加载页面，他们总能看到自己最近提交的更新</font>。但对其他用户则没有任何保证，这些用户的更新可能会在稍后才能刷新看到。</p>
+<p>基于主从复制的系统该如何实现写后读一致性呢？有多种可行的方案，以下例举一二：</p>
+<ul>
+<li>如果用户访问可能会被自己修改的内容，从主节点读取；否则，在从节点读取。这背后就要求有一些方法在实际执行查询之前，就已经知道内容是否可能会被用户自己修改。例如，社交网络上的用户首页信息通常只能由所有者编辑，而其他人无法编辑。因此，这就形成一个简单的规则：总是从主节点读取用户自己的首页配置文件，而在从节点读取其他用户的配置文件。</li>
+</ul>
+<h2 id="单调读"><a href="#单调读" class="headerlink" title="单调读"></a>单调读</h2><p>如果用户从不同副本进行了多次读取，则很有可能出现一下情况：第一次查询返回了比较新的结果，但第二次查询时，由于副本滞后较多，返回给用户的数据相对于第一次变少了，对于用户来说感知到的情况就是数据被删除了。</p>
+<p>单调读一致性可以确保不会发生这种异常，这是一个比强一致性弱，比最终一致性强的保证。当读取数据时，<font color="orange">单调读一致性保证，如果某个用户依次进行多次读取，则他绝不会看到回滚现象，即在读取较新值之后又发生读旧值的情况</font>。</p>
+<p>实现单调读的一种方式是，确保每个用户总是从固定的冋一副本执行读取（而不同的用户可以从不同的副本读取）。例如，基于用户<strong>ID</strong>的哈希的方法而不是随机选择副本。但如果该副本发生失效，则用户的査询必须重新路由到另一个副本。</p>
+<h2 id="前缀一致读"><a href="#前缀一致读" class="headerlink" title="前缀一致读"></a>前缀一致读</h2><p>在多人聊天的场景下，人与人之间聊天的顺序对于用户来说是很重要的，但是由于复制滞后的问题，用户可能会先收到其他用户在时间上相对后发出的消息，导致产生逻辑混乱。</p>
+<p>防止这种异常需要引入另一种保证：<font color="orange">前缀一致读。该保证是说，对于一系列按照某个顺序发生的写请求，那么读取这些内容时也会按照当时写入的顺序</font>。</p>
+<p>这是分区（分片）数据库中出现的一个特殊问题，细节将在第6章中讨论。如果数据库总是以相同的顺序写入，则读取总是看到一致的序列，不会发生这种反常。然而，在许多分布式据库中，不同的分区独立运行（异地多活），因此不存在全局写入顺序。这就导致当用户从数据库中读数据时，可能会看到数据库的某部分旧值和另一部分新值。</p>
+<p>一个解决方案是确保任何具有因果顺序关系的写入都交给一个分区来完成，但该方案真实实现效率会大打折扣。现在有一些新的算法来显式地追踪事件因果关系。</p>
+<h1 id="复制滞后的解决方案"><a href="#复制滞后的解决方案" class="headerlink" title="复制滞后的解决方案"></a>复制滞后的解决方案</h1><p>使用最终一致性系统时，最好事先就思考这样的问题：如果复制延迟增加到几分钟甚至几小时，那么应用层的行为会是什么样子？如果答案是“没问题”，那没得说。但是，如果带来糟糕的用户体验，那么在设计系统时，就要考虑提供一个更强的一致性保证，比如写后读。</p>
+<p>正如前面所讨论的，在应用层可以提供比底层数据库更强有力的保证。例如只在主节点上进行特定类型的读取，而代价则是，应用层代码中处理这些问题通常会非常复杂，且容易出错。</p>
+<p>如果应用程序开发人员不必担心这么多底层的复制问题，而是假定数据库在“做正确的情”，情况就变得很简单。<font color="orange">而这也是事务存在的原因，事务是数据库提供更强保证的一种方式</font>。</p>
+<p>单节点上支持事务已经非常成熟。然而，在转向分布式数据库（即支持复制和分区）的过程中，有许多系统却选择放弃支持事务，并声称事务在性能与可用性方面代价过髙。后面的章节将会更深入的理解事务。</p>
+<h1 id="多主节点复制"><a href="#多主节点复制" class="headerlink" title="多主节点复制"></a>多主节点复制</h1><p>主从复制存在一个明显的缺点：系统只有一个主节点，而所有写入都必须经由主节点。如果由于某种原因，例如与主节点之间的网络中断而导致主节点无法连接，主从复制方案就会影响所有的写入操作。</p>
+<p>对主从复制模型进行自然的扩展，则可以配置多个主节点，每个主节点都可以接受写操作，处理写的每个主节点都必须将该数据更改转发到所有其他节点。这就是多主节点复制。此时，每个主节点还同时扮演其他主节点的从节点。</p>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><p>在一个数据中心内部使用多主节点基本没有太大意义，其复杂性已经超过所能带來的好处。但是，在以下场景这种配置则是合理的：</p>
+<h3 id="数据中心"><a href="#数据中心" class="headerlink" title="数据中心"></a>数据中心</h3><p>为了容忍整个数据中心级别故障或者更接近用户，可以把数据库的副本横跨多个数据中心。而如果使用常规的基于主从的复制模型，主节点势必只能放在其中的某一个数据中心，而所有写请求都必须经过该数据中心。有了多主节点复制模型，则可以在每个数据中心都配置主节点，在毎个数据中心内，采用常规的主从复制方案；而在数据中心之间，由各个数据中心的主节点来负责同其他数据中心的主节点进行数据的交换、更新。</p>
+<p>有些数据库已内嵌支持了多主复制，但有些则借助外部工具来实现，例如<strong>MySQL</strong>的</p>
+<p><strong>Tungsten</strong> <strong>Replicator</strong>,<strong>PostgreSQL</strong>的<strong>BDR</strong>以及<strong>Oracle</strong>的<strong>GoldenGate</strong>，由于多主复制在许多数据库中还只是新增的髙级功能，所以可能存在配置方面的细小缺陷，在与其他数据库功能（例如自增主键，触发器和完整性约束等）交互时有时会出现意想不到的副作用。出于这个原因，一些人认为多主复制比较危险，应该谨慎使用或者避免使用。</p>
+<h3 id="离线客户端操作"><a href="#离线客户端操作" class="headerlink" title="离线客户端操作"></a>离线客户端操作</h3><p>比如手机，笔记本电脑和其他设备上的日历应用程序。无论设备当前是否联网，都需要能够随时査看当前的会议安排（对应于读请求）或者添加新的会议（对应于写请求）。在离线状态下进行的任何更改，会在下次设备上线时，与服务器以及其他设备同步。</p>
+<p>这种情况下，毎个设备都有一个充当主节点的本地数据库（用来接受写请求），然后在所有设备之间采用异步方式同步这些多主节点上的副本，同步滞后可能是几小时或者数天，具体时间取决于设备何时可以再次联网。</p>
+<p>从架构层面来看，上述设置基本上等同于数据中心之间的多主复制，只不过是个极端情况，即一个设备就是数据中心，而且它们之间的网络连接非常不可靠。有一些工具可以使多主配置更为容易，如<strong>CouchDB</strong>就是为这种操作模式而设计的。</p>
+<h3 id="协作编辑"><a href="#协作编辑" class="headerlink" title="协作编辑"></a>协作编辑</h3><p>实时协作编辑应用程序允许多个用户同时编辑文档。我们通常不会将协作编辑完全等价于数据库复制问题，但二者确实有很多相似之处。当一个用户编辑文档时，所做的更改会立即应用到本地（本地主节点），然后异步复制到服务器以及编辑同一文档的其他用户。</p>
+<p>如果要确保不会发生编辑冲突，则应用程序必须先将文档锁定，然后才能对其进行编辑。如果另一个用户想要编辑同一个文档，首先必须等到第一个用户提交修改并释放锁。这种协作模式相当于主从复制模型下在主节点上执行事务操作</p>
+<h2 id="处理写冲突"><a href="#处理写冲突" class="headerlink" title="处理写冲突"></a>处理写冲突</h2><p>多主复制的最大问题是可能发生写冲突，这意味着必须有方案来解决冲突。例如，两个用户同时编辑文档，用户1将页面的标题从<strong>A</strong>更改为<strong>B</strong> , 与此同时用户2却将标题从<strong>A</strong>改为<strong>C</strong>。每个用户的更改都顺利地提交到本地主节点。但是，当更改被异步复制到对方时，却发现存在冲突。</p>
+<h3 id="同步于异步冲突检测"><a href="#同步于异步冲突检测" class="headerlink" title="同步于异步冲突检测"></a>同步于异步冲突检测</h3><p>如果是主从复制数据库，第二个写请求要么会被阻塞直到第一个写完成，要么被中止（用户必须重试），然而在多主节点的复制模型下，这两个写请求都是成功的，并且只能在稍后的时间点上才能异步检测到冲突，那时再要求用户层来解决冲突为时已晚。</p>
+<p>理论上，也可以做到同步冲突检测，即等待写请求完成对所有副本的同步，然后再通知用户写入成功。但是，这样做将会失去多主节点的主要优势：允许每个主节点独立接受写请求。如果确实想要同步方式冲突检测，或许应该考虑采用单主节点的主从复制模型。</p>
+<h3 id="避免冲突"><a href="#避免冲突" class="headerlink" title="避免冲突"></a>避免冲突</h3><p>处理冲突最理想的策略是避免发生冲突，<font color="orange">即如果应用层可以保证对特定记录的写请求总是通过同一个主节点，这样就不会发生写冲突。现实中，由于不少多主节点复制模型所实现的冲突解决方案存在瑕疵，因此，避免冲突反而成为大家普遍推荐的首选方案</font>。</p>
+<p>例如，多人协作文档系统中，对同一文档的写操作都在一个数据中心的主节点上，不同文档的写操作可以放在不同数据中心。从用户的角度来看，这基本等价于主从复制模型。</p>
+<p>但是，有时可能需要改变事先指定的主节点，例如由于该数据中心发生故障，不得不将流量重新路由到其他数据中心。</p>
+<h3 id="收敛于一致状态"><a href="#收敛于一致状态" class="headerlink" title="收敛于一致状态"></a>收敛于一致状态</h3><p>对于主从复制模型，数据更新符合顺序性原则，即如果同一个字段有多个更新，则最后一个写操作将决定该字段的最终值。</p>
+<p>对于多主节点复制模型，由于不存在这样的写入顺序，所以最终值也会变得不确定。例如上面同步编辑文档的例子，主节点1接受到请求把标题更新为<strong>B</strong> , 然后更新为<strong>C</strong> ;而在主节点2,则是相反的更新顺序。两者都无法辩驳谁更正确。</p>
+<p>如果每个副本都只是按照它所看到写入的顺序执行，那么数据库最终将处干不一致状态这绝对是不可接受的，所有的复制模型至少应该确保数据在所有副本中最终状态一定是一致的。因此，数据库必须以一种收敛趋同的方式来解决冲突，这也意味着<font color="orange">当所有更改最终被复制、同步之后，所有副本的最终值是相同的</font>。（可以理解为多主节点复制的最终一致性？）</p>
+<p>实现收敛的冲突解决有以下可能的方式：</p>
+<ul>
+<li><p>给每个写入分配唯一的<strong>ID</strong>, 例如，一个时间戳，一个足够长的随机数，一个<strong>UUID</strong>或者一个基于键-值的哈希，挑选最高<strong>ID</strong>的写入作为胜利者，并将其他写入丢弃。如果基于时间戳，这种技术被称为<strong>最后写入者获胜</strong>。虽然这种方法很流行，但是很容易造成数据丢失。我们将在后面详细解释。</p>
+</li>
+<li><p>为每个副本分配一个唯一的<strong>ID</strong>，并制定规则，例如序号髙的副本写入始终优先于序号低的副本。这种方法也可能会导致数据丢失</p>
+</li>
+<li><p>以某种方式将这些值合并在一起。例如，按字母顺序排序，然后拼接在一起，例如上面文档标题编辑的例子合并后的结果可能变成：BC</p>
+</li>
+<li><p>利用预定义好的格式来记录和保留冲突相关的所有信息，然后依靠应用层的逻辑，事后解决冲突（可能会提示用户）</p>
+</li>
+</ul>
+<h3 id="自定义冲突解决逻辑"><a href="#自定义冲突解决逻辑" class="headerlink" title="自定义冲突解决逻辑"></a>自定义冲突解决逻辑</h3><p><font color="orange">解决冲突最合适的方式可能还是依靠应用层，所以大多数多主节点复制模型都有工具来让用户编写应用代码来解决冲突。可以在写入时或在读取时执行这些代码逻辑</font>：</p>
+<ul>
+<li><p>在写入时执行</p>
+<ul>
+<li><p>只要数据库系统在复制变更日志时检测到冲突，就会调用应用层的冲突处理程</p>
+<p>序。例如，<strong>Bucardo</strong>支持编写一段<strong>Perl</strong>代码。这个处理程序通常不能在线提示用</p>
+<p>户，而只能在后台运行，这样速度更快</p>
+</li>
+</ul>
+</li>
+<li><p>在读取时执行</p>
+<ul>
+<li><p>当检测到冲突时，所有冲突写入值都会暂时保存下来。下一次读取数据时，会将</p>
+<p>数据的多个版本读返回给应用层。应用层可能会提示用户或自动解决冲突，并将</p>
+<p>最后的结果返回到数据库。<strong>CouchDB</strong>采用了这样的处理方式。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="自动冲突解决"><a href="#自动冲突解决" class="headerlink" title="自动冲突解决"></a>自动冲突解决</h3><p>冲突解决的规则可能会变得越来越复杂，且自定义代码很容易出错，有一些有意思的研究尝试自动解决并发修改所引起的冲突：</p>
+<ul>
+<li><p>无冲突的复制数据类型 (<strong>Conflict**</strong>-<strong>**freeReplicated</strong> <strong>Datatypes</strong>,<strong>CRDT</strong>)。<strong>CRDT</strong>是可以由多个用户同时编辑的数据结构，包括<strong>map</strong>、<strong>ordered</strong> <strong>list</strong>、计数器等，并且以内置的合理方式自动地解决冲突</p>
+</li>
+<li><p>可合并的持久数据结构（<strong>Mergeable</strong> <strong>persistent</strong> <strong>data</strong>) 。它跟踪变更历史，类似于<strong>Git</strong>版本控制系统，并提出三向合并功能。</p>
+</li>
+<li><p>操作转换 (<strong>Operational  transformation</strong>) 。它是<strong>Etherpad</strong>和<strong>Google Docs</strong>等协作编辑应用背后的冲突解决算法。专为可同时编辑的有序列表而设计，如文本文档的字符列表。</p>
+</li>
+</ul>
+<p>这些算法总体来讲还处于早期阶段，但将来它们可能会被整合到更多的数据系统中。这些自动冲突解决方案可以使主复制模型更简单、更容易被应用程序来集成。</p>
+<h1 id="拓扑结构"><a href="#拓扑结构" class="headerlink" title="拓扑结构"></a>拓扑结构</h1><p>复制的拓扑结构描述了写请求从一个节点的传播到其他节点的通信路径。如果有两个主节点，则只存在一个合理的拓扑结构：主节点1必须把所有的写同步到主节点2，反之亦然。但如果存在两个以上的主节点，则会有多个可能的同步拓扑结构。</p>
+
     </div>
 
     
@@ -315,12 +449,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/02/12/devops/k8s/k8s%E5%88%9D%E5%AD%A6%E7%AC%94%E8%AE%B0/" rel="prev" title="k8s初学笔记">
-      <i class="fa fa-chevron-left"></i> k8s初学笔记
+    <a href="/2022/02/20/program_language/python/effective_python/%E5%87%BD%E6%95%B0/" rel="prev" title="函数">
+      <i class="fa fa-chevron-left"></i> 函数
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/02/20/program_language/python/effective_python/%E5%87%BD%E6%95%B0/" rel="next" title="函数">
-      函数 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/03/05/program_language/python/effective_python/%E6%8E%A8%E5%AF%BC%E4%B8%8E%E7%94%9F%E6%88%90/" rel="next" title="推导与生成">
+      推导与生成 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -381,7 +515,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">主从复制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E5%A4%8D%E5%88%B6%E4%B8%8E%E5%BC%82%E6%AD%A5%E5%A4%8D%E5%88%B6"><span class="nav-number">1.1.</span> <span class="nav-text">同步复制与异步复制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%B0%E7%9A%84%E4%BB%8E%E8%8A%82%E7%82%B9"><span class="nav-number">1.2.</span> <span class="nav-text">配置新的从节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E8%8A%82%E7%82%B9%E5%A4%B1%E6%95%88"><span class="nav-number">1.3.</span> <span class="nav-text">处理节点失效</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">主从复制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E5%A4%8D%E5%88%B6%E4%B8%8E%E5%BC%82%E6%AD%A5%E5%A4%8D%E5%88%B6"><span class="nav-number">1.1.</span> <span class="nav-text">同步复制与异步复制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%B0%E7%9A%84%E4%BB%8E%E8%8A%82%E7%82%B9"><span class="nav-number">1.2.</span> <span class="nav-text">配置新的从节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E8%8A%82%E7%82%B9%E5%A4%B1%E6%95%88"><span class="nav-number">1.3.</span> <span class="nav-text">处理节点失效</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E8%8A%82%E7%82%B9%E5%A4%B1%E6%95%88%EF%BC%9A%E8%BF%BD%E8%B5%B6%E5%BC%8F%E6%81%A2%E5%A4%8D"><span class="nav-number">1.3.1.</span> <span class="nav-text">从节点失效：追赶式恢复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%8A%82%E7%82%B9%E5%A4%B1%E6%95%88%EF%BC%9A%E8%8A%82%E7%82%B9%E5%88%87%E6%8D%A2"><span class="nav-number">1.3.2.</span> <span class="nav-text">主节点失效：节点切换</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E6%97%A5%E5%BF%97%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">复制日志的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%A4%8D%E5%88%B6"><span class="nav-number">2.0.1.</span> <span class="nav-text">基于语句的复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E9%A2%84%E5%86%99%E6%97%A5%E5%BF%97%EF%BC%88WAL%EF%BC%89%E7%9A%84%E5%A4%8D%E5%88%B6"><span class="nav-number">2.0.2.</span> <span class="nav-text">基于预写日志（WAL）的复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E8%A1%8C%E7%9A%84%E9%80%BB%E8%BE%91%E6%97%A5%E5%BF%97%E5%A4%8D%E5%88%B6"><span class="nav-number">2.0.3.</span> <span class="nav-text">基于行的逻辑日志复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E8%A7%A6%E5%8F%91%E5%99%A8%E7%9A%84%E5%A4%8D%E5%88%B6"><span class="nav-number">2.0.4.</span> <span class="nav-text">基于触发器的复制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E6%BB%9E%E5%90%8E%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">复制滞后问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E8%87%AA%E5%B7%B1%E7%9A%84%E5%86%99"><span class="nav-number">3.1.</span> <span class="nav-text">读自己的写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E8%B0%83%E8%AF%BB"><span class="nav-number">3.2.</span> <span class="nav-text">单调读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%BC%80%E4%B8%80%E8%87%B4%E8%AF%BB"><span class="nav-number">3.3.</span> <span class="nav-text">前缀一致读</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E6%BB%9E%E5%90%8E%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">4.</span> <span class="nav-text">复制滞后的解决方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E4%B8%BB%E8%8A%82%E7%82%B9%E5%A4%8D%E5%88%B6"><span class="nav-number">5.</span> <span class="nav-text">多主节点复制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">5.1.</span> <span class="nav-text">适用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83"><span class="nav-number">5.1.1.</span> <span class="nav-text">数据中心</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A6%BB%E7%BA%BF%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%93%8D%E4%BD%9C"><span class="nav-number">5.1.2.</span> <span class="nav-text">离线客户端操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8F%E4%BD%9C%E7%BC%96%E8%BE%91"><span class="nav-number">5.1.3.</span> <span class="nav-text">协作编辑</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E5%86%99%E5%86%B2%E7%AA%81"><span class="nav-number">5.2.</span> <span class="nav-text">处理写冲突</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E4%BA%8E%E5%BC%82%E6%AD%A5%E5%86%B2%E7%AA%81%E6%A3%80%E6%B5%8B"><span class="nav-number">5.2.1.</span> <span class="nav-text">同步于异步冲突检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E5%86%B2%E7%AA%81"><span class="nav-number">5.2.2.</span> <span class="nav-text">避免冲突</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B6%E6%95%9B%E4%BA%8E%E4%B8%80%E8%87%B4%E7%8A%B6%E6%80%81"><span class="nav-number">5.2.3.</span> <span class="nav-text">收敛于一致状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3%E9%80%BB%E8%BE%91"><span class="nav-number">5.2.4.</span> <span class="nav-text">自定义冲突解决逻辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3"><span class="nav-number">5.2.5.</span> <span class="nav-text">自动冲突解决</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84"><span class="nav-number">6.</span> <span class="nav-text">拓扑结构</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -397,20 +531,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -440,7 +574,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -450,15 +584,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">183k</span>
+    <span title="Symbols count total">215k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">10:11</span>
+    <span title="Reading time total">11:56</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

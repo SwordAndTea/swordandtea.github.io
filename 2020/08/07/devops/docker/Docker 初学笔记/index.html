@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.2">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -55,7 +55,7 @@
 <meta property="og:description" content="Docker 镜像与容器DockerfileDockerfile 是一个用来构建镜像的文本文件，文本内容包含了一系列构建镜像所需的指令和说明。 Dockerfile字段介绍:  FROM: 定制的镜像所基于的基础的镜像，后续的操作都将基于这个基础镜像。  FROM的基础镜像是必须指定的，如果确实没有基于的其他镜像，可以指定为一个特殊的空镜像叫scratch。   RUN: 后面接命令行命令，它有两">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-08-07T07:20:41.000Z">
-<meta property="article:modified_time" content="2022-05-02T14:51:00.226Z">
+<meta property="article:modified_time" content="2022-05-02T14:51:00.000Z">
 <meta property="article:author" content="SwordAndTea">
 <meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary">
@@ -209,14 +209,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-08-07 15:20:41" itemprop="dateCreated datePublished" datetime="2020-08-07T15:20:41+08:00">2020-08-07</time>
+              <time title="Created: 2020-08-07 03:20:41" itemprop="dateCreated datePublished" datetime="2020-08-07T03:20:41-04:00">2020-08-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-02 22:51:00" itemprop="dateModified" datetime="2022-05-02T22:51:00+08:00">2022-05-02</time>
+                <time title="Modified: 2022-05-02 10:51:00" itemprop="dateModified" datetime="2022-05-02T10:51:00-04:00">2022-05-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -273,7 +273,7 @@
 </li>
 <li><p>COPY: 复制指令，从<a href="#使用Dockerfile构建镜像">上下文目录中</a>复制文件或者目录到容器里指定路径：</p>
 <ul>
-<li>```shell<br>COPY [—chown=<user>:<group>] &lt;源路径1&gt;…  &lt;目标路径&gt;<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line">  * 源文件或者源目录，这里可以是通配符表达式，其通配符规则要满足 Go 的 filepath.Match 规则，如COPY hom* /mydir/</span><br><span class="line">  </span><br><span class="line">  * 目标路径: 容器内的指定路径</span><br><span class="line"></span><br><span class="line">* CMD: 类似于RUN指令，但是CMD的命令是在容器开始运行时会被运行，RUN命令是在构建镜像时被运行。CMD命令为启动的容器指定默认要运行的程序，程序运行结束，容器也就结束。CMD 指令指定的程序可被 docker run 命令行参数中指定要运行的程序所覆盖。**如果Dockerfile有多个CMD命令，仅最后一个生效**</span><br><span class="line"></span><br><span class="line">* EVN: 设置环境变量，定义了环境变量，那么在后续的指令中，就可以使用这个环境变量。EVN命令使用格式如下：</span><br><span class="line">  </span><br><span class="line">  * ```shell</span><br><span class="line">    ENV &lt;key&gt; &lt;value&gt;</span><br><span class="line">    ENV &lt;key1&gt;=&lt;value1&gt; &lt;key2&gt;=&lt;value2&gt;...</span><br></pre></td></tr></table></figure>
+<li>```shell<br>COPY [—chown=<user>:<group>] &lt;源路径1&gt;…  &lt;目标路径&gt;<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line">  * 源文件或者源目录，这里可以是通配符表达式，其通配符规则要满足 Go 的 filepath.Match 规则，如COPY hom* &#x2F;mydir&#x2F;</span><br><span class="line">  </span><br><span class="line">  * 目标路径: 容器内的指定路径</span><br><span class="line"></span><br><span class="line">* CMD: 类似于RUN指令，但是CMD的命令是在容器开始运行时会被运行，RUN命令是在构建镜像时被运行。CMD命令为启动的容器指定默认要运行的程序，程序运行结束，容器也就结束。CMD 指令指定的程序可被 docker run 命令行参数中指定要运行的程序所覆盖。**如果Dockerfile有多个CMD命令，仅最后一个生效**</span><br><span class="line"></span><br><span class="line">* EVN: 设置环境变量，定义了环境变量，那么在后续的指令中，就可以使用这个环境变量。EVN命令使用格式如下：</span><br><span class="line">  </span><br><span class="line">  * &#96;&#96;&#96;shell</span><br><span class="line">    ENV &lt;key&gt; &lt;value&gt;</span><br><span class="line">    ENV &lt;key1&gt;&#x3D;&lt;value1&gt; &lt;key2&gt;&#x3D;&lt;value2&gt;...</span><br></pre></td></tr></table></figure>
 </group></user></li>
 </ul>
 </li>
@@ -457,20 +457,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -500,7 +500,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -510,15 +510,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">183k</span>
+    <span title="Symbols count total">215k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">10:11</span>
+    <span title="Reading time total">11:56</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.2
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1

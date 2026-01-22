@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://SwordAndTea.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="构建决策树决策树是一种常见的分类机器学习方法，顾名思义，决策树就是基于树形结构来进行决策，这恰是人类在面临决策问题时一种很自然的处理机制。  一棵判断西瓜是否是好瓜的决策树例子    在构建一棵决策树时，其决策的过程就是对某个属性的“测试”，每个测试的结果或是导出最终的分类结果，或是导出下一步的判定问题，每一次需要决策的样本是上次的决策结果之后划分出来的样本。 一般，一棵决策树包含一个根结点、若干">
+<meta property="og:type" content="article">
+<meta property="og:title" content="决策树">
+<meta property="og:url" content="http://swordandtea.github.io/2020/02/22/machine_learning/%E5%86%B3%E7%AD%96%E6%A0%91/index.html">
+<meta property="og:site_name" content="xiangwei&#39;s blog">
+<meta property="og:description" content="构建决策树决策树是一种常见的分类机器学习方法，顾名思义，决策树就是基于树形结构来进行决策，这恰是人类在面临决策问题时一种很自然的处理机制。  一棵判断西瓜是否是好瓜的决策树例子    在构建一棵决策树时，其决策的过程就是对某个属性的“测试”，每个测试的结果或是导出最终的分类结果，或是导出下一步的判定问题，每一次需要决策的样本是上次的决策结果之后划分出来的样本。 一般，一棵决策树包含一个根结点、若干">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://swordandtea.github.io/2020/02/22/machine_learning/%E5%86%B3%E7%AD%96%E6%A0%91/decision_tree_example.jpeg">
+<meta property="article:published_time" content="2020-02-23T00:11:03.000Z">
+<meta property="article:modified_time" content="2020-07-11T12:48:25.000Z">
+<meta property="article:author" content="SwordAndTea">
+<meta property="article:tag" content="西瓜书学习笔记">
+<meta property="article:tag" content="machine learning">
+<meta property="article:tag" content="decision tree">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://swordandtea.github.io/2020/02/22/machine_learning/%E5%86%B3%E7%AD%96%E6%A0%91/decision_tree_example.jpeg">
+
+<link rel="canonical" href="http://swordandtea.github.io/2020/02/22/machine_learning/%E5%86%B3%E7%AD%96%E6%A0%91/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>决策树 | xiangwei's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xiangwei's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://swordandtea.github.io/2020/02/22/machine_learning/%E5%86%B3%E7%AD%96%E6%A0%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="SwordAndTea">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xiangwei's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          决策树
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-22 19:11:03" itemprop="dateCreated datePublished" datetime="2020-02-22T19:11:03-05:00">2020-02-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-11 08:48:25" itemprop="dateModified" datetime="2020-07-11T08:48:25-04:00">2020-07-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>15 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="构建决策树"><a href="#构建决策树" class="headerlink" title="构建决策树"></a>构建决策树</h1><p>决策树是一种常见的<code>分类</code>机器学习方法，顾名思义，决策树就是基于树形结构来进行决策，这恰是人类在面临决策问题时一种很自然的处理机制。</p>
+<p><img src="/2020/02/22/machine_learning/%E5%86%B3%E7%AD%96%E6%A0%91/decision_tree_example.jpeg" alt="决策树例子" style="zoom:25%;"></p>
+<div align="center"><font size="2" color="grey">一棵判断西瓜是否是好瓜的决策树例子</font></div>
+
+
+
+<p>在构建一棵决策树时，其决策的过程就是对某个属性的“测试”，每个测试的结果或是导出最终的分类结果，或是导出下一步的判定问题，每一次需要决策的样本是上次的决策结果之后划分出来的样本。</p>
+<p>一般，一棵决策树包含一个根结点、若干个内部结点和若干个叶结点。<code>叶结点对应于决策结果，其他每个结点则对应一个属性测试</code>，每个结点包含的样本集合根据属性测试的结果被划分到子结点中，根结点包含样本全集。</p>
+<p><code>决策树学习的目的是为了产生一棵泛化能力强，即处理未见示例能力强的决策树。</code></p>
+<p><code>构建一棵决策树的伪代码为：</code></p>
+<p>输入：训练集$D={(x<em>i, y_i)}</em>{i=1}^{m}$</p>
+<p>​            属性集$A = {a<em>i}</em>{i=1}^{d}$</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenerateDTree</span><span class="params">(D, A)</span> </span>&#123;</span><br><span class="line">  	生成根结点 root;</span><br><span class="line">	<span class="keyword">if</span> (D中样本全属于同一类别C) &#123;<span class="comment">//当前结点包含的样本全属于同一类别，即yi都相同</span></span><br><span class="line"> 		将root标记为C类叶结点;</span><br><span class="line">   		<span class="keyword">return</span>;</span><br><span class="line">  	&#125;</span><br><span class="line">	<span class="keyword">if</span> (A == <span class="literal">NULL</span> || D中样本在属性A上取值相同) &#123;<span class="comment">//没有属性可以选择或者当前所有样本在剩下的属性上取值相同</span></span><br><span class="line">    		将root标记为叶结点，其类别标记为D中样本最多的类;</span><br><span class="line">    		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">  	从属性集A中选择最优划分属性a*;</span><br><span class="line">  	<span class="keyword">for</span> (对于属性a*每一个可能的属性取值v) &#123;</span><br><span class="line">      		为root生成一个分支；令D_v表示D中在属性a*上取值为v的样本子集;</span><br><span class="line">        	<span class="keyword">if</span> (D_v 为空集) &#123;</span><br><span class="line">           		将分支结点标记为叶结点，其类别标记为D中(注意是D)中样本最多的类;</span><br><span class="line">           		<span class="keyword">return</span>;</span><br><span class="line">        	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           		GenerateDTree(D_v, A - a*);</span><br><span class="line">        	&#125;</span><br><span class="line">    	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><code>决策树生成的算法是一个递归算法，注意该递归算法的三个返回条件</code></p>
+<font color="red">疑问:</font><br>
+
+<font color="red">1、 如果在选择当前样本数量最多的类作为类别标记时，有多个样本数量最多的类别时怎么办？随便选一个？</font><br>
+
+<font color="red">2、for循环中，对于属性a*每一个可能的属性取值v，这里的可能取值是相对于最开始的数据集来说还是相对于当前结点中的数据集来说？因为当前结点中的数据集在属性a*上的取值可能比最开始的数据集要少一些</font>
+
+
+
+<h1 id="划分选择"><a href="#划分选择" class="headerlink" title="划分选择"></a>划分选择</h1><p>在上面的生成决策树的伪代码中，我们要选择最优的划分属性，那么应该怎么选择最后的划分属性呢？一般而言，随着划分过程不断进行，我们希望决策树的分支结点所包含的样本尽可能属于同一类别，即结点的“纯度”越来越高。<code>所以可以选择使得划分后结点纯度更高的属性作为划分属性</code>，一般有以下几种度量某种属性这种能力的指标：信息增益、增益率、基尼指数。</p>
+<h3 id="信息增益"><a href="#信息增益" class="headerlink" title="信息增益"></a>信息增益</h3><p>在查看定义信息增益之前，需要先查看<code>信息熵</code>的定义。<code>信息熵是度量样本集合纯度最常用的一种指标</code>。假定当前样本集合$D$中第$k$类样本所占的比例为$p_k \space (k = 1,2, \cdots, |Y|, |Y|表示当前样本中类别的总数)$，则信息熵的定义为：</p>
+<script type="math/tex; mode=display">
+Ent(D) = -\sum_{k=1}^{|Y|}p_k \log_{2}{p_k} \\
+规定若p_k=0, 则p\log_2 p_k = 0，Ent(D)的最小值为0，最大值为\log_2 |Y|</script><p>$Ent(D)$<code>越小</code>，则数据集合$D$的纯度越高</p>
+<p>有了信息熵的定义之后，再来看信息增益的定义。假设某个离散属性$a$有$V$个可能的取值${a_1, a_2, \cdots, a_V}$，若使用属性a来对样本集D来划分，则会产生$V$个分支结点。其中第$i$个分支结点包含了D中所有在属性$a$上取值为$a_i$的样本，记为$D_i$。这样可以计算出$D_i$的信息熵，<code>在考虑在不同的分支结点包含的样本数不同，给分支结点赋予权重</code>$|\frac{D_i}{D}|$，<code>即样本数多的分支结点的影响越大</code>。最后可以得到使用属性$a$对样本集D进行划分所获得的“信息增益”:</p>
+<script type="math/tex; mode=display">
+Gain(D, a) = Ent(D) - \sum_{i=1}^{V}|\frac{D_i}{D}|Ent(D_i)</script><p><code>一般而言，信息增益越大，则意味着使用属性a来进行划分所获得的“纯度提示”越大</code>。若在一次划分中，有多个属性均取得了最大的信息增益，则任选其中之一作为划分属性。</p>
+<h3 id="增益率"><a href="#增益率" class="headerlink" title="增益率"></a>增益率</h3><p><code>信息增益准则的特点是对可取值数目较多的属性性有所偏好</code>，例如某种属性有1000个取值，那么这个属性的信息增益率一般就会很大，但是选择这个属性作为划分属性后，每个划分出来的结点可能会因为已经没有多少剩余的样本而很快地被标记为叶结点。那么使用这个有1000个取值的属性划分得到的决策树泛化能力一般不会太好。而增益率则将每个属性的可能取值个数考虑了进去，其定义为：</p>
+<script type="math/tex; mode=display">
+Gain\_ratio(D, a) = \frac{Gain(D,a)}{IV(a)}\\
+\\
+其中 \\
+IV(A) = -\sum_{i=1}^{V} |\frac{D_i}{D}| \log_2 |\frac{D_i}{D}|，(注意|\frac{D_i}{D}| \leq 1)</script><p>$IV(a)$称为属性a的“固有值”，属性a的可能取值数目越多(即$V$越大)，则$IV(a)$的取值通常会越大。</p>
+<p><code>需要注意的是，增益率准则对可取值数目较少的属性有所偏好，因此，有些算法并不是直接选择增益率最大的候选划分属性，而是先从候选划分属性中找出信息增益率高于平均水平的属性，再从中选择增益率最高的。</code></p>
+<h3 id="基尼指数"><a href="#基尼指数" class="headerlink" title="基尼指数"></a>基尼指数</h3><p>查看基尼指数的定义前，先看一下<code>基尼值</code>的定义。<code>基尼值也是用来描述数据集D的纯度的指标</code>。其具体定义为：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+Gini(D) &= \sum_{k=1}^{|Y|}\sum_{k' \neq k}p_k' p_k  \tag{1} \\
+&=  \sum_{k=1}^{|Y|} p_k \sum_{k' \neq k} p_k' \\
+&= \sum_{k=1}^{|Y|} p_k (1-p_k) \\
+&= \sum_{k=1}^{|Y|} p_k - p_k^2 \\
+&= \sum_{k=1}^{|Y|} p_k - \sum_{k=1}^{|Y|} p_k^2 \\
+&= 1 - \sum_{k=1}^{|Y|} p_k^2 \tag{2} \\
+&(|Y|表示数据集D中类别的数量，p_k表示类别k所占的比例)
+\end{align*}</script><p>直观来说，$Gini(D)$<code>反映了从数据集D中随机抽取两个样本，其类别标记不一致的概率</code>，因此，$Gini(D)$<code>越小</code>，则数据集$D$的纯度<code>越高</code>。</p>
+<p>有了基尼值的定义，再来看<code>属性a的基尼指数的定义</code>：</p>
+<script type="math/tex; mode=display">
+Gini\_index(D, a) = \sum_{i=1}^{V}|\frac{D_i}{D}|Gini(D_i)</script><p>我们在候选属性集合$A$中，选择那个使得划分后基尼指数<code>最小</code>(注意是最小，信息增益和增益率中是选最大的那个)的属性作为划分属性。</p>
+<h1 id="剪枝处理"><a href="#剪枝处理" class="headerlink" title="剪枝处理"></a>剪枝处理</h1><p><code>剪枝处理是决策树学习算法处理过拟合的主要手段。</code>在决策树学习中，为了尽可能正确分类训练样本，结点划分过程不断重复，<code>有时会造成决策树分支过多</code>，这时就可能因训练样本学习得“太好”了，以至于把训练集自身的一些特点也当做所有数据都具有的一般性质而导致过拟合。因此，可通过主动去掉一些分支来降低过拟合的风险。</p>
+<p>决策树剪枝的基本策略有<code>预剪枝</code>和<code>后剪枝</code>。</p>
+<h3 id="预剪枝"><a href="#预剪枝" class="headerlink" title="预剪枝"></a>预剪枝</h3><p>预剪枝是指在决策树生成过程中，对每个结点在划分前先进进行估计，若当前结点的划分不能带来决策树泛化性能提升，则停止划分并将当前结点标记为叶结点。<code>那么如何判断泛化性能是否提升呢？</code>可以使用验证集来判断，看剪枝后的决策树在验证集上的表现是否比未剪枝的决策树好。</p>
+<p>预剪枝使得决策树的很多分支结点都没有展开，这不仅降低了过拟合的风险，还显著减少了决策树的训练时间开销和测试时间开销。<code>但另一方面</code>，有些分支的当前划分虽不能提升，甚至可能导致泛化性能暂时下降，但在其基础上进行的后续划分却有可能导致性能显著提高，<code>这给预剪枝决策树带来了欠拟合的风险。</code></p>
+<h3 id="后剪枝"><a href="#后剪枝" class="headerlink" title="后剪枝"></a>后剪枝</h3><p>后剪枝则是<code>先从训练集中生成一棵完整的决策树</code>，然后自底向上地对每个非叶结点进行判断，若将该非叶结点对应的子树替换为叶结点能带来决策树泛化能力的提升(同样也可使用验证集来判定泛化性能是否提升)，则该非叶结点标记叶结点。</p>
+<p>后剪枝决策树通常比预剪枝决策树保留了更多的分支，一般情况下后剪枝决策树的欠拟合风险很小，泛化性能往往优于预剪枝决策树。但后剪枝过程是在生成完全决策树之后进行的，并且要自底向上地对树中的所有非叶结点进行逐一考察，因此其训练时间开销比未剪枝决策树和预剪枝决策树都要大得多。</p>
+<h1 id="连续值处理"><a href="#连续值处理" class="headerlink" title="连续值处理"></a>连续值处理</h1><p>在决策树中，对于某些取值为连续值的属性，不能直接根据连续属性的可取值来对结点进行划分，此时要将连续值转换为离散值，最简单的策略是采用<code>二分法</code>对连续属性进行处理。</p>
+<p>给定样本集$D$和连续属性$a$，假设$a$在$D$上出现了n各不同的取值，将这些值从小到大进行排列，记为${a_1, a_2, \cdots, a_n}$。选定划分点$t$为某两个相邻取值的中点，则数据集可以被划分为两个子集。因此，对于n个不同</p>
+<p>取值，共有$n-1$个候选划分点，这些划分点构成集合：</p>
+<script type="math/tex; mode=display">
+T_a = \{\frac{a_i + a_{i+1}}{2} | 1 \leq i \leq n-1 \}</script><p>然后，可以像离散属性值一样来考察这些划分点，<code>选取最优的划分点进行样本集的划分</code>。例如可用<code>改造后的信息增益</code>来判断划分点的优劣：</p>
+<script type="math/tex; mode=display">
+Gain(D, a, t) = Ent(D) - \sum_{\lambda \in \{-, + \}} \frac{|D_t^{\lambda}|}{|D|}Ent(D_t^{\lambda})</script><p>$Gain(D, a, t)$是样本集在连续属性$a$上基于划分点$t$<code>二分后</code>的信息增益。于是，我们就可选择使$G(D, a, t)$</p>
+<p>最大化的划分点。</p>
+<p><code>需要注意的是，与离散值属性不同，若当前结点划分属性为连续属性，该属性还可作为其后代结点的划分属性。</code>例如当前结点选择的划分属性为连续属性$a$，并且划分标准为$a \leq 0.5$和$a&gt; 0.5$，则对于使用$a \leq 0.5$划分出来的结点，仍然可以使用属性a最后划分属性，这时可能选择划分标准为$a \leq 0.25$和$0.25 &lt; a \leq 0.5$。</p>
+<h1 id="缺失值处理"><a href="#缺失值处理" class="headerlink" title="缺失值处理"></a>缺失值处理</h1><p>现实任务中常会遇到不完整的样本，尤其是在属性数目较多的情况下，往往会有大量样本出现缺失值，如果简单地放弃不完整样本，仅使用无缺失值的样本来进行学习，显然是对数据信息的极大浪费。所以要想办法处理缺失值的情况。</p>
+<h3 id="如何在属性缺失的情况下进行划分属性选择"><a href="#如何在属性缺失的情况下进行划分属性选择" class="headerlink" title="如何在属性缺失的情况下进行划分属性选择"></a>如何在属性缺失的情况下进行划分属性选择</h3><p>给定数据集$D$和属性$a$，令$\overline{D}$表示D中在属性a上没有缺失值的样本子集，显然我们可根据$\overline{D}$来判断属性a的优劣。假设属性a由$V$个可取值${a_1, a_2, \cdots, a_V}$，令$\overline{D_i}$表示$\overline{D}$中在属性a上取值为$a_i$的样本子集。$\overline{D_k}$表示$\overline{D}$中属于第$k$类$(k = {1, 2, \cdots, |Y|}, \space|Y|为\overline{D}中类别总数)$的样本子集。则有：</p>
+<script type="math/tex; mode=display">
+\overline{D} = \bigcup_{i=1}^{V}\overline{D_i} \\
+\space \\
+\overline{D} = \bigcup_{k=1}^{|Y|}\overline{D_k}</script><p>假定为$D$中的每个样本$x$赋予一个权值$w_x$，并定义：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\rho &= \frac{\sum_{x \in \overline{D}} \space  w_x}{\sum_{x \in D} \space w_x} \\
+\space \\
+\overline{p_k} &= \frac{\sum_{x \in \overline{D_k}} \space w_x}{\sum_{x \in \overline{D}} w_x} \space (1 \leq k \leq |Y|) \\
+\space \\
+\overline{r_i} &= \frac{\sum_{x \in \overline{D_i}} \space w_x}{\sum_{x \in \overline{D}} \space w_x} \space (1 \leq i \leq V)
+\end{align*}</script><p>直观上来看，对属性$a$，$\rho$表示无缺失值样本所占的比例，$\overline{p<em>k}$表示无缺失值样本中第$k$类样本所占的比例，$\overline{r_i}$则表示无缺失值样本中在属性a上取值为$a_i$的样本占的比例。显然有：$\sum</em>{k=1}^{|Y|} \overline{p<em>k} = 1$，$\sum</em>{i=1}^{V} \overline{r_i} = 1$。</p>
+<p>基于上述定义，可以将信息增益的计算推广为：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+Gain(D, a) &= \rho \times Gain(\overline{D}, a) \\
+&= \rho \times (Ent(\overline{D}) - \sum_{i=1}^{V}\overline{r_i} Ent(\overline{D_i})) \\
+其中 \\
+Ent(\overline{D}) &= -\sum_{\overline{p_k}}^{|Y|}\overline{p_k} \log_2 \space \overline{p_k}
+\end{align*}</script><p>同理也可得到增益率和基尼指数的推广。</p>
+<h3 id="给定划分属性，若样本在该属性上的值缺失，如果对样本进行划分"><a href="#给定划分属性，若样本在该属性上的值缺失，如果对样本进行划分" class="headerlink" title="给定划分属性，若样本在该属性上的值缺失，如果对样本进行划分"></a>给定划分属性，若样本在该属性上的值缺失，如果对样本进行划分</h3><p>若确定了划分属性为$a$，若样本$x$在划分属性$a$上的取值未知，则将$x$<code>同时划入所有子结点</code>，且样本权值在与属性值$a_i$对应的子结点调整为$\overline{r_i} · w_x$。直观上来看，这就是让同一个样本以不同的概率划入到不同的子结点中去。</p>
+<h1 id="多变量决策树"><a href="#多变量决策树" class="headerlink" title="多变量决策树"></a>多变量决策树</h1><p>若把每个属性视为坐标空间中的一个坐标轴，则$d$个属性描述的样本就对应了$d$维空间中的一个数据点，对样本分类则意味着在这个坐标空间中寻找不同类样本之间的分类边界。<code>决策树所形成的分类边界有一个明显的特点: 轴平行​</code>，即它的分界边界由若干个和坐标轴平行的分段组成。</p>
+<p>显然，分类边界与坐标轴平行时，这样的分类边界使得学习结果具有较好的可解释性。但在学习任务的真实边界比较复杂时，必须使用很多段划分才能获得较好的近似，此时的决策树会相当复杂，由于要进行大量的属性测试，预测时间开销会很大。</p>
+<p>若能使用斜的划分边界，则决策树的模型将能得到很大的简化，<code>多变量决策时</code>就是能实现<code>斜划分</code>甚至更复杂划分的决策树。在此类决策树中，非叶结点不再仅对莫个属性，而是对属性的线性组合进行测试；换言之，每个非叶结点是一个形如$\sum_{i=1}^d w_i a_i = t$的线性分类器，其中$w_i$是属性$a_i$的权重。在多变量决策树的学习过程中，不是为每个非叶结点寻找一个最有划分属性，而是试图建立一个合适的线性分类器。</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>在决策时中，常使用信息增益、增益率、基尼指数作为划分属性选择的标准，除这些意外，人们还设计了许多其他的准则用于决策树划分选择。<code>这些准则虽然对决策树的尺寸有较大影响，但对泛化性能的影响很有限</code>。而使用剪枝的方法和程度对决策树泛化性能的影响相当显著，有实验研究表明，在数据带有噪声时通过剪枝甚至可将决策树的泛化性能提高25%。</p>
+<p>有算法试图在决策树中的<code>叶结点</code>嵌入神经网络，例如感知机树在决策树的每个<code>叶结点</code>上训练一个感知机，有的直接在<code>叶结点</code>嵌入多层神经网络。</p>
+<p>有一些决策树算法可进行<code>增量学习</code>，即在接收到新样本后对已学得的模型进行调整，而不完全重新学习。主要机制是通过调整分支路径上的划分次序来对树进行部分重构。增量学习可有效降低每次接受到新样本后的训练时间开销，但多步增量学习后的模型与基于全部数据训练而得的模型有较大差别。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%A5%BF%E7%93%9C%E4%B9%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 西瓜书学习笔记</a>
+              <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+              <a href="/tags/decision-tree/" rel="tag"># decision tree</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/19/machine_learning/linear_model/%E7%B1%BB%E5%88%AB%E4%B8%8D%E5%B9%B3%E8%A1%A1%E9%97%AE%E9%A2%98/" rel="prev" title="类别不平衡问题">
+      <i class="fa fa-chevron-left"></i> 类别不平衡问题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/23/machine_learning/%E9%98%B2%E6%AD%A2%E8%BF%87%E6%8B%9F%E5%90%88%E2%80%94%E2%80%94%E4%BD%BF%E7%94%A8%E6%AD%A3%E5%88%99%E5%8C%96%E9%A1%B9/" rel="next" title="防止过拟合——使用正则化项">
+      防止过拟合——使用正则化项 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E5%86%B3%E7%AD%96%E6%A0%91"><span class="nav-number">1.</span> <span class="nav-text">构建决策树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%92%E5%88%86%E9%80%89%E6%8B%A9"><span class="nav-number">2.</span> <span class="nav-text">划分选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A"><span class="nav-number">2.0.1.</span> <span class="nav-text">信息增益</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A2%9E%E7%9B%8A%E7%8E%87"><span class="nav-number">2.0.2.</span> <span class="nav-text">增益率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E5%B0%BC%E6%8C%87%E6%95%B0"><span class="nav-number">2.0.3.</span> <span class="nav-text">基尼指数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%AA%E6%9E%9D%E5%A4%84%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">剪枝处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E5%89%AA%E6%9E%9D"><span class="nav-number">3.0.1.</span> <span class="nav-text">预剪枝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E5%89%AA%E6%9E%9D"><span class="nav-number">3.0.2.</span> <span class="nav-text">后剪枝</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E5%80%BC%E5%A4%84%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">连续值处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%BA%E5%A4%B1%E5%80%BC%E5%A4%84%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">缺失值处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8%E5%B1%9E%E6%80%A7%E7%BC%BA%E5%A4%B1%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E8%BF%9B%E8%A1%8C%E5%88%92%E5%88%86%E5%B1%9E%E6%80%A7%E9%80%89%E6%8B%A9"><span class="nav-number">5.0.1.</span> <span class="nav-text">如何在属性缺失的情况下进行划分属性选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%99%E5%AE%9A%E5%88%92%E5%88%86%E5%B1%9E%E6%80%A7%EF%BC%8C%E8%8B%A5%E6%A0%B7%E6%9C%AC%E5%9C%A8%E8%AF%A5%E5%B1%9E%E6%80%A7%E4%B8%8A%E7%9A%84%E5%80%BC%E7%BC%BA%E5%A4%B1%EF%BC%8C%E5%A6%82%E6%9E%9C%E5%AF%B9%E6%A0%B7%E6%9C%AC%E8%BF%9B%E8%A1%8C%E5%88%92%E5%88%86"><span class="nav-number">5.0.2.</span> <span class="nav-text">给定划分属性，若样本在该属性上的值缺失，如果对样本进行划分</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E5%8F%98%E9%87%8F%E5%86%B3%E7%AD%96%E6%A0%91"><span class="nav-number">6.</span> <span class="nav-text">多变量决策树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">7.</span> <span class="nav-text">其他</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SwordAndTea"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">SwordAndTea</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SwordAndTea" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SwordAndTea" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SwordAndTea</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">215k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">11:56</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>
